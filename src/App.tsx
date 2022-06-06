@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Global } from '@emotion/react'
-import { globalStyles } from './styles/GlobalStyles'
 import './App.css'
 import HomePage from 'pages'
 import ActivityPage from 'pages/activity'
@@ -8,6 +7,7 @@ import MarketPage from 'pages/market'
 import MyPage from 'pages/myPage'
 import SignUpPage from 'pages/signUp'
 import SupportPage from 'pages/support'
+import { globalStyles } from 'styles/GlobalStyles'
 
 const App = () => {
   return (
