@@ -19,5 +19,5 @@
     "jsxImportSource": "@emotion/react",
     "typeRoots": ["./src/@types", "./node_modules/@types"]
   },
-  "include": ["src", "**/*.ts", "**/*.tsx"]
+  "include": ["src", "**/*.ts", "**/*.tsx", "label.js"]
 }
