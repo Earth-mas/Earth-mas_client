@@ -1,24 +1,29 @@
-import { Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Global } from '@emotion/react'
 import { globalStyles } from './styles/GlobalStyles'
 import './App.css'
-import ActivityPage from 'pages/Activity'
-import MarketPage from 'pages/Market'
-import MyPage from 'pages/MyPage'
-import SignUpPage from 'pages/SignUp'
-import SupportPage from 'pages/Support'
+import HomePage from 'pages'
+import ActivityPage from 'pages/activity'
+import MarketPage from 'pages/market'
+import MyPage from 'pages/myPage'
+import SignUpPage from 'pages/signUp'
+import SupportPage from 'pages/support'
 
-function App() {
+const App = () => {
   return (
     <>
       <Global styles={globalStyles} />
-      <Routes>
-        <Route path="/activity" element={<ActivityPage />} />
-        <Route path="/market" element={<MarketPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/support" element={<SupportPage />} />
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/activity" element={<ActivityPage />} />
+          <Route path="/market" element={<MarketPage />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/support" element={<SupportPage />} />
+          <Route path="*" element={<div>404</div>} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
