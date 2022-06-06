@@ -1,3 +1,9 @@
+import Login from 'components/units/login';
+
 export default function HomePage() {
-  return <div>Home</div>;
+  return (
+    <div>
+      <Login />
+    </div>
+  );
 }
