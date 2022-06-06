@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Global } from '@emotion/react'
+import './App.css'
+import HomePage from 'pages'
+import ActivityPage from 'pages/activity'
+import MarketPage from 'pages/market'
+import MyPage from 'pages/myPage'
+import SignUpPage from 'pages/signUp'
+import SupportPage from 'pages/support'
+import { globalStyles } from 'styles/GlobalStyles'
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Global styles={globalStyles} />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/activity" element={<ActivityPage />} />
+          <Route path="/market" element={<MarketPage />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/support" element={<SupportPage />} />
+          <Route path="*" element={<div>404</div>} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  )
 }
 
-export default App;
+export default App
