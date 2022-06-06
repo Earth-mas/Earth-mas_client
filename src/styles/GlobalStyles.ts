@@ -1,6 +1,18 @@
 import { css } from '@emotion/react';
 
 export const globalStyles = css`
+  @font-face {
+    font-family: 'SUIT-M';
+    src: url('/font/SUIT-Medium.otf');
+  }
+  @font-face {
+    font-family: 'SUIT-B';
+    src: url('/font/SUIT-Bold.otf');
+  }
+  @font-face {
+    font-family: 'SUIT-SB';
+    src: url('/font/SUIT-SemiBold.otf');
+  }
   * {
     box-sizing: border-box;
     margin: 0;
