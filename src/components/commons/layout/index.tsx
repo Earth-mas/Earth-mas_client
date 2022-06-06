@@ -1,9 +1,21 @@
-import React from 'react'
+import styled from '@emotion/styled';
+import { Outlet } from 'react-router-dom';
+import Footer from './footer';
+import Header from './header';
 
-const Layout = () => {
+export const Layout = () => {
   return (
-    <div>Layout</div>
-  )
-}
+    <LayoutWrapper>
+      <Header />
+      <Outlet />
+      <Footer />
+    </LayoutWrapper>
+  );
+};
 
-export default Layout
+const LayoutWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
