@@ -15,7 +15,7 @@ const Login = () => {
   return (
     <>
       <button type="button" onClick={handleClick}>
-        로그인 버튼
+        로그인
       </button>
       {isOpen && (
         <Modal>

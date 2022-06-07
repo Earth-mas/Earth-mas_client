@@ -1,7 +1,9 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import axios from 'axios';
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 import { InputWrapper, SignUpWrapper } from './SignUp.styles';
+import Input01 from 'components/commons/inputs/Input01';
+import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 
 export default function SignUp() {
   const [name, setName] = useState('');
@@ -34,7 +36,10 @@ export default function SignUp() {
   const onChangeAddress2 = (e: ChangeEvent<HTMLInputElement>) => {
     setAddress2(e.target.value);
   };
-  const onClickSignUp = () => {
+  const onClickSignUp = (
+    e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
+  ) => {
+    e.preventDefault();
     const data = {
       name,
       email,
@@ -48,67 +53,89 @@ export default function SignUp() {
       .post('http://34.64.224.198:3000/user', data)
       .then(res => console.log(res));
   };
+
   return (
     <SignUpWrapper>
       <h1>회원가입</h1>
-      <input type="text" onChange={onChangeEmail} placeholder="이메일" />
-      <button className="defaultButton">중복 확인하기</button>
-      <input
-        type="password"
-        onChange={onChangePassword}
-        placeholder="비밀번호"
-      />
-      <input
-        type="password"
-        onChange={onChangePassword}
-        placeholder="비밀번호 확인"
-      />
-      <input type="text" onChange={onChangeName} placeholder="이름" />
-      <InputWrapper>
-        <input
-          type="tel"
-          onChange={onChangePhone}
-          placeholder="010-0000-0000"
-        />
-        <button
-          className="defaultButton"
-          style={{ width: 250, marginLeft: 10 }}
-        >
-          인증번호 발송
+      <div className="socialSignUp">
+        <p>SNS계정으로 간편하게 가입하기</p>
+        <section>
+          <button>
+            <GoogleIcon />
+          </button>
+          <button>
+            <KaKaoIcon />
+          </button>
+        </section>
+      </div>
+      <form onSubmit={onClickSignUp}>
+        <Input01 type="text" onChange={onChangeEmail} placeholder="이메일" />
+        <button type="button" className="defaultButton">
+          중복 확인하기
         </button>
-      </InputWrapper>
-      <input
-        type="text"
-        onChange={onChangePhone}
-        placeholder="인증번호를 입력해주세요."
-      />
-      <InputWrapper>
-        <input
+        <Input01
+          type="password"
+          onChange={onChangePassword}
+          placeholder="비밀번호"
+          autoComplete="false"
+        />
+        <Input01
+          type="password"
+          onChange={onChangePassword}
+          placeholder="비밀번호 확인"
+          autoComplete="false"
+        />
+        <Input01 type="text" onChange={onChangeName} placeholder="이름" />
+        <InputWrapper>
+          <Input01
+            type="tel"
+            onChange={onChangePhone}
+            placeholder="010-0000-0000"
+          />
+          <button
+            type="button"
+            className="defaultButton"
+            style={{ width: 250, marginLeft: 10 }}
+          >
+            인증번호 발송
+          </button>
+        </InputWrapper>
+        <Input01
           type="text"
-          onChange={onChangeAddressnumber}
-          placeholder="우편번호 검색"
+          onChange={onChangePhone}
+          placeholder="인증번호를 입력해주세요."
         />
-        <button
-          className="defaultButton "
-          style={{ width: 250, marginLeft: 10 }}
-        >
-          우편번호 검색
-        </button>
-      </InputWrapper>
-      <input
-        type="text"
-        onChange={onChangeAddress1}
-        placeholder="우편번호를 검색해주세요."
-        disabled
-      />
-      <input
-        type="text"
-        onChange={onChangeAddress2}
-        placeholder="상세주소를 입력해주세요."
-      />
-      <button className="signUpButton" onClick={onClickSignUp}>
-        회원가입하기
-      </button>
+        <InputWrapper>
+          <Input01
+            type="text"
+            onChange={onChangeAddressnumber}
+            placeholder="우편번호 검색"
+          />
+          <button
+            type="button"
+            className="defaultButton "
+            style={{ width: 250, marginLeft: 10 }}
+          >
+            우편번호 검색
+          </button>
+        </InputWrapper>
+        <Input01
+          type="text"
+          onChange={onChangeAddress1}
+          placeholder="우편번호를 검색해주세요."
+          disabled
+        />
+        <Input01
+          type="text"
+          onChange={onChangeAddress2}
+          placeholder="상세주소를 입력해주세요."
+        />
+        <ContainedButton01
+          color="main"
+          content="회원가입하기"
+          onClick={onClickSignUp}
+        />
+      </form>
     </SignUpWrapper>
   );
 }

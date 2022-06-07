@@ -30,8 +30,14 @@ const Button = styled.button`
 interface IOutlinedButton01Props {
   content: string;
   color: string;
+  onClick?: () => void;
+  type?: 'submit' | 'button' | 'reset' | undefined;
 }
 
 export default function OutlinedButton01(props: IOutlinedButton01Props) {
-  return <Button color={props.color}>{props.content}</Button>;
+  return (
+    <Button color={props.color} onClick={props.onClick} type={props.type}>
+      {props.content}
+    </Button>
+  );
 }

@@ -3,6 +3,7 @@ import store from 'storejs';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { LoginWrapper } from './LoginContents.styles';
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
+import { Link } from 'react-router-dom';
 
 interface IProps {
   handleClose: () => void;
@@ -87,7 +88,9 @@ const LoginContents = ({ handleClose }: IProps) => {
       <p className="signUp">
         회원이 아니신가요?
         <button>
-          <strong>지금 가입하세요.</strong>
+          <Link to="/signup">
+            <strong>지금 가입하세요.</strong>
+          </Link>
         </button>
       </p>
     </LoginWrapper>
