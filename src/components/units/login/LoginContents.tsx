@@ -1,59 +1,95 @@
-import styled from '@emotion/styled';
-
-const LoginWrapper = styled.main`
-  position: absolute;
-  top: 50%;
-  right: 50%;
-  display: flex;
-  flex-direction: column;
-  transform: translate(50%, -50%);
-  width: 500px;
-  height: 645px;
-  border: 1px solid black;
-  overflow: hidden;
-  box-shadow: black 0 6px 16px;
-  background-color: white;
-  border-radius: 20px;
-  padding: 55px 80px;
-
-  .xButton {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    margin-bottom: 15px;
-  }
-
-  input {
-    border: 1px solid black;
-    height: 50px;
-    font-size: 20px;
-    padding: 0 20px;
-    margin-bottom: 15px;
-  }
-
-  .loginButton {
-    width: 100%;
-    height: 50px;
-    border: 1px solid black;
-  }
-`;
+import axios from 'axios';
+import store from 'storejs';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { LoginWrapper } from './LoginContents.styles';
+import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 
 interface IProps {
   handleClose: () => void;
 }
 
 const LoginContents = ({ handleClose }: IProps) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const onClickLogin = (
+    e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
+  ) => {
+    e.preventDefault();
+    const data = {
+      email,
+      password,
+    };
+    axios
+      .post('http://34.64.224.198:3000/auth/login', data, {
+        withCredentials: true,
+      })
+      .then(res => {
+        console.log(res);
+        const accessToken = res.data;
+        store.set('accessToken', accessToken);
+        // axios.defaults.headers.common[
+        //   'Authorization'
+        // ] = `Bearer ${accessToken}`;
+        alert('로그인 성공');
+        // axios
+        //   .get(`http://34.64.224.198:3000/user/${email}`)
+        //   .then(res => console.log(res));
+        handleClose();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   return (
     <LoginWrapper>
       <button type="button" className="xButton" onClick={handleClose}>
         x
       </button>
-      로그인
-      <input type="text" placeholder="이메일 주소" />
-      <input type="password" placeholder="비밀번호" />
-      <button type="button" className="loginButton">
-        이메일로 로그인하기
-      </button>
+      <h1>로그인</h1>
+      <form onSubmit={onClickLogin}>
+        <input type="text" placeholder="이메일 주소" onChange={onChangeEmail} />
+        <input
+          type="password"
+          placeholder="비밀번호"
+          onChange={onChangePassword}
+          autoComplete="off"
+        />
+        <label>
+          <input type="checkbox" className="checkBox" />
+          로그인 유지하기
+        </label>
+        <button type="submit" className="loginButton" onClick={onClickLogin}>
+          이메일로 로그인하기
+        </button>
+      </form>
+      <div className="socialLogin">
+        <p>또는</p>
+        <p>SNS계정으로 간편하게 로그인하기</p>
+        <section>
+          <button>
+            <GoogleIcon />
+          </button>
+          <button>
+            <KaKaoIcon />
+          </button>
+        </section>
+      </div>
+      <p className="signUp">
+        회원이 아니신가요?
+        <button>
+          <strong>지금 가입하세요.</strong>
+        </button>
+      </p>
     </LoginWrapper>
   );
 };
