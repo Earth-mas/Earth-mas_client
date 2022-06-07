@@ -1,17 +1,20 @@
 import { css } from '@emotion/react';
+import SUIT_M from '../assets/font/SUIT-Medium.otf';
+import SUIT_B from '../assets/font/SUIT-Bold.otf';
+import SUIT_SB from '../assets/font/SUIT-SemiBold.otf';
 
 export const globalStyles = css`
   @font-face {
     font-family: 'SUIT-M';
-    src: url('/font/SUIT-Medium.otf');
+    src: url(${SUIT_M});
   }
   @font-face {
     font-family: 'SUIT-B';
-    src: url('/font/SUIT-Bold.otf');
+    src: url(${SUIT_B});
   }
   @font-face {
     font-family: 'SUIT-SB';
-    src: url('/font/SUIT-SemiBold.otf');
+    src: url(${SUIT_SB});
   }
   * {
     box-sizing: border-box;
