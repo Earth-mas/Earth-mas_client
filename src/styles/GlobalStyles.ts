@@ -22,7 +22,6 @@ export const globalStyles = css`
     padding: 0;
     font-family: 'SUIT-M';
   }
-
   a {
     color: inherit;
     text-decoration: none;
