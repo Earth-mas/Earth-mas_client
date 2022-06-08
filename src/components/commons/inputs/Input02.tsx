@@ -33,7 +33,7 @@ const Input = styled.input`
 `;
 
 interface IInput02Props {
-  content?: string;
+  placeholder?: string;
 }
 
 export default function Input02(props: IInput02Props) {
@@ -42,7 +42,7 @@ export default function Input02(props: IInput02Props) {
       <span>
         <SearchIcon />
       </span>
-      <Input type="text" placeholder={props.content} />
+      <Input type="text" placeholder={props.placeholder} />
     </Search>
   );
 }
