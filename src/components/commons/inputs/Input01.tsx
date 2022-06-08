@@ -23,7 +23,7 @@ const Input = styled.input`
 `;
 
 interface IInput01Props {
-  content?: string;
+  content: string;
   type: string;
 }
 
