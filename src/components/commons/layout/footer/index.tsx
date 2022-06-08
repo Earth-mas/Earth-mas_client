@@ -13,7 +13,7 @@ export default function Footer() {
           <LogoWhite className="logoImg" />
           <ul className="footerMenu">
             <li>
-              <Link to="/marker">마켓</Link>
+              <Link to="/market">마켓</Link>
             </li>
             <li>
               <Link to="/activity">모임활동</Link>
@@ -50,9 +50,8 @@ const FooterWrapper = styled.footer`
 `;
 
 const ContentsWrapper = styled.div`
-  max-width: 1024px;
-  width: 100%;
-  padding: 80px;
+  width: 1024px;
+  padding: 80px 0;
   margin: 0 auto;
   color: white;
 
