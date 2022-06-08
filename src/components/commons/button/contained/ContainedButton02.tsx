@@ -18,7 +18,7 @@ const Button = styled.button`
 
 interface IContainedButton02Props {
   content: string;
-  color: string;
+  color: 'main' | 'sub';
   onClick?: () => void;
   type?: 'submit' | 'button' | 'reset' | undefined;
 }

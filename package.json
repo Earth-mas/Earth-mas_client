@@ -2,6 +2,7 @@
   "name": "earth-mas",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://earth-mas.shop/",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -21,6 +22,7 @@
     "react": "^18.1.0",
     "react-daum-postcode": "^3.0.3",
     "react-dom": "^18.1.0",
+    "react-quill": "^1.3.5",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",

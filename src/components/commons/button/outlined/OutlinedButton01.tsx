@@ -29,7 +29,7 @@ const Button = styled.button`
 
 interface IOutlinedButton01Props {
   content: string;
-  color: string;
+  color: 'main' | 'sub';
   onClick?: () => void;
   type?: 'submit' | 'button' | 'reset' | undefined;
 }
