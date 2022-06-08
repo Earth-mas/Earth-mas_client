@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { ChangeEvent } from 'react';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
@@ -23,10 +24,23 @@ const Input = styled.input`
 `;
 
 interface IInput01Props {
-  content?: string;
+  placeholder?: string;
   type: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  autoComplete?: string;
+  id?: string;
 }
 
 export default function Input01(props: IInput01Props) {
-  return <Input type={props.type} placeholder={props.content} />;
+  return (
+    <Input
+      type={props.type}
+      placeholder={props.placeholder}
+      onChange={props.onChange}
+      disabled={props.disabled}
+      autoComplete={props.autoComplete}
+      id={props.id}
+    />
+  );
 }

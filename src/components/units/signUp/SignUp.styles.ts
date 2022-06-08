@@ -7,21 +7,36 @@ export const SignUpWrapper = styled.main`
   flex-direction: column;
   width: 500px;
   margin: 0 auto;
+  padding-bottom: 100px;
 
   h1 {
+    margin-top: 70px;
     font-size: ${FontSize.LARGE_T};
     color: ${Colors.MAIN};
     padding-bottom: 40px;
   }
 
+  .socialSignUp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: ${FontSize.MEDIUM_C};
+
+    p {
+      padding-bottom: 15px;
+    }
+
+    section {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 130px;
+      padding: 25px 0 40px;
+    }
+  }
+
   input {
-    width: 100%;
-    border: 1px solid ${Colors.B40};
-    height: 50px;
-    font-size: ${FontSize.SMALL};
-    padding: 0 20px;
     margin-bottom: 15px;
-    border-radius: 8px;
   }
 
   .defaultButton {
@@ -34,6 +49,10 @@ export const SignUpWrapper = styled.main`
     border-radius: 8px;
     margin-bottom: 15px;
     font-size: ${FontSize.MEDIUM_C};
+
+    &:hover {
+      background-color: rgba(1, 92, 52, 0.05);
+    }
   }
 
   .signUpButton {

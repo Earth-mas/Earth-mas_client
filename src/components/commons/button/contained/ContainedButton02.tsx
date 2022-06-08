@@ -19,8 +19,14 @@ const Button = styled.button`
 interface IContainedButton02Props {
   content: string;
   color: string;
+  onClick?: () => void;
+  type?: 'submit' | 'button' | 'reset' | undefined;
 }
 
 export default function ContainedButton02(props: IContainedButton02Props) {
-  return <Button color={props.color}>{props.content}</Button>;
+  return (
+    <Button color={props.color} onClick={props.onClick} type={props.type}>
+      {props.content}
+    </Button>
+  );
 }
