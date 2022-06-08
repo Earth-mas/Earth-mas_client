@@ -50,6 +50,8 @@ export default function Slide(props: {
 `; */
 const SliderContainer = styled(Slider)`
   width: 100vw;
+  overflow-x: hidden;
+
   img {
     min-width: 1024px;
     width: 100%;
