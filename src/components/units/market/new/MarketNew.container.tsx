@@ -40,7 +40,7 @@ export default function MarketNew() {
 
       <Upload01 page="user" />
       <Blank height={25} />
-      <QuillEditor page="market" />
+      <QuillEditor page={0} />
       <Blank height={60} />
       <ContainedButton01 content="상품 등록" color="main" />
     </Wrap>

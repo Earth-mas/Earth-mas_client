@@ -2,7 +2,7 @@ import { ReactComponent as ImageIcon } from 'assets/svgs/icons/image-icon.svg';
 import { ReactComponent as XbuttonIcon } from 'assets/svgs/icons/xbutton-icon.svg';
 
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Colors } from 'styles/Colors';
 import * as S from './Upload01.styles';
 
@@ -37,6 +37,10 @@ export default function Upload01(props: IUpload01Props) {
     temp.splice(index, 1);
     setUrls(temp);
   };
+
+  useEffect(() => {
+    console.log(urls);
+  }, []);
 
   return (
     <S.Wrap>

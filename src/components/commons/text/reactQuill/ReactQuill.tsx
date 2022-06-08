@@ -2,25 +2,13 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
+import { PLACEHOLDER } from './ReactQuillData';
 
 interface IQuillEditorProps {
-  page: 'market' | 'activity' | 'support';
+  page: number;
 }
 
-// const PLACEHOLDER = [
-//   { page: 'market', contents: '마켓입니다' },
-//   { page: 'activity', contents: '액티비티입니다' },
-//   { page: 'support', contents: '후원입니다' },
-// ];
-
 export default function QuillEditor(props: IQuillEditorProps) {
-  // PLACEHOLDER.map((el, index) => {
-  //   if (el.page === props.page) {
-  //     console.log(PLACEHOLDER[index].contents);
-  console.log(props.page);
-  //   }
-  // });
-
   // 사용하고 싶은 옵션, 나열 되었으면 하는 순서대로 나열
   const toolbarOptions = [
     [{ header: [1, 2, 3, false] }],
@@ -65,6 +53,8 @@ export default function QuillEditor(props: IQuillEditorProps) {
       <ReactQuill
         theme="snow"
         modules={modules}
+        placeholder={PLACEHOLDER[props.page]}
+
         //  formats={formats}
       />
     </QuillWrap>
