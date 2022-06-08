@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 
 interface IPropsDiv {
-  width: number;
+  width?: number;
   height: number;
 }
 
 const Div = styled.div`
-  width: ${(props: IPropsDiv) => `${props.width}px`};
+  width: ${(props: IPropsDiv) => (props.width ? `${props.width}px` : '100%')};
   height: ${(props: IPropsDiv) => `${props.height}px`};
 `;
 
