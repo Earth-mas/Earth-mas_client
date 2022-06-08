@@ -1,63 +1,73 @@
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import axios from 'axios';
-import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
-import { InputWrapper, SignUpWrapper } from './SignUp.styles';
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
+
 import Input01 from 'components/commons/inputs/Input01';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 
+import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
+import { InputWrapper, SignUpWrapper } from './SignUp.styles';
+
 export default function SignUp() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [addressnumber, setAddressnumber] = useState('');
-  const [address1, setAddress1] = useState('');
-  const [address2, setAddress2] = useState('');
+  const [inputs, setInputs] = useState({
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+    addressnumber: '',
+    address1: '',
+    address2: '',
+  });
 
-  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+  const onChangeInputs = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputs({
+      ...inputs,
+      [e.target.id]: e.target.value, //대괄호 안에 있는걸로 객체 key를 만듦
+    });
   };
 
-  const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-  const onChangePhone = (e: ChangeEvent<HTMLInputElement>) => {
-    setPhone(e.target.value);
-  };
-  const onChangeAddressnumber = (e: ChangeEvent<HTMLInputElement>) => {
-    setAddressnumber(e.target.value);
-  };
-  const onChangeAddress1 = (e: ChangeEvent<HTMLInputElement>) => {
-    setAddress1(e.target.value);
-  };
-  const onChangeAddress2 = (e: ChangeEvent<HTMLInputElement>) => {
-    setAddress2(e.target.value);
-  };
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/;
+  const passwordRegex = /^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{8,}$/;
+  const phoneRegex = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+  const nameRegex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/;
+
   const onClickSignUp = (
     e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault();
-    const data = {
-      name,
-      email,
-      password,
-      phone,
-      addressnumber,
-      address1,
-      address2,
-    };
     axios
-      .post('http://34.64.224.198:3000/user', data)
-      .then(res => console.log(res));
+      .post('http://34.64.224.198:3000/user', inputs)
+      .then(res => console.log(res))
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  // 지혜에게시작
+
+  const [file, setFile] = useState();
+  const onChangeFile = (e: any) => {
+    setFile(e.target.files?.[0]);
+  };
+
+  const onClickUpload = (
+    e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
+  ) => {
+    e.preventDefault();
+    axios
+      .post('user/upload', file)
+      .then(res => console.log(res))
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
     <SignUpWrapper>
       <h1>회원가입</h1>
       <div className="socialSignUp">
+        <input type="file" onChange={onChangeFile} />
+        <button onClick={onClickUpload}>이미지업로드</button>
         <p>SNS계정으로 간편하게 가입하기</p>
         <section>
           <button>
@@ -69,27 +79,38 @@ export default function SignUp() {
         </section>
       </div>
       <form onSubmit={onClickSignUp}>
-        <Input01 type="text" onChange={onChangeEmail} placeholder="이메일" />
+        <Input01
+          type="text"
+          onChange={onChangeInputs}
+          placeholder="이메일"
+          id="email"
+        />
         <button type="button" className="defaultButton">
           중복 확인하기
         </button>
         <Input01
+          id="password"
           type="password"
-          onChange={onChangePassword}
+          onChange={onChangeInputs}
           placeholder="비밀번호"
           autoComplete="false"
         />
         <Input01
           type="password"
-          onChange={onChangePassword}
           placeholder="비밀번호 확인"
           autoComplete="false"
         />
-        <Input01 type="text" onChange={onChangeName} placeholder="이름" />
+        <Input01
+          id="name"
+          type="text"
+          onChange={onChangeInputs}
+          placeholder="이름"
+        />
         <InputWrapper>
           <Input01
+            id="phone"
             type="tel"
-            onChange={onChangePhone}
+            onChange={onChangeInputs}
             placeholder="010-0000-0000"
           />
           <button
@@ -100,15 +121,12 @@ export default function SignUp() {
             인증번호 발송
           </button>
         </InputWrapper>
-        <Input01
-          type="text"
-          onChange={onChangePhone}
-          placeholder="인증번호를 입력해주세요."
-        />
+        <Input01 type="text" placeholder="인증번호를 입력해주세요." />
         <InputWrapper>
           <Input01
             type="text"
-            onChange={onChangeAddressnumber}
+            id="addressnumber"
+            onChange={onChangeInputs}
             placeholder="우편번호 검색"
           />
           <button
@@ -121,13 +139,15 @@ export default function SignUp() {
         </InputWrapper>
         <Input01
           type="text"
-          onChange={onChangeAddress1}
+          id="address1"
+          onChange={onChangeInputs}
           placeholder="우편번호를 검색해주세요."
           disabled
         />
         <Input01
           type="text"
-          onChange={onChangeAddress2}
+          id="address2"
+          onChange={onChangeInputs}
           placeholder="상세주소를 입력해주세요."
         />
         <ContainedButton01
