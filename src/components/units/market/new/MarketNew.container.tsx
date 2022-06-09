@@ -12,12 +12,20 @@ export default function MarketNew() {
     <Wrap>
       <Title01 content="마켓 상품 등록" />
 
-      <Input01 type="text" placeholder="상품의 이름을 입력해주세요" />
+      <Input01
+        id="title"
+        type="text"
+        placeholder="상품의 이름을 입력해주세요"
+      />
       <Blank height={25} />
 
       <ColumnWrap>
         <Dropdown01 page="market" />
-        <Input01 type="number" placeholder="판매 가능 수량을 입력해주세요" />
+        <Input01
+          id=""
+          type="number"
+          placeholder="판매 가능 수량을 입력해주세요"
+        />
       </ColumnWrap>
       <Blank height={25} />
 

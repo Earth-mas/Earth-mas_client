@@ -1,5 +1,6 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { PLACEHOLDER } from './ReactQuillData';
@@ -54,7 +55,6 @@ export default function QuillEditor(props: IQuillEditorProps) {
         theme="snow"
         modules={modules}
         placeholder={PLACEHOLDER[props.page]}
-
         //  formats={formats}
       />
     </QuillWrap>
@@ -70,6 +70,10 @@ const QuillWrap = styled.div`
     height: 500px;
     overflow-y: scroll;
     border: 1px solid ${Colors.B60};
+    border-bottom: 0px;
     border-radius: 0px 0px 8px 8px;
+  }
+  .ql-editor {
+    padding: 20px;
   }
 `;
