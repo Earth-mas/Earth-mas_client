@@ -1,4 +1,5 @@
 import { ImageIcon, XbuttonIcon } from 'assets/svgs';
+
 import axios from 'axios';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Colors } from 'styles/Colors';
@@ -36,6 +37,7 @@ export default function Upload01Copy(props: IUpload01Props) {
   };
 
   const onClickDelete = (index: number) => () => {
+    alert(index);
     const temp = [...urls];
     temp.splice(index, 1);
     setUrls(temp);
