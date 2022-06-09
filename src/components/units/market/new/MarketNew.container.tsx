@@ -8,49 +8,60 @@ import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
 
 export default function MarketNew() {
+  const onClickSubmit = () => {
+    alert('상품 등록');
+  };
+
   return (
     <Wrap>
-      <Title01 content="마켓 상품 등록" />
-
-      <Input01
-        id="title"
-        type="text"
-        placeholder="상품의 이름을 입력해주세요"
-      />
-      <Blank height={25} />
-
-      <ColumnWrap>
-        <Dropdown01 page="market" />
+      <Title01 content="마켓 상품 등록" margin={35} />
+      <form>
         <Input01
-          id=""
-          type="number"
-          placeholder="판매 가능 수량을 입력해주세요"
+          id="title"
+          type="text"
+          placeholder="상품의 이름을 입력해주세요"
+          margin={25}
         />
-      </ColumnWrap>
-      <Blank height={25} />
 
-      <ColumnWrap>
-        <Input01
-          type="number"
-          placeholder="희망하는 정상 가격을 입력해주세요"
-        />
-        <Input01
-          type="number"
-          placeholder="(선택) 희망하는 할인 가격을 입력해주세요"
-        />
-      </ColumnWrap>
-      <Blank height={25} />
-      <Input01
-        type="text"
-        placeholder="상품에 대한 짧은 설명과 대표 이미지를 입력해주세요"
-      />
-      <Blank height={25} />
+        <ColumnWrap>
+          <Dropdown01 page={0} />
+          <Input01
+            id=""
+            type="number"
+            placeholder="판매 가능 수량을 입력해주세요"
+            margin={25}
+          />
+        </ColumnWrap>
 
-      <Upload01 page="user" />
-      <Blank height={25} />
-      <QuillEditor page={0} />
-      <Blank height={60} />
-      <ContainedButton01 content="상품 등록" color="main" />
+        <ColumnWrap>
+          <Input01
+            type="number"
+            placeholder="희망하는 정상 가격을 입력해주세요"
+            margin={25}
+          />
+          <Input01
+            type="number"
+            placeholder="(선택) 희망하는 할인 가격을 입력해주세요"
+          />
+        </ColumnWrap>
+
+        <Input01
+          type="text"
+          placeholder="상품에 대한 짧은 설명과 대표 이미지를 입력해주세요"
+          margin={25}
+        />
+
+        <Upload01 page="market" />
+        <Blank height={25} />
+        <QuillEditor page={0} />
+        <Blank height={60} />
+        <ContainedButton01
+          content="상품 등록"
+          color="main"
+          type="submit"
+          onClick={onClickSubmit}
+        />
+      </form>
     </Wrap>
   );
 }
@@ -62,8 +73,6 @@ const Wrap = styled.div`
 `;
 
 const ColumnWrap = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  place-items: center;
+  display: flex;
   grid-gap: 25px;
 `;

@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { ReactComponent as DropdownIcon } from 'assets/svgs/icons/dropdown-icon.svg';
-import * as S from './Dropdown01.styles';
+import * as S from './Dropdown02.styles';
 
 const CATEGORY = [
-  ['키트', '주방', '욕실', '데일리'],
-  ['제로웨이스트', '플로깅', '플로킹', '라이딩'],
+  ['인기순', '최신순'],
+  ['최신순', '종료마감순'],
 ];
 
-interface IDropdown01Props {
-  page: 0 | 1; // market | activity
+interface IDropdown02Props {
+  page: 0 | 1; // market | activity,support
 }
 
-export default function Dropdown01(props: IDropdown01Props) {
+export default function Dropdown02(props: IDropdown02Props) {
   const [isActive, setIsActive] = useState(false);
-  const [isSelected, setIsSelected] = useState('');
+  const [isSelected, setIsSelected] = useState(CATEGORY[props.page][0]);
 
   const onClickCategory = () => {
     setIsActive(prev => !prev);
@@ -24,14 +24,13 @@ export default function Dropdown01(props: IDropdown01Props) {
     onClickCategory();
     setIsSelected(el);
   };
+
   return (
     <S.Dropdown
       onClick={onClickCategory}
       className={isActive ? 'activated' : ''}
     >
-      <span className={isSelected ? 'selected' : ''}>
-        {isSelected || '카테고리 선택'}
-      </span>
+      <span className="selected">{isSelected}</span>
       <DropdownIcon />
       {isActive && (
         <S.Option>

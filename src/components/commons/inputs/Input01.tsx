@@ -12,6 +12,8 @@ const Input = styled.input`
   color: ${Colors.B80};
   font-family: ${FontFamily.MEDIUM};
   font-size: ${FontSize.MEDIUM_C};
+  margin-bottom: ${(props: IInput01Props) =>
+    props.margin ? `${props.margin}px` : '0px'};
 
   ::placeholder {
     color: ${Colors.B60};
@@ -30,6 +32,7 @@ interface IInput01Props {
   disabled?: boolean;
   autoComplete?: string;
   id?: string;
+  margin?: number;
 }
 
 export default function Input01(props: IInput01Props) {
@@ -41,6 +44,7 @@ export default function Input01(props: IInput01Props) {
       disabled={props.disabled}
       autoComplete={props.autoComplete}
       id={props.id}
+      margin={props.margin}
     />
   );
 }

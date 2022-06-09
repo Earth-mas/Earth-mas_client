@@ -1,21 +1,30 @@
-import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
-import OutlinedButton01 from 'components/commons/button/outlined/OutlinedButton01';
-import Input01 from 'components/commons/inputs/Input01';
-import Input02 from 'components/commons/inputs/Input02';
+import styled from '@emotion/styled';
+import Slide from 'components/commons/slide';
+import MarketList from 'components/units/market/list/MarketList.container';
+import banner1 from '../../assets/images/marketBanner/banner1.jpeg';
+import banner2 from '../../assets/images/marketBanner/banner2.jpeg';
+
+import banner3 from '../../assets/images/marketBanner/banner3.jpeg';
 
 export default function MarketPage() {
   return (
-    <div>
-      Market
-      <ContainedButton01 content="상품 등록" color="main" />
-      <ContainedButton01 content="상품 등록" color="sub" />
-      <OutlinedButton01 content="상품 수정" color="main" />
-      <OutlinedButton01 content="상품 수정" color="sub" />
-      <Input01 placeholder="인풋입니다" type="text" />
-      <Input02 placeholder="검색어를 입력해주세요" />
-      <ContainedButton02 content="더보기" color="main" />
-      <ContainedButton02 content="더보기" color="sub" />
-    </div>
+    <Wrap>
+      <Slide banner1={banner1} banner2={banner2} banner3={banner3} />
+      <main className="main-contents">
+        <MarketList />
+      </main>
+    </Wrap>
   );
 }
+
+const Wrap = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .main-contents {
+    max-width: 1024px;
+    width: 100%;
+    padding: 50px 0px 100px 0px;
+  }
+`;
