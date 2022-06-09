@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 
 import Input01 from 'components/commons/inputs/Input01';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
@@ -7,7 +7,14 @@ import ContainedButton01 from 'components/commons/button/contained/ContainedButt
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 import { ErrorMsg, InputWrapper, Label, SignUpWrapper } from './SignUp.styles';
 import Blank from 'components/commons/blank/Blank';
+import PostCode from 'components/commons/daumpostcode';
+import { useNavigate } from 'react-router-dom';
+import Upload01 from 'components/commons/upload/01/Upload01';
 
+export interface IPostCodeData {
+  zonecode: string;
+  address: string;
+}
 export default function SignUp() {
   const [inputs, setInputs] = useState({
     name: '',
@@ -20,10 +27,12 @@ export default function SignUp() {
     address2: '',
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const emailRegex =
-    /^[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/;
-  const passwordRegex = /^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{8,}$/;
-  const phoneRegex = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  const passwordRegex = /^[A-Za-z0-9]{6,12}$/;
+  // const phoneRegex = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
   const nameRegex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/;
 
   const [emailErrMsg, setEmailErrMsg] = useState<string | null>('');
@@ -31,7 +40,15 @@ export default function SignUp() {
   const [passwordErrMsg2, setPasswordErrMsg2] = useState<string | null>('');
   const [nameErrMsg, setNameErrMsg] = useState<string | null>('');
 
-  const [checked, setChecked] = useState(false);
+  const navigate = useNavigate();
+
+  const handleComplete = (data: IPostCodeData) => {
+    setInputs({
+      ...inputs,
+      addressnumber: data.zonecode,
+      address1: data.address,
+    });
+  };
 
   const onChangeInputs = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.id.length > 0) {
@@ -43,7 +60,9 @@ export default function SignUp() {
           break;
         case 'password':
           if (!passwordRegex.test(e.target.value)) {
-            setPasswordErrMsg('비밀번호는 8자 이상으로 설정해 주세요.');
+            setPasswordErrMsg(
+              '비밀번호는 문자와 숫자 포함 6자 이상 12자 이내로 설정해주세요.',
+            );
           } else setPasswordErrMsg(null);
           break;
         case 'password2':
@@ -78,51 +97,23 @@ export default function SignUp() {
     }
     axios
       .post('http://34.64.224.198:3000/user', inputs)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res);
+        alert('회원가입이 완료되었습니다.');
+        navigate('/');
+      })
       .catch(error => {
         console.log(error);
       });
   };
 
-  // const config = {
-  //   headers: {
-  //     'content-type': 'multipart/form-data',
-  //   },
-  // };
-
-  // const [file, setFile] = useState();
-  // const formData = new FormData();
-
-  // const onChangeFile = (e: any) => {
-  //   // setFile(e.target.files[0]);
-  //   const uploadFile = e.target.files[0];
-  //   formData.append('files', uploadFile);
-  // };
-
-  // console.log(file)
-
-  // const onClickUpload = (
-  //   e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
-  // ) => {
-  //   e.preventDefault();
-  //   axios
-  //     .post('/user/upload', formData)
-  //     .then(res => console.log(res))
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // };
-
-  console.log(checked);
-
   return (
     <SignUpWrapper>
+      <br /> <br /> <br />
+      <Upload01 page="market" />
+      <br /> <br /> <br />
       <h1>회원가입</h1>
       <div className="socialSignUp">
-        {/* <input type="file" onChange={onChangeFile} />
-        <button onClick={onClickUpload}>이미지업로드</button>
-        <br />
-        <br /> */}
         <p>SNS계정으로 간편하게 가입하기</p>
         <section>
           <button>
@@ -191,21 +182,28 @@ export default function SignUp() {
           <Input01
             type="text"
             id="addressnumber"
-            onChange={onChangeInputs}
             placeholder="우편번호 검색"
+            value={inputs.addressnumber}
+            disabled
           />
           <button
             type="button"
             className="defaultButton "
             style={{ width: 250, marginLeft: 10 }}
+            onClick={() => setIsModalOpen(prev => !prev)}
           >
             우편번호 검색
           </button>
         </InputWrapper>
+        {isModalOpen && (
+          <div>
+            <PostCode handleComplete={handleComplete} />
+          </div>
+        )}
         <Input01
           type="text"
           id="address1"
-          onChange={onChangeInputs}
+          value={inputs.address1}
           placeholder="우편번호를 검색해주세요."
           disabled
         />
