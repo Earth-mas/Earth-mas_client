@@ -67,7 +67,21 @@ export const SignUpWrapper = styled.main`
   }
 `;
 
+export const Label = styled.div`
+  margin-bottom: 10px;
+  color: ${Colors.MAIN};
+`;
+
 export const InputWrapper = styled.div`
   display: flex;
   width: 500px;
+`;
+
+export const ErrorMsg = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 15px;
+  font-size: ${FontSize.SMALL};
+  text-align: center;
+  color: ${Colors.SUB1};
 `;
