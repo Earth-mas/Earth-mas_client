@@ -1,7 +1,7 @@
 import axios from 'axios';
 import store from 'storejs';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
-import { LoginWrapper } from './LoginContents.styles';
+import { LoginWrapper, ModalBackGround } from './LoginContents.styles';
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ interface IProps {
 const LoginContents = ({ handleClose }: IProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  console.log(document.cookie);
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -30,11 +30,12 @@ const LoginContents = ({ handleClose }: IProps) => {
       password,
     };
     axios
-      .post('http://34.64.224.198:3000/auth/login', data, {
+      .post('/auth/login', data, {
         withCredentials: true,
       })
       .then(res => {
         console.log(res);
+        console.log(document.cookie);
         const accessToken = res.data;
         store.set('accessToken', accessToken);
         // axios.defaults.headers.common[
@@ -52,48 +53,54 @@ const LoginContents = ({ handleClose }: IProps) => {
   };
 
   return (
-    <LoginWrapper>
-      <button type="button" className="xButton" onClick={handleClose}>
-        x
-      </button>
-      <h1>로그인</h1>
-      <form onSubmit={onClickLogin}>
-        <input type="text" placeholder="이메일 주소" onChange={onChangeEmail} />
-        <input
-          type="password"
-          placeholder="비밀번호"
-          onChange={onChangePassword}
-          autoComplete="off"
-        />
-        <label>
-          <input type="checkbox" className="checkBox" />
-          로그인 유지하기
-        </label>
-        <button type="submit" className="loginButton" onClick={onClickLogin}>
-          이메일로 로그인하기
+    <ModalBackGround>
+      <LoginWrapper>
+        <button type="button" className="xButton" onClick={handleClose}>
+          x
         </button>
-      </form>
-      <div className="socialLogin">
-        <p>또는</p>
-        <p>SNS계정으로 간편하게 로그인하기</p>
-        <section>
-          <button>
-            <GoogleIcon />
+        <h1>로그인</h1>
+        <form onSubmit={onClickLogin}>
+          <input
+            type="text"
+            placeholder="이메일 주소"
+            onChange={onChangeEmail}
+          />
+          <input
+            type="password"
+            placeholder="비밀번호"
+            onChange={onChangePassword}
+            autoComplete="off"
+          />
+          <label>
+            <input type="checkbox" className="checkBox" />
+            로그인 유지하기
+          </label>
+          <button type="submit" className="loginButton" onClick={onClickLogin}>
+            이메일로 로그인하기
           </button>
+        </form>
+        <div className="socialLogin">
+          <p>또는</p>
+          <p>SNS계정으로 간편하게 로그인하기</p>
+          <section>
+            <button>
+              <GoogleIcon />
+            </button>
+            <button>
+              <KaKaoIcon />
+            </button>
+          </section>
+        </div>
+        <p className="signUp">
+          회원이 아니신가요?
           <button>
-            <KaKaoIcon />
+            <Link to="/signup">
+              <strong>지금 가입하세요.</strong>
+            </Link>
           </button>
-        </section>
-      </div>
-      <p className="signUp">
-        회원이 아니신가요?
-        <button>
-          <Link to="/signup">
-            <strong>지금 가입하세요.</strong>
-          </Link>
-        </button>
-      </p>
-    </LoginWrapper>
+        </p>
+      </LoginWrapper>
+    </ModalBackGround>
   );
 };
 

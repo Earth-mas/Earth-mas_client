@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react';
-import styled from '@emotion/styled';
+import { useState } from 'react';
 
 // import useOnClickOutside from 'hooks/worker/useOnClickOutside'
 
