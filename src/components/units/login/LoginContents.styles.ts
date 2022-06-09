@@ -2,18 +2,27 @@ import styled from '@emotion/styled';
 import { Colors } from '../../../styles/Colors';
 import { FontSize } from '../../../styles/FontStyles';
 
-export const LoginWrapper = styled.main`
-  position: absolute;
-  top: 50%;
-  right: 50%;
+export const ModalBackGround = styled.div`
   display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(3px) brightness(40%);
+`;
+
+export const LoginWrapper = styled.main`
+  display: flex;
+  position: absolute;
   flex-direction: column;
-  transform: translate(50%, -50%);
   width: 500px;
   height: 645px;
-  border: 1px solid ${Colors.B20};
+  border: 1px solid ${Colors.B40};
   overflow: hidden;
-  box-shadow: ${Colors.B20} 0 6px 16px;
+  box-shadow: ${Colors.B80} 0 6px 16px;
   background-color: white;
   border-radius: 20px;
   padding: 55px 80px;
