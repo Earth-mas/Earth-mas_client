@@ -19,7 +19,7 @@ const Button = styled.button`
 
 interface IContainedButton01Props {
   content: string;
-  color: string;
+  color: 'main' | 'sub';
   onClick?: (
     e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
   ) => void;
