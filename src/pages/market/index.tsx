@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
 import Slide from 'components/commons/slide';
 import MarketList from 'components/units/market/list/MarketList.container';
-import banner1 from '../../assets/images/marketBanner/banner1.jpeg';
-import banner2 from '../../assets/images/marketBanner/banner2.jpeg';
-
-import banner3 from '../../assets/images/marketBanner/banner3.jpeg';
+import banner1 from '../../assets/images/market/banner/banner1.jpeg';
+import banner2 from '../../assets/images/market/banner/banner2.jpeg';
+import banner3 from '../../assets/images/market/banner/banner3.jpeg';
 
 export default function MarketPage() {
   return (

@@ -14,7 +14,7 @@ export default function MarketNew() {
 
   return (
     <Wrap>
-      <Title01 content="마켓 상품 등록" margin={35} />
+      <Title01 size="C" content="마켓 상품 등록" margin={35} />
       <form>
         <Input01
           id="title"
