@@ -5,18 +5,16 @@ import Login from 'components/units/login';
 import { Link } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-import banner1 from '../assets/images/mainBanner/banner1.jpg';
-import banner2 from '../assets/images/mainBanner/banner2.jpg';
-import banner3 from '../assets/images/mainBanner/banner3.jpg';
-import mainImg1 from '../assets/images/mainImg/main1.jpg';
-import mainImg2 from '../assets/images/mainImg/main2.jpg';
-import mainImg3 from '../assets/images/mainImg/main3.jpg';
 
 export default function HomePage() {
   return (
     <>
       <Login />
-      <Slide banner1={banner1} banner2={banner2} banner3={banner3} />
+      <Slide
+        banner1="/images/mainBanner/banner1.jpg"
+        banner2="/images/mainBanner/banner2.jpg"
+        banner3="/images/mainBanner/banner3.jpg"
+      />
       <Wrapper>
         <Section>
           <div className="textBox">
@@ -31,12 +29,12 @@ export default function HomePage() {
             </div>
           </div>
           <div className="imgBox">
-            <img src={mainImg1} />
+            <img src="images/mainImg/main1.jpg" />
           </div>
         </Section>
         <Section>
           <div className="imgBox">
-            <img src={mainImg2} />
+            <img src="images/mainImg/main2.jpg" />
           </div>
           <div className="textBox">
             <p className="title">titletitletitletitle</p>
@@ -64,7 +62,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="imgBox">
-            <img src={mainImg3} />
+            <img src="images/mainImg/main3.jpg" />
           </div>
         </Section>
       </Wrapper>

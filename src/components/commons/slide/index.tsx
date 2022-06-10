@@ -53,9 +53,12 @@ const SliderContainer = styled(Slider)`
   width: 100vw;
   overflow-x: hidden;
 
-  img {
-    min-width: 1024px;
+  > div {
     width: 100%;
+    img {
+      min-width: 1024px;
+      width: 100%;
+    }
   }
 
   .slick-dots {
