@@ -15,7 +15,6 @@ export default function DatePicker01() {
   return (
     <Wrapper>
       <DatePicker
-        selected={startDate}
         minDate={new Date()}
         dateFormat="yyyy/MM/dd"
         // selectsRange={true}
@@ -41,24 +40,23 @@ const Wrapper = styled.div`
         align-items: center;
         margin-bottom: 25px;
 
-        input {
-          border-radius: 8px;
-          border: 1px solid ${Colors.B60};
-          padding: 0px 20px;
-          width: 100%;
-          height: 48px;
-          font-family: ${FontFamily.MEDIUM};
-          font-size: ${FontSize.MEDIUM_C};
-          color: ${Colors.B80};
+      input {
+        border-radius: 8px;
+        border: 1px solid ${Colors.B60};
+        padding: 0px 20px;
+        width: 100%;
+        height: 48px;
+        font-family: ${FontFamily.MEDIUM};
+        font-size: ${FontSize.MEDIUM_C};
+        color: ${Colors.B80};
 
-          &::placeholder {
-            color: ${Colors.B60};
-          }
-          &:focus {
-            border: 1px solid ${Colors.SUB1};
-            border-radius: 8px;
-            color: ${Colors.B100};
-          }
+        &::placeholder {
+          color: ${Colors.B60};
+        }
+        &:focus {
+          border: 1px solid ${Colors.SUB1};
+          border-radius: 8px;
+          color: ${Colors.B100};
         }
       }
     }
