@@ -25,7 +25,7 @@ export default function ActivityNew() {
 
   return (
     <Wrap>
-      <Title01 content="액티비티 등록" margin={35} />
+      <Title01 content="액티비티 등록" margin={35} size="C" />
       <form>
         <Input01
           id="title"

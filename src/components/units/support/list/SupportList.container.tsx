@@ -1,3 +1,5 @@
-export default function Support() {
-  return <div>Support</div>
+import SupportListUI from './SupportList.presenter';
+
+export default function SupportList() {
+  return <SupportListUI />;
 }
