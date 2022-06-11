@@ -30,33 +30,35 @@ export default function DatePicker01() {
 }
 
 const Wrapper = styled.div`
-  .react-datepicker {
-    border-top-right-radius: 0;
-    border: 1px solid ${Colors.B60};
+  .react-datepicker-wrapper {
+    width: 100%;
+    .react-datepicker {
+      border-top-right-radius: 0;
 
-    &__input-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid ${Colors.B80};
-      border-radius: 8px;
-      margin-bottom: 25px;
+      &__input-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
 
-      input {
-        padding: 0px 20px;
-        width: 100%;
-        height: 48px;
-        font-family: ${FontFamily.MEDIUM};
-        font-size: ${FontSize.MEDIUM_C};
-        color: ${Colors.B80};
-
-        &::placeholder {
-          color: ${Colors.B60};
-        }
-        &:focus {
-          border: 1px solid ${Colors.SUB1};
+        input {
           border-radius: 8px;
-          color: ${Colors.B100};
+          border: 1px solid ${Colors.B60};
+          padding: 0px 20px;
+          width: 100%;
+          height: 48px;
+          font-family: ${FontFamily.MEDIUM};
+          font-size: ${FontSize.MEDIUM_C};
+          color: ${Colors.B80};
+
+          &::placeholder {
+            color: ${Colors.B60};
+          }
+          &:focus {
+            border: 1px solid ${Colors.SUB1};
+            border-radius: 8px;
+            color: ${Colors.B100};
+          }
         }
       }
     }
