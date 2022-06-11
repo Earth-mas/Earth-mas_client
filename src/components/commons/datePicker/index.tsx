@@ -15,7 +15,6 @@ export default function DatePicker01() {
   return (
     <Wrapper>
       <DatePicker
-        selected={startDate}
         minDate={new Date()}
         dateFormat="yyyy/MM/dd"
         // selectsRange={true}
