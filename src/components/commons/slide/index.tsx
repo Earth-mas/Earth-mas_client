@@ -1,4 +1,3 @@
-// import { Component } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -24,42 +23,46 @@ export default function Slide(props: {
   return (
     <>
       <SliderContainer {...settings}>
-        <div>
-          <img src={props.banner1} />
-        </div>
-        <div>
-          <img src={props.banner2} />
-        </div>
-        <div>
-          <img src={props.banner3} />
-        </div>
+        {props.banner1 === undefined ? (
+          ''
+        ) : (
+          <div>
+            <img src={props.banner1} />
+          </div>
+        )}
+        {props.banner2 === undefined ? (
+          ''
+        ) : (
+          <div>
+            <img src={props.banner2} />
+          </div>
+        )}
+        {props.banner3 === undefined ? (
+          ''
+        ) : (
+          <div>
+            <img src={props.banner3} />
+          </div>
+        )}
       </SliderContainer>
-      {/* <ArrowContainer>
-          <NextArrow className="slick-next" />
-          <PrevArrow className="slick-prev" />
-        </ArrowContainer> */}
     </>
   );
 }
 
-/* const Wrapper = styled.div`
-  width: 100vw;
-  position: relative;
-  top: 0;
-  left: 0;
-`; */
 const SliderContainer = styled(Slider)`
   width: 100vw;
   overflow-x: hidden;
 
-  img {
-    min-width: 1024px;
+  > div {
     width: 100%;
+    img {
+      min-width: 1024px;
+      width: 100%;
+    }
   }
 
   .slick-dots {
     width: 1024px;
-    /* padding: 0 50px; */
     text-align: left;
     margin: 0 auto;
     left: 50%;
@@ -93,87 +96,4 @@ const SliderContainer = styled(Slider)`
       }
     }
   }
-  /* 
-  .slick-prev,
-  .slick-next {
-    z-index: 1;
-    top: unset;
-    width: 40px;
-    height: 40px;
-    border: 3px solid ${Colors.BW};
-    border-radius: 50%;
-    bottom: 30px;
-    ::before {
-      font-size: 2.5rem;
-      opacity: 1;
-      position: relative;
-    }
-  }
-  .slick-prev {
-    left: unset;
-    right: 20%;
-    transform: translate(-50%, 0);
-    &::before {
-      content: '<';
-      top: -5px;
-      left: 3px;
-    }
-  }
-  .slick-next {
-    right: 16%;
-    transform: translate(-50%, 0);
-    &::before {
-      content: '>';
-      top: -5px;
-      left: 7px;
-    }
-  }
-  */
 `;
-/* const ArrowContainer = styled.div`
-  z-index: 99;
-  position: absolute;
-  left: 50%;
-  bottom: 10px;
-  transform: translate(-50%, 0);
-  min-width: 1024px;
-  width: 100%;
-
-  > .slick-prev,
-  > .slick-next {
-    z-index: 1;
-    top: unset;
-    width: 40px;
-    height: 40px;
-    border: 3px solid ${Colors.BW};
-    border-radius: 50%;
-    bottom: 30px;
-    ::before {
-      font-size: 2.5rem;
-      opacity: 1;
-      position: relative;
-    }
-  }
-  > .slick-prev {
-    left: unset;
-    right: 65px;
-    transform: translate(0, 0);
-    &::before {
-      content: '<';
-      top: -5px;
-      left: 3px;
-    }
-  }
-  > .slick-next {
-    right: 0px;
-    transform: translate(0, 0);
-    &::before {
-      content: '>';
-      top: -5px;
-      left: 7px;
-    }
-  }
-`;
-*/
-/* const PrevArrow = styled.button``;
-const NextArrow = styled.button``; */

@@ -5,6 +5,14 @@ import { FontSize } from 'styles/FontStyles';
 export const Wrap = styled.div`
   display: flex;
   grid-gap: 10px;
+
+  ul {
+    display: flex;
+
+    li {
+      margin: 0 5px;
+    }
+  }
 `;
 
 export const UploadButton = styled.label`
