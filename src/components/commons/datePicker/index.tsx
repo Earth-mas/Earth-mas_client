@@ -37,11 +37,11 @@ const Wrapper = styled.div`
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px solid ${Colors.B80};
-      border-radius: 8px;
       margin-bottom: 25px;
 
       input {
+        border-radius: 8px;
+        border: 1px solid ${Colors.B60};
         padding: 0px 20px;
         width: 100%;
         height: 48px;
