@@ -33,6 +33,7 @@ interface IInput01Props {
   autoComplete?: string;
   id?: string;
   margin?: number;
+  value?: string;
 }
 
 export default function Input01(props: IInput01Props) {
@@ -45,6 +46,7 @@ export default function Input01(props: IInput01Props) {
       autoComplete={props.autoComplete}
       id={props.id}
       margin={props.margin}
+      value={props.value}
     />
   );
 }
