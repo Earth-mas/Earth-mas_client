@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Category from 'components/commons/category/Category';
 import Input02 from 'components/commons/inputs/Input02';
 import Title02 from 'components/commons/text/title/Title02';
 import { Colors } from 'styles/Colors';
@@ -10,14 +11,16 @@ export default function MarketList() {
       <div className="input-wrap">
         <Input02 placeholder="상품을 검색해주세요" />
       </div>
-      <section className="category">카테고리 영역</section>
-      <section>
+      <section className="category">
+        <Category page={0} />
+      </section>
+      <section className="item-list">
         <Title02 content="전체 인기상품" margin={35} />
-        <GridWrap>
+        <ItemGridWrap>
           {DATA.map(el => (
             <MarketListItem el={el} />
           ))}
-        </GridWrap>
+        </ItemGridWrap>
       </section>
     </Wrap>
   );
@@ -28,12 +31,9 @@ const Wrap = styled.div`
     display: flex;
     justify-content: end;
   }
-  .category {
-    background-color: ${Colors.SUB2};
-  }
 `;
 
-const GridWrap = styled.div`
+const ItemGridWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;

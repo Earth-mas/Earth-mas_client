@@ -5,7 +5,7 @@ export default function MarketDetail() {
   return (
     <Wrap>
       <nav>
-        <Title01 content="마켓 > 주방" margin={35} />
+        <Title01 content="마켓 > 주방" size="C" margin={35} />
       </nav>
       <main>
         <section>이미지</section>
