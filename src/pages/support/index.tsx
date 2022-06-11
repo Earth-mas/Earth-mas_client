@@ -9,6 +9,7 @@ import Pagination from 'components/commons/pagination';
 import Slide from 'components/commons/slide';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+import SupportListPage from './[supportid]';
 
 export default function SupportPage() {
   const banner1 = '/images/supportBanner/supportBanner1.jpg';
@@ -19,7 +20,7 @@ export default function SupportPage() {
     <>
       <Slide banner1={banner1} banner2={banner2} banner3={banner3} />
       <Wrapper>
-        <div className="topWrapper">
+        {/* <div className="topWrapper">
           <p className="totalCount">
             전체 기부 <span>58</span>개
           </p>
@@ -37,7 +38,11 @@ export default function SupportPage() {
           <SupportCard />
           <SupportCard />
         </CardWrapper>
-        <Pagination />
+        <Pagination /> */}
+
+        {/* ------------------------- */}
+
+        <SupportListPage />
       </Wrapper>
     </>
   );
