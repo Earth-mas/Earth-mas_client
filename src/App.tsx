@@ -11,6 +11,8 @@ import { globalStyles } from 'styles/GlobalStyles';
 import { Layout } from 'components/commons/layout';
 import MarketDetail from 'components/units/market/detail/MarketDetail.container';
 import MarketNew from 'components/units/market/new/MarketNew.container';
+import ActivityNew from 'components/units/activity/new/ActivityNew.container';
+import ActivityDetail from 'components/units/activity/detail/ActivityDetail.container';
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/activity" element={<ActivityPage />} />
+            <Route path="/activity/new" element={<ActivityNew />} />
+            <Route path="/activity/:id" element={<ActivityDetail />} />
 
             <Route path="/market" element={<MarketPage />} />
             <Route path="/market/new" element={<MarketNew />} />
