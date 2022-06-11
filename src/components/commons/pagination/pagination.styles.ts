@@ -5,7 +5,7 @@ import {
   IPaginationStyleProps,
   INextArrowStyleProps,
   IPrevArrowStyleProps,
-} from './pagination.type';
+} from './Pagination.type';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -36,7 +36,7 @@ export const PageNumber = styled.div`
   font-size: ${FontSize.MEDIUM_C};
   margin-right: 10px;
   color: ${(props: IPaginationStyleProps) =>
-    props.clickPage === 1 ? 'white`' : Colors.B100};
+    props.clickPage === 1 ? 'white' : Colors.B100};
   background-color: ${props => (props.clickPage === 1 ? Colors.SUB1 : '')};
   &:last-of-type {
     margin-right: 0 !important;

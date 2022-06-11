@@ -6,9 +6,9 @@ import {
   Prev,
   PrevArrow,
   Wrapper,
-} from './pagination.styles';
+} from './Pagination.styles';
 
-export default function SupportPage() {
+export default function Pagination() {
   const [clickPage, setClickPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
 
