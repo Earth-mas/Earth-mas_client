@@ -3,6 +3,10 @@ import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
 export default function SupportCard() {
+  const goal = Number('6500000');
+  const price = Number('2999000');
+  const percent = Math.floor((price / goal) * 100);
+
   return (
     <Container>
       <div className="imgContainer">
@@ -13,9 +17,7 @@ export default function SupportCard() {
           <p className="title">플라스틱 쓰레기 없는 미래를 같이 만들어요!</p>
           <p className="user">환경재단환경재단환경재단</p>
         </div>
-        <div className="goal">
-          {Math.floor((Number('2999000') / Number('6500000')) * 100)}%
-        </div>
+        <div className="goal">{percent}%</div>
       </div>
       <p className="price">2,999,000원</p>
     </Container>

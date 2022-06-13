@@ -11,6 +11,7 @@ export default function HomePage() {
     <>
       <Login />
       <Slide
+        slide="main"
         banner1="/images/mainBanner/banner1.jpg"
         banner2="/images/mainBanner/banner2.jpg"
         banner3="/images/mainBanner/banner3.jpg"
