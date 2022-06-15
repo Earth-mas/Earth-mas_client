@@ -67,7 +67,7 @@ export default function SupportNew() {
   const editorChange = (e: SetStateAction<undefined>) => {
     setDescription(e);
   };
-  const dateChange = (e: Date | null) => {
+  const onChangeDate = (e: Date | null) => {
     setDate(e);
   };
 
@@ -77,7 +77,7 @@ export default function SupportNew() {
       date={date}
       urls={urls}
       setUrls={setUrls}
-      dateChange={dateChange}
+      onChangeDate={onChangeDate}
       editorChange={editorChange}
       handleChange={handleChange}
     />

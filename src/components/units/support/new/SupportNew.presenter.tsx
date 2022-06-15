@@ -7,8 +7,26 @@ import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
 import DatePicker01 from 'components/commons/datePicker';
 import { ISupportNewUIProps } from './SupportNew.types';
+import {
+  FormEvent,
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  SyntheticEvent,
+} from 'react';
 
-export default function SupportNewUI(props: ISupportNewUIProps) {
+export default function SupportNewUI(props: {
+  onClickSubmit: (arg0: FormEvent<HTMLFormElement>) => void;
+  handleChange: (arg0: ChangeEvent<HTMLInputElement>) => void;
+  onChangeDate: (
+    date: Date | null,
+    event: SyntheticEvent<any, Event> | undefined,
+  ) => void;
+  date: Date | null | undefined;
+  urls: string[];
+  setUrls: Dispatch<SetStateAction<string[]>>;
+  editorChange: (e: SetStateAction<undefined>) => void;
+}) {
   return (
     <Wrapper>
       <Title01 content="후원등록" margin={35} size="C" />
@@ -31,7 +49,7 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
         />
 
         <DatePicker01
-          onChange={props.dateChange}
+          onChangeDate={props.onChangeDate}
           name="dday"
           date={props.date}
         />
