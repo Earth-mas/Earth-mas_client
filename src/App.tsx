@@ -18,6 +18,7 @@ import SignUpPage from 'pages/signUp';
 import SupportPage from 'pages/support';
 import SupportNewPage from 'pages/support/new';
 import SupportDetailPage from 'pages/support/[supportid]';
+import ActivityList from 'components/units/activity/list/ActivityList.container';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/activity" element={<ActivityPage />} />
+            <Route path="/activity/list" element={<ActivityList />} />
             <Route path="/activity/new" element={<ActivityNew />} />
             <Route path="/activity/:id" element={<ActivityDetail />} />
 
