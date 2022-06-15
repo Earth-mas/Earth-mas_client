@@ -57,9 +57,10 @@ export default function DatePicker01() {
 }
 
 const Wrapper = styled.div`
-  .react-datepicker {
-    border-top-right-radius: 0;
-    border: 1px solid ${Colors.B60};
+  .react-datepicker-wrapper {
+    width: 100%;
+    .react-datepicker {
+      border-top-right-radius: 0;
 
     .saturday {
       color: rgb(0, 0, 255) !important;

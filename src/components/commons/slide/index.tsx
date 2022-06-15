@@ -8,6 +8,8 @@ export default function Slide(props: {
   banner1: string | undefined;
   banner2: string | undefined;
   banner3: string | undefined;
+  slide: string; // main | sub
+  // autoplay: boolean; // true | false
 }) {
   const settings = {
     dots: true,
@@ -15,14 +17,14 @@ export default function Slide(props: {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    // autoplay: props.autoplay,
     // nextArrow: <NextArrow />,
     // prevArrow: <PrevArrow />,
   };
 
   return (
     <>
-      <SliderContainer {...settings}>
+      <SliderContainer {...settings} slide={props.slide}>
         {props.banner1 === undefined ? (
           ''
         ) : (
@@ -50,20 +52,31 @@ export default function Slide(props: {
 }
 
 const SliderContainer = styled(Slider)`
-  width: 100vw;
+  width: ${props =>
+    (props.slide === 'main' && '100vw') || (props.slide === 'sub' && '100%')};
   overflow-x: hidden;
+  height: inherit;
 
-  > div {
+  div {
     width: 100%;
+    height: inherit;
+    object-fit: cover;
     img {
-      min-width: 1024px;
+      min-width: ${props =>
+        (props.slide === 'main' && '1024px') ||
+        (props.slide === 'sub' && '100%')};
       width: 100%;
+      height: inherit;
+      object-fit: cover;
     }
   }
 
   .slick-dots {
-    width: 1024px;
-    text-align: left;
+    max-width: 1024px;
+    width: 100%;
+    text-align: ${props =>
+      (props.slide === 'main' && 'left') ||
+      (props.slide === 'sub' && 'center')};
     margin: 0 auto;
     left: 50%;
     bottom: 45px;
@@ -89,8 +102,8 @@ const SliderContainer = styled(Slider)`
       }
       &.slick-active {
         button {
-          transition: all 0.2s ease-in-out;
-          width: 45px;
+          transition: all 0.3s ease-in-out;
+          width: 80px;
           background-color: ${Colors.SUB2};
         }
       }

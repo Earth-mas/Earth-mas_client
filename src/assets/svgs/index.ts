@@ -9,6 +9,6 @@ export { ReactComponent as HeartWhiteIcon } from './icons/heart-white-icon.svg';
 export { ReactComponent as HeartRedIcon } from './icons/heart-red-icon.svg';
 export { ReactComponent as PlusIcon } from './icons/plus-icon.svg';
 export { ReactComponent as MinusIcon } from './icons/minus-icon.svg';
-
+export { ReactComponent as BubbleIcon } from './icons/speech-bubble.svg';
 export { ReactComponent as HeartSmallIcon } from './icons/heart-small-icon.svg';
 export { ReactComponent as StarSmallIcon } from './icons/star-small-icon.svg';
