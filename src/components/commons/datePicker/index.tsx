@@ -4,24 +4,52 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+import { ko } from 'date-fns/esm/locale';
 
 export default function DatePicker01() {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
 
   const onChangeDate = (date: Date | null) => {
     setStartDate(date);
+    console.log(startDate);
   };
+
+  // 요일 반환
+  // const getDayName = (date: Date | null) => {
+  //   return date
+  //     .toLocaleDateString('ko-KR', {
+  //       weekday: 'long',
+  //     })
+  //     .substr(0, 1);
+  // };
+
+  // 날짜 비교시 년 월 일까지만 비교함
+  // const createDate = date => {
+  //   return new Date(
+  //     new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
+  //   );
+  // };
 
   return (
     <Wrapper>
       <DatePicker
+        locale={ko}
         minDate={new Date()}
+        selected={startDate}
         dateFormat="yyyy/MM/dd"
         // selectsRange={true}
         startDate={startDate}
         // endDate={endDate}
+        // dayClassName={date =>
+        //   getDayName(createDate(date)) === '토'
+        //     ? 'saturday'
+        //     : getDayName(createDate(date)) === '일'
+        //     ? 'sunday'
+        //     : undefined
+        // }
         onChange={onChangeDate}
         placeholderText="희망하는 목표 날짜를 선택해주세요"
+        withPortal
         isClearable={true}
       />
     </Wrapper>
@@ -32,6 +60,10 @@ const Wrapper = styled.div`
   .react-datepicker {
     border-top-right-radius: 0;
     border: 1px solid ${Colors.B60};
+
+    .saturday {
+      color: rgb(0, 0, 255) !important;
+    }
 
     &__input-container {
       display: flex;

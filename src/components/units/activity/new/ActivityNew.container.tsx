@@ -1,6 +1,4 @@
 import styled from '@emotion/styled';
-import { Colors } from 'styles/Colors';
-import { FontFamily, FontSize } from 'styles/FontStyles';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import Dropdown01 from 'components/commons/dropdown/01/Dropdown01';
@@ -8,20 +6,24 @@ import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
-import { useState } from 'react';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker01 from 'components/commons/datePicker';
+// import { MinusIcon, PlusIcon } from 'assets/svgs';
+// import { useState } from 'react';
 
 export default function ActivityNew() {
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-
-  const onChangeDate = (date: Date | null) => {
-    setStartDate(date);
-  };
+  // const [count, setCount] = useState(0);
 
   const onClickSubmit = () => {
     alert('활동 등록');
   };
+
+  // const onClickMinus = () => {
+  //   setCount(count - 1);
+  // };
+  // const onClickPlus = () => {
+  //   setCount(count + 1);
+  // };
 
   return (
     <Wrap>
@@ -36,23 +38,9 @@ export default function ActivityNew() {
 
         <ColumnWrap>
           <Dropdown01 page={1} />
-          <SDatePicker
-            selected={startDate}
-            minDate={new Date()}
-            dateFormat="yyyy/MM/dd"
-            // selectsRange={true}
-            startDate={startDate}
-            // endDate={endDate}
-            onChange={onChangeDate}
-            placeholderText="희망하는 날짜를 선택해주세요"
-            isClearable={true}
-          />
-          {/* <Input01
-            id=""
-            type="date"
-            placeholder="희망하는 날짜를 선택해주세요" // datepicker 라이브러리 활용
-            margin={25}
-          /> */}
+          <DatePicker01 />
+          {/* 달력 보여지는 위치 조정해주기 */}
+          {/* 토, 일 색깔 적용하기 */}
         </ColumnWrap>
 
         <ColumnWrap>
@@ -61,7 +49,15 @@ export default function ActivityNew() {
             placeholder="활동 위치를 입력해주세요 (ex. 서울시 중구)" // nightmare로 위치 gps 적용해보기
             margin={25}
           />
-          <Input01 type="text" placeholder="모집 인원 1명" />
+
+          <Input01 type="number" placeholder="모집 인원" />
+          {/* <div className="PlusMinus">
+              <MinusIcon style={{ cursor: 'pointer' }} onClick={onClickMinus} />
+              {count}
+              <PlusIcon style={{ cursor: 'pointer' }} onClick={onClickPlus} />
+            </div> */}
+          {/* </div> */}
+          {/* nightmare로 + - 증감 인원 input창에 적용시켜보기 */}
         </ColumnWrap>
 
         <Input01
@@ -72,14 +68,16 @@ export default function ActivityNew() {
 
         <Upload01 page="market" />
         <Blank height={25} />
-        <QuillEditor page={0} />
+        <QuillEditor page={1} />
         <Blank height={60} />
-        <ContainedButton01
-          content="액티비티 등록"
-          color="main"
-          type="submit"
-          onClick={onClickSubmit}
-        />
+        <div className="buttonWrap">
+          <ContainedButton01
+            content="액티비티 등록"
+            color="main"
+            type="submit"
+            onClick={onClickSubmit}
+          />
+        </div>
       </form>
     </Wrap>
   );
@@ -89,29 +87,17 @@ const Wrap = styled.div`
   max-width: 1024px;
   width: 100%;
   padding: 30px 0px 100px 0px;
+
+  .buttonWrap {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+  }
 `;
 
 const ColumnWrap = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   grid-gap: 25px;
-`;
-
-const SDatePicker = styled(DatePicker)`
-  width: 100%;
-  height: 48px;
-  border: 1px solid ${Colors.B60};
-  border-radius: 8px;
-  padding: 14px 20px;
-  color: ${Colors.B80};
-  font-family: ${FontFamily.MEDIUM};
-  font-size: ${FontSize.MEDIUM_C};
-
-  ::placeholder {
-    color: ${Colors.B60};
-  }
-  :focus {
-    outline: none;
-    border: 1px solid ${Colors.SUB1};
-    color: ${Colors.B100};
-  }
 `;
