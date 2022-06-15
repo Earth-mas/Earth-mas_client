@@ -8,6 +8,8 @@ export { ReactComponent as XbuttonIcon } from './icons/xbutton-icon.svg';
 export { ReactComponent as HeartWhiteIcon } from './icons/heart-white-icon.svg';
 export { ReactComponent as HeartRedIcon } from './icons/heart-red-icon.svg';
 export { ReactComponent as BubbleIcon } from './icons/speech-bubble.svg';
+export { ReactComponent as CalenderIcon } from './icons/calender-icon.svg';
+export { ReactComponent as FrameIcon } from './icons/frame-icon.svg';
 
 export { ReactComponent as HeartSmallIcon } from './icons/heart-small-icon.svg';
 export { ReactComponent as StarSmallIcon } from './icons/star-small-icon.svg';

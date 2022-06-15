@@ -41,36 +41,37 @@ const Wrapper = styled.div`
         align-items: center;
         margin-bottom: 25px;
 
-      input {
-        border-radius: 8px;
-        border: 1px solid ${Colors.B60};
-        padding: 0px 20px;
-        width: 100%;
-        height: 48px;
-        font-family: ${FontFamily.MEDIUM};
-        font-size: ${FontSize.MEDIUM_C};
-        color: ${Colors.B80};
-
-        &::placeholder {
-          color: ${Colors.B60};
-        }
-        &:focus {
-          border: 1px solid ${Colors.SUB1};
+        input {
           border-radius: 8px;
-          color: ${Colors.B100};
+          border: 1px solid ${Colors.B60};
+          padding: 0px 20px;
+          width: 100%;
+          height: 48px;
+          font-family: ${FontFamily.MEDIUM};
+          font-size: ${FontSize.MEDIUM_C};
+          color: ${Colors.B80};
+
+          &::placeholder {
+            color: ${Colors.B60};
+          }
+          &:focus {
+            border: 1px solid ${Colors.SUB1};
+            border-radius: 8px;
+            color: ${Colors.B100};
+          }
         }
       }
     }
-  }
-  .react-datepicker-popper {
-    padding-top: 0px;
-    .react-datepicker__triangle {
-      ::before {
-        border-bottom-color: ${Colors.B40};
-        left: -12px;
-      }
-      ::after {
-        left: -12px;
+    .react-datepicker-popper {
+      padding-top: 0px;
+      .react-datepicker__triangle {
+        ::before {
+          border-bottom-color: ${Colors.B40};
+          left: -12px;
+        }
+        ::after {
+          left: -12px;
+        }
       }
     }
   }
