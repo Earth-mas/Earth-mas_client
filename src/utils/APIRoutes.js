@@ -1,0 +1,11 @@
+export const host = 'https://earth-mas.shop/server';
+export const userRoute = `${host}/user`;
+export const marketRoute = `${host}/market`;
+export const marketReviewRoute = `${host}/marketreview`;
+export const marketCategoryRoute = `${host}/marketcategory`;
+export const marketTransactionRoute = `${host}/markettransaction`;
+export const activityRoute = `${host}/activity`;
+export const activityCategoryRoute = `${host}/ActivityCategory`;
+export const supportRoute = `${host}/support`;
+export const supporttrRoute = `${host}/supporttr`;
+export const supportCommentRoute = `${host}/supportcomment`;
