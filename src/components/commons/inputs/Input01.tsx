@@ -26,6 +26,7 @@ const Input = styled.input`
 `;
 
 interface IInput01Props {
+  name: string;
   placeholder?: string;
   type: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -47,6 +48,7 @@ export default function Input01(props: IInput01Props) {
       id={props.id}
       margin={props.margin}
       value={props.value}
+      name={props.name}
     />
   );
 }

@@ -1,10 +1,19 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { ko } from 'date-fns/esm/locale';
+
+interface IDatePickerProps {
+  onChange: (
+    date: Date | null,
+    event: SyntheticEvent<any, Event> | undefined,
+  ) => void;
+  name: string;
+  date: Date | null | undefined;
+}
 
 export default function DatePicker01() {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
@@ -35,11 +44,12 @@ export default function DatePicker01() {
       <DatePicker
         locale={ko}
         minDate={new Date()}
-        selected={startDate}
+        selected={props.date}
         dateFormat="yyyy/MM/dd"
         // selectsRange={true}
-        startDate={startDate}
+        startDate={props.date}
         // endDate={endDate}
+        onChange={props.onChange}
         // dayClassName={date =>
         //   getDayName(createDate(date)) === '토'
         //     ? 'saturday'
@@ -47,7 +57,6 @@ export default function DatePicker01() {
         //     ? 'sunday'
         //     : undefined
         // }
-        onChange={onChangeDate}
         placeholderText="희망하는 목표 날짜를 선택해주세요"
         withPortal
         isClearable={true}
