@@ -30,7 +30,7 @@ const LoginContents = ({ handleClose }: IProps) => {
       password,
     };
     axios
-      .post('/auth/login', data, {
+      .post('/server/auth/login', data, {
         withCredentials: true,
       })
       .then(res => {

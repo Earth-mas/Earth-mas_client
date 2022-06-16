@@ -3,9 +3,10 @@ import 'react-quill/dist/quill.snow.css';
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { PLACEHOLDER } from './ReactQuill.data';
+import { SetStateAction } from 'react';
 interface IQuillEditorProps {
   page: number;
-  onChange?: () => void;
+  onChange?: any;
   name: string;
 }
 

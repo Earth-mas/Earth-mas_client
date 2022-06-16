@@ -5,8 +5,10 @@ import Pagination from 'components/commons/pagination';
 import Slide from 'components/commons/slide';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+import { v4 as uuidv4 } from 'uuid';
+import { ISupportListProps } from './SupportList.types';
 
-export default function SupportListUI() {
+export default function SupportListUI(props: { list: ISupportListProps[] }) {
   const banner1 = '/images/supportBanner/supportBanner1.jpg';
   const banner2 = undefined;
   const banner3 = undefined;
@@ -22,21 +24,14 @@ export default function SupportListUI() {
       <Wrapper>
         <div className="topWrapper">
           <p className="totalCount">
-            전체 기부 <span>58</span>개
+            전체 기부 <span>{props.list.length}</span>개
           </p>
           <Dropdown02 page={1} />
         </div>
         <CardWrapper>
-          <SupportCard />
-          <SupportCard />
-          <SupportCard />
-          <SupportCard />
-          <SupportCard />
-          <SupportCard />
-          <SupportCard />
-          <SupportCard />
-          <SupportCard />
-          <SupportCard />
+          {props.list.map((el: ISupportListProps) => (
+            <SupportCard key={uuidv4()} el={el} />
+          ))}
         </CardWrapper>
         <Pagination />
       </Wrapper>
