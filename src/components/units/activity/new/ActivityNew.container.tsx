@@ -66,7 +66,7 @@ export default function ActivityNew() {
           margin={25}
         />
 
-        <Upload01 page="market" />
+        <Upload01 page="activity" />
         <Blank height={25} />
         <QuillEditor page={1} />
         <Blank height={60} />

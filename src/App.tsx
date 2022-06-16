@@ -5,6 +5,7 @@ import { Layout } from 'components/commons/layout';
 import './App.css';
 import HomePage from 'pages';
 import ActivityPage from 'pages/activity';
+import ActivityList from 'components/units/activity/list/ActivityList.container';
 import ActivityNew from 'components/units/activity/new/ActivityNew.container';
 import ActivityDetail from 'components/units/activity/detail/ActivityDetail.container';
 
