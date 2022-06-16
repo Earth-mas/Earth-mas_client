@@ -11,3 +11,7 @@ export { ReactComponent as BubbleIcon } from './icons/speech-bubble.svg';
 
 export { ReactComponent as HeartSmallIcon } from './icons/heart-small-icon.svg';
 export { ReactComponent as StarSmallIcon } from './icons/star-small-icon.svg';
+
+export { ReactComponent as Avatar } from './avatar/avatar.svg';
+export { ReactComponent as CameraIcon } from './icons/camera-icon.svg';
+export { ReactComponent as SettingIcon } from './icons/setting-icon.svg';

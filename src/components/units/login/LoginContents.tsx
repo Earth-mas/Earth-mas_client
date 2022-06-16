@@ -4,6 +4,8 @@ import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { LoginWrapper, ModalBackGround } from './LoginContents.styles';
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 import { Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { userState } from 'recoil/user';
 
 interface IProps {
   handleClose: () => void;
@@ -12,7 +14,8 @@ interface IProps {
 const LoginContents = ({ handleClose }: IProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log(document.cookie);
+  const setUser = useSetRecoilState(userState);
+
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -30,21 +33,33 @@ const LoginContents = ({ handleClose }: IProps) => {
       password,
     };
     axios
-      .post('/auth/login', data, {
+      .post('https://earth-mas.shop/server/auth/login', data, {
         withCredentials: true,
       })
       .then(res => {
-        console.log(res);
-        console.log(document.cookie);
         const accessToken = res.data;
         store.set('accessToken', accessToken);
+        axios
+          .get('https://earth-mas.shop/server/user/me', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then(res => {
+            setUser({
+              id: res.data.id,
+              name: res.data.name,
+              email: res.data.email,
+              url: res.data.url,
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
         // axios.defaults.headers.common[
         //   'Authorization'
         // ] = `Bearer ${accessToken}`;
         alert('로그인 성공');
-        // axios
-        //   .get(`http://34.64.224.198:3000/user/${email}`)
-        //   .then(res => console.log(res));
         handleClose();
       })
       .catch(error => {
