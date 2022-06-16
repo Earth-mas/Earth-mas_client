@@ -1,11 +1,23 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
+import MarketCard from 'components/commons/card/market/MarketCard';
 import Category from 'components/commons/category/Category';
 import Input02 from 'components/commons/inputs/Input02';
 import Title02 from 'components/commons/text/title/Title02';
-import { Colors } from 'styles/Colors';
-import MarketListItem from './MarketList.item';
 import { DATA } from './MarketList.item.data';
 export default function MarketList() {
+  const fetchItems = async () => {
+    await axios
+      .patch(`https://earth-mas.shop/server/market/finddcs`)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  fetchItems();
+
   return (
     <Wrap>
       <div className="input-wrap">
@@ -16,11 +28,12 @@ export default function MarketList() {
       </section>
       <section className="item-list">
         <Title02 content="전체 인기상품" margin={35} />
-        <ItemGridWrap>
+        <CardWrap>
           {DATA.map(el => (
-            <MarketListItem el={el} />
+            // <MarketListItem cardData={el} />
+            <MarketCard cardData={el} />
           ))}
-        </ItemGridWrap>
+        </CardWrap>
       </section>
     </Wrap>
   );
@@ -33,7 +46,7 @@ const Wrap = styled.div`
   }
 `;
 
-const ItemGridWrap = styled.div`
+const CardWrap = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;

@@ -14,3 +14,8 @@ export { ReactComponent as CalenderIcon } from './icons/calender-icon.svg';
 export { ReactComponent as FrameIcon } from './icons/frame-icon.svg';
 export { ReactComponent as HeartSmallIcon } from './icons/heart-small-icon.svg';
 export { ReactComponent as StarSmallIcon } from './icons/star-small-icon.svg';
+
+export { ReactComponent as HeartOutlineRedIcon } from './icons/heart-outline-red-icon.svg';
+export { ReactComponent as ShareIcon } from './icons/share-icon.svg';
+export { ReactComponent as StarContainedIcon } from './icons/star-contained-icon.svg';
+export { ReactComponent as StarOutlinedIcon } from './icons/star-outlined-icon.svg';
