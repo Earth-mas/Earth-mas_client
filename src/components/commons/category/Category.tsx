@@ -63,14 +63,14 @@ const Wrap = styled.div`
     :hover {
       cursor: pointer;
     }
-    & span {
+    span {
       z-index: 2;
       position: absolute;
       font-family: ${FontFamily.MEDIUM};
       font-size: ${FontSize.MEDIUM_T};
       color: ${Colors.BW};
     }
-    & img {
+    img {
       z-index: 0;
       width: 100%;
       height: 100%;
