@@ -1,12 +1,13 @@
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { PLACEHOLDER } from './ReactQuill.data';
-
+import { SetStateAction } from 'react';
 interface IQuillEditorProps {
   page: number;
+  onChange?: any;
+  name: string;
 }
 
 export default function QuillEditor(props: IQuillEditorProps) {
@@ -55,6 +56,7 @@ export default function QuillEditor(props: IQuillEditorProps) {
         theme="snow"
         modules={modules}
         placeholder={PLACEHOLDER[props.page]}
+        onChange={props.onChange}
         //  formats={formats}
       />
     </QuillWrap>

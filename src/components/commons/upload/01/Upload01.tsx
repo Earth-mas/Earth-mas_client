@@ -1,15 +1,19 @@
 import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { Colors } from 'styles/Colors';
 import * as S from './Upload01.styles';
 import { ImageIcon, XbuttonIcon } from 'assets/svgs';
 
 interface IUpload01Props {
   page: 'market' | 'activity' | 'support' | 'user';
+  setUrls: Dispatch<SetStateAction<string[]>>;
+  urls: string[];
 }
 export default function Upload01(props: IUpload01Props) {
-  const [urls, setUrls] = useState<string[]>([]);
+  // const [urls, setUrls] = useState<string[]>([]);
+  const urls = props.urls;
+  const setUrls = props.setUrls;
 
   const formData = new FormData();
 
@@ -25,7 +29,7 @@ export default function Upload01(props: IUpload01Props) {
     if (!file) return;
     formData.append('files', file);
     await axios
-      .post(`http://34.64.224.198:3000/${props.page}/upload`, formData)
+      .post(`http://34.64.224.198:3000/server/${props.page}/upload`, formData)
       .then(res => {
         const url = `https://storage.googleapis.com/${res.data[0]}`;
         onChangeUrl(url);

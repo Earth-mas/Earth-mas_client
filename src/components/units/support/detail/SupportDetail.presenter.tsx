@@ -1,7 +1,6 @@
 import { BubbleIcon } from 'assets/svgs';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import Input01 from 'components/commons/inputs/Input01';
-import Input02 from 'components/commons/inputs/Input02';
 import Line from 'components/commons/line';
 import Slide from 'components/commons/slide';
 import Comment from './comment/Comment';
@@ -12,26 +11,6 @@ export default function SupportDetailUI(props: { percent: number }) {
   const dDay = new Date('2022-06-30');
   const leftDay = Math.ceil(
     (today.getTime() - dDay.getTime()) / (1000 * 60 * 60 * 24),
-  );
-
-  // let today = new Date();
-  const utc = Date.UTC(
-    today.getUTCFullYear(),
-    today.getUTCMonth(),
-    today.getUTCDate(),
-    today.getUTCHours(),
-    today.getUTCMinutes(),
-    today.getUTCSeconds(),
-  );
-
-  console.log(new Date(utc));
-
-  console.log(today);
-  console.log(typeof today);
-  // console.log(utcSeoul);
-  console.log(leftDay);
-  console.log(
-    leftDay > 0 ? `D+${leftDay}` : leftDay < 0 ? `D${leftDay}` : 'D-day',
   );
 
   return (
@@ -222,7 +201,11 @@ export default function SupportDetailUI(props: { percent: number }) {
           </div>
 
           <div className="commentInput">
-            <Input01 type="text" placeholder="댓글을 남겨보세요" />
+            <Input01
+              type="text"
+              placeholder="댓글을 남겨보세요"
+              name="comments"
+            />
             <button>입력</button>
           </div>
         </div>

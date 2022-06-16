@@ -19,6 +19,7 @@ import SignUpPage from 'pages/signUp';
 import SupportPage from 'pages/support';
 import SupportNewPage from 'pages/support/new';
 import SupportDetailPage from 'pages/support/[supportid]';
+import ActivityList from 'components/units/activity/list/ActivityList.container';
 
 const App = () => {
   return (

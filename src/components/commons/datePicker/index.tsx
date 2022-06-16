@@ -1,28 +1,64 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+import { ko } from 'date-fns/esm/locale';
 
-export default function DatePicker01() {
+interface IDatePickerProps {
+  onChangeDate: (
+    date: Date | null,
+    event: SyntheticEvent<any, Event> | undefined,
+  ) => void;
+  name: string;
+  date: Date | null | undefined;
+}
+
+export default function DatePicker01(props: IDatePickerProps) {
   const [startDate, setStartDate] = useState<Date | null>(new Date());
 
   const onChangeDate = (date: Date | null) => {
     setStartDate(date);
+    console.log(startDate);
   };
+
+  // 요일 반환
+  // const getDayName = (date: Date | null) => {
+  //   return date
+  //     .toLocaleDateString('ko-KR', {
+  //       weekday: 'long',
+  //     })
+  //     .substr(0, 1);
+  // };
+
+  // 날짜 비교시 년 월 일까지만 비교함
+  // const createDate = date => {
+  //   return new Date(
+  //     new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0),
+  //   );
+  // };
 
   return (
     <Wrapper>
       <DatePicker
-        // selected={startDate}
-        // minDate={new Date()}
+        locale={ko}
+        minDate={new Date()}
+        selected={props.date}
         dateFormat="yyyy/MM/dd"
         // selectsRange={true}
-        startDate={startDate}
+        startDate={props.date}
         // endDate={endDate}
-        onChange={onChangeDate}
+        onChange={props.onChangeDate}
+        // dayClassName={date =>
+        //   getDayName(createDate(date)) === '토'
+        //     ? 'saturday'
+        //     : getDayName(createDate(date)) === '일'
+        //     ? 'sunday'
+        //     : undefined
+        // }
         placeholderText="희망하는 목표 날짜를 선택해주세요"
+        withPortal
         isClearable={true}
       />
     </Wrapper>
@@ -34,6 +70,10 @@ const Wrapper = styled.div`
     width: 100%;
     .react-datepicker {
       border-top-right-radius: 0;
+
+      .saturday {
+        color: rgb(0, 0, 255) !important;
+      }
 
       &__input-container {
         display: flex;
