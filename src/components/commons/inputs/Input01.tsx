@@ -35,6 +35,7 @@ interface IInput01Props {
   id?: string;
   margin?: number;
   value?: string;
+  defaultValue?: string;
 }
 
 export default function Input01(props: IInput01Props) {
@@ -49,6 +50,7 @@ export default function Input01(props: IInput01Props) {
       margin={props.margin}
       value={props.value}
       name={props.name}
+      defaultValue={props.defaultValue}
     />
   );
 }

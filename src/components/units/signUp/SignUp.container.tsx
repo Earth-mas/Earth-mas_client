@@ -9,7 +9,6 @@ import { ErrorMsg, InputWrapper, Label, SignUpWrapper } from './SignUp.styles';
 import Blank from 'components/commons/blank/Blank';
 import PostCode from 'components/commons/daumpostcode';
 import { useNavigate } from 'react-router-dom';
-import Upload01 from 'components/commons/upload/01/Upload01';
 
 export interface IPostCodeData {
   zonecode: string;
@@ -110,9 +109,6 @@ export default function SignUp() {
 
   return (
     <SignUpWrapper>
-      <br /> <br /> <br />
-      <Upload01 page="market" />
-      <br /> <br /> <br />
       <h1>회원가입</h1>
       <div className="socialSignUp">
         <p>SNS계정으로 간편하게 가입하기</p>

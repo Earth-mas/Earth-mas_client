@@ -7,5 +7,8 @@ export const userState = atom({
     name: '',
     email: '',
     url: '',
+    addressnumber: '',
+    address1: '',
+    address2: '',
   },
 });
