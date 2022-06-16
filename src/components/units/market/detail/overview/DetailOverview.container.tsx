@@ -1,16 +1,12 @@
-import {
-  HeartOutlineRedIcon,
-  ShareIcon,
-  StarContainedIcon,
-  StarOutlinedIcon,
-} from 'assets/svgs';
+import { HeartOutlineRedIcon, ShareIcon } from 'assets/svgs';
 
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import OutlinedButton01 from 'components/commons/button/outlined/OutlinedButton01';
 import * as S from './DetailOverview.styles';
-import image from '../../../../../assets/images/marketBanner/banner1.jpeg';
+import image from '../../../../../assets/images/market/banner/banner1.jpeg';
 import Title01 from 'components/commons/text/title/Title01';
-import { DataObject } from '../MarketDetail.types';
+import { IMarketDetail } from '../MarketDetail.types';
+import Stars from 'components/commons/stars';
 
 const DATA = [
   { image: image },
@@ -21,10 +17,12 @@ const DATA = [
 ];
 
 interface IDetailOverviewProps {
-  detailData?: DataObject;
+  detailData?: IMarketDetail;
 }
 
 export default function DetailOverview(props: IDetailOverviewProps) {
+  console.log(props.detailData?.reviewscore);
+
   return (
     <main>
       <S.ItemImage>
@@ -49,23 +47,13 @@ export default function DetailOverview(props: IDetailOverviewProps) {
         <Title01 size="C" content={props.detailData?.title} margin={15} />
         <p className="description">{props.detailData?.minidescription}</p>
         <div className="review">
-          <ul className="outlined-star">
-            {new Array(5).fill(0).map(() => (
-              <li>
-                <StarOutlinedIcon />
-              </li>
-            ))}
-            <ul className="contained-star">
-              {props.detailData?.reviewscore &&
-                new Array(Math.floor(Number(props.detailData?.reviewscore)))
-                  .fill(0)
-                  .map(() => (
-                    <li>
-                      <StarContainedIcon />
-                    </li>
-                  ))}
-            </ul>
-          </ul>
+          <Stars
+            contained={
+              props.detailData?.reviewscore &&
+              (props.detailData?.reviewscore / 5) * 100
+            }
+            color="main"
+          />
           <span>{props.detailData?.reviewpeople}개의 리뷰</span>
         </div>
         <p className="price">

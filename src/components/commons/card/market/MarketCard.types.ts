@@ -1,11 +1,12 @@
-export interface IMarketDetail {
+export interface IMarketCard {
   amount: number;
   createAt: string;
-  delete?: null;
+  delete?: any;
   description: string;
   discount: number;
   id: string;
   like: number;
+  marketcategory: IMarketCardCategory;
   minidescription: string;
   reviewpeople: number;
   reviewscore: number;
@@ -13,13 +14,12 @@ export interface IMarketDetail {
   title: string;
   updateAt: string;
   url: string;
-  marketcategory: IMarketDetailCategory;
 }
 
-export interface IMarketDetailCategory {
-  createAt: string;
-  delete?: null;
+export interface IMarketCardCategory {
   id: string;
   name: string;
-  updateA: string;
+  delete?: any;
+  createAt: string;
+  updateAt: string;
 }

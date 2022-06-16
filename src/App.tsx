@@ -16,8 +16,8 @@ import ActivityNew from 'components/units/activity/new/ActivityNew.container';
 import ActivityDetail from 'components/units/activity/detail/ActivityDetail.container';
 
 import MarketPage from 'pages/market';
-import MarketDetail from 'components/units/market/detail/MarketDetail.container';
-import MarketNew from 'components/units/market/new/MarketNew.container';
+import MarketNewPage from 'pages/market/new';
+import MarketDetailPage from 'pages/market/[marketId]';
 
 import SupportPage from 'pages/support';
 import SupportNewPage from 'pages/support/new';
@@ -42,8 +42,8 @@ const App = () => {
               <Route path="/activity/:id" element={<ActivityDetail />} />
 
               <Route path="/market" element={<MarketPage />} />
-              <Route path="/market/new" element={<MarketNew />} />
-              <Route path="/market/:id" element={<MarketDetail />} />
+              <Route path="/market/new" element={<MarketNewPage />} />
+              <Route path="/market/:id" element={<MarketDetailPage />} />
 
               <Route path="/support" element={<SupportPage />} />
               <Route path="/support/new" element={<SupportNewPage />} />
