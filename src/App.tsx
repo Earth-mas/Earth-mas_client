@@ -22,7 +22,7 @@ import MarketNew from 'components/units/market/new/MarketNew.container';
 import SupportPage from 'pages/support';
 import SupportNewPage from 'pages/support/new';
 import SupportDetailPage from 'pages/support/[supportid]';
-import SupportEditPage from 'pages/support/[supportid]/edit';
+// import SupportEditPage from 'pages/support/[supportid]/edit';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -48,7 +48,7 @@ const App = () => {
               <Route path="/support" element={<SupportPage />} />
               <Route path="/support/new" element={<SupportNewPage />} />
               <Route path="/support/:id" element={<SupportDetailPage />} />
-              <Route path="/support/:id/edit" element={<SupportEditPage />} />
+              {/* <Route path="/support/:id/edit" element={<SupportEditPage />} /> */}
 
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/signup" element={<SignUpPage />} />
