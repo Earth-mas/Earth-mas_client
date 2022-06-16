@@ -82,6 +82,7 @@ export default function SignUp() {
       [e.target.id]: e.target.value, //대괄호 안에 있는걸로 객체 key를 만듦
     });
   };
+
   const onClickSignUp = (
     e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
   ) => {
@@ -96,7 +97,7 @@ export default function SignUp() {
       return;
     }
     axios
-      .post('http://34.64.224.198:3000/user', inputs)
+      .post('https://earth-mas.shop/server/user', inputs)
       .then(res => {
         console.log(res);
         alert('회원가입이 완료되었습니다.');
