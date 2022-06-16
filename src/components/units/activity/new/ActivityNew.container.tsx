@@ -8,10 +8,12 @@ import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker01 from 'components/commons/datePicker';
+import { useState } from 'react';
 // import { MinusIcon, PlusIcon } from 'assets/svgs';
 // import { useState } from 'react';
 
 export default function ActivityNew() {
+  const [urls, setUrls] = useState<string[]>([]);
   // const [count, setCount] = useState(0);
 
   const onClickSubmit = () => {
@@ -38,7 +40,7 @@ export default function ActivityNew() {
 
         <ColumnWrap>
           <Dropdown01 page={1} />
-          <DatePicker01 />
+          {/* <DatePicker01 /> */}
           {/* 달력 보여지는 위치 조정해주기 */}
           {/* 토, 일 색깔 적용하기 */}
         </ColumnWrap>
@@ -66,7 +68,7 @@ export default function ActivityNew() {
           margin={25}
         />
 
-        <Upload01 page="activity" />
+        <Upload01 page="activity" urls={urls} setUrls={setUrls} />
         <Blank height={25} />
         <QuillEditor page={1} />
         <Blank height={60} />

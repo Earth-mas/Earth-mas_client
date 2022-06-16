@@ -7,7 +7,7 @@ import { SetStateAction } from 'react';
 interface IQuillEditorProps {
   page: number;
   onChange?: any;
-  name: string;
+  name?: string;
 }
 
 export default function QuillEditor(props: IQuillEditorProps) {
