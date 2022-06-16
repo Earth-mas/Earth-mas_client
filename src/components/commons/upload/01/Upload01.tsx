@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { Colors } from 'styles/Colors';
 import * as S from './Upload01.styles';
 import { ImageIcon, XbuttonIcon } from 'assets/svgs';

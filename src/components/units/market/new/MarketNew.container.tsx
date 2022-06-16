@@ -6,8 +6,10 @@ import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
+import { useState } from 'react';
 
 export default function MarketNew() {
+  const [urls, setUrls] = useState<string[]>([]);
   const onClickSubmit = () => {
     alert('상품 등록');
   };
@@ -51,7 +53,7 @@ export default function MarketNew() {
           margin={25}
         />
 
-        <Upload01 page="market" />
+        <Upload01 page="market" urls={urls} setUrls={setUrls} />
         <Blank height={25} />
         <QuillEditor page={0} />
         <Blank height={60} />
