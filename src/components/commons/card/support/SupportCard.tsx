@@ -15,7 +15,7 @@ export default function SupportCard(props: ISupportCardProps) {
   const moveToDetail = () => {
     // navigate(`/support/${props.el.id}`);
     // console.log(`/support/${e.target.id}`);
-    // console.log(props.el.id);
+    console.log(props.el.id);
   };
 
   return (

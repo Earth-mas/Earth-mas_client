@@ -27,7 +27,7 @@ export default function SupportList() {
       await axios
         .get(`${supportRoute}/finddcs`)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           setList(res.data);
         })
         .catch(error => {

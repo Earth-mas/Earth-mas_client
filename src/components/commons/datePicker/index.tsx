@@ -11,7 +11,7 @@ interface IDatePickerProps {
     date: Date | null,
     event: SyntheticEvent<any, Event> | undefined,
   ) => void;
-  name: string;
+  name?: string;
   date: Date | null | undefined;
 }
 
