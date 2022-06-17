@@ -5,9 +5,20 @@ import SupportNewUI from './SupportNew.presenter';
 import store from 'storejs';
 import { useNavigate } from 'react-router-dom';
 
-export default function SupportNew() {
+export default function SupportNew(props: {
+  isEdit: boolean;
+  fetchData:
+    | {
+        title: string;
+        wishamount: number;
+        description: string;
+        dday: Date | null;
+        url: string[];
+      }
+    | null
+    | undefined;
+}) {
   const navigate = useNavigate();
-
   const accessToken = store.get('accessToken');
 
   const [date, setDate] = useState<Date | null>();
@@ -62,7 +73,7 @@ export default function SupportNew() {
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-    console.log({ ...values, [e.target.name]: e.target.value });
+    // console.log({ ...values, [e.target.name]: e.target.value });
   };
   const editorChange = (e: SetStateAction<undefined>) => {
     setDescription(e);
@@ -71,8 +82,12 @@ export default function SupportNew() {
     setDate(e);
   };
 
+  console.log(props.fetchData);
+
   return (
     <SupportNewUI
+      isEdit={props.isEdit}
+      fetchData={props.fetchData}
       onClickSubmit={onClickSubmit}
       date={date}
       urls={urls}

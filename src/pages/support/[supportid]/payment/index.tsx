@@ -1,5 +1,5 @@
-import SupportComplete from 'components/units/support/detail/payment/complete';
+import SupportPayment from 'components/units/support/detail/payment/payment';
 
-export default function SupportCompletePage() {
-  return <SupportComplete />;
+export default function SupportPaymentPage() {
+  return <SupportPayment />;
 }

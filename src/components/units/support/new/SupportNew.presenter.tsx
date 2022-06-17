@@ -10,6 +10,8 @@ import { ISupportNewUIProps } from './SupportNew.types';
 import Login from 'components/units/login';
 
 export default function SupportNewUI(props: ISupportNewUIProps) {
+  console.log(props.fetchData?.title);
+
   return (
     <Wrapper>
       <Login />
@@ -20,9 +22,9 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
       />
       <form
         onSubmit={
-          props.isEdit
+          /* props.isEdit
             ? event => props.onClickEdit(event)
-            : event => props.onClickSubmit(event)
+            :  */ event => props.onClickSubmit(event)
         }
       >
         <Input01
@@ -48,7 +50,7 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
           onChangeDate={props.onChangeDate}
           name="dday"
           date={props.date}
-          defaultValue={new Date(props.fetchData?.dday)}
+          // defaultValue={new Date(props.fetchData?.dday)}
         />
         <Upload01
           page="support"
