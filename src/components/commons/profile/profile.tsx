@@ -28,6 +28,7 @@ const AvatarWrapper = styled.div<{ size: number }>`
 
   img {
     width: ${props => `${props.size}px`};
+    height: ${props => `${props.size}px`};
     border-radius: 70%;
     margin-right: 5px;
   }
