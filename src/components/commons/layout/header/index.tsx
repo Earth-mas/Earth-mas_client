@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { FontSize } from 'styles/FontStyles';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
-import Profile from 'components/commons/profile/profile';
+import UserProfile from 'components/commons/profile/profile';
 
 const Header = () => {
   const userInfo = useRecoilValue(userState);
@@ -16,7 +16,7 @@ const Header = () => {
         {id ? (
           <span>
             <Link to="/mypage">
-              <Profile size={30} url={url} name={name} />
+              <UserProfile size={30} avataUrl={url} name={name} />
             </Link>
           </span>
         ) : (
