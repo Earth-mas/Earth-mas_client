@@ -49,7 +49,7 @@ export default function MyPage() {
         <h1>MY PAGE</h1>
         <Line />
         <section className="profile">
-          <Profile size={50} name={name} url={url} />
+          <Profile size={50} name={name} avataUrl={url} />
         </section>
         <Line />
         <Blank height={20} />

@@ -38,7 +38,7 @@ export default function UserInfo() {
         />
       )}
       <UpdatePassword />
-      <DeleteUser />
+      <DeleteUser id={id} />
     </UserWrapper>
   );
 }

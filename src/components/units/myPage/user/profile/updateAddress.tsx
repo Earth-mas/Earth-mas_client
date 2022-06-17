@@ -44,11 +44,8 @@ export default function UpdateAddress(props: IProps) {
     axios
       .put(
         `https://earth-mas.shop/server/user/${props.id}`,
-        // 주소 외 변경항목 임시로 하드코딩함
+
         {
-          url: '',
-          password: '12341234',
-          name: '아이브',
           ...addressInput,
         },
         {
