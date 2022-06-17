@@ -4,6 +4,8 @@ import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { LoginWrapper, ModalBackGround } from './LoginContents.styles';
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 import { Link } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { userState } from 'recoil/user';
 
 interface IProps {
   handleClose: () => void;
@@ -12,6 +14,7 @@ interface IProps {
 const LoginContents = ({ handleClose }: IProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const setUser = useSetRecoilState(userState);
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -40,6 +43,26 @@ const LoginContents = ({ handleClose }: IProps) => {
         //   'Authorization'
         // ] = `Bearer ${accessToken}`;
         alert('로그인 성공');
+        axios
+          .get('https://earth-mas.shop/server/user/me', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then(res => {
+            setUser({
+              id: res.data.id,
+              name: res.data.name,
+              email: res.data.email,
+              url: res.data.url,
+              addressnumber: res.data.addressnumber,
+              address1: res.data.address1,
+              address2: res.data.address2,
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
         handleClose();
       })
       .catch(error => {
