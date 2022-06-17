@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, useState } from 'react';
 import { ReactComponent as DropdownIcon } from 'assets/svgs/icons/dropdown-icon.svg';
 import * as S from './Dropdown02.styles';
 
@@ -9,6 +9,8 @@ const CATEGORY = [
 
 interface IDropdown02Props {
   page: 0 | 1; // market | activity,support
+  setSelect?: any;
+  // setSelect?: Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Dropdown02(props: IDropdown02Props) {
@@ -23,6 +25,7 @@ export default function Dropdown02(props: IDropdown02Props) {
     setIsActive(prev => !prev);
     onClickCategory();
     setIsSelected(el);
+    props.setSelect((prev: boolean) => !prev);
   };
 
   return (
