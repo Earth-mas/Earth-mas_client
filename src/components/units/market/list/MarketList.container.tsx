@@ -1,22 +1,31 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
 import MarketCard from 'components/commons/card/market/MarketCard';
+import { IMarketCard } from 'components/commons/card/market/MarketCard.types';
 import Category from 'components/commons/category/Category';
 import Input02 from 'components/commons/inputs/Input02';
 import Title02 from 'components/commons/text/title/Title02';
-import { DATA } from './MarketList.item.data';
+import { useEffect, useState } from 'react';
+import { v4 as uuid4 } from 'uuid';
+
 export default function MarketList() {
-  const fetchItems = async () => {
-    await axios
-      .patch(`https://earth-mas.shop/server/market/finddcs`)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-  fetchItems();
+  const [listData, setListData] = useState<any>();
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      await axios
+        .get(`https://earth-mas.shop/server/market/finddcs`)
+        .then(res => {
+          console.log(res);
+          setListData(res.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
+    fetchItems();
+    // console.log(DetailData);
+  }, []);
 
   return (
     <Wrap>
@@ -29,10 +38,10 @@ export default function MarketList() {
       <section className="item-list">
         <Title02 content="전체 인기상품" margin={35} />
         <CardWrap>
-          {DATA.map(el => (
-            // <MarketListItem cardData={el} />
-            <MarketCard cardData={el} />
-          ))}
+          {listData &&
+            listData.map((el: IMarketCard) => (
+              <MarketCard listData={el} key={uuid4()} />
+            ))}
         </CardWrap>
       </section>
     </Wrap>

@@ -2,16 +2,21 @@ import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import Title01 from '../text/title/Title01';
-import category1 from '../../../assets/images/market/banner/banner1.jpeg';
+import category1 from '../../../assets/images/market/category/category1.jpeg';
+import category2 from '../../../assets/images/market/category/category2.jpeg';
+import category3 from '../../../assets/images/market/category/category3.jpeg';
+import category4 from '../../../assets/images/market/category/category4.jpeg';
+import category5 from '../../../assets/images/market/category/category5.jpeg';
+
 import Line from '../line';
 
 const CATEGORY = [
   [
     { category: '전체', image: category1 },
-    { category: '욕실', image: category1 },
-    { category: '주방', image: category1 },
-    { category: '데일리', image: category1 },
-    { category: '키트', image: category1 },
+    { category: '욕실', image: category2 },
+    { category: '주방', image: category3 },
+    { category: '데일리', image: category4 },
+    { category: '키트', image: category5 },
   ],
   [
     { category: '전체', image: 'a' },
@@ -33,7 +38,7 @@ export default function Category(props: ICategoryProps) {
       <ul>
         {CATEGORY[props.page].map(el => (
           <li key={el.category}>
-            <span>{el.category}</span>
+            <span>#{el.category}</span>
             <img src={el.image} />
           </li>
         ))}
@@ -66,7 +71,7 @@ const Wrap = styled.div`
     span {
       z-index: 2;
       position: absolute;
-      font-family: ${FontFamily.MEDIUM};
+      font-family: ${FontFamily.BOLD};
       font-size: ${FontSize.MEDIUM_T};
       color: ${Colors.BW};
     }
