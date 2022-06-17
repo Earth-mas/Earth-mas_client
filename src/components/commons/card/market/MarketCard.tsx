@@ -23,6 +23,10 @@ export default function MarketCard(props: IMarketCardProps) {
     event.currentTarget.src = logo;
   };
 
+  const discountPrice = Number(props.listData?.discount);
+  const originPrice = Number(props.listData?.amount);
+  const discountRate = ((originPrice - discountPrice) / originPrice) * 100;
+
   return (
     <S.Wrap>
       <div className="image-box">
@@ -41,8 +45,8 @@ export default function MarketCard(props: IMarketCardProps) {
       <div className="description-box">
         <h5 className="title">{props.listData.title}</h5>
         <h2 className="price">
-          <span className="percent">27% </span>
-          <span> {Number(props.listData.amount).toLocaleString()}원</span>
+          <span className="percent">{discountRate}%</span>
+          <span> {discountPrice.toLocaleString()}원</span>
         </h2>
         <S.SubDescription>
           <span>

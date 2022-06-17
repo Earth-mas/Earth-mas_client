@@ -1,25 +1,28 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
 import Stars from 'components/commons/stars';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import DetailReviewItem from './DetailReview.item';
+import { v4 as uuid4 } from 'uuid';
 
 interface IDetailReview {
   reviewscore?: number;
 }
 export default function DetailReview(props: IDetailReview) {
   const params = useParams();
-  // const [reviewData, setReviewData] = useState();
+  const [reviewData, setReviewData] = useState([]);
 
   const getReviews = async () => {
     await axios
-      .get(`https://earth-mas.shop/server/marketreview/${params.id}`)
+      .patch(`https://earth-mas.shop/server/marketreview/findall`, {
+        id: String(params.id),
+      })
       .then(res => {
-        console.log(res);
-        // setReviewData(res.data);
+        // console.log(res);
+        setReviewData(res.data);
         // console.log(reviewData);
       })
       .catch(error => {
@@ -29,7 +32,6 @@ export default function DetailReview(props: IDetailReview) {
 
   useEffect(() => {
     getReviews();
-    console.log(params.id);
   }, []);
   return (
     <Wrap>
@@ -41,8 +43,13 @@ export default function DetailReview(props: IDetailReview) {
         />
         <p className="score">{props.reviewscore}</p>
       </Score>
-
-      <DetailReviewItem />
+      {reviewData &&
+        reviewData.map(el => (
+          <>
+            <DetailReviewItem reviewData={el} key={uuid4()} />
+            <DetailReviewItem reviewData={el} key={uuid4()} />
+          </>
+        ))}
     </Wrap>
   );
 }

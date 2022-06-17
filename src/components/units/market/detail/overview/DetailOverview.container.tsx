@@ -7,6 +7,7 @@ import image from '../../../../../assets/images/market/banner/banner1.jpeg';
 import Title01 from 'components/commons/text/title/Title01';
 import { IMarketDetail } from '../MarketDetail.types';
 import Stars from 'components/commons/stars';
+import { v4 as uuid4 } from 'uuid';
 
 const DATA = [
   { image: image },
@@ -21,7 +22,9 @@ interface IDetailOverviewProps {
 }
 
 export default function DetailOverview(props: IDetailOverviewProps) {
-  console.log(props.detailData?.reviewscore);
+  const discountPrice = Number(props.detailData?.discount);
+  const originPrice = Number(props.detailData?.amount);
+  const discountRate = ((originPrice - discountPrice) / originPrice) * 100;
 
   return (
     <main>
@@ -29,7 +32,7 @@ export default function DetailOverview(props: IDetailOverviewProps) {
         <div className="carousel-preview">
           <ul>
             {DATA.map(el => (
-              <li className="carousel-preview-image">
+              <li className="carousel-preview-image" key={uuid4()}>
                 <img src={el.image} />
               </li>
             ))}
@@ -57,13 +60,11 @@ export default function DetailOverview(props: IDetailOverviewProps) {
           <span>{props.detailData?.reviewpeople}개의 리뷰</span>
         </div>
         <p className="price">
-          <span className="price-discount-rate">27%</span>
+          <span className="price-discount-rate">{discountRate}%</span>
           <span className="price-discount">
-            {Number(props.detailData?.discount).toLocaleString()}원
+            {discountPrice.toLocaleString()}원
           </span>
-          <span className="price-origin">
-            {props.detailData?.amount.toLocaleString()}원
-          </span>
+          <span className="price-origin">{originPrice.toLocaleString()}원</span>
         </p>
         <div className="delivery">
           <div className="delivery-title">
