@@ -27,7 +27,11 @@ export const MainContent = styled.div<{ percent: number }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  .rowWrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .dDay {
     width: 60px;
     height: 25px;
@@ -133,11 +137,11 @@ export const Contents = styled.div`
   h4,
   h5 {
     font-family: ${FontFamily.BOLD};
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
     color: ${Colors.B100};
   }
   p {
-    margin-bottom: 35px;
+    /* margin-bottom: 35px; */
     line-height: 30px;
     font-size: ${FontSize.MEDIUM_C};
     color: ${Colors.B100};

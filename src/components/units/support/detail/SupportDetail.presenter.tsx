@@ -5,35 +5,34 @@ import Line from 'components/commons/line';
 import Slide from 'components/commons/slide';
 import Comment from './comment/Comment';
 import * as S from './SupportDetail.styles';
+import Dompurify from 'dompurify';
+import { getPrice } from 'commons/utils/utils';
+import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
+import { ISupportDetailUIProps } from './SupportDetail.types';
 
-export default function SupportDetailUI(props: { percent: number }) {
-  const today = new Date();
-  const dDay = new Date('2022-06-30');
-  const leftDay = Math.ceil(
-    (today.getTime() - dDay.getTime()) / (1000 * 60 * 60 * 24),
-  );
-
+export default function SupportDetailUI(props: ISupportDetailUIProps) {
   return (
     <S.Wrapper>
       <S.FirstSection>
         <Slide
           slide="sub"
-          banner1="/images/mainBanner/banner1.jpg"
+          banner1={props.data?.url}
           banner2="/images/mainBanner/banner2.jpg"
           banner3={undefined}
         />
         <S.MainContent percent={props.percent}>
-          <div className="dDay">
-            {leftDay > 0
-              ? `Done`
-              : leftDay < 0
-              ? `D${leftDay}`
-              : leftDay === 0 && 'D-day'}
+          <div className="rowWrap">
+            <div className="dDay">
+              {props.leftDay > 0
+                ? `Done`
+                : props.leftDay < 0
+                ? `D${props.leftDay}`
+                : props.leftDay === 0 && 'D-day'}
+            </div>
+            <Dropdown03 page="support" deleteContent={props.deleteContent} />
           </div>
 
-          <div className="title">
-            플라스틱 쓰레기 없는 미래를 같이 만들어요!
-          </div>
+          <div className="title">{props.data?.title}</div>
 
           <div className="percent">{props.percent}%</div>
           <div className="graph">
@@ -41,8 +40,8 @@ export default function SupportDetailUI(props: { percent: number }) {
           </div>
 
           <div className="goal">
-            <p>6,500,000원 목표</p>
-            <p>2,999,000원</p>
+            <p>{getPrice(props.data?.wishamount)}원 목표</p>
+            <p>{getPrice(props.data?.currentamount)}원</p>
           </div>
 
           <div className="user">
@@ -54,7 +53,7 @@ export default function SupportDetailUI(props: { percent: number }) {
                 }}
               />
             </div>
-            <p className="userName">환경재단</p>
+            <p className="userName">{props.data?.user?.name}</p>
           </div>
 
           <Line />
@@ -71,8 +70,12 @@ export default function SupportDetailUI(props: { percent: number }) {
       <Line />
 
       <S.SecondSection>
-        <S.Contents>
-          <img src="/images/naja-bertolt-jensen-BJUoZu0mpt0-unsplash.jpeg" />
+        <S.Contents
+          dangerouslySetInnerHTML={{
+            __html: Dompurify.sanitize(props.data?.description),
+          }}
+        >
+          {/* <img src="/images/naja-bertolt-jensen-BJUoZu0mpt0-unsplash.jpeg" />
           <h3>벚꽃길을 가득 채운 플라스틱 쓰레기</h3>
           <p>
             벚꽃이 활짝 핀 이번 봄, 코로나의 기세가 줄어들어 오랜만의 벚꽃놀이를
@@ -106,7 +109,7 @@ export default function SupportDetailUI(props: { percent: number }) {
             소중한 지구를 돌아볼 기회를 가지고, 미래의 지구를 만들어 갈 방법을
             같이 배우고자 합니다. 환경재단이 청소년과 함께 지속가능한 지구를
             만들 수 있게 관심과 응원 보내주세요!
-          </p>
+          </p> */}
         </S.Contents>
         <S.ParticipationList>
           <p className="title">참여내역</p>
@@ -190,7 +193,7 @@ export default function SupportDetailUI(props: { percent: number }) {
           <BubbleIcon />
         </div>
 
-        <div className="commentWrapper">
+        <form className="commentWrapper">
           <div className="userImg">
             <img
               src="/images/profileDefault.png"
@@ -208,7 +211,7 @@ export default function SupportDetailUI(props: { percent: number }) {
             />
             <button>입력</button>
           </div>
-        </div>
+        </form>
 
         <Comment />
       </S.ThirdSection>
