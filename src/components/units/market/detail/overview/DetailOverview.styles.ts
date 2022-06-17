@@ -74,22 +74,10 @@ export const ItemInfo = styled.section`
     font-size: ${FontSize.SMALL};
     color: ${Colors.B80};
     display: flex;
+    align-items: flex-start;
     margin-bottom: 15px;
-    .outlined-star {
-      position: relative;
-      display: flex;
+    div {
       margin-right: 5px;
-
-      li {
-        margin-right: 4px;
-      }
-    }
-    .contained-star {
-      position: absolute;
-      display: flex;
-      li {
-        margin-right: 4px;
-      }
     }
   }
 
