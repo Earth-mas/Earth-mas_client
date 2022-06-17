@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import styled from '@emotion/styled';
 
 // import useOnClickOutside from 'hooks/worker/useOnClickOutside'
 
 import ModalMenu from './LoginContents';
 import Modal from '../../commons/modal';
+import { FontSize } from 'styles/FontStyles';
 
 const Login = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,9 +15,9 @@ const Login = () => {
 
   return (
     <>
-      <button type="button" onClick={handleClick}>
+      <LoginButton type="button" onClick={handleClick}>
         로그인
-      </button>
+      </LoginButton>
       {isOpen && (
         <Modal>
           <ModalMenu handleClose={handleClick} />
@@ -26,3 +28,7 @@ const Login = () => {
 };
 
 export default Login;
+
+const LoginButton = styled.button`
+  font-size: ${FontSize.SMALL};
+`;

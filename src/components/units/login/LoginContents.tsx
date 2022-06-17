@@ -4,8 +4,6 @@ import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { LoginWrapper, ModalBackGround } from './LoginContents.styles';
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 import { Link } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { userState } from 'recoil/user';
 
 interface IProps {
   handleClose: () => void;
@@ -14,7 +12,6 @@ interface IProps {
 const LoginContents = ({ handleClose }: IProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const setUser = useSetRecoilState(userState);
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -39,23 +36,6 @@ const LoginContents = ({ handleClose }: IProps) => {
       .then(res => {
         const accessToken = res.data;
         store.set('accessToken', accessToken);
-        axios
-          .get('https://earth-mas.shop/server/user/me', {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          })
-          .then(res => {
-            setUser({
-              id: res.data.id,
-              name: res.data.name,
-              email: res.data.email,
-              url: res.data.url,
-            });
-          })
-          .catch(error => {
-            console.log(error);
-          });
         // axios.defaults.headers.common[
         //   'Authorization'
         // ] = `Bearer ${accessToken}`;

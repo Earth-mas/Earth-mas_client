@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
 import Slide from 'components/commons/slide';
-import Login from 'components/units/login';
 import { Link } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
@@ -9,7 +8,6 @@ import { FontFamily, FontSize } from 'styles/FontStyles';
 export default function HomePage() {
   return (
     <>
-      <Login />
       <Slide
         slide="main"
         banner1="/images/mainBanner/banner1.jpg"

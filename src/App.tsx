@@ -24,8 +24,12 @@ import SupportNewPage from 'pages/support/new';
 import SupportDetailPage from 'pages/support/[supportid]';
 // import SupportEditPage from 'pages/support/[supportid]/edit';
 
+import useSetUser from 'hooks/useSetUser';
+
 const App = () => {
   const queryClient = new QueryClient();
+
+  useSetUser();
 
   return (
     <>

@@ -3,46 +3,37 @@ import UserInfo from 'components/units/myPage/user/MyPageUser.container';
 import { useState } from 'react';
 import { Colors } from 'styles/Colors';
 import styled from '@emotion/styled';
-import { userState } from 'recoil/user';
+import { useSearchParams } from 'react-router-dom';
+
+import { FontSize } from 'styles/FontStyles';
 import { useRecoilValue } from 'recoil';
+import { userState } from 'recoil/user';
+import Line from 'components/commons/line';
+import Profile from 'components/commons/profile/profile';
+import Blank from 'components/commons/blank/Blank';
+import store from 'storejs';
 
 interface IMenu {
   name: string;
   content: string | EmotionJSX.Element;
 }
 
-const MyPageWrapper = styled.div`
-  display: flex;
-  min-width: 1024px;
-  justify-content: space-between;
-  padding: 50px 0 145px 0;
-
-  ul {
-    width: 265px;
-    height: 550px;
-    border: 1px solid ${Colors.B80};
-    border-radius: 5px;
-    padding: 40px 5px;
-
-    li {
-      cursor: pointer;
-    }
-  }
-
-  .contentWrapper {
-    width: 720px;
-    border: 1px solid ${Colors.B80};
-    border-radius: 20px;
-    padding: 70px 60px;
-  }
-`;
-
 export default function MyPage() {
-  const [currentTab, setCurrentTab] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const menuQuery = searchParams.getAll('menu');
+  const [currentTab, setCurrentTab] = useState(Number(menuQuery));
   const userInfo = useRecoilValue(userState);
+  const { url, name } = userInfo;
+  const accessToken = store.get('accessToken');
+
+  if (!accessToken) {
+    alert('로그인을 해주세요.');
+    return <></>;
+  }
 
   const selectMenuHandler = (index: number) => {
     setCurrentTab(index);
+    setSearchParams({ menu: String(index) });
   };
 
   const menuArr = [
@@ -52,11 +43,16 @@ export default function MyPage() {
     { name: '마켓', content: '마켓' },
   ];
 
-  console.log(userInfo);
-
   return (
     <MyPageWrapper>
       <ul>
+        <h1>MY PAGE</h1>
+        <Line />
+        <section className="profile">
+          <Profile size={50} name={name} url={url} />
+        </section>
+        <Line />
+        <Blank height={20} />
         {menuArr.map((el: IMenu, index: number) => (
           <li
             key={index}
@@ -71,3 +67,54 @@ export default function MyPage() {
     </MyPageWrapper>
   );
 }
+const MyPageWrapper = styled.div`
+  display: flex;
+  min-width: 1024px;
+  justify-content: space-between;
+  padding: 50px 0 145px 0;
+  color: ${Colors.B100};
+
+  ul {
+    width: 265px;
+    height: 450px;
+    box-shadow: ${Colors.B40} 0 7px 16px;
+    border-radius: 20px;
+    padding: 40px 20px;
+    .focused {
+      border: 1px solid ${Colors.SUB1};
+      color: ${Colors.SUB1};
+    }
+    .submenu {
+      cursor: pointer;
+    }
+    .profile {
+      padding: 20px 40px;
+    }
+
+    li {
+      border: 1px solid ${Colors.B80};
+      margin-bottom: 10px;
+      padding: 0 20px;
+      font-size: ${FontSize.MEDIUM_C};
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border-radius: 5px;
+      :hover {
+        border: 1px solid ${Colors.SUB1};
+        color: ${Colors.SUB1};
+      }
+    }
+
+    h1 {
+      font-size: ${FontSize.MEDIUM_T};
+      padding-bottom: 20px;
+    }
+  }
+
+  .contentWrapper {
+    width: 720px;
+    border-radius: 20px;
+    padding: 20px 30px;
+  }
+`;

@@ -1,22 +1,44 @@
-import { Avatar, CameraIcon, SettingIcon } from 'assets/svgs';
+import { userState } from 'recoil/user';
+import { useRecoilValue } from 'recoil';
+import { SettingIcon } from 'assets/svgs';
 import { UserWrapper } from './MyPageUser.styles';
+import UpdateImage from './profile/updateImage';
+import UpdateAddress from './profile/updateAddress';
+import UpdatePassword from './profile/updatePassword';
+import DeleteUser from './profile/deleteUser';
 
 export default function UserInfo() {
+  const userInfo = useRecoilValue(userState);
+  const { url, id, name, email, addressnumber, address1, address2 } = userInfo;
+
   return (
     <UserWrapper>
       <div className="title">
         <SettingIcon />
         <h1>계정 관리</h1>
       </div>
-      <div className="userInfo">
-        <div className="avatarImage">
-          <Avatar />
-          <span>
-            <CameraIcon className="cameraIcon" />
-          </span>
-          <button>이미지 삭제하기</button>
+      <section className="userInfo">
+        <div className="userInfoLeft">
+          <UpdateImage url={url} id={id} />
         </div>
-      </div>
+        <div className="userInfoRight">
+          <span className="userName">
+            <mark>{name}</mark>님
+          </span>
+          <p className="userEmail">{email}</p>
+        </div>
+      </section>
+
+      {addressnumber !== '' && (
+        <UpdateAddress
+          addressnumber={addressnumber}
+          address1={address1}
+          address2={address2}
+          id={id}
+        />
+      )}
+      <UpdatePassword />
+      <DeleteUser />
     </UserWrapper>
   );
 }
