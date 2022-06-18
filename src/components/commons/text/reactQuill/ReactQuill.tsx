@@ -3,8 +3,8 @@ import 'react-quill/dist/quill.snow.css';
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { PLACEHOLDER } from './ReactQuill.data';
-import { SetStateAction } from 'react';
 interface IQuillEditorProps {
+  value?: any;
   page: number;
   onChange?: any;
   name?: string;
@@ -21,6 +21,7 @@ export default function QuillEditor(props: IQuillEditorProps) {
     [{ color: [] }, { background: [] }],
     [{ align: [] }],
   ];
+  console.log(props.value);
 
   // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
   // const formats = [
@@ -58,6 +59,7 @@ export default function QuillEditor(props: IQuillEditorProps) {
         placeholder={PLACEHOLDER[props.page]}
         onChange={props.onChange}
         //  formats={formats}
+        defaultValue={props.value}
       />
     </QuillWrap>
   );

@@ -5,32 +5,28 @@ import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
-import DatePicker01 from 'components/commons/datePicker';
+import DatePicker02 from 'components/commons/datePicker/02';
 import { ISupportNewUIProps } from './SupportNew.types';
-import {
-  FormEvent,
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  SyntheticEvent,
-} from 'react';
+import Login from 'components/units/login';
 
-export default function SupportNewUI(props: {
-  onClickSubmit: (arg0: FormEvent<HTMLFormElement>) => void;
-  handleChange: (arg0: ChangeEvent<HTMLInputElement>) => void;
-  onChangeDate: (
-    date: Date | null,
-    event: SyntheticEvent<any, Event> | undefined,
-  ) => void;
-  date: Date | null | undefined;
-  urls: string[];
-  setUrls: Dispatch<SetStateAction<string[]>>;
-  editorChange: (e: SetStateAction<undefined>) => void;
-}) {
+export default function SupportNewUI(props: ISupportNewUIProps) {
+  console.log(props.fetchData?.title);
+
   return (
     <Wrapper>
-      <Title01 content="후원등록" margin={35} size="C" />
-      <form onSubmit={event => props.onClickSubmit(event)}>
+      <Login />
+      <Title01
+        content={props.isEdit ? '후원수정' : '후원등록'}
+        margin={35}
+        size="C"
+      />
+      <form
+        onSubmit={
+          /* props.isEdit
+            ? event => props.onClickEdit(event)
+            :  */ event => props.onClickSubmit(event)
+        }
+      >
         <Input01
           id="title"
           type="text"
@@ -38,33 +34,45 @@ export default function SupportNewUI(props: {
           name="title"
           margin={25}
           onChange={e => props.handleChange(e)}
+          defaultValue={props.fetchData?.title}
         />
 
         <Input01
-          type="text"
+          type="number"
           placeholder="희망하는 목표 금액을 입력해주세요"
           name="wishamount"
           margin={25}
           onChange={e => props.handleChange(e)}
+          defaultValue={Number(props.fetchData?.wishamount)}
         />
 
-        <DatePicker01
+        <DatePicker02
           onChangeDate={props.onChangeDate}
           name="dday"
           date={props.date}
+          // defaultValue={new Date(props.fetchData?.dday)}
         />
-
-        <Upload01 page="support" urls={props.urls} setUrls={props.setUrls} />
+        <Upload01
+          page="support"
+          urls={props.urls}
+          setUrls={props.setUrls}
+          // fetchData={props.fetchData?.url}
+        />
         <Blank height={25} />
         <QuillEditor
           page={0}
           onChange={props.editorChange}
           name="description"
+          value={props.fetchData?.description || ``}
         />
         <Blank height={60} />
 
         <div className="submitButton">
-          <ContainedButton01 content="등록하기" color="main" type="submit" />
+          <ContainedButton01
+            content={props.isEdit ? '후원수정' : '후원등록'}
+            color="main"
+            type="submit"
+          />
         </div>
       </form>
     </Wrapper>
