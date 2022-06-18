@@ -17,11 +17,11 @@ export default function DetailReview(props: IDetailReview) {
 
   const getReviews = async () => {
     await axios
-      .patch(`https://earth-mas.shop/server/marketreview/findall`, {
-        id: String(params.id),
+      .post(`https://earth-mas.shop/server/marketreview/findall`, {
+        market: String(params.id),
       })
       .then(res => {
-        // console.log(res);
+        console.log(res);
         setReviewData(res.data);
         // console.log(reviewData);
       })
@@ -45,10 +45,7 @@ export default function DetailReview(props: IDetailReview) {
       </Score>
       {reviewData &&
         reviewData.map(el => (
-          <>
-            <DetailReviewItem reviewData={el} key={uuid4()} />
-            <DetailReviewItem reviewData={el} key={uuid4()} />
-          </>
+          <DetailReviewItem reviewData={el} key={uuid4()} />
         ))}
     </Wrap>
   );

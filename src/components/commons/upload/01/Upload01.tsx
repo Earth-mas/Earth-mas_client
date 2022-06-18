@@ -9,6 +9,7 @@ interface IUpload01Props {
   page: 'market' | 'activity' | 'support' | 'user';
   setUrls: Dispatch<SetStateAction<string[]>>;
   urls: string[];
+  fetchData?: string[];
 }
 export default function Upload01(props: IUpload01Props) {
   // const [urls, setUrls] = useState<string[]>([]);
@@ -73,6 +74,34 @@ export default function Upload01(props: IUpload01Props) {
         <Droppable droppableId="imageList" direction="horizontal">
           {provided => (
             <ul {...provided.droppableProps} ref={provided.innerRef}>
+              {/* {props.fetchData ? (
+                <> */}
+              {props.fetchData?.map((el, index) => (
+                <Draggable draggableId={el} index={index} key={el}>
+                  {provided => (
+                    <li>
+                      <S.ImageWrap
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <S.XButton onClick={onClickDelete(index)}>
+                          <XbuttonIcon />
+                        </S.XButton>
+                        <S.Image>
+                          {index === 0 && (
+                            <S.Text>
+                              <span>대표사진</span>
+                            </S.Text>
+                          )}
+                          <img src={el} />
+                        </S.Image>
+                      </S.ImageWrap>
+                    </li>
+                  )}
+                </Draggable>
+              ))}
+              {/* </> ) : ( <> */}
               {urls.map((el, index) => (
                 <Draggable draggableId={el} index={index} key={el}>
                   {provided => (
@@ -98,6 +127,7 @@ export default function Upload01(props: IUpload01Props) {
                   )}
                 </Draggable>
               ))}
+              {/* </> )} */}
             </ul>
           )}
         </Droppable>

@@ -29,14 +29,8 @@ export default function UpdateImage(props: IProps) {
         axios
           .put(
             `https://earth-mas.shop/server/user/${props.id}`,
-            // 이미지 url 외 변경항목 임시로 하드코딩함
             {
               url,
-              password: '12341234',
-              name: '아이브',
-              addressnumber: '01234',
-              address1: '넌 내게로 난 네게로',
-              address2: '숨참고 러브다이브',
             },
             {
               headers: {
@@ -60,11 +54,6 @@ export default function UpdateImage(props: IProps) {
         `http://34.64.224.198:3000/server/user/${props.id}`,
         {
           url: null,
-          password: '12341234',
-          name: '아이브',
-          addressnumber: '01234',
-          address1: '넌 내게로 난 네게로',
-          address2: '숨참고 러브다이브',
         },
         {
           headers: {

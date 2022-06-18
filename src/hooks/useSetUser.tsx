@@ -22,7 +22,7 @@ export default function useSetUser() {
           url: res.data.url,
           addressnumber: res.data.addressnumber,
           address1: res.data.address1,
-          address2: res.data.addresss2,
+          address2: res.data.address2,
         });
       })
       .catch(error => {

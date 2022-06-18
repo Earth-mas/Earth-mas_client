@@ -6,7 +6,8 @@ import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { ko } from 'date-fns/esm/locale';
 
-export interface IDatePickerProps {
+interface IDatePickerProps {
+  defaultValue?: Date | null | undefined;
   onChangeDate: (
     date: Date | null,
     event: SyntheticEvent<any, Event> | undefined,
