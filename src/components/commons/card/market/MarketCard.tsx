@@ -6,7 +6,6 @@ import {
 } from 'assets/svgs';
 import * as S from './MarketCard.styles';
 import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
-
 import { Link, useParams } from 'react-router-dom';
 import { IMarketCard } from './MarketCard.types';
 import { SyntheticEvent, useEffect } from 'react';
@@ -48,7 +47,7 @@ export default function MarketCard(props: IMarketCardProps) {
         </div>
         <Link to={`/market/${props.listData.id}`} id={props.listData.id}>
           <img
-            src={props.listData.url ? props.listData.url : logo}
+            src={props.listData.url ? props.listData.url.split(',')[0] : logo}
             alt="상품이미지"
             onError={onErrorImg}
           />

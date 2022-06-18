@@ -8,6 +8,13 @@ import { IMarketDetail } from '../MarketDetail.types';
 import Stars from 'components/commons/stars';
 import { v4 as uuid4 } from 'uuid';
 import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
+import { useState } from 'react';
+import Modal from 'components/commons/modal';
+import ContentModal from 'components/commons/modal/contentModal/contentModal';
+import ReviewNew from '../../review/new/ReviewNew.container';
+
+import store from 'storejs';
+import axios from 'axios';
 
 interface IDetailOverviewProps {
   detailData?: IMarketDetail;
@@ -22,8 +29,54 @@ export default function DetailOverview(props: IDetailOverviewProps) {
   );
   // console.log(props.detailData?.url);
 
+  const accessToken = store.get('accessToken');
+  const [isOpen, setIsOpen] = useState(false);
+  const [contents, setContents] = useState('');
+
+  const onClickSubmit = async () => {
+    const variables = {
+      contents,
+      score: 4,
+      market: '마켓상품 id',
+    };
+    console.log(variables);
+    // await axios
+    //   .post(`https://earth-mas.shop/server/marketreview/ `, variables, {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   })
+    //   .then(res => {
+    //     console.log('응답', res);
+    //     setIsOpen(prev => !prev);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+  };
+
   return (
     <main>
+      {isOpen && (
+        <Modal>
+          <ContentModal
+            cancelMessage="취소"
+            okMessage="리뷰 등록"
+            onClickCancel={() => setIsOpen(prev => !prev)}
+            onClickOk={onClickSubmit}
+            children={
+              <ReviewNew
+                title="상품 명"
+                minidescription="상품 짧은 설명"
+                id="상품 아이디"
+                contents={contents}
+                setContents={setContents}
+              />
+            }
+          />
+        </Modal>
+      )}
+
       <S.ItemImage>
         <div className="carousel-preview">
           <ul>
@@ -84,7 +137,11 @@ export default function DetailOverview(props: IDetailOverviewProps) {
         <div className="buttons">
           <ContainedButton01 color="main" content="구매하기" />
           <div className="button-wrap">
-            <OutlinedButton01 color="main" content={<HeartOutlineRedIcon />} />
+            <OutlinedButton01
+              color="main"
+              content={<HeartOutlineRedIcon />}
+              onClick={() => setIsOpen(prev => !prev)}
+            />
             <OutlinedButton01 color="main" content={<ShareIcon />} />
           </div>
         </div>

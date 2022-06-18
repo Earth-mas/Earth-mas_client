@@ -4,13 +4,12 @@ import { GetDate } from 'commons/utils/GetDate';
 import Stars from 'components/commons/stars';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-import { IMarketDetailReview } from '../MarketDetail.types';
-
-interface IDetailReviewItem {
-  reviewData: IMarketDetailReview;
+import { IMarketReviewDetail } from './ReviewDetail.types';
+interface IReviewDetailProps {
+  reviewData: IMarketReviewDetail;
 }
 
-export default function DetailReviewItem(props: IDetailReviewItem) {
+export default function ReviewDetail(props: IReviewDetailProps) {
   // console.log(props.reviewData);
   return (
     <Wrap>

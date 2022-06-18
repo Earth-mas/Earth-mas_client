@@ -15,7 +15,7 @@ export default function MarketList() {
     await axios
       .get(`https://earth-mas.shop/server/market/finddcs`)
       .then(res => {
-        // console.log(res);
+        // console.log(res.data);
         setListData(res.data);
       })
       .catch(error => {

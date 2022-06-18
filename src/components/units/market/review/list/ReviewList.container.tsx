@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-import DetailReviewItem from './DetailReview.item';
 import { v4 as uuid4 } from 'uuid';
+import ReviewDetail from '../detail/ReviewDetail';
 
-interface IDetailReview {
+interface IMarketReviewListProps {
   reviewscore?: number;
 }
-export default function DetailReview(props: IDetailReview) {
+export default function ReviewList(props: IMarketReviewListProps) {
   const params = useParams();
   const [reviewData, setReviewData] = useState([]);
 
@@ -44,9 +44,7 @@ export default function DetailReview(props: IDetailReview) {
         <p className="score">{props.reviewscore}</p>
       </Score>
       {reviewData &&
-        reviewData.map(el => (
-          <DetailReviewItem reviewData={el} key={uuid4()} />
-        ))}
+        reviewData.map(el => <ReviewDetail reviewData={el} key={uuid4()} />)}
     </Wrap>
   );
 }
