@@ -40,6 +40,7 @@ interface IInput01Props {
 }
 
 export default function Input01(props: IInput01Props) {
+  // console.log('props', props.register);
   return (
     <Input
       {...props.register}
