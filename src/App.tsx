@@ -11,7 +11,6 @@ import MyPage from 'pages/myPage';
 import SignUpPage from 'pages/signUp';
 
 import ActivityPage from 'pages/activity';
-import ActivityList from 'components/units/activity/list/ActivityList.container';
 import ActivityNew from 'components/units/activity/new/ActivityNew.container';
 import ActivityDetail from 'components/units/activity/detail/ActivityDetail.container';
 
@@ -43,7 +42,6 @@ const App = () => {
             <Route element={<Layout />}>
               <Route path="/" element={<HomePage />} />
               <Route path="/activity" element={<ActivityPage />} />
-              <Route path="/activity/list" element={<ActivityList />} />
               <Route path="/activity/new" element={<ActivityNew />} />
               <Route path="/activity/:id" element={<ActivityDetail />} />
 

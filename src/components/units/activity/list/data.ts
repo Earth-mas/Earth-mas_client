@@ -1,0 +1,58 @@
+export const listData = [
+  {
+    img: '/images/activity/list/activity01',
+    location: '서울 관악산',
+    contents: '관악산에서 플로킹하면서 쓰레기 주워요.',
+    user: '끼링깨랑',
+    dday: '2022-06-18',
+  },
+  {
+    img: '/images/activity/list/activity02',
+    location: '강릉 영월',
+    contents: '영월 해변에서 쓰레기 주워요.',
+    user: 'jeje',
+    dday: '2022-06-19',
+  },
+  {
+    img: '/images/activity/list/activity03',
+    location: '서울 인왕산',
+    contents: '인왕에서 이만큼 쓰레기가 나왔어요.',
+    user: '아이브',
+    dday: '2022-06-20',
+  },
+  {
+    img: '/images/activity/list/activity04',
+    location: '강원도 속초',
+    contents: '속초에서 플로킹하면서 쓰레기 주우실분.',
+    user: '강낭콩',
+    dday: '2022-06-21',
+  },
+  {
+    img: '/images/activity/list/activity05',
+    location: '수원 화성시',
+    contents: '쓰레기 매립지에 나무 심으면서 매립지 복구 하실분.',
+    user: 'hoohoo',
+    dday: '2022-06-22',
+  },
+  {
+    img: '/images/activity/list/activity06',
+    location: '부산 해운대',
+    contents: '해운대에서 플로깅하면서 같이 쓰레기 주워요.',
+    user: '끼링깨랑',
+    dday: '2022-06-23',
+  },
+  {
+    img: '/images/activity/list/activity07',
+    location: '서울 한강',
+    contents: '한강에서 플로깅하면서 쓰레기 주워요.',
+    user: 'jeje',
+    dday: '2022-06-24',
+  },
+  {
+    img: '/images/activity/list/activity08',
+    location: '강원도 속초',
+    contents: '속초에서 플리빙하면서 쓰레기 주우실분.',
+    user: '아이브',
+    dday: '2022-06-25',
+  },
+];
