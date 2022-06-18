@@ -4,10 +4,12 @@ import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { PLACEHOLDER } from './ReactQuill.data';
 interface IQuillEditorProps {
-  value?: any;
   page: number;
   onChange?: any;
   name?: string;
+  value?: any;
+  defaultValue?: string;
+  resgister?: any;
 }
 
 export default function QuillEditor(props: IQuillEditorProps) {
@@ -21,7 +23,7 @@ export default function QuillEditor(props: IQuillEditorProps) {
     [{ color: [] }, { background: [] }],
     [{ align: [] }],
   ];
-  console.log(props.value);
+  // console.log(props.defaultValue);
 
   // 옵션에 상응하는 포맷, 추가해주지 않으면 text editor에 적용된 스타일을 볼수 없음
   // const formats = [
@@ -51,6 +53,8 @@ export default function QuillEditor(props: IQuillEditorProps) {
     },
   };
 
+  // console.log(props.value);
+
   return (
     <QuillWrap>
       <ReactQuill
@@ -58,8 +62,9 @@ export default function QuillEditor(props: IQuillEditorProps) {
         modules={modules}
         placeholder={PLACEHOLDER[props.page]}
         onChange={props.onChange}
+        {...props.resgister}
         //  formats={formats}
-        defaultValue={props.value}
+        value={props.value}
       />
     </QuillWrap>
   );

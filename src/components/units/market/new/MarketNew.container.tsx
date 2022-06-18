@@ -1,6 +1,10 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import MarketNewUI from './MarketNew.presenter';
+import store from 'storejs';
+import { useNavigate, useParams } from 'react-router-dom';
+import { IMarketDetail } from '../detail/MarketDetail.types';
 
 export interface FormValues {
   title?: string;
@@ -8,140 +12,131 @@ export interface FormValues {
   amount?: number;
   discount?: number;
   minidescription?: string;
-  name?: string;
+  description?: string;
 }
-export default function MarketNew() {
-  // const [urls, setUrls] = useState<string[]>([]);
+
+interface IMarketNewProps {
+  isEdit: boolean;
+  itemData?: IMarketDetail;
+}
+
+interface IUpdateVariables {
+  title?: string;
+  minidescription?: string;
+  description?: string;
+  url?: string;
+  amount?: number;
+  discount?: number;
+  stock?: number;
+  category?: string;
+}
+export default function MarketNew(props: IMarketNewProps) {
+  const accessToken = store.get('accessToken');
+  const [urls, setUrls] = useState<string[]>([]);
+  const urlString = urls.toString();
+  const [isSelected, setIsSelected] = useState('');
+  const params = useParams();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    // watch,
-    // formState: { errors },
+    setValue,
+    trigger,
+    // formState: { errors }
+    getValues,
   } = useForm<FormValues>({
-    // mode: 'onSubmit',
-    // reValidateMode: 'onChange',
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
   });
 
-  const onClickSubmit = (data: FormValues) => {
-    console.log(data);
+  const onChangeQuill = (value: any) => {
+    // console.log(value);
+    setValue('description', value === '<p><br><p>' ? '' : value);
+    trigger('description');
   };
-  // console.log(register('title'));
+
+  const onClickSubmit = async (data: FormValues) => {
+    // console.log(data);
+    const variables = {
+      ...data,
+      category: isSelected,
+      url: urlString,
+    };
+    // console.log(variables);
+    await axios
+      .post(`https://earth-mas.shop/server/market/ `, variables, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then(res => {
+        console.log('응답', res);
+        // console.log('상품 id', res.data?.id);
+        // navigate(`/market/${res.data?.id}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const onClickUpdate = async (data: FormValues) => {
+    if (
+      !data.title &&
+      !data.stock &&
+      !data.amount &&
+      !data.discount &&
+      data.description === props.itemData?.description &&
+      urlString === props.itemData?.url
+      // && props.itemData?.marketcategory.name === isSelected
+    ) {
+      return alert('수정된 내용이 없습니다');
+    }
+
+    const updateVariables: IUpdateVariables = {
+      ...props.itemData,
+    };
+    if (data.title) updateVariables.title = data.title;
+    if (data.stock) updateVariables.stock = data.stock;
+    if (data.amount) updateVariables.amount = data.amount;
+    if (data.discount) updateVariables.discount = data.discount;
+    if (data.description) updateVariables.description = data.description;
+    // if (isSelected) updateVariables.category = isSelected;
+    // console.log(updateVariables);
+    await axios
+      .put(
+        `https://earth-mas.shop/server/market/${params.id} `,
+        updateVariables,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then(res => {
+        console.log('응답', res);
+        // console.log('상품 id', res.data?.id);
+        navigate(`/market/${res.data?.id}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <MarketNewUI
+      urls={urls}
+      setUrls={setUrls}
+      isEdit={props.isEdit}
+      itemData={props.itemData}
       register={register}
+      isSelected={isSelected}
+      setIsSelected={setIsSelected}
       handleSubmit={handleSubmit}
       onClickSubmit={onClickSubmit}
+      onClickUpdate={onClickUpdate}
+      onChangeQuill={onChangeQuill}
+      contents={getValues('description')}
     />
   );
 }
-
-// import styled from '@emotion/styled';
-// import Blank from 'components/commons/blank/Blank';
-// import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-// import Dropdown01 from 'components/commons/dropdown/01/Dropdown01';
-// import Input01 from 'components/commons/inputs/Input01';
-// import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
-// import Title01 from 'components/commons/text/title/Title01';
-// import Upload01 from 'components/commons/upload/01/Upload01';
-// import { useState } from 'react';
-// import { useForm } from 'react-hook-form';
-
-// export interface FormValues {
-//   title?: string;
-//   stock?: number;
-//   amount?: number;
-//   discount?: number;
-//   minidescription?: string;
-//   name?: string;
-// }
-// export default function MarketNew() {
-//   const [urls, setUrls] = useState<string[]>([]);
-
-//   const {
-//     register,
-//     handleSubmit,
-//     // watch,
-//     // formState: { errors },
-//   } = useForm<FormValues>({
-//     // mode: 'onSubmit',
-//     // reValidateMode: 'onChange',
-//   });
-
-//   const onClickSubmit = (data: FormValues) => {
-//     console.log(data);
-//   };
-//   // console.log(register('title'));
-
-//   return (
-//     <Wrap>
-//       <Title01 size="C" content="마켓 상품 등록" margin={35} />
-
-//       <form onSubmit={handleSubmit(onClickSubmit)}>
-//         <input {...register('name')} />
-//         <Input01
-//           // register={{ ...register('title') }}
-//           {...register('title')}
-//           type="text"
-//           placeholder="상품의 이름을 입력해주세요"
-//           margin={25}
-//         />
-
-//         <ColumnWrap>
-//           <Dropdown01 page={0} />
-
-//           <Input01
-//             // register={{ ...register('stock') }}
-//             // register={register('stock')}
-//             id="stock"
-//             type="number"
-//             placeholder="판매 가능 수량을 입력해주세요"
-//             margin={25}
-//           />
-//         </ColumnWrap>
-
-//         <ColumnWrap>
-//           <Input01
-//             // register={{ ...register('amount') }}
-//             // {...register('amount')}
-//             type="number"
-//             placeholder="희망하는 정상 가격을 입력해주세요"
-//             margin={25}
-//           />
-//           <Input01
-//             // register={{ ...register('discount') }}
-//             // {...register('discount')}
-//             type="number"
-//             placeholder="(선택) 희망하는 할인 가격을 입력해주세요"
-//           />
-//         </ColumnWrap>
-
-//         <Input01
-//           // register={{ ...register('minidescription') }}
-//           // {...register('minidescription')}
-//           type="text"
-//           placeholder="상품에 대한 짧은 설명과 대표 이미지를 입력해주세요"
-//           margin={25}
-//         />
-
-//         <Upload01 page="market" urls={urls} setUrls={setUrls} />
-//         <Blank height={25} />
-//         <QuillEditor page={0} />
-//         <Blank height={60} />
-//         <ContainedButton01 content="상품 등록" color="main" type="submit" />
-//       </form>
-//     </Wrap>
-//   );
-// }
-
-// const Wrap = styled.div`
-//   max-width: 1024px;
-//   width: 100%;
-//   padding: 30px 0px 100px 0px;
-// `;
-
-// const ColumnWrap = styled.div`
-//   display: flex;
-//   grid-gap: 25px;
-// `;

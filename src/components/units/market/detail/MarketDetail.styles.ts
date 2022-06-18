@@ -2,6 +2,10 @@ import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
+interface IProps {
+  nowTab?: string;
+}
+
 export const Wrap = styled.div`
   width: 1024px;
   padding: 50px 0px 100px 0px;
@@ -31,7 +35,11 @@ export const Wrap = styled.div`
           font-family: ${FontFamily.MEDIUM};
           font-size: ${FontSize.MEDIUM_C};
           color: ${Colors.B100};
-
+          &.active {
+            font-family: ${FontFamily.BOLD};
+            color: ${Colors.MAIN};
+            border-bottom: 1px solid ${Colors.MAIN};
+          }
           &:hover {
             font-family: ${FontFamily.BOLD};
             color: ${Colors.MAIN};

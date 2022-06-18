@@ -17,6 +17,7 @@ import ActivityDetail from 'components/units/activity/detail/ActivityDetail.cont
 import MarketPage from 'pages/market';
 import MarketNewPage from 'pages/market/new';
 import MarketDetailPage from 'pages/market/[marketId]';
+import MarketEditPage from 'pages/market/[marketId]/edit';
 
 import SupportPage from 'pages/support';
 import SupportNewPage from 'pages/support/new';
@@ -50,6 +51,7 @@ const App = () => {
               <Route path="/market" element={<MarketPage />} />
               <Route path="/market/new" element={<MarketNewPage />} />
               <Route path="/market/:id" element={<MarketDetailPage />} />
+              <Route path="/market/:id/edit" element={<MarketEditPage />} />
 
               <Route path="/support" element={<SupportPage />} />
               <Route path="/support/new" element={<SupportNewPage />} />

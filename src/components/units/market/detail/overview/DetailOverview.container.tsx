@@ -1,5 +1,4 @@
 import { HeartOutlineRedIcon, ShareIcon } from 'assets/svgs';
-
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import OutlinedButton01 from 'components/commons/button/outlined/OutlinedButton01';
 import * as S from './DetailOverview.styles';
@@ -8,32 +7,29 @@ import Title01 from 'components/commons/text/title/Title01';
 import { IMarketDetail } from '../MarketDetail.types';
 import Stars from 'components/commons/stars';
 import { v4 as uuid4 } from 'uuid';
-
-const DATA = [
-  { image: image },
-  { image: image },
-  { image: image },
-  { image: image },
-  { image: image },
-];
+import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
 
 interface IDetailOverviewProps {
   detailData?: IMarketDetail;
+  deleteMarketItem: () => void;
 }
 
 export default function DetailOverview(props: IDetailOverviewProps) {
   const discountPrice = Number(props.detailData?.discount);
   const originPrice = Number(props.detailData?.amount);
-  const discountRate = ((originPrice - discountPrice) / originPrice) * 100;
+  const discountRate = Math.floor(
+    ((originPrice - discountPrice) / originPrice) * 100,
+  );
+  // console.log(props.detailData?.url);
 
   return (
     <main>
       <S.ItemImage>
         <div className="carousel-preview">
           <ul>
-            {DATA.map(el => (
+            {props.detailData?.url.split(',').map(el => (
               <li className="carousel-preview-image" key={uuid4()}>
-                <img src={el.image} />
+                <img src={el} />
               </li>
             ))}
           </ul>
@@ -47,7 +43,10 @@ export default function DetailOverview(props: IDetailOverviewProps) {
         </div>
       </S.ItemImage>
       <S.ItemInfo>
-        <Title01 size="C" content={props.detailData?.title} margin={15} />
+        <div className="title-wrap">
+          <Title01 size="C" content={props.detailData?.title} margin={15} />
+          <Dropdown03 page="market" deleteContent={props.deleteMarketItem} />
+        </div>
         <p className="description">{props.detailData?.minidescription}</p>
         <div className="review">
           <Stars
