@@ -4,7 +4,7 @@ import store from 'storejs';
 import styled from '@emotion/styled';
 
 import { useState } from 'react';
-import AlertModal from './alertModal';
+import AlertModal from '../../../../commons/modal/alertModal/alertModal';
 import { useNavigate } from 'react-router-dom';
 import { useResetRecoilState } from 'recoil';
 import { userState } from 'recoil/user';

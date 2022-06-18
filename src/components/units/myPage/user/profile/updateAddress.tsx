@@ -57,7 +57,7 @@ export default function UpdateAddress(props: IProps) {
       )
       .then(() => alert('주소가 변경되었습니다.'))
       .catch(error => {
-        console.log(error);
+        alert(error.response.data.message);
       });
   };
 

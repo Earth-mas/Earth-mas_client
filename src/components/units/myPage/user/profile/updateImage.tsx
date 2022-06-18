@@ -1,5 +1,7 @@
 import { Avatar, CameraIcon } from 'assets/svgs';
 import axios from 'axios';
+import Modal from 'components/commons/modal';
+import InfoModal from 'components/commons/modal/infoModal/infoModal';
 import { ChangeEvent, useRef, useState } from 'react';
 import store from 'storejs';
 
@@ -10,6 +12,8 @@ interface IProps {
 
 export default function UpdateImage(props: IProps) {
   const [newUrl, setNewUrl] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const onClickModal = () => setIsOpen(prev => !prev);
   const formData = new FormData();
   const accessToken = store.get('accessToken');
   const fileRef = useRef<HTMLInputElement>(null);
@@ -38,10 +42,10 @@ export default function UpdateImage(props: IProps) {
               },
             },
           )
-          .then(res => console.log(res));
+          .then(() => setIsOpen(true));
       })
       .catch(error => {
-        console.log(error);
+        alert(error.response.data.message);
       });
   };
 
@@ -66,12 +70,22 @@ export default function UpdateImage(props: IProps) {
         alert('프로필 사진이 삭제되었습니다.');
       })
       .catch(error => {
-        console.log(error.message);
+        alert(error.response.data.message);
       });
   };
 
   return (
     <div className="avatarImage">
+      {isOpen && (
+        <Modal>
+          <InfoModal
+            onClickOk={onClickModal}
+            title="💬 이미지 등록하기"
+            contents="이미지가 성공적으로 등록되었습니다."
+            okMessage="확인"
+          />
+        </Modal>
+      )}
       <button onClick={onClickButton}>
         <input type="file" onChange={onChangeFile} ref={fileRef} />
         {!props.url && !newUrl && <Avatar />}
