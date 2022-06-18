@@ -3,16 +3,12 @@ import SupportCard from 'components/commons/card/support/SupportCard';
 import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 import Pagination from 'components/commons/pagination';
 import Slide from 'components/commons/slide';
-import { Dispatch, MouseEventHandler, SetStateAction } from 'react';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { v4 as uuidv4 } from 'uuid';
-import { ISupportListProps } from './SupportList.types';
+import { ISupportListProps, ISupportListUIProps } from './SupportList.types';
 
-export default function SupportListUI(props: {
-  list: ISupportListProps[];
-  setSelect: Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function SupportListUI(props: ISupportListUIProps) {
   const banner1 = '/images/supportBanner/supportBanner1.jpg';
   const banner2 = undefined;
   const banner3 = undefined;
@@ -28,12 +24,12 @@ export default function SupportListUI(props: {
       <Wrapper>
         <div className="topWrapper">
           <p className="totalCount">
-            전체 기부 <span>{props.list.length}</span>개
+            전체 기부 <span>{props.list?.data.length}</span>개
           </p>
           <Dropdown02 page={1} setSelect={props.setSelect} />
         </div>
         <CardWrapper>
-          {props.list.map((el: ISupportListProps) => (
+          {props.list?.data.map((el: ISupportListProps) => (
             <SupportCard key={uuidv4()} el={el} />
           ))}
         </CardWrapper>

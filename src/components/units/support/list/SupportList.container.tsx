@@ -1,27 +1,28 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { supportRoute } from 'utils/APIRoutes';
 import SupportListUI from './SupportList.presenter';
-import { ISupportListProps } from './SupportList.types';
 
 export default function SupportList() {
-  const [list, setList] = useState<ISupportListProps[]>([]);
   const [select, setSelect] = useState<boolean>(false);
 
+  const { data, refetch } = useQuery('supportList', () => {
+    return axios.get(
+      select ? `${supportRoute}/finddcs` : `${supportRoute}/finddday`,
+    );
+  });
+
+  function refetchList() {
+    if (select) {
+      refetch();
+    } else {
+      refetch();
+    }
+  }
   useEffect(() => {
-    const supportFindDcs = async () => {
-      if (select) {
-        await axios.get(`${supportRoute}/finddday`).then(res => {
-          setList(res.data);
-        });
-      } else {
-        await axios.get(`${supportRoute}/finddcs`).then(res => {
-          setList(res.data);
-        });
-      }
-    };
-    supportFindDcs();
+    refetchList();
   }, [select]);
 
-  return <SupportListUI list={list} setSelect={setSelect} />;
+  return <SupportListUI list={data} setSelect={setSelect} />;
 }

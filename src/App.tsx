@@ -28,6 +28,7 @@ import useSetUser from 'hooks/useSetUser';
 import SupportEditPage from 'pages/support/[supportid]/edit';
 import SupportPaymentPage from 'pages/support/[supportid]/payment';
 import SupportCompletePage from 'pages/support/[supportid]/payment/complete';
+import ScrollToTop from 'commons/utils/scrolltotop';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <Global styles={globalStyles} />
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<HomePage />} />
