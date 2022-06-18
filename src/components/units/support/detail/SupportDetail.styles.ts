@@ -170,6 +170,10 @@ export const ParticipationList = styled.div`
 
   .list {
     padding: 12px 15px;
+    border-bottom: 1px solid ${Colors.B20};
+    :last-of-type {
+      border-bottom: 0;
+    }
     span:first-of-type {
       padding-right: 10px;
     }
@@ -199,44 +203,7 @@ export const ThirdSection = styled.section`
       margin-right: 5px;
     }
   }
-
-  .commentWrapper {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    margin-bottom: 40px;
-
-    .userImg {
-      min-width: 30px;
-      max-width: 30px;
-      width: 100%;
-      height: 30px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-right: 12px;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-
-    .commentInput {
-      width: 100%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      button {
-        position: absolute;
-        right: 12px;
-        font-size: ${FontSize.MEDIUM_C};
-        font-family: ${FontFamily.BOLD};
-        color: ${Colors.B60};
-        :hover {
-          color: ${Colors.SUB1};
-        }
-      }
-    }
+  > div:last-of-type {
+    margin-bottom: 0;
   }
 `;

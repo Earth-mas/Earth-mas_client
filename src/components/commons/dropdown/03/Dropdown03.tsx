@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import * as S from './Dropdown03.styles';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 interface IDropdown03Props {
   // refetch: any;
@@ -12,12 +13,14 @@ export default function Dropdown03(props: IDropdown03Props) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
+  const queryClient = useQueryClient();
 
   const onClickCategory = () => {
     setIsActive(prev => !prev);
   };
 
   const onClickDelete = () => {
+    queryClient.invalidateQueries('supportList');
     navigate(`/${props.page}`);
     props.deleteContent();
     /* function refetchList() {

@@ -1,6 +1,12 @@
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
 import { useParams } from 'react-router-dom';
 import { supportRoute } from 'utils/APIRoutes';
 import SupportDetailUI from './SupportDetail.presenter';
@@ -9,7 +15,7 @@ export default function SupportDetail() {
   const { id } = useParams();
   // const [detaile, setDetail] = useState();
 
-  const { data } = useQuery('todos', async () => {
+  const { data } = useQuery('detailList', async () => {
     const { data } = await axios.get(`${supportRoute}/${id}`);
     return data;
   });
@@ -21,16 +27,28 @@ export default function SupportDetail() {
     (today.getTime() - dDay.getTime()) / (1000 * 60 * 60 * 24),
   );
 
-  const { data: list } = useQuery('todos', async () => {
+  const queryClient = useQueryClient();
+
+  const { mutate: deleteContent } = useMutation(
+    'detailDelete',
+    async () => {
+      return await axios.delete(`${supportRoute}/${id}`);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('supportList', { refetchInactive: true });
+      },
+    },
+  );
+
+  const { data: list } = useQuery('Support', async () => {
     const { data } = await axios.post(`${supportRoute}/supported`, { id: id });
     return data;
   });
+  // console.log(list);
 
-  const { mutate: deleteContent } = useMutation('todos', async () => {
-    return await axios.delete(`${supportRoute}/${id}`);
-  });
-
-  console.log('list', list);
+  // console.log('list', list);
+  // console.log(data);
 
   /* useEffect(() => {
     const supportId = async () => {

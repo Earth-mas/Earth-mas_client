@@ -52,9 +52,9 @@ export default function SupportNew(props: {
       );
       if (data.status === false) {
         console.log(data);
-      } else {
+      } /* else {
         navigate(`/support`);
-      }
+      } */
     }
   };
 
@@ -131,7 +131,7 @@ export default function SupportNew(props: {
     setDate(e);
   };
 
-  console.log(props.fetchData);
+  // console.log(props.fetchData);
 
   return (
     <SupportNewUI

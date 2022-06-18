@@ -8,7 +8,7 @@ interface ISupportCardProps {
   // leftday: number;
 }
 export default function SupportCard(props: ISupportCardProps) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const goal = Number(props.el.wishamount);
   const price = Number(props.el.currentamount);
@@ -22,11 +22,11 @@ export default function SupportCard(props: ISupportCardProps) {
   const moveToDetail = () => {
     // navigate(`/support/${props.el.id}`);
     // console.log(`/support/${e.target.id}`);
-    console.log(props.el.id);
+    // console.log(props.el);
   };
 
   return (
-    <Container onClick={moveToDetail} id={props.el.id} /* leftDay={leftDay} */>
+    <Container id={props.el.id} /* leftDay={leftDay} */>
       <Link to={`/support/${props.el.id}`}>
         <div className="imgContainer">
           <img src={props.el.url} alt="titleImg" />

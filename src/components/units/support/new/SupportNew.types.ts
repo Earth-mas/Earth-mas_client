@@ -1,5 +1,18 @@
 import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
 
+export interface ISupportNewProps {
+  isEdit: boolean;
+  fetchData:
+    | {
+        title: string;
+        wishamount: number;
+        description: string;
+        dday: Date | null;
+        url: string[];
+      }
+    | null
+    | undefined;
+}
 export interface ISupportNewUIProps {
   isEdit: boolean;
   setUrls: Dispatch<SetStateAction<string[]>>;
