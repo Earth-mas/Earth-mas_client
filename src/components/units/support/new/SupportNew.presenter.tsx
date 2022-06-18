@@ -10,8 +10,6 @@ import { ISupportNewUIProps } from './SupportNew.types';
 import Login from 'components/units/login';
 
 export default function SupportNewUI(props: ISupportNewUIProps) {
-  console.log(props.fetchData?.title);
-
   return (
     <Wrapper>
       <Login />
