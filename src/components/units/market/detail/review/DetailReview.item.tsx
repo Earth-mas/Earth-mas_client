@@ -11,12 +11,12 @@ interface IDetailReviewItem {
 }
 
 export default function DetailReviewItem(props: IDetailReviewItem) {
-  console.log(props.reviewData);
+  // console.log(props.reviewData);
   return (
     <Wrap>
       <div className="user">
         <Avatar />
-        <p>user-name</p>
+        <p>{props.reviewData?.user?.email}</p>
       </div>
       <div className="review">
         <div className="review-info">

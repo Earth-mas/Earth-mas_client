@@ -35,12 +35,14 @@ interface IInput01Props {
   id?: string;
   margin?: number;
   value?: string;
+  register?: any;
   defaultValue?: string | number | readonly string[] | undefined;
 }
 
 export default function Input01(props: IInput01Props) {
   return (
     <Input
+      {...props.register}
       type={props.type}
       placeholder={props.placeholder}
       onChange={props.onChange}
