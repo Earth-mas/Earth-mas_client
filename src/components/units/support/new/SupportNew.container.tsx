@@ -3,7 +3,8 @@ import { supportRoute } from 'utils/APIRoutes';
 import { SetStateAction, useState } from 'react';
 import SupportNewUI from './SupportNew.presenter';
 import store from 'storejs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation } from 'react-query';
 
 export default function SupportNew(props: {
   isEdit: boolean;
@@ -19,6 +20,7 @@ export default function SupportNew(props: {
     | undefined;
 }) {
   const navigate = useNavigate();
+  const { id } = useParams();
   const accessToken = store.get('accessToken');
 
   const [date, setDate] = useState<Date | null>();
@@ -55,6 +57,53 @@ export default function SupportNew(props: {
       }
     }
   };
+
+  /*   const onClickEdit = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    const { mutate } = useMutation(
+      async () => {
+        return await axios.put(`${supportRoute}/${id}`, {
+          title: '',
+          wishamount: '',
+          dday: '',
+          url: '',
+          description: '',
+        });
+      },
+      {
+        onSuccess: res => {
+          console.log(res);
+        },
+        onError: err => {
+          console.log(err);
+        },
+      },
+    );
+    if (handleValidation()) {
+      const { title, wishamount } = values;
+      const { data } = axios.put(
+        `${supportRoute}/${id}`,
+        {
+          title,
+          wishamount,
+          dday: date,
+          url: urls,
+          description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      if (data.status === false) {
+        console.log(data);
+      } else {
+        navigate(`/support`);
+      }
+    }
+  }; */
+  // console.log(mutate);
 
   const handleValidation = () => {
     const { title, wishamount } = values;
