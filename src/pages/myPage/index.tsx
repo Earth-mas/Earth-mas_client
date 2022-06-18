@@ -48,10 +48,6 @@ export default function MyPage() {
       <ul>
         <h1>MY PAGE</h1>
         <Line />
-        <section className="profile">
-          <Profile size={50} name={name} url={url} />
-        </section>
-        <Line />
         <Blank height={20} />
         {menuArr.map((el: IMenu, index: number) => (
           <li

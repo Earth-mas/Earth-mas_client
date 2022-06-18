@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+// import { ISupportCardStyleProps } from './SupportCard.types';
 
 export const Container = styled.div`
   width: 100%;

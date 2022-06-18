@@ -7,6 +7,7 @@ import { FontFamily, FontSize } from 'styles/FontStyles';
 import { ko } from 'date-fns/esm/locale';
 
 interface IDatePickerProps {
+  defaultValue?: Date | null | undefined;
   onChangeDate: (
     date: Date | null,
     event: SyntheticEvent<any, Event> | undefined,
