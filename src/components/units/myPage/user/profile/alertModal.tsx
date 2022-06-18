@@ -3,27 +3,31 @@ import { Colors } from 'styles/Colors';
 import { FontSize } from 'styles/FontStyles';
 
 interface IProps {
-  onClickClose: () => void;
-  onClickDelete: () => void;
+  onClickOk: () => void;
+  onClickCancel: () => void;
+  title: string;
+  contents: string;
+  okMessage: string;
+  cancelMessage: string;
 }
 
 export default function AlertModal(props: IProps) {
   return (
     <ModalBackground>
       <ModalWrapper>
-        <div className="xButton" onClick={props.onClickClose}>
+        <div className="xButton" onClick={props.onClickCancel}>
           x
         </div>
         <div className="content">
-          <h3>💬 정말 탈퇴하시겠어요?</h3>
-          <p>해당 계정의 모든 정보가 삭제되며, 복구할 수 없습니다.</p>
+          <h3>{props.title}</h3>
+          <p>{props.contents}</p>
         </div>
         <div className="buttons">
-          <button className="button01" onClick={props.onClickClose}>
-            아니오, 취소할게요
+          <button className="button01" onClick={props.onClickCancel}>
+            {props.cancelMessage}
           </button>
-          <button className="button02" onClick={props.onClickDelete}>
-            네, 탈퇴할게요
+          <button className="button02" onClick={props.onClickOk}>
+            {props.okMessage}
           </button>
         </div>
       </ModalWrapper>
@@ -64,6 +68,7 @@ const ModalWrapper = styled.div`
     justify-content: flex-end;
     font-size: ${FontSize.LARGE_C};
     line-height: 20px;
+    cursor: pointer;
   }
 
   h3 {

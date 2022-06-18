@@ -3,12 +3,20 @@ import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { FontSize } from 'styles/FontStyles';
 import { userState } from 'recoil/user';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import UserProfile from 'components/commons/profile/profile';
+import store from 'storejs';
 
 const Header = () => {
   const userInfo = useRecoilValue(userState);
   const { url, name, id } = userInfo;
+  const resetUser = useResetRecoilState(userState);
+
+  const onClickLogout = () => {
+    store.remove('accessToken');
+    resetUser();
+  };
+
   return (
     <HeaderWrapper>
       <ContentsWrapper>
@@ -18,6 +26,9 @@ const Header = () => {
             <Link to="/mypage">
               <UserProfile size={30} avataUrl={url} name={name} />
             </Link>
+            <button className="logoutBtn" onClick={onClickLogout}>
+              로그아웃
+            </button>
           </span>
         ) : (
           <ul>
@@ -61,5 +72,9 @@ const ContentsWrapper = styled.div`
     li {
       margin-left: 5px;
     }
+  }
+
+  .logoutBtn {
+    margin-left: 20px;
   }
 `;

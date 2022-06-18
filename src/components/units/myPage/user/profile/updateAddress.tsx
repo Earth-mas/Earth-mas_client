@@ -38,13 +38,14 @@ export default function UpdateAddress(props: IProps) {
 
   const accessToken = store.get('accessToken');
 
+  console.log(addressInput);
+
   const onClickSubmit = () => {
     if (!addressInput.address1 && !addressInput.address2)
       return alert('변경된 항목이 없습니다.');
     axios
       .put(
         `https://earth-mas.shop/server/user/${props.id}`,
-
         {
           ...addressInput,
         },
@@ -69,7 +70,7 @@ export default function UpdateAddress(props: IProps) {
           id="addressnumber"
           placeholder="우편번호 검색"
           disabled
-          value={addressInput.addressnumber}
+          defaultValue={addressInput.addressnumber}
           margin={10}
         />
         <button
@@ -90,7 +91,7 @@ export default function UpdateAddress(props: IProps) {
         type="text"
         id="address1"
         placeholder="우편번호를 검색해주세요."
-        value={addressInput.address1}
+        defaultValue={addressInput.address1}
         disabled
         margin={10}
       />
