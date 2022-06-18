@@ -13,16 +13,14 @@ export default function Dropdown03(props: IDropdown03Props) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
-  const queryClient = useQueryClient();
 
   const onClickCategory = () => {
     setIsActive(prev => !prev);
   };
 
   const onClickDelete = () => {
-    queryClient.invalidateQueries('supportList');
-    navigate(`/${props.page}`);
     props.deleteContent();
+    navigate(`/${props.page}`);
     /* function refetchList() {
       if (id) {
         props.refetch();

@@ -13,6 +13,8 @@ export default function SupportListUI(props: ISupportListUIProps) {
   const banner2 = undefined;
   const banner3 = undefined;
 
+  // console.log();
+
   return (
     <>
       <Slide
