@@ -109,6 +109,9 @@ export default function SignUp() {
 
   return (
     <SignUpWrapper>
+      <br /> <br /> <br />
+      {/* <Upload01 page="market" /> */}
+      <br /> <br /> <br />
       <h1>회원가입</h1>
       <div className="socialSignUp">
         <p>SNS계정으로 간편하게 가입하기</p>

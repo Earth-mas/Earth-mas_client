@@ -35,6 +35,8 @@ interface IInput01Props {
   id?: string;
   margin?: number;
   value?: string;
+  oninput?: string;
+  pattern?: string;
   register?: any;
   defaultValue?: string | number | readonly string[] | undefined;
 }
