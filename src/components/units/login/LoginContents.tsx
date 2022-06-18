@@ -67,7 +67,7 @@ const LoginContents = ({ handleClose }: IProps) => {
             });
           })
           .catch(error => {
-            console.log(error);
+            alert(error.response.data.message);
           });
       })
       .catch(error => {
