@@ -6,11 +6,18 @@ interface IDetailContentProps {
 export default function DetailContent(props: IDetailContentProps) {
   return (
     <Wrap>
-      <div>{props.description}</div>
+      <div>
+        <div
+          dangerouslySetInnerHTML={{ __html: String(props.description) }}
+        ></div>
+      </div>
     </Wrap>
   );
 }
 
 const Wrap = styled.div`
-  background-color: beige;
+  /* background-color: beige; */
+  > div {
+    padding: 40px 20px;
+  }
 `;

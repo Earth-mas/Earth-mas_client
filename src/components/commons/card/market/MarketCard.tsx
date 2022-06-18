@@ -7,16 +7,26 @@ import {
 import * as S from './MarketCard.styles';
 import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
 
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { IMarketCard } from './MarketCard.types';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect } from 'react';
+import axios from 'axios';
 
 interface IMarketCardProps {
   listData: IMarketCard;
 }
 export default function MarketCard(props: IMarketCardProps) {
-  const onClickLike = () => {
-    alert('like');
+  const params = useParams();
+  const onClickPostLike = async () => {
+    // alert('like');
+    await axios
+      .post(`https://earth-mas.shop/server/market/like`, { id: params.id })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -25,12 +35,14 @@ export default function MarketCard(props: IMarketCardProps) {
 
   const discountPrice = Number(props.listData?.discount);
   const originPrice = Number(props.listData?.amount);
-  const discountRate = ((originPrice - discountPrice) / originPrice) * 100;
+  const discountRate = Math.floor(
+    ((originPrice - discountPrice) / originPrice) * 100,
+  );
 
   return (
     <S.Wrap>
       <div className="image-box">
-        <div className="like" onClick={onClickLike}>
+        <div className="like" onClick={onClickPostLike}>
           {/* <HeartWhiteIcon /> */}
           <HeartRedIcon />
         </div>

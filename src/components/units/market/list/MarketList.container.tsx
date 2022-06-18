@@ -11,19 +11,20 @@ import { v4 as uuid4 } from 'uuid';
 export default function MarketList() {
   const [listData, setListData] = useState<any>();
 
+  const getItems = async () => {
+    await axios
+      .get(`https://earth-mas.shop/server/market/finddcs`)
+      .then(res => {
+        // console.log(res);
+        setListData(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    const fetchItems = async () => {
-      await axios
-        .get(`https://earth-mas.shop/server/market/finddcs`)
-        .then(res => {
-          console.log(res);
-          setListData(res.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
-    fetchItems();
+    getItems();
     // console.log(DetailData);
   }, []);
 

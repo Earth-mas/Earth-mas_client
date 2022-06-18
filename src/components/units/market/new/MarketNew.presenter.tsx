@@ -6,31 +6,59 @@ import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
+import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, UseFormHandleSubmit } from 'react-hook-form/dist/types';
+import { IMarketDetail } from '../detail/MarketDetail.types';
 import { FormValues } from './MarketNew.container';
 
 interface IMarketNewUIProps {
   register: any;
   handleSubmit: UseFormHandleSubmit<FormValues>;
   onClickSubmit: SubmitHandler<FormValues>;
+  onClickUpdate: SubmitHandler<FormValues>;
+  onChangeQuill: any;
+  itemData?: IMarketDetail;
+  isEdit: boolean;
+  isSelected: string;
+  setIsSelected: Dispatch<React.SetStateAction<string>>;
+  contents: any;
+  setUrls: Dispatch<SetStateAction<string[]>>;
+  urls: string[];
 }
 
 export default function MarketNewUI(props: IMarketNewUIProps) {
   // console.log(props.register('title'));
   return (
     <Wrap>
-      <Title01 size="C" content="마켓 상품 등록" margin={35} />
-      <form onSubmit={props.handleSubmit(props.onClickSubmit)}>
+      <Title01
+        size="C"
+        content={props.isEdit ? '상품 수정' : '상품등록'}
+        margin={35}
+      />
+      <form
+        onSubmit={props.handleSubmit(
+          props.isEdit ? props.onClickUpdate : props.onClickSubmit,
+        )}
+      >
         <Input01
           register={props.register('title')}
           name="title"
           type="text"
           placeholder="상품의 이름을 입력해주세요"
           margin={25}
+          defaultValue={props.itemData?.title ? props.itemData?.title : ''}
         />
 
         <ColumnWrap>
-          <Dropdown01 page={0} />
+          <Dropdown01
+            page={0}
+            isSelected={
+              props.itemData?.marketcategory?.name
+                ? props.itemData?.marketcategory?.name
+                : ''
+            }
+            setIsSelected={props.setIsSelected}
+          />
           <Input01
             register={props.register('stock')}
             name="stock"
@@ -38,6 +66,7 @@ export default function MarketNewUI(props: IMarketNewUIProps) {
             type="number"
             placeholder="판매 가능 수량을 입력해주세요"
             margin={25}
+            defaultValue={props.itemData?.stock ? props.itemData?.stock : ''}
           />
         </ColumnWrap>
 
@@ -48,12 +77,16 @@ export default function MarketNewUI(props: IMarketNewUIProps) {
             type="number"
             placeholder="희망하는 정상 가격을 입력해주세요"
             margin={25}
+            defaultValue={props.itemData?.amount ? props.itemData?.amount : ''}
           />
           <Input01
             register={props.register('discount')}
             name="discount"
             type="number"
             placeholder="(선택) 희망하는 할인 가격을 입력해주세요"
+            defaultValue={
+              props.itemData?.discount ? props.itemData?.discount : ''
+            }
           />
         </ColumnWrap>
 
@@ -63,13 +96,26 @@ export default function MarketNewUI(props: IMarketNewUIProps) {
           type="text"
           placeholder="상품에 대한 짧은 설명과 대표 이미지를 입력해주세요"
           margin={25}
+          defaultValue={
+            props.itemData?.minidescription
+              ? props.itemData?.minidescription
+              : ''
+          }
         />
 
-        {/* <Upload01 page="market" urls={urls} setUrls={setUrls} /> */}
+        <Upload01 page="market" urls={props.urls} setUrls={props.setUrls} />
         <Blank height={25} />
-        <QuillEditor page={0} />
+        <QuillEditor
+          page={0}
+          onChange={props.onChangeQuill}
+          value={props.contents || props.itemData?.description || ''}
+        />
         <Blank height={60} />
-        <ContainedButton01 content="상품 등록" color="main" type="submit" />
+        <ContainedButton01
+          content={props.isEdit ? '상품 수정' : '상품등록'}
+          color="main"
+          type="submit"
+        />
       </form>
     </Wrap>
   );

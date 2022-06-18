@@ -61,6 +61,10 @@ export const ItemInfo = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
+  .title-wrap {
+    display: flex;
+    justify-content: space-between;
+  }
 
   .description {
     font-family: ${FontFamily.MEDIUM};
