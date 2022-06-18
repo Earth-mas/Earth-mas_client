@@ -3,7 +3,7 @@ import store from 'storejs';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { LoginWrapper, ModalBackGround } from './LoginContents.styles';
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { userState } from 'recoil/user';
 
@@ -14,6 +14,8 @@ interface IProps {
 const LoginContents = ({ handleClose }: IProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
   const setUser = useSetRecoilState(userState);
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +44,11 @@ const LoginContents = ({ handleClose }: IProps) => {
         // axios.defaults.headers.common[
         //   'Authorization'
         // ] = `Bearer ${accessToken}`;
-        alert('로그인 성공');
+        alert('로그인에 성공하였습니다.');
+        handleClose();
+
+        // 현재페이지가 회원가입페이지인 경우 로그인 성공시 홈화면으로 redirect
+        if (location.pathname === '/signup') navigate('/');
         axios
           .get('https://earth-mas.shop/server/user/me', {
             headers: {
@@ -63,7 +69,6 @@ const LoginContents = ({ handleClose }: IProps) => {
           .catch(error => {
             console.log(error);
           });
-        handleClose();
       })
       .catch(error => {
         alert(error.response.data.message);
@@ -111,7 +116,7 @@ const LoginContents = ({ handleClose }: IProps) => {
         </div>
         <p className="signUp">
           회원이 아니신가요?
-          <button>
+          <button onClick={handleClose}>
             <Link to="/signup">
               <strong>지금 가입하세요.</strong>
             </Link>

@@ -9,7 +9,6 @@ import { FontSize } from 'styles/FontStyles';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import Line from 'components/commons/line';
-import Profile from 'components/commons/profile/profile';
 import Blank from 'components/commons/blank/Blank';
 import store from 'storejs';
 

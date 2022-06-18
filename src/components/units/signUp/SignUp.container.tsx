@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
 
 import Input01 from 'components/commons/inputs/Input01';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
@@ -9,6 +9,7 @@ import { ErrorMsg, InputWrapper, Label, SignUpWrapper } from './SignUp.styles';
 import Blank from 'components/commons/blank/Blank';
 import PostCode from 'components/commons/daumpostcode';
 import { useNavigate } from 'react-router-dom';
+import store from 'storejs';
 
 export interface IPostCodeData {
   zonecode: string;
@@ -40,6 +41,17 @@ export default function SignUp() {
   const [nameErrMsg, setNameErrMsg] = useState<string | null>('');
 
   const navigate = useNavigate();
+
+  // 로그인한 유저가 회원가입페이지 접근시에 홈화면으로 redirect
+  const accessToken = store.get('accessToken');
+
+  if (accessToken) {
+    useEffect(() => {
+      navigate('/');
+    }, []);
+    alert('이미 가입된 회원입니다.');
+    return <></>;
+  }
 
   const handleComplete = (data: IPostCodeData) => {
     setInputs({
@@ -109,9 +121,6 @@ export default function SignUp() {
 
   return (
     <SignUpWrapper>
-      <br /> <br /> <br />
-      {/* <Upload01 page="market" /> */}
-      <br /> <br /> <br />
       <h1>회원가입</h1>
       <div className="socialSignUp">
         <p>SNS계정으로 간편하게 가입하기</p>
@@ -183,7 +192,7 @@ export default function SignUp() {
             type="text"
             id="addressnumber"
             placeholder="우편번호 검색"
-            value={inputs.addressnumber}
+            defaultValue={inputs.addressnumber}
             disabled
           />
           <button
@@ -203,7 +212,7 @@ export default function SignUp() {
         <Input01
           type="text"
           id="address1"
-          value={inputs.address1}
+          defaultValue={inputs.address1}
           placeholder="우편번호를 검색해주세요."
           disabled
         />
