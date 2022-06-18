@@ -6,13 +6,13 @@ import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { ko } from 'date-fns/esm/locale';
 
-interface IDatePickerProps {
+export interface IDatePickerProps {
   onChangeDate: (
     date: Date | null,
     event: SyntheticEvent<any, Event> | undefined,
   ) => void;
-  name?: string;
   date: Date | null | undefined;
+  name: string;
 }
 
 export default function DatePicker01(props: IDatePickerProps) {
@@ -20,7 +20,7 @@ export default function DatePicker01(props: IDatePickerProps) {
 
   const onChangeDate = (date: Date | null) => {
     setStartDate(date);
-    console.log(startDate);
+    // console.log(date);
   };
 
   // 요일 반환
@@ -44,12 +44,12 @@ export default function DatePicker01(props: IDatePickerProps) {
       <DatePicker
         locale={ko}
         minDate={new Date()}
-        selected={props.date}
+        selected={startDate}
         dateFormat="yyyy/MM/dd"
         // selectsRange={true}
         startDate={props.date}
         // endDate={endDate}
-        onChange={props.onChangeDate}
+        onChange={onChangeDate}
         // dayClassName={date =>
         //   getDayName(createDate(date)) === '토'
         //     ? 'saturday'

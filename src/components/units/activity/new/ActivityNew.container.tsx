@@ -1,105 +1,123 @@
-import styled from '@emotion/styled';
-import Blank from 'components/commons/blank/Blank';
-import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import Dropdown01 from 'components/commons/dropdown/01/Dropdown01';
-import Input01 from 'components/commons/inputs/Input01';
-import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
-import Title01 from 'components/commons/text/title/Title01';
-import Upload01 from 'components/commons/upload/01/Upload01';
 import 'react-datepicker/dist/react-datepicker.css';
-import DatePicker01 from 'components/commons/datePicker';
-import { useState } from 'react';
-// import { MinusIcon, PlusIcon } from 'assets/svgs';
-// import { useState } from 'react';
+import { ChangeEvent, SetStateAction, useState } from 'react';
+import axios from 'axios';
+import store from 'storejs';
+import { activityRoute } from 'utils/APIRoutes';
+import ActivityNewUI from './ActivityNew.presenter';
+import { useNavigate } from 'react-router-dom';
 
 export default function ActivityNew() {
-  const [urls, setUrls] = useState<string[]>([]);
-  // const [count, setCount] = useState(0);
+  const navigate = useNavigate();
 
-  const onClickSubmit = () => {
-    alert('활동 등록');
+  const accessToken = store.get('accessToken');
+
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState<Date | null>();
+  const [headCount, setHeadCount] = useState('');
+  const [location, setLocation] = useState('');
+  const [subDescription, setSubDescrition] = useState('');
+  const [description, setDescription] = useState();
+  const [urls, setUrls] = useState<string[]>([]);
+  const [category, setCategory] = useState();
+
+  // const [values, setValues] = useState({
+  //   title: '',
+  //   headCount: '',
+  //   location: '',
+  //   category: ''
+  // })
+
+  const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+    console.log(e.target.value);
+  };
+  const onChangeDate = (e: SetStateAction<Date | null | undefined>) => {
+    setDate(e);
+  };
+  const onChangeHeadCount = (e: ChangeEvent<HTMLInputElement>) => {
+    setHeadCount(e.target.value);
+    console.log(e.target.value);
+  };
+  const onChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value);
+    console.log(e.target.value);
   };
 
-  // const onClickMinus = () => {
-  //   setCount(count - 1);
+  const onChangeSubDescription = (e: ChangeEvent<HTMLInputElement>) => {
+    setSubDescrition(e.target.value);
+    console.log(e.target.value);
+  };
+
+  const onChangeEditor = (e: SetStateAction<undefined>) => {
+    setDescription(e);
+  };
+  // const onChangeCategory = (e: SetStateAction<undefined>) => {
+  //   setCategory(e);
   // };
-  // const onClickPlus = () => {
-  //   setCount(count + 1);
-  // };
+
+  const onClickSubmit = async () => {
+    // if (
+    //   title === '' ||
+    //   date === null ||
+    //   headCount === '' ||
+    //   location === '' ||
+    //   subDescription === '' ||
+    //   description === '' ||
+    //   urls === [] ||
+    //   category === ''
+    // ) {
+    //   alert('내용을 입력해주세요');
+    //   return;
+    // }
+    try {
+      const regisData = await axios.post(
+        // 'https://earth-mas.shop/server/activity',
+        activityRoute,
+        {
+          title,
+          dday: date,
+          maxpeople: headCount,
+          location,
+          subdescription: subDescription,
+          description,
+          url: urls,
+          category,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      if (regisData.status) {
+        console.log(regisData);
+      }
+      // if (regisData) {
+      //   console.log(regisData);
+      // } else {
+      //   navigate('/activity/detail');
+      // }
+    } catch (error) {
+      console.log(error);
+    }
+    // finally {
+    //   navigate('/activity/detail');
+    // }
+  };
 
   return (
-    <Wrap>
-      <Title01 content="액티비티 등록" margin={35} size="C" />
-      <form>
-        <Input01
-          id="title"
-          type="text"
-          placeholder="액티비티의 이름을 입력해주세요"
-          margin={25}
-        />
-
-        <ColumnWrap>
-          <Dropdown01 page={1} />
-          {/* <DatePicker01 /> */}
-          {/* 달력 보여지는 위치 조정해주기 */}
-          {/* 토, 일 색깔 적용하기 */}
-        </ColumnWrap>
-
-        <ColumnWrap>
-          <Input01
-            type="text"
-            placeholder="활동 위치를 입력해주세요 (ex. 서울시 중구)" // nightmare로 위치 gps 적용해보기
-            margin={25}
-          />
-
-          <Input01 type="number" placeholder="모집 인원" />
-          {/* <div className="PlusMinus">
-              <MinusIcon style={{ cursor: 'pointer' }} onClick={onClickMinus} />
-              {count}
-              <PlusIcon style={{ cursor: 'pointer' }} onClick={onClickPlus} />
-            </div> */}
-          {/* </div> */}
-          {/* nightmare로 + - 증감 인원 input창에 적용시켜보기 */}
-        </ColumnWrap>
-
-        <Input01
-          type="text"
-          placeholder="필요한 준비물을 입력해주세요(예: 멀쩡한 팔다리, 쓰레기 봉투, 집게, 장갑, 썬크림)"
-          margin={25}
-        />
-
-        <Upload01 page="activity" urls={urls} setUrls={setUrls} />
-        <Blank height={25} />
-        <QuillEditor page={1} />
-        <Blank height={60} />
-        <div className="buttonWrap">
-          <ContainedButton01
-            content="액티비티 등록"
-            color="main"
-            type="submit"
-            onClick={onClickSubmit}
-          />
-        </div>
-      </form>
-    </Wrap>
+    <ActivityNewUI
+      onClickSubmit={onClickSubmit}
+      date={date}
+      urls={urls}
+      setUrls={setUrls}
+      onChangeTitle={onChangeTitle}
+      onChangeDate={onChangeDate}
+      onChangeHeadCount={onChangeHeadCount}
+      onChangeLocation={onChangeLocation}
+      onChangeSubDescription={onChangeSubDescription}
+      onChangeEditor={onChangeEditor}
+      // onChangeCategory={onChangeCategory}
+    />
   );
 }
-
-const Wrap = styled.div`
-  max-width: 1024px;
-  width: 100%;
-  padding: 30px 0px 100px 0px;
-
-  .buttonWrap {
-    width: 20%;
-    display: flex;
-    justify-content: center;
-    margin: auto;
-  }
-`;
-
-const ColumnWrap = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 25px;
-`;

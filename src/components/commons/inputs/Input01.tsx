@@ -36,6 +36,8 @@ interface IInput01Props {
   margin?: number;
   value?: string;
   defaultValue?: string;
+  oninput?: string;
+  pattern?: string;
 }
 
 export default function Input01(props: IInput01Props) {
