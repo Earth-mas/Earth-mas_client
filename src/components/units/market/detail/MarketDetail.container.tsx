@@ -1,18 +1,17 @@
 import axios from 'axios';
-import Title01 from 'components/commons/text/title/Title01';
 import { MouseEvent, useEffect, useState } from 'react';
-import DetailContent from './content/DetailContent.container';
-import DetailDelivery from './delivery/DetailDelivery.container';
+import { useParams } from 'react-router-dom';
 import * as S from './MarketDetail.styles';
 import { IMarketDetail } from './MarketDetail.types';
+import Title01 from 'components/commons/text/title/Title01';
 import DetailOverview from './overview/DetailOverview.container';
-import DetailReview from './review/DetailReview.container';
-import { useParams } from 'react-router-dom';
+import DetailContent from './content/DetailContent.container';
+import DetailDelivery from './delivery/DetailDelivery.container';
+import ReviewList from '../review/list/ReviewList.container';
 
 export default function MarketDetail() {
   const params = useParams();
   const [nowTab, setNowTab] = useState('content');
-
   const [detailData, setDetailData] = useState<IMarketDetail>();
 
   const getMarketItem = async () => {
@@ -20,7 +19,7 @@ export default function MarketDetail() {
       .get(`https://earth-mas.shop/server/market/${params.id}`)
       .then(res => {
         setDetailData(res.data);
-        console.log(detailData);
+        // console.log(detailData);
       })
       .catch(error => {
         console.log(error);
@@ -97,7 +96,10 @@ export default function MarketDetail() {
         <DetailContent description={detailData?.description} />
       )}
       {nowTab === 'review' && (
-        <DetailReview reviewscore={detailData?.reviewscore} />
+        <ReviewList
+          reviewscore={detailData?.reviewscore}
+          reviewpeople={detailData?.reviewpeople}
+        />
       )}
       {nowTab === 'delivery' && <DetailDelivery />}
     </S.Wrap>

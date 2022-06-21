@@ -5,23 +5,19 @@ import * as S from './DetailOverview.styles';
 import image from '../../../../../assets/images/market/banner/banner1.jpeg';
 import Title01 from 'components/commons/text/title/Title01';
 import { IMarketDetail } from '../MarketDetail.types';
-import Stars from 'components/commons/stars';
 import { v4 as uuid4 } from 'uuid';
 import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
+import ViewStars from 'components/commons/stars/viewStars/ViewStars';
+import { getAvgStar } from 'commons/utils/getStars';
+import { getMoney, getPercent } from 'commons/utils/getAmount';
 
 interface IDetailOverviewProps {
   detailData?: IMarketDetail;
   deleteMarketItem: () => void;
 }
+// console.log(props.detailData);
 
 export default function DetailOverview(props: IDetailOverviewProps) {
-  const discountPrice = Number(props.detailData?.discount);
-  const originPrice = Number(props.detailData?.amount);
-  const discountRate = Math.floor(
-    ((originPrice - discountPrice) / originPrice) * 100,
-  );
-  // console.log(props.detailData?.url);
-
   return (
     <main>
       <S.ItemImage>
@@ -49,21 +45,28 @@ export default function DetailOverview(props: IDetailOverviewProps) {
         </div>
         <p className="description">{props.detailData?.minidescription}</p>
         <div className="review">
-          <Stars
+          <ViewStars
             contained={
               props.detailData?.reviewscore &&
-              (props.detailData?.reviewscore / 5) * 100
+              getAvgStar(
+                props.detailData?.reviewscore,
+                props.detailData?.reviewpeople,
+              )
             }
             color="main"
           />
           <span>{props.detailData?.reviewpeople}개의 리뷰</span>
         </div>
         <p className="price">
-          <span className="price-discount-rate">{discountRate}%</span>
-          <span className="price-discount">
-            {discountPrice.toLocaleString()}원
+          <span className="price-discount-rate">
+            {getPercent(props.detailData?.amount, props.detailData?.discount)}%
           </span>
-          <span className="price-origin">{originPrice.toLocaleString()}원</span>
+          <span className="price-discount">
+            {getMoney(props.detailData?.discount)}원
+          </span>
+          <span className="price-origin">
+            {getMoney(props.detailData?.amount)}원
+          </span>
         </p>
         <div className="delivery">
           <div className="delivery-title">
@@ -84,7 +87,11 @@ export default function DetailOverview(props: IDetailOverviewProps) {
         <div className="buttons">
           <ContainedButton01 color="main" content="구매하기" />
           <div className="button-wrap">
-            <OutlinedButton01 color="main" content={<HeartOutlineRedIcon />} />
+            <OutlinedButton01
+              color="main"
+              content={<HeartOutlineRedIcon />}
+              // onClick={postReview}
+            />
             <OutlinedButton01 color="main" content={<ShareIcon />} />
           </div>
         </div>

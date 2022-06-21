@@ -26,7 +26,7 @@ export const ItemImage = styled.section`
         height: 100%;
         object-fit: cover;
         :hover {
-          transform: scale(1.3);
+          transform: scale(1.1);
           transition: all 0.3s ease-in-out;
         }
       }

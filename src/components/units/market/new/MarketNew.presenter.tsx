@@ -19,7 +19,7 @@ interface IMarketNewUIProps {
   onChangeQuill: any;
   itemData?: IMarketDetail;
   isEdit: boolean;
-  isSelected: string;
+  isSelected?: string;
   setIsSelected: Dispatch<React.SetStateAction<string>>;
   contents: any;
   setUrls: Dispatch<SetStateAction<string[]>>;
@@ -53,9 +53,9 @@ export default function MarketNewUI(props: IMarketNewUIProps) {
           <Dropdown01
             page={0}
             isSelected={
-              props.itemData?.marketcategory?.name
+              props.isEdit
                 ? props.itemData?.marketcategory?.name
-                : ''
+                : props.isSelected
             }
             setIsSelected={props.setIsSelected}
           />
@@ -103,7 +103,12 @@ export default function MarketNewUI(props: IMarketNewUIProps) {
           }
         />
 
-        <Upload01 page="market" urls={props.urls} setUrls={props.setUrls} />
+        <Upload01
+          page="market"
+          urls={props.urls}
+          setUrls={props.setUrls}
+          fetchData={props.itemData?.url.split(',')}
+        />
         <Blank height={25} />
         <QuillEditor
           page={0}

@@ -1,17 +1,20 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import Stars from 'components/commons/stars';
+import { getAvg, getAvgStar } from 'commons/utils/getStars';
+import ViewStars from 'components/commons/stars/viewStars/ViewStars';
+
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-import DetailReviewItem from './DetailReview.item';
 import { v4 as uuid4 } from 'uuid';
+import ReviewDetail from '../detail/ReviewDetail';
 
-interface IDetailReview {
+interface IMarketReviewListProps {
   reviewscore?: number;
+  reviewpeople?: number;
 }
-export default function DetailReview(props: IDetailReview) {
+export default function ReviewList(props: IMarketReviewListProps) {
   const params = useParams();
   const [reviewData, setReviewData] = useState([]);
 
@@ -37,16 +40,17 @@ export default function DetailReview(props: IDetailReview) {
     <Wrap>
       <Score>
         <p className="title">후기 총 평점</p>
-        <Stars
-          contained={props.reviewscore && (props.reviewscore / 5) * 100}
+        <ViewStars
+          contained={
+            props.reviewscore &&
+            getAvgStar(props.reviewscore, props.reviewpeople)
+          }
           color="sub2"
         />
-        <p className="score">{props.reviewscore}</p>
+        <p className="score">{getAvg(props.reviewscore, props.reviewpeople)}</p>
       </Score>
       {reviewData &&
-        reviewData.map(el => (
-          <DetailReviewItem reviewData={el} key={uuid4()} />
-        ))}
+        reviewData.map(el => <ReviewDetail reviewData={el} key={uuid4()} />)}
     </Wrap>
   );
 }

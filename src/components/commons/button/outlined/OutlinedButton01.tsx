@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { Colors } from 'styles/Colors';
-import React from 'react';
 
 const Button = styled.button`
   width: 100%;

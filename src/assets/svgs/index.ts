@@ -22,4 +22,5 @@ export { ReactComponent as ShareIcon } from './icons/share-icon.svg';
 export { ReactComponent as StarContainedIcon } from './icons/star-contained-icon.svg';
 export { ReactComponent as StarOutlinedIcon } from './icons/star-outlined-icon.svg';
 export { ReactComponent as StarsIcon } from './icons/star-five-icon.svg';
+export { ReactComponent as ModalXbuttonIcon } from './icons/modal-xbutton-icon.svg';
 export { ReactComponent as ChatIcon } from './icons/chat-icon.svg';

@@ -6,7 +6,7 @@ interface IStarsProps {
   contained?: number;
   color: 'main' | 'sub2';
 }
-export default function Stars(props: IStarsProps) {
+export default function ViewStars(props: IStarsProps) {
   return (
     <Wrap contained={props.contained} color={props.color}>
       <div className="outlined">

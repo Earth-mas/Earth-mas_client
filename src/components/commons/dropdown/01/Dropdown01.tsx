@@ -9,7 +9,7 @@ const CATEGORY = [
 
 interface IDropdown01Props {
   page: 0 | 1; // market | activity
-  isSelected: string;
+  isSelected?: string;
   setIsSelected: Dispatch<React.SetStateAction<string>>;
 }
 
