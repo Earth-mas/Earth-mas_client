@@ -25,7 +25,7 @@ export default function CommentListUI(props: ICommentListUIProps) {
           />
         </div>
 
-        <form className="commentInput" onSubmit={props.getAllgetAllCommentData}>
+        <form className="commentInput" onSubmit={props.getAllCommentData}>
           <Input01
             type="text"
             placeholder="댓글을 남겨보세요"
