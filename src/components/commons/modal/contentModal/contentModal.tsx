@@ -4,12 +4,7 @@ import { Colors } from 'styles/Colors';
 import { FontSize } from 'styles/FontStyles';
 
 interface IProps {
-  onClickOk: () => void;
   onClickCancel: () => void;
-  title?: string;
-  contents?: string;
-  okMessage?: string;
-  cancelMessage?: string;
   children: React.ReactNode;
 }
 
@@ -22,15 +17,7 @@ export default function ContentModal(props: IProps) {
             <ModalXbuttonIcon />
           </button>
         </div>
-        <div>{props.children}</div>
-        <div className="buttons">
-          <button className="button01" onClick={props.onClickCancel}>
-            {props.cancelMessage}
-          </button>
-          <button className="button02" onClick={props.onClickOk}>
-            {props.okMessage}
-          </button>
-        </div>
+        <div className="content">{props.children}</div>
       </ModalWrapper>
     </ModalBackground>
   );
@@ -47,19 +34,20 @@ const ModalBackground = styled.div`
   height: 100vh;
   backdrop-filter: blur(3px) brightness(40%);
   color: ${Colors.B100};
+  z-index: 3;
 `;
 
 const ModalWrapper = styled.div`
   display: flex;
   position: absolute;
   flex-direction: column;
-  width: 500px;
-  height: 80vh;
+  width: 520px;
+  /* height: 55vh; */
   border: 1px solid ${Colors.B40};
-  overflow: scroll;
+  overflow: hidden;
   background-color: white;
   border-radius: 20px;
-  padding: 15px 20px;
+  padding: 15px 15px;
   margin: 0 auto;
 
   .xButton {
@@ -70,28 +58,14 @@ const ModalWrapper = styled.div`
       cursor: pointer;
       font-size: ${FontSize.LARGE_C};
       line-height: 20px;
+      svg {
+        width: 30px;
+        height: 30px;
+      }
     }
   }
-
-  .buttons {
-    display: flex;
-    width: 350px;
-    margin: 0 auto;
-    padding-top: 30px;
-    justify-content: space-between;
-    .button01 {
-      width: 170px;
-      height: 40px;
-      border: 1px solid ${Colors.SUB1};
-      color: ${Colors.SUB1};
-      border-radius: 5px;
-    }
-    .button02 {
-      width: 170px;
-      height: 40px;
-      background-color: ${Colors.SUB1};
-      color: ${Colors.BW};
-      border-radius: 5px;
-    }
+  .content {
+    height: 100%;
+    margin-bottom: 25px;
   }
 `;

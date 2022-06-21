@@ -60,24 +60,27 @@ export default function MarketNew(props: IMarketNewProps) {
     // console.log(data);
     const variables = {
       ...data,
+      amount: Number(data.amount),
+      discount: Number(data.discount),
+      stock: Number(data.stock),
       category: isSelected,
       url: urlString,
     };
     // console.log(variables);
-    await axios
-      .post(`https://earth-mas.shop/server/market/ `, variables, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then(res => {
-        console.log('응답', res);
-        // console.log('상품 id', res.data?.id);
-        // navigate(`/market/${res.data?.id}`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // await axios
+    //   .post(`https://earth-mas.shop/server/market/ `, variables, {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   })
+    //   .then(res => {
+    //     console.log('응답', res);
+    //     // console.log('상품 id', res.data?.id);
+    //     // navigate(`/market/${res.data?.id}`);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   };
 
   const onClickUpdate = async (data: FormValues) => {
@@ -86,6 +89,7 @@ export default function MarketNew(props: IMarketNewProps) {
       !data.stock &&
       !data.amount &&
       !data.discount &&
+      !data.minidescription &&
       data.description === props.itemData?.description &&
       urlString === props.itemData?.url
       // && props.itemData?.marketcategory.name === isSelected
@@ -100,8 +104,10 @@ export default function MarketNew(props: IMarketNewProps) {
     if (data.stock) updateVariables.stock = data.stock;
     if (data.amount) updateVariables.amount = data.amount;
     if (data.discount) updateVariables.discount = data.discount;
+    if (data.minidescription)
+      updateVariables.minidescription = data.minidescription;
     if (data.description) updateVariables.description = data.description;
-    // if (isSelected) updateVariables.category = isSelected;
+
     // console.log(updateVariables);
     await axios
       .put(

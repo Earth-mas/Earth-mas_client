@@ -1,7 +1,11 @@
 import styled from '@emotion/styled';
 import { Avatar } from 'assets/svgs';
+import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
-import Stars from 'components/commons/stars';
+import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
+import ViewStars from 'components/commons/stars/viewStars/ViewStars';
+
+import { useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { IMarketReviewDetail } from './ReviewDetail.types';
@@ -11,16 +15,33 @@ interface IReviewDetailProps {
 
 export default function ReviewDetail(props: IReviewDetailProps) {
   // console.log(props.reviewData);
+
+  const getReview = async () => {
+    await axios
+      .get(`https://earth-mas.shop/server/marketreview/${props.reviewData?.id}`)
+      .then(res => {
+        console.log(res);
+        // console.log(reviewData);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const onClickDeleteReview = async () => {
+    alert('리뷰 삭제');
+  };
+
   return (
     <Wrap>
       <div className="user">
         <Avatar />
         <p>{props.reviewData?.user?.email}</p>
       </div>
-      <div className="review">
+      <div className="review" onClick={getReview}>
         <div className="review-info">
           <span>
-            <Stars
+            <ViewStars
               color="sub2"
               contained={
                 props.reviewData?.score && (props.reviewData?.score / 5) * 100
@@ -33,7 +54,7 @@ export default function ReviewDetail(props: IReviewDetailProps) {
         </div>
         <p className="review-content">{props.reviewData?.contents}</p>
       </div>
-      <div className="button">버튼영역</div>
+      {/* <div className="button"></div> */}
     </Wrap>
   );
 }

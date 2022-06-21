@@ -56,6 +56,8 @@ export default function Upload01(props: IUpload01Props) {
     setUrls(originData);
   };
 
+  // console.log(props.fetchData);
+
   return (
     <S.Wrap>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -67,7 +69,9 @@ export default function Upload01(props: IUpload01Props) {
           />
           <ImageIcon />
           <p>
-            <span style={{ color: Colors.SUB1 }}>{urls.length}</span>
+            <span style={{ color: Colors.SUB1 }}>
+              {props.fetchData ? props.fetchData.length : urls.length}
+            </span>
             <span>/5</span>
           </p>
         </S.UploadButton>

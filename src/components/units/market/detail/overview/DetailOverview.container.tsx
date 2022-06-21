@@ -5,78 +5,21 @@ import * as S from './DetailOverview.styles';
 import image from '../../../../../assets/images/market/banner/banner1.jpeg';
 import Title01 from 'components/commons/text/title/Title01';
 import { IMarketDetail } from '../MarketDetail.types';
-import Stars from 'components/commons/stars';
 import { v4 as uuid4 } from 'uuid';
 import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
-import { useState } from 'react';
-import Modal from 'components/commons/modal';
-import ContentModal from 'components/commons/modal/contentModal/contentModal';
-import ReviewNew from '../../review/new/ReviewNew.container';
-
-import store from 'storejs';
-import axios from 'axios';
+import ViewStars from 'components/commons/stars/viewStars/ViewStars';
+import { getAvgStar } from 'commons/utils/getStars';
+import { getMoney, getPercent } from 'commons/utils/getAmount';
 
 interface IDetailOverviewProps {
   detailData?: IMarketDetail;
   deleteMarketItem: () => void;
 }
+// console.log(props.detailData);
 
 export default function DetailOverview(props: IDetailOverviewProps) {
-  const discountPrice = Number(props.detailData?.discount);
-  const originPrice = Number(props.detailData?.amount);
-  const discountRate = Math.floor(
-    ((originPrice - discountPrice) / originPrice) * 100,
-  );
-  // console.log(props.detailData?.url);
-
-  const accessToken = store.get('accessToken');
-  const [isOpen, setIsOpen] = useState(false);
-  const [contents, setContents] = useState('');
-
-  const onClickSubmit = async () => {
-    const variables = {
-      contents,
-      score: 4,
-      market: '마켓상품 id',
-    };
-    console.log(variables);
-    // await axios
-    //   .post(`https://earth-mas.shop/server/marketreview/ `, variables, {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //   })
-    //   .then(res => {
-    //     console.log('응답', res);
-    //     setIsOpen(prev => !prev);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-  };
-
   return (
     <main>
-      {isOpen && (
-        <Modal>
-          <ContentModal
-            cancelMessage="취소"
-            okMessage="리뷰 등록"
-            onClickCancel={() => setIsOpen(prev => !prev)}
-            onClickOk={onClickSubmit}
-            children={
-              <ReviewNew
-                title="상품 명"
-                minidescription="상품 짧은 설명"
-                id="상품 아이디"
-                contents={contents}
-                setContents={setContents}
-              />
-            }
-          />
-        </Modal>
-      )}
-
       <S.ItemImage>
         <div className="carousel-preview">
           <ul>
@@ -102,21 +45,28 @@ export default function DetailOverview(props: IDetailOverviewProps) {
         </div>
         <p className="description">{props.detailData?.minidescription}</p>
         <div className="review">
-          <Stars
+          <ViewStars
             contained={
               props.detailData?.reviewscore &&
-              (props.detailData?.reviewscore / 5) * 100
+              getAvgStar(
+                props.detailData?.reviewscore,
+                props.detailData?.reviewpeople,
+              )
             }
             color="main"
           />
           <span>{props.detailData?.reviewpeople}개의 리뷰</span>
         </div>
         <p className="price">
-          <span className="price-discount-rate">{discountRate}%</span>
-          <span className="price-discount">
-            {discountPrice.toLocaleString()}원
+          <span className="price-discount-rate">
+            {getPercent(props.detailData?.amount, props.detailData?.discount)}%
           </span>
-          <span className="price-origin">{originPrice.toLocaleString()}원</span>
+          <span className="price-discount">
+            {getMoney(props.detailData?.discount)}원
+          </span>
+          <span className="price-origin">
+            {getMoney(props.detailData?.amount)}원
+          </span>
         </p>
         <div className="delivery">
           <div className="delivery-title">
@@ -140,7 +90,7 @@ export default function DetailOverview(props: IDetailOverviewProps) {
             <OutlinedButton01
               color="main"
               content={<HeartOutlineRedIcon />}
-              onClick={() => setIsOpen(prev => !prev)}
+              // onClick={postReview}
             />
             <OutlinedButton01 color="main" content={<ShareIcon />} />
           </div>

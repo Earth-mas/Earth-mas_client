@@ -96,8 +96,10 @@ export default function MarketDetail() {
         <DetailContent description={detailData?.description} />
       )}
       {nowTab === 'review' && (
-        // <DetailReview reviewscore={detailData?.reviewscore} />
-        <ReviewList reviewscore={detailData?.reviewscore} />
+        <ReviewList
+          reviewscore={detailData?.reviewscore}
+          reviewpeople={detailData?.reviewpeople}
+        />
       )}
       {nowTab === 'delivery' && <DetailDelivery />}
     </S.Wrap>
