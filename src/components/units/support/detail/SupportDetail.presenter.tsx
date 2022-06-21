@@ -13,12 +13,7 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
   return (
     <S.Wrapper>
       <S.FirstSection>
-        <Slide
-          slide="sub"
-          banner1={props.data?.url}
-          banner2="/images/mainBanner/banner2.jpg"
-          banner3={undefined}
-        />
+        <Slide slide="sub" banner={props.data?.url?.split(',')} />
         <S.MainContent percent={props.percent}>
           <div className="rowWrap">
             <div className="dDay">
@@ -46,7 +41,7 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
           <div className="user">
             <div className="userImg">
               <img
-                src="/images/profileDefault.png"
+                src={props.data?.user?.url}
                 onError={e => {
                   e.currentTarget.src = '/images/profileDefault.png';
                 }}
@@ -73,7 +68,7 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
           dangerouslySetInnerHTML={{
             __html: Dompurify.sanitize(props.data?.description),
           }}
-        ></S.Contents>
+        />
 
         <ParticipationListContainer />
       </S.SecondSection>

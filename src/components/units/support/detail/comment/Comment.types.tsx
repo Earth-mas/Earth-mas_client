@@ -2,10 +2,11 @@ import { ChangeEvent, FormEventHandler } from 'react';
 
 export interface ICommentListProps {
   el: {
+    id: string;
     user: {
       url: string | undefined;
       name: string;
-      id: any;
+      id: string;
     };
     comments: string;
     updatedAt: string;

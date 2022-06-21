@@ -1,4 +1,13 @@
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import {
+  Control,
+  FieldValues,
+  SubmitHandler,
+  UseFormHandleSubmit,
+  UseFormRegister,
+} from 'react-hook-form';
+import { FormValues } from './SupportNew.container';
+// import { FormValues } from './SupportNew.container';
 
 export interface ISupportNewProps {
   isEdit: boolean;
@@ -14,15 +23,14 @@ export interface ISupportNewProps {
     | undefined;
 }
 export interface ISupportNewUIProps {
+  onClickEdit: (data: FormValues) => Promise<void>;
+  onClickSubmit: (data: FormValues) => Promise<void>;
+  control: Control<FieldValues, any>;
+  handleChangeQuill: (value: any) => void;
+  contents: any;
+  handleSubmit: UseFormHandleSubmit<FieldValues>;
+  register: UseFormRegister<FieldValues>;
   isEdit: boolean;
-  setUrls: Dispatch<SetStateAction<string[]>>;
-  urls: string[];
-  editorChange: (e: SetStateAction<undefined>) => void;
-  onClickSubmit: (arg0: FormEvent<HTMLFormElement>) => void;
-  handleChange: (arg0: ChangeEvent<HTMLInputElement>) => void;
-  onChangeDate: (e: Date | null) => void;
-  // dateChange: (event: Date | null) => void;
-  date: Date | null | undefined;
   fetchData:
     | {
         title: string;
@@ -33,4 +41,6 @@ export interface ISupportNewUIProps {
       }
     | null
     | undefined;
+  setUrls: Dispatch<SetStateAction<string[]>>;
+  urls: string[];
 }

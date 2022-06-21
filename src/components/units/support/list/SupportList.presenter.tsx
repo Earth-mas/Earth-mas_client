@@ -9,19 +9,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { ISupportListProps, ISupportListUIProps } from './SupportList.types';
 
 export default function SupportListUI(props: ISupportListUIProps) {
-  const banner1 = '/images/supportBanner/supportBanner1.jpg';
-  const banner2 = undefined;
-  const banner3 = undefined;
-
-  // console.log();
-
   return (
     <>
       <Slide
         slide="main"
-        banner1={banner1}
-        banner2={banner2}
-        banner3={banner3}
+        banner={['/images/supportBanner/supportBanner1.jpg']}
+        autoplay={true}
       />
       <Wrapper>
         <div className="topWrapper">

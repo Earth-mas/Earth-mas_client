@@ -8,6 +8,7 @@ import { ChatInput } from './ChatInput';
 
 export const ChatContainer = () => {
   const [messages, setMessages] = useState([]);
+  const [arrivalMessage, setArrivalMessage] = useState(null);
   const scrollRef = useRef();
 
   // 보내는 메시지 api post
@@ -15,6 +16,24 @@ export const ChatContainer = () => {
     const msgs = [...messages];
     setMessages(msgs);
   };
+
+  useEffect(() => {
+    // if (socket.current) {
+    /* socket.on('msg-recieve', (msg: any) => {
+        // console.log({msg});
+        setArrivalMessage({ fromSelf: false, message: msg });
+        // 메시지를 수신하지 않았기에 false로 지정하고 메시지를 담아줌
+      }); // 작성한 메시지를 수신 */
+    // }
+  }, []);
+
+  useEffect(() => {
+    arrivalMessage && setMessages(prev => [...prev, arrivalMessage]);
+  }, [arrivalMessage]); // arrivalMessage와 이전 메시지를 배열에 담아줌
+
+  useEffect(() => {
+    // scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]); // 메시지에 변경사항이 있을 때마다 실행
 
   return (
     <Wrapper>
