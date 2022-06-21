@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 export interface ISupportListUIProps {
   list: { data: ISupportListProps[] } | any;
   setSelect: Dispatch<SetStateAction<boolean>>;

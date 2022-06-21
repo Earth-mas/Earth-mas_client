@@ -7,48 +7,60 @@ import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
 import DatePicker02 from 'components/commons/datePicker/02';
 import { ISupportNewUIProps } from './SupportNew.types';
-import Login from 'components/units/login';
+import { Controller } from 'react-hook-form';
 
 export default function SupportNewUI(props: ISupportNewUIProps) {
   return (
     <Wrapper>
-      <Login />
       <Title01
         content={props.isEdit ? '후원수정' : '후원등록'}
         margin={35}
         size="C"
       />
       <form
-        onSubmit={
-          /* props.isEdit
-            ? event => props.onClickEdit(event)
-            :  */ event => props.onClickSubmit(event)
-        }
+        onSubmit={props.handleSubmit(
+          props.isEdit
+            ? e => props.onClickEdit(e)
+            : e => props.onClickSubmit(e),
+        )}
       >
         <Input01
-          id="title"
+          register={props.register('title')}
           type="text"
           placeholder="제목을 입력해주세요"
           name="title"
           margin={25}
-          onChange={e => props.handleChange(e)}
-          defaultValue={props.fetchData?.title}
+          defaultValue={props.fetchData?.title ? props.fetchData?.title : ''}
         />
 
         <Input01
+          register={props.register('wishamount')}
           type="number"
           placeholder="희망하는 목표 금액을 입력해주세요"
           name="wishamount"
           margin={25}
-          onChange={e => props.handleChange(e)}
-          defaultValue={Number(props.fetchData?.wishamount)}
+          defaultValue={
+            props.fetchData?.wishamount
+              ? Number(props.fetchData?.wishamount)
+              : ''
+          }
         />
 
-        <DatePicker02
-          onChangeDate={props.onChangeDate}
+        <Controller
+          control={props.control}
           name="dday"
-          date={props.date}
-          // defaultValue={new Date(props.fetchData?.dday)}
+          // onChange={props.onChangeDate}
+          render={({ field: { onChange, value } }) => (
+            <DatePicker02
+              selected={
+                props.fetchData?.dday
+                  ? value || new Date(props.fetchData?.dday)
+                  : value
+              }
+              onChange={date => onChange(date)}
+              // value={undefined}
+            />
+          )}
         />
         <Upload01
           page="support"
@@ -58,10 +70,10 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
         />
         <Blank height={25} />
         <QuillEditor
-          page={0}
-          onChange={props.editorChange}
           name="description"
-          value={props.fetchData?.description || ``}
+          page={0}
+          onChange={props.handleChangeQuill}
+          value={props.contents || props.fetchData?.description || ''}
         />
         <Blank height={60} />
 

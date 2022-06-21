@@ -8,12 +8,7 @@ import banner3 from '../../assets/images/market/banner/banner3.jpeg';
 export default function MarketPage() {
   return (
     <Wrap>
-      <Slide
-        slide="main"
-        banner1={banner1}
-        banner2={banner2}
-        banner3={banner3}
-      />
+      <Slide slide="main" banner={[banner1, banner2, banner3]} />
       <main className="main-contents">
         <MarketList />
       </main>

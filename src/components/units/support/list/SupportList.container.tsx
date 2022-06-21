@@ -24,7 +24,5 @@ export default function SupportList() {
     refetchList();
   }, [select]);
 
-  // console.log();
-
   return <SupportListUI list={data} setSelect={setSelect} />;
 }

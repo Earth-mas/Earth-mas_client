@@ -1,11 +1,12 @@
 export interface ISupportDetailUIProps {
   data: {
-    url: string | undefined;
+    url: string;
     title: string;
     wishamount: number;
     currentamount: number;
     user: {
       name: string;
+      url: string;
     };
     description: string | Node;
   };

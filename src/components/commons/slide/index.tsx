@@ -5,11 +5,9 @@ import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 
 export default function Slide(props: {
-  banner1: string | undefined;
-  banner2: string | undefined;
-  banner3: string | undefined;
+  banner: string[];
   slide: string; // main | sub
-  // autoplay: boolean; // true | false
+  autoplay?: boolean; // true | false
 }) {
   const settings = {
     dots: true,
@@ -17,7 +15,7 @@ export default function Slide(props: {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplay: props.autoplay,
+    autoplay: props.autoplay,
     // nextArrow: <NextArrow />,
     // prevArrow: <PrevArrow />,
   };
@@ -25,27 +23,11 @@ export default function Slide(props: {
   return (
     <>
       <SliderContainer {...settings} slide={props.slide}>
-        {props.banner1 === undefined ? (
-          ''
-        ) : (
-          <div>
-            <img src={props.banner1} />
+        {props.banner?.map((el: string, index: number) => (
+          <div key={index}>
+            <img src={`${el}`} />
           </div>
-        )}
-        {props.banner2 === undefined ? (
-          ''
-        ) : (
-          <div>
-            <img src={props.banner2} />
-          </div>
-        )}
-        {props.banner3 === undefined ? (
-          ''
-        ) : (
-          <div>
-            <img src={props.banner3} />
-          </div>
-        )}
+        ))}
       </SliderContainer>
     </>
   );

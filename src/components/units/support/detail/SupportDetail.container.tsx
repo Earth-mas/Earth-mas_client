@@ -1,19 +1,13 @@
 import axios from 'axios';
-import { useEffect } from 'react';
-import {
-  QueryClient,
-  QueryClientProvider,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { supportRoute } from 'utils/APIRoutes';
 import SupportDetailUI from './SupportDetail.presenter';
 
 export default function SupportDetail() {
   const { id } = useParams();
-  // const [detaile, setDetail] = useState();
+
+  const queryClient = useQueryClient();
 
   const { data } = useQuery('detailList', async () => {
     const { data } = await axios.get(`${supportRoute}/${id}`);
@@ -26,8 +20,6 @@ export default function SupportDetail() {
   const leftDay = Math.ceil(
     (today.getTime() - dDay.getTime()) / (1000 * 60 * 60 * 24),
   );
-
-  const queryClient = useQueryClient();
 
   const { mutate: deleteContent } = useMutation(
     'detailDelete',
@@ -46,24 +38,6 @@ export default function SupportDetail() {
     return data;
   });
   // console.log(list);
-
-  // console.log('list', list);
-  // console.log(data);
-
-  /* useEffect(() => {
-    const supportId = async () => {
-      await axios
-        .get(`${supportRoute}/${id}`)
-        .then(res => {
-          // console.log(res);
-          setDetail(res.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
-    supportId();
-  }, []); */
 
   return (
     <SupportDetailUI
