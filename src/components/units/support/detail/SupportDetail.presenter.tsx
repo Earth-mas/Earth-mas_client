@@ -8,8 +8,11 @@ import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
 import { ISupportDetailUIProps } from './SupportDetail.types';
 import { ParticipationListContainer } from './ParticipationList.container';
 import CommentContainer from './comment/CommentList.container';
+import { userState } from 'recoil/user';
+import { useRecoilValue } from 'recoil';
 
 export default function SupportDetailUI(props: ISupportDetailUIProps) {
+  const userInfo = useRecoilValue(userState);
   return (
     <S.Wrapper>
       <S.FirstSection>
@@ -23,7 +26,9 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
                 ? `D${props.leftDay}`
                 : props.leftDay === 0 && 'D-day'}
             </div>
-            <Dropdown03 page="support" deleteContent={props.deleteContent} />
+            {props.data?.user?.id === userInfo.id && (
+              <Dropdown03 page="support" deleteContent={props.deleteContent} />
+            )}
           </div>
 
           <div className="title">{props.data?.title}</div>

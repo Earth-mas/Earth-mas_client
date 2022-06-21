@@ -11,15 +11,15 @@ export default function CommentList() {
   const accessToken = store.get('accessToken');
   const queryClient = useQueryClient();
 
-  const [value, setValue] = useState({
-    comments: '',
-    donation: id,
+  const [comments, setComments] = useState('');
+
+  const { data, refetch: getAllComment } = useQuery('allComment', async () => {
+    return await axios.post(`${supportCommentRoute}/findall`, { id: id });
   });
 
-  const { mutate: postComment } = useMutation(
-    async () => {
-      const { comments } = value;
-      return await axios.post(
+  const { mutate } = useMutation(
+    () => {
+      return axios.post(
         supportCommentRoute,
         { comments, donation: id },
         { headers: { Authorization: `Bearer ${accessToken}` } },
@@ -35,31 +35,26 @@ export default function CommentList() {
     },
   );
 
-  const { data, refetch: getAllComment } = useQuery('allComment', async () => {
-    return await axios.post(`${supportCommentRoute}/findall`, { id: id });
-  });
-
   const handleValidation = () => {
-    const { comments } = value;
-
     if (comments === '') {
       alert('내용없음');
       return false;
     } else {
-      setValue({ comments: '', donation: id });
+      mutate();
       return true;
     }
   };
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
+    setComments(e.target.value);
   };
 
-  const getAllgetAllCommentData = (e: any) => {
+  const getAllCommentData = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
     if (handleValidation()) {
       try {
-        postComment();
+        setComments('');
         getAllComment();
       } catch (err) {
         console.log(err);
@@ -69,7 +64,7 @@ export default function CommentList() {
 
   return (
     <CommentListUI
-      getAllgetAllCommentData={getAllgetAllCommentData}
+      getAllCommentData={getAllCommentData}
       handleChange={handleChange}
       data={data}
     />

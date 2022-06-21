@@ -7,6 +7,7 @@ export interface ISupportDetailUIProps {
     user: {
       name: string;
       url: string;
+      id: string;
     };
     description: string | Node;
   };

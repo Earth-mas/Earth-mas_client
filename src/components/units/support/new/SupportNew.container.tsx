@@ -30,18 +30,11 @@ export default function SupportNew(props: ISupportNewProps) {
   const [urls, setUrls] = useState<string[]>([]);
   const transformUrl = urls.toString();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    trigger,
-    control,
-    watch,
-    getValues,
-  } = useForm({
-    mode: 'onSubmit',
-    reValidateMode: 'onChange',
-  });
+  const { register, handleSubmit, setValue, trigger, control, getValues } =
+    useForm({
+      mode: 'onSubmit',
+      reValidateMode: 'onChange',
+    });
 
   const { mutate } = useMutation(
     ({ formData }: { formData: FormValues }) => {
@@ -77,6 +70,7 @@ export default function SupportNew(props: ISupportNewProps) {
 
     mutate({ formData });
   };
+
   const onClickEdit = async (data: FormValues) => {
     if (
       !(data.title && data.wishamount && data.dday) &&
@@ -93,7 +87,7 @@ export default function SupportNew(props: ISupportNewProps) {
     if (data.title) formData.wishamount = Number(data.wishamount);
     if (data.title) formData.dday = data.dday;
     if (data.description) formData.description = data.description;
-    // if (data === '') {
+
     mutate({ formData });
   };
 
