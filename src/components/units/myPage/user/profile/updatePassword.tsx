@@ -10,7 +10,7 @@ export default function UpdatePassword() {
   const [inputs, setInputs] = useState({
     currentpassword: '',
     updatepassword: '',
-    checkpassword: '',
+    passwordcheck: '',
   });
 
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,7 @@ export default function UpdatePassword() {
 
   const onClickUpdate = () => {
     axios
-      .put('https://earth-mas.shop/mypage/updatepassword', inputs, {
+      .put('https://earth-mas.shop/server/mypage/updatepassword', inputs, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -57,7 +57,7 @@ export default function UpdatePassword() {
           onChange={onChangePassword}
         />
         <Input01
-          id="checkpassword"
+          id="passwordcheck"
           type="password"
           placeholder="비밀번호 확인"
           autoComplete="false"
