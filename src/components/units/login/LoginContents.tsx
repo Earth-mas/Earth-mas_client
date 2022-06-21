@@ -5,7 +5,7 @@ import { LoginWrapper, ModalBackGround } from './LoginContents.styles';
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { userState } from 'recoil/user';
+import { accessTokenState, userState } from 'recoil/user';
 
 interface IProps {
   handleClose: () => void;
@@ -17,6 +17,7 @@ const LoginContents = ({ handleClose }: IProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const setUser = useSetRecoilState(userState);
+  const setAccessTokenState = useSetRecoilState(accessTokenState);
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -41,9 +42,7 @@ const LoginContents = ({ handleClose }: IProps) => {
       .then(res => {
         const accessToken = res.data;
         store.set('accessToken', accessToken);
-        // axios.defaults.headers.common[
-        //   'Authorization'
-        // ] = `Bearer ${accessToken}`;
+        setAccessTokenState(accessToken);
         alert('로그인에 성공하였습니다.');
         handleClose();
 

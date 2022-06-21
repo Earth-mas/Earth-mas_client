@@ -1,22 +1,17 @@
 import axios from 'axios';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { accessTokenState } from 'recoil/user';
 
 // 요청 보내는 baseURL 설정
 const axiosApiInstance = axios.create({
-  baseURL: 'http://localhost:4000/',
+  baseURL: 'https://earth-mas.shop/server/',
 });
 
-// request를 보낼때 localStorage에 token 정보가 있다면 헤더에 토큰 정보를 저장하고 없다면 null로 처리
+// request를 보낼 때 atom의 accessToken 정보를 헤더에 저장
 /* eslint-disable @typescript-eslint/no-explicit-any */
+const accessToken = useRecoilValue(accessTokenState);
 axiosApiInstance.interceptors.request.use(function (config: any) {
-  const user = localStorage.getItem('user');
-  if (!user) {
-    config.headers['accessToken'] = null;
-    config.headers['refreshToken'] = null;
-    return config;
-  }
-  const { accessToken, refreshToken } = JSON.parse(user);
-  config.headers['accessToken'] = accessToken;
-  config.headers['refreshToken'] = refreshToken;
+  config.headers['accessToken'] = 'Bearer ' + accessToken;
   return config;
 });
 
@@ -31,21 +26,19 @@ axiosApiInstance.interceptors.response.use(
       // 기존의 originalRequest를 auth/refreshtoken 으로 전달해 토큰을 재발급
       try {
         const originalRequest = error.config;
-        const data = await axiosApiInstance.get('auth/refreshtoken');
-        // 재발급 받은 토큰은 다시 로컬스토리지에 저장을 하고 헤더 부분에서 토큰 정보를 변경하고 다시 originalRequest를 보냄.
+        const data = await axiosApiInstance.get('auth/restoretoken');
+        // 토큰이 재발급 됐으면
         if (data) {
-          const { accessToken, refreshToken } = data.data;
-          localStorage.removeItem('user');
-          localStorage.setItem(
-            'user',
-            JSON.stringify(data.data, ['accessToken', 'refreshToken']),
-          );
-          originalRequest.headers['accessToken'] = accessToken;
-          originalRequest.headers['refreshToken'] = refreshToken;
+          console.log('토큰 재발급');
+          // 재발급 받은 토큰은 다시 atom 저장을 하고
+          const { accessToken } = data.data;
+          const setAccessTokenState = useSetRecoilState(accessTokenState);
+          setAccessTokenState(accessToken);
+          // 헤더 부분에서 토큰 정보를 변경하고 다시 originalRequest를 보냄.
+          originalRequest.headers['accessToken'] = 'Bearer ' + accessToken;
           return await axiosApiInstance.request(originalRequest);
         }
       } catch (error) {
-        localStorage.removeItem('user');
         console.log(error);
       }
       return Promise.reject(error);
