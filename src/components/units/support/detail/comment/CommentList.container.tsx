@@ -3,55 +3,68 @@ import { useState } from 'react';
 import { supportCommentRoute } from 'utils/APIRoutes';
 import store from 'storejs';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import CommentListUI from './CommentList.presenter';
 
 export default function CommentList() {
   const { id } = useParams();
   const accessToken = store.get('accessToken');
+  const queryClient = useQueryClient();
 
-  const [value, setValue] = useState({
-    comments: '',
-    donation: id,
-  });
-
-  const { mutate: postComment } = useMutation(async () => {
-    const { comments } = value;
-    return await axios.post(
-      supportCommentRoute,
-      {
-        comments,
-        donation: id,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
-  });
+  const [comments, setComments] = useState('');
 
   const { data, refetch: getAllComment } = useQuery('allComment', async () => {
     return await axios.post(`${supportCommentRoute}/findall`, { id: id });
   });
 
-  const getAllgetAllCommentData = (e: any) => {
-    e.preventDefault();
-    try {
-      postComment();
-      getAllComment();
-    } catch (err) {
-      console.log(err);
+  const { mutate } = useMutation(
+    () => {
+      return axios.post(
+        supportCommentRoute,
+        { comments, donation: id },
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('allComment', { refetchInactive: true });
+      },
+      onError: err => {
+        console.log(err);
+      },
+    },
+  );
+
+  const handleValidation = () => {
+    if (comments === '') {
+      alert('내용없음');
+      return false;
+    } else {
+      mutate();
+      return true;
     }
   };
 
   const handleChange = (e: { target: { name: string; value: string } }) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
+    setComments(e.target.value);
+  };
+
+  const getAllCommentData = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    if (handleValidation()) {
+      try {
+        setComments('');
+        getAllComment();
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   return (
     <CommentListUI
-      getAllgetAllCommentData={getAllgetAllCommentData}
+      getAllCommentData={getAllCommentData}
       handleChange={handleChange}
       data={data}
     />

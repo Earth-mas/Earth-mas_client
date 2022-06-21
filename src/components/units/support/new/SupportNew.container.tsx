@@ -1,149 +1,109 @@
 import axios from 'axios';
-import { supportRoute } from 'utils/APIRoutes';
-import { SetStateAction, useState } from 'react';
-import SupportNewUI from './SupportNew.presenter';
-import store from 'storejs';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
+import { supportRoute } from 'utils/APIRoutes';
+import SupportNewUI from './SupportNew.presenter';
+import { ISupportNewProps } from './SupportNew.types';
+import store from 'storejs';
 
-export default function SupportNew(props: {
-  isEdit: boolean;
-  fetchData:
-    | {
-        title: string;
-        wishamount: number;
-        description: string;
-        dday: Date | null;
-        url: string[];
-      }
-    | null
-    | undefined;
-}) {
+export interface FormValues {
+  title?: string | undefined;
+  wishamount?: number | undefined;
+  description?: string | undefined;
+  dday?: Date | null;
+  url?: string | undefined;
+}
+/* interface IUpdateVariables {
+  title?: string | undefined;
+  wishamount?: number | undefined;
+  description?: string | undefined;
+  dday?: Date | null;
+  url?: string | undefined;
+} */
+
+export default function SupportNew(props: ISupportNewProps) {
+  const accessToken = store.get('accessToken');
   const navigate = useNavigate();
   const { id } = useParams();
-  const accessToken = store.get('accessToken');
-
-  const [date, setDate] = useState<Date | null>();
-  const [description, setDescription] = useState();
   const [urls, setUrls] = useState<string[]>([]);
-  const [values, setValues] = useState({
-    title: '',
-    wishamount: '',
-  });
+  const transformUrl = urls.toString();
 
-  const onClickSubmit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    if (handleValidation()) {
-      const { title, wishamount } = values;
-      const { data } = await axios.post(
-        supportRoute,
-        {
-          title,
-          wishamount,
-          dday: date,
-          url: urls,
-          description,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      if (data.status === false) {
-        console.log(data);
-      } /* else {
-        navigate(`/support`);
-      } */
-    }
+  const { register, handleSubmit, setValue, trigger, control, getValues } =
+    useForm({
+      mode: 'onSubmit',
+      reValidateMode: 'onChange',
+    });
+
+  const { mutate } = useMutation(
+    ({ formData }: { formData: FormValues }) => {
+      return props.isEdit
+        ? axios.put(`${supportRoute}/${id}`, formData, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          })
+        : axios.post(supportRoute, formData, {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+    },
+    {
+      onSuccess: (res: any) => {
+        console.log(res);
+        navigate(`/support/${res.data.id}`);
+      },
+      onError: (err: any) => {
+        console.log(err);
+      },
+    },
+  );
+
+  const handleChangeQuill = (value: any) => {
+    setValue('description', value === '<p><br></p>' ? '' : value);
+    trigger('description');
   };
 
-  /*   const onClickEdit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    const { mutate } = useMutation(
-      async () => {
-        return await axios.put(`${supportRoute}/${id}`, {
-          title: '',
-          wishamount: '',
-          dday: '',
-          url: '',
-          description: '',
-        });
-      },
-      {
-        onSuccess: res => {
-          console.log(res);
-        },
-        onError: err => {
-          console.log(err);
-        },
-      },
-    );
-    if (handleValidation()) {
-      const { title, wishamount } = values;
-      const { data } = axios.put(
-        `${supportRoute}/${id}`,
-        {
-          title,
-          wishamount,
-          dday: date,
-          url: urls,
-          description,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      if (data.status === false) {
-        console.log(data);
-      } else {
-        navigate(`/support`);
-      }
-    }
-  }; */
-  // console.log(mutate);
+  const onClickSubmit = async (data: FormValues) => {
+    const formData = {
+      ...data,
+      url: transformUrl,
+    };
 
-  const handleValidation = () => {
-    const { title, wishamount } = values;
+    mutate({ formData });
+  };
+
+  const onClickEdit = async (data: FormValues) => {
     if (
-      title === '' &&
-      wishamount === '' &&
-      date === null &&
-      urls === [] &&
-      description === ''
-    ) {
-      alert('내용없음');
-      return false;
-    }
-    return true;
-  };
+      !(data.title && data.wishamount && data.dday) &&
+      data.description === props.fetchData?.description &&
+      data.url === props.fetchData?.url
+    )
+      return alert('수정없음');
 
-  const handleChange = (e: { target: { name: string; value: string } }) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-    // console.log({ ...values, [e.target.name]: e.target.value });
-  };
-  const editorChange = (e: SetStateAction<undefined>) => {
-    setDescription(e);
-  };
-  const onChangeDate = (e: Date | null) => {
-    setDate(e);
-  };
+    const formData: FormValues = {
+      ...props.fetchData,
+      url: transformUrl,
+    };
+    if (data.title) formData.title = data.title;
+    if (data.title) formData.wishamount = Number(data.wishamount);
+    if (data.title) formData.dday = data.dday;
+    if (data.description) formData.description = data.description;
 
-  // console.log(props.fetchData);
+    mutate({ formData });
+  };
 
   return (
     <SupportNewUI
       isEdit={props.isEdit}
       fetchData={props.fetchData}
-      onClickSubmit={onClickSubmit}
-      date={date}
+      control={control}
       urls={urls}
       setUrls={setUrls}
-      onChangeDate={onChangeDate}
-      editorChange={editorChange}
-      handleChange={handleChange}
+      register={register}
+      handleChangeQuill={handleChangeQuill}
+      onClickEdit={onClickEdit}
+      onClickSubmit={onClickSubmit}
+      handleSubmit={handleSubmit}
+      contents={getValues('description')}
     />
   );
 }

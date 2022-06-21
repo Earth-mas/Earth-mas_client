@@ -8,17 +8,15 @@ import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
 import { ISupportDetailUIProps } from './SupportDetail.types';
 import { ParticipationListContainer } from './ParticipationList.container';
 import CommentContainer from './comment/CommentList.container';
+import { userState } from 'recoil/user';
+import { useRecoilValue } from 'recoil';
 
 export default function SupportDetailUI(props: ISupportDetailUIProps) {
+  const userInfo = useRecoilValue(userState);
   return (
     <S.Wrapper>
       <S.FirstSection>
-        <Slide
-          slide="sub"
-          banner1={props.data?.url}
-          banner2="/images/mainBanner/banner2.jpg"
-          banner3={undefined}
-        />
+        <Slide slide="sub" banner={props.data?.url?.split(',')} />
         <S.MainContent percent={props.percent}>
           <div className="rowWrap">
             <div className="dDay">
@@ -28,7 +26,9 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
                 ? `D${props.leftDay}`
                 : props.leftDay === 0 && 'D-day'}
             </div>
-            <Dropdown03 page="support" deleteContent={props.deleteContent} />
+            {props.data?.user?.id === userInfo.id && (
+              <Dropdown03 page="support" deleteContent={props.deleteContent} />
+            )}
           </div>
 
           <div className="title">{props.data?.title}</div>
@@ -46,7 +46,7 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
           <div className="user">
             <div className="userImg">
               <img
-                src="/images/profileDefault.png"
+                src={props.data?.user?.url}
                 onError={e => {
                   e.currentTarget.src = '/images/profileDefault.png';
                 }}
@@ -73,7 +73,7 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
           dangerouslySetInnerHTML={{
             __html: Dompurify.sanitize(props.data?.description),
           }}
-        ></S.Contents>
+        />
 
         <ParticipationListContainer />
       </S.SecondSection>

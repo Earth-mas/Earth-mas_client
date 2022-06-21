@@ -4,6 +4,7 @@ import Comment from './Comment';
 import { ICommentListUIProps } from './Comment.types';
 import { BubbleIcon } from 'assets/svgs';
 import { Sub1 } from '../SupportDetail.styles';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function CommentListUI(props: ICommentListUIProps) {
   return (
@@ -24,7 +25,7 @@ export default function CommentListUI(props: ICommentListUIProps) {
           />
         </div>
 
-        <form className="commentInput" onSubmit={props.getAllgetAllCommentData}>
+        <form className="commentInput" onSubmit={props.getAllCommentData}>
           <Input01
             type="text"
             placeholder="댓글을 남겨보세요"
@@ -36,7 +37,7 @@ export default function CommentListUI(props: ICommentListUIProps) {
       </CommentWrapper>
 
       {props.data?.data.map((el: any) => (
-        <Comment el={el} />
+        <Comment key={uuidv4()} el={el} />
       ))}
     </>
   );

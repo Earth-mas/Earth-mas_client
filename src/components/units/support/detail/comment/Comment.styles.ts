@@ -24,6 +24,8 @@ export const Wrapper = styled.div`
   }
 
   .userContent {
+    width: 100%;
+
     .userName {
       margin-bottom: 8px;
       display: flex;
@@ -89,6 +91,29 @@ export const CommentWrapper = styled.div`
       object-fit: cover;
     }
   }
+
+  .commentInput {
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    button {
+      position: absolute;
+      right: 12px;
+      font-size: ${FontSize.MEDIUM_C};
+      font-family: ${FontFamily.BOLD};
+      color: ${Colors.B60};
+      :hover {
+        color: ${Colors.SUB1};
+      }
+    }
+  }
+`;
+
+export const CommentInputWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
 
   .commentInput {
     width: 100%;

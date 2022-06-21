@@ -1,11 +1,13 @@
+import { AxiosResponse } from 'axios';
 import { ChangeEvent, FormEventHandler } from 'react';
 
-export interface ICommentListProps {
+export interface ICommentProps {
   el: {
+    id: string;
     user: {
       url: string | undefined;
       name: string;
-      id: any;
+      id: string;
     };
     comments: string;
     updatedAt: string;
@@ -13,7 +15,7 @@ export interface ICommentListProps {
 }
 
 export interface ICommentListUIProps {
-  getAllgetAllCommentData: FormEventHandler<HTMLFormElement> | undefined;
+  getAllCommentData: FormEventHandler<HTMLFormElement> | undefined;
   handleChange: (arg0: ChangeEvent<HTMLInputElement>) => void;
-  data: any;
+  data: AxiosResponse<any, any> | undefined;
 }

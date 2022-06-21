@@ -22,13 +22,13 @@ import MarketEditPage from 'pages/market/[marketId]/edit';
 import SupportPage from 'pages/support';
 import SupportNewPage from 'pages/support/new';
 import SupportDetailPage from 'pages/support/[supportid]';
-// import SupportEditPage from 'pages/support/[supportid]/edit';
-
-import useSetUser from 'hooks/useSetUser';
 import SupportEditPage from 'pages/support/[supportid]/edit';
 import SupportPaymentPage from 'pages/support/[supportid]/payment';
 import SupportCompletePage from 'pages/support/[supportid]/payment/complete';
+
+import useSetUser from 'hooks/useSetUser';
 import ScrollToTop from 'commons/utils/scrolltotop';
+import { ChatPage } from 'pages/chat';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -65,6 +65,7 @@ const App = () => {
                 path="/support/:id/payment/complete"
                 element={<SupportCompletePage />}
               />
+              <Route path="/chat" element={<ChatPage />} />
 
               <Route path="/mypage" element={<MyPage />} />
               <Route path="/signup" element={<SignUpPage />} />

@@ -29,7 +29,7 @@ export default function SupportCard(props: ISupportCardProps) {
     <Container id={props.el.id} /* leftDay={leftDay} */>
       <Link to={`/support/${props.el.id}`}>
         <div className="imgContainer">
-          <img src={props.el.url} alt="titleImg" />
+          <img src={props.el?.url.split(',')[0]} alt="titleImg" />
         </div>
         <div className="contents">
           <div className="textBox">

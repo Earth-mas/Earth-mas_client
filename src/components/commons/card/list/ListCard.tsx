@@ -9,18 +9,18 @@ export default function ListCard(props: IPropsListCard) {
   return (
     <Wrapper>
       <div className="imgContainer">
-        <img src={props.img} />
-        <div className="addressContainer">{props.location}</div>
+        <img src={props.el.img} />
+        <div className="addressContainer">{props.el.location}</div>
       </div>
 
       <Blank height={10} />
       <div className="infoBox">
-        <div className="contentsBox">{props.contents}</div>
+        <div className="contentsBox">{props.el.contents}</div>
         <Line />
         <div className="userInfo">
           <UserProfile size={25} />
-          <li>{props.user}</li>
-          <li>{props.dday}</li>
+          <li>{props.el.user}</li>
+          <li>{props.el.dday}</li>
         </div>
       </div>
     </Wrapper>
@@ -28,11 +28,9 @@ export default function ListCard(props: IPropsListCard) {
 }
 
 const Wrapper = styled.div`
-  /* max-width: 1024px; */
   max-width: 235px;
   width: 100%;
-  border: 1px solid ${Colors.B20};
-  border-radius: 5px;
+
   .imgContainer {
     z-index: 1;
     width: 235px;
@@ -42,6 +40,7 @@ const Wrapper = styled.div`
       width: 100%;
       height: 100%;
       border-radius: 5px;
+      object-fit: cover;
     }
     .addressContainer {
       z-index: 2;
@@ -69,9 +68,9 @@ const Wrapper = styled.div`
     padding: 8px;
     overflow: hidden;
 
-    /* :hover {
+    :hover {
       overflow-y: scroll;
-    } */
+    }
   }
 
   .userInfo {
