@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import * as S from './Dropdown03.styles';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useQueryClient } from 'react-query';
 
 interface IDropdown03Props {
-  // refetch: any;
   deleteContent?: any;
   page: string; // market | activity | support
 }
@@ -21,12 +19,6 @@ export default function Dropdown03(props: IDropdown03Props) {
   const onClickDelete = () => {
     props.deleteContent();
     navigate(`/${props.page}`);
-    /* function refetchList() {
-      if (id) {
-        props.refetch();
-      }
-    }
-    refetchList(); */
   };
 
   return (

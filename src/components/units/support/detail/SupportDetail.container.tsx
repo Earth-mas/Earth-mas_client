@@ -6,7 +6,6 @@ import SupportDetailUI from './SupportDetail.presenter';
 
 export default function SupportDetail() {
   const { id } = useParams();
-
   const queryClient = useQueryClient();
 
   const { data } = useQuery('detailList', async () => {
@@ -32,12 +31,6 @@ export default function SupportDetail() {
       },
     },
   );
-
-  const { data: list } = useQuery('Support', async () => {
-    const { data } = await axios.post(`${supportRoute}/supported`, { id: id });
-    return data;
-  });
-  // console.log(list);
 
   return (
     <SupportDetailUI
