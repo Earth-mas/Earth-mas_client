@@ -8,6 +8,7 @@ export default function useSetUser() {
   const setUser = useSetRecoilState(userState);
   const accessToken = store.get('accessToken');
 
+  // if 부분은 배포시 지워야 함.
   if (accessToken) {
     axiosApiInstance
       .get('user/me', {
