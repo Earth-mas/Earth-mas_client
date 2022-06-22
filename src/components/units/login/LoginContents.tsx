@@ -6,6 +6,7 @@ import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { accessTokenState, userState } from 'recoil/user';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 interface IProps {
   handleClose: () => void;
@@ -35,8 +36,12 @@ const LoginContents = ({ handleClose }: IProps) => {
       email,
       password,
     };
-    axios
-      .post('https://earth-mas.shop/server/auth/login', data, {
+    // axios
+    //   .post('https://earth-mas.shop/server/auth/login', data, {
+    //     withCredentials: true,
+    //   })
+    axiosApiInstance
+      .post('auth/login', data, {
         withCredentials: true,
       })
       .then(res => {
