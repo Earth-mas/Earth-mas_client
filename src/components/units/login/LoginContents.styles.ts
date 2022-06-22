@@ -12,6 +12,7 @@ export const ModalBackGround = styled.div`
   width: 100vw;
   height: 100vh;
   backdrop-filter: blur(3px) brightness(40%);
+  z-index: 999;
 `;
 
 export const LoginWrapper = styled.main`

@@ -12,3 +12,8 @@ export const userState = atom({
     address2: '',
   },
 });
+
+export const accessTokenState = atom({
+  key: 'accessTokenState',
+  default: '',
+});

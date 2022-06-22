@@ -46,6 +46,7 @@ const ModalBackground = styled.div`
   height: 100vh;
   backdrop-filter: blur(3px) brightness(40%);
   color: ${Colors.B100};
+  z-index: 999;
 `;
 
 const ModalWrapper = styled.div`
@@ -53,7 +54,7 @@ const ModalWrapper = styled.div`
   position: absolute;
   top: 30%;
   flex-direction: column;
-  width: 500px;
+  width: 420px;
   height: 200px;
   border: 1px solid ${Colors.B40};
   overflow: hidden;

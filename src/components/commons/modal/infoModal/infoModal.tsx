@@ -39,8 +39,7 @@ const ModalBackground = styled.div`
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  backdrop-filter: blur(3px) brightness(40%);
-  color: ${Colors.B100};
+  z-index: 999;
 `;
 
 const ModalWrapper = styled.div`
@@ -51,11 +50,24 @@ const ModalWrapper = styled.div`
   width: 340px;
   height: 200px;
   border: 1px solid ${Colors.B40};
+  box-shadow: ${Colors.B40} 0 6px 16px;
   overflow: hidden;
   background-color: white;
   border-radius: 20px;
   padding: 10px 20px;
   margin: 0 auto;
+  animation: fadein 0.3s ease-in-out;
+  @keyframes fadein {
+    0% {
+      opacity: 0;
+      transform: translateY(100px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: none;
+    }
+  }
 
   .xButton {
     display: flex;

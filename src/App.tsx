@@ -29,6 +29,7 @@ import SupportCompletePage from 'pages/support/[supportid]/payment/complete';
 import useSetUser from 'hooks/useSetUser';
 import ScrollToTop from 'commons/utils/scrolltotop';
 import { ChatPage } from 'pages/chat';
+import { AxiosInterceptor } from 'commons/utils/axiosInstance';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -38,41 +39,43 @@ const App = () => {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Global styles={globalStyles} />
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/activity" element={<ActivityPage />} />
-              <Route path="/activity/new" element={<ActivityNew />} />
-              <Route path="/activity/:id" element={<ActivityDetail />} />
+        <AxiosInterceptor>
+          <Global styles={globalStyles} />
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/activity" element={<ActivityPage />} />
+                <Route path="/activity/new" element={<ActivityNew />} />
+                <Route path="/activity/:id" element={<ActivityDetail />} />
 
-              <Route path="/market" element={<MarketPage />} />
-              <Route path="/market/new" element={<MarketNewPage />} />
-              <Route path="/market/:id" element={<MarketDetailPage />} />
-              <Route path="/market/:id/edit" element={<MarketEditPage />} />
+                <Route path="/market" element={<MarketPage />} />
+                <Route path="/market/new" element={<MarketNewPage />} />
+                <Route path="/market/:id" element={<MarketDetailPage />} />
+                <Route path="/market/:id/edit" element={<MarketEditPage />} />
 
-              <Route path="/support" element={<SupportPage />} />
-              <Route path="/support/new" element={<SupportNewPage />} />
-              <Route path="/support/:id" element={<SupportDetailPage />} />
-              <Route path="/support/:id/edit" element={<SupportEditPage />} />
-              <Route
-                path="/support/:id/payment"
-                element={<SupportPaymentPage />}
-              />
-              <Route
-                path="/support/:id/payment/complete"
-                element={<SupportCompletePage />}
-              />
-              <Route path="/chat" element={<ChatPage />} />
+                <Route path="/support" element={<SupportPage />} />
+                <Route path="/support/new" element={<SupportNewPage />} />
+                <Route path="/support/:id" element={<SupportDetailPage />} />
+                <Route path="/support/:id/edit" element={<SupportEditPage />} />
+                <Route
+                  path="/support/:id/payment"
+                  element={<SupportPaymentPage />}
+                />
+                <Route
+                  path="/support/:id/payment/complete"
+                  element={<SupportCompletePage />}
+                />
+                <Route path="/chat" element={<ChatPage />} />
 
-              <Route path="/mypage" element={<MyPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
-              <Route path="*" element={<div>404</div>} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+                <Route path="/mypage" element={<MyPage />} />
+                <Route path="/signup" element={<SignUpPage />} />
+                <Route path="*" element={<div>404</div>} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </AxiosInterceptor>
       </QueryClientProvider>
     </>
   );
