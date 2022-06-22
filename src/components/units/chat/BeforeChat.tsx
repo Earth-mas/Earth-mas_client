@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-// import { ChatIcon } from 'assets/svgs';
+import { ChatIcon } from 'assets/svgs';
 
 export const BeforeChat = () => {
   return (
     <Wrapper>
-      {/* <ChatIcon /> */}
+      <ChatIcon />
       <p>채팅할 상대를 선택해주세요.</p>
     </Wrapper>
   );
