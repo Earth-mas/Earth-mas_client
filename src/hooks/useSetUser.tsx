@@ -31,6 +31,7 @@ export default function useSetUser() {
         addressnumber: res.data.addressnumber,
         address1: res.data.address1,
         address2: res.data.address2,
+        phone: res.data.phone,
       });
     })
     .catch(error => {

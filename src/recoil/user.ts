@@ -10,6 +10,7 @@ export const userState = atom({
     addressnumber: '',
     address1: '',
     address2: '',
+    phone: '',
   },
 });
 
