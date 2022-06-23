@@ -6,8 +6,6 @@ import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router-dom';
 
 import { FontSize } from 'styles/FontStyles';
-import { useRecoilValue } from 'recoil';
-import { userState } from 'recoil/user';
 import Line from 'components/commons/line';
 import Blank from 'components/commons/blank/Blank';
 import store from 'storejs';
@@ -21,8 +19,6 @@ export default function MyPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const menuQuery = searchParams.getAll('menu');
   const [currentTab, setCurrentTab] = useState(Number(menuQuery));
-  const userInfo = useRecoilValue(userState);
-  const { url, name } = userInfo;
   const accessToken = store.get('accessToken');
 
   if (!accessToken) {

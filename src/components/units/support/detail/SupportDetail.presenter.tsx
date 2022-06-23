@@ -10,9 +10,11 @@ import { ParticipationListContainer } from './ParticipationList.container';
 import CommentContainer from './comment/CommentList.container';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
+import { Link } from 'react-router-dom';
 
 export default function SupportDetailUI(props: ISupportDetailUIProps) {
   const userInfo = useRecoilValue(userState);
+
   return (
     <S.Wrapper>
       <S.FirstSection>
@@ -62,7 +64,9 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
             됩니다
           </p>
 
-          <ContainedButton01 content="기부하기" color="main" />
+          <Link to={'payment'}>
+            <ContainedButton01 content="기부하기" color="main" />
+          </Link>
         </S.MainContent>
       </S.FirstSection>
 

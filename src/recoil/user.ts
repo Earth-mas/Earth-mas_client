@@ -10,5 +10,11 @@ export const userState = atom({
     addressnumber: '',
     address1: '',
     address2: '',
+    phone: '',
   },
+});
+
+export const accessTokenState = atom({
+  key: 'accessTokenState',
+  default: '',
 });

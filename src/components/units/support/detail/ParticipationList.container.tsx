@@ -1,7 +1,19 @@
 import * as S from './SupportDetail.styles';
 import { ParticipationList } from './ParticipationList';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import { supportRoute } from 'utils/APIRoutes';
+import { useParams } from 'react-router-dom';
 
 export const ParticipationListContainer = () => {
+  const { id } = useParams();
+
+  const { data: list } = useQuery('Support', async () => {
+    const { data } = await axios.post(`${supportRoute}/supported`, { id: id });
+    return data;
+  });
+  // console.log(list);
+
   return (
     <S.ParticipationList>
       <p className="title">참여내역</p>
