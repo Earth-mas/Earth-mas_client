@@ -27,6 +27,7 @@ const AxiosInterceptor = ({ children }: any) => {
       console.log('errInterceptor');
       if (error.response.status === 401) {
         // 기존의 originalRequest를 auth/restore 으로 전달해 토큰을 재발급
+        //
         try {
           const originalRequest = error.config;
           const data = await axiosApiInstance.post('auth/restore');
