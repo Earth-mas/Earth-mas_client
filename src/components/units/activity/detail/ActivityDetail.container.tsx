@@ -4,16 +4,15 @@ import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
+import UserProfile from 'components/commons/profile/profile';
 import Slide from 'components/commons/slide';
 import DOMPurify from 'dompurify';
-// import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
-// import OutlinedButton01 from 'components/commons/button/outlined/OutlinedButton01';
 import { useEffect, useState } from 'react';
-// import ReactQuill from 'react-quill';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userState } from 'recoil/user';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-// import ActivityDetailUI from './ActivityDetail.presenter';
 
 export interface RootObject {
   activitycategory: Activitycategory;
@@ -33,7 +32,7 @@ export interface RootObject {
 
 interface Activitycategory {
   category?: string;
-  createAt: string;
+  createAt?: string;
   deleteAt?: any;
   id: string;
 }
@@ -45,7 +44,8 @@ interface IpropsMainImg {
 
 export default function ActivityDetail() {
   const params = useParams();
-
+  const userInfo = useRecoilValue(userState);
+  const { url, name } = userInfo;
   const [activityData, setActivityData] = useState<RootObject>();
 
   // useEffect(() => {
@@ -99,8 +99,14 @@ export default function ActivityDetail() {
         <Blank height={25} />
         <div className="postInfoBox">
           <div className="userInfo">
-            <img src="" />
-            <text>KB star</text>
+            {/* <img
+              src=""
+              onError={event =>
+                (event.currentTarget.src = '/images/avatar.svg')
+              }
+            /> */}
+            <UserProfile size={40} avataUrl={url} name={name} />
+            {/* <text>KB star</text> */}
           </div>
           <div className="detailInfo">
             <li>

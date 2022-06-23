@@ -1,9 +1,9 @@
-export interface IPropsListCard {
+export interface IPropsActivityList {
   el: {
-    img: string;
+    id: string;
+    url?: string;
+    createAt: string;
     location: string;
-    contents: string;
-    user: string;
-    dday: string;
+    description: string;
   };
 }

@@ -19,11 +19,14 @@ const CATEGORY = [
     { category: '키트', image: category5 },
   ],
   [
-    { category: '전체', image: 'a' },
-    { category: '제로웨이스트', image: 'b' },
-    { category: '플로깅', image: 'c' },
-    { category: '플로킹', image: 'd' },
-    { category: '라이딩', image: 'e' },
+    { category: '전체', image: '/images/activity/category/All.jpg' },
+    {
+      category: '제로웨이스트',
+      image: '/images/activity/category/zeroWaste.jpg',
+    },
+    { category: '플로깅', image: '/images/activity/category/flogging.png' },
+    { category: '플로킹', image: '/images/activity/category/flogking.jpg' },
+    { category: '라이딩', image: '/images/activity/category/flogDing.jpg' },
   ],
 ];
 
