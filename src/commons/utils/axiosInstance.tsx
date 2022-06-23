@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { accessTokenState } from 'recoil/user';
+import store from 'storejs';
 
 const axiosApiInstance = axios.create({
   baseURL: 'https://earth-mas.shop/server/',
@@ -26,6 +27,7 @@ const AxiosInterceptor = ({ children }: any) => {
       console.log('errInterceptor');
       if (error.response.status === 401) {
         // 기존의 originalRequest를 auth/restore 으로 전달해 토큰을 재발급
+        //
         try {
           const originalRequest = error.config;
           const data = await axiosApiInstance.post('auth/restore');
@@ -34,6 +36,7 @@ const AxiosInterceptor = ({ children }: any) => {
             console.log('토큰 재발급');
             // 재발급 받은 토큰은 다시 atom 저장을 하고
             const { accessToken } = data.data;
+            store.set('accessToken', accessToken);
             setAccessTokenAtom(accessToken);
             // 헤더 부분에서 토큰 정보를 변경하고 다시 originalRequest를 보냄.
             originalRequest.headers['accessToken'] = 'Bearer ' + accessToken;

@@ -9,6 +9,8 @@ import store from 'storejs';
 import { useState } from 'react';
 import Modal from 'components/commons/modal';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
+import axios from 'axios';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 const Header = () => {
   const userInfo = useRecoilValue(userState);
@@ -16,8 +18,14 @@ const Header = () => {
   const resetUser = useResetRecoilState(userState);
   const [isOpen, setIsOpen] = useState(false);
   const onClickModal = () => setIsOpen(prev => !prev);
+  const accessToken = store.get('accessToken');
 
   const onClickLogout = () => {
+    axiosApiInstance.post('auth/logout', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     store.remove('accessToken');
     setIsOpen(prev => !prev);
     resetUser();
