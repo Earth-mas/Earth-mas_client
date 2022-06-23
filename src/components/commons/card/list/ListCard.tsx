@@ -2,27 +2,34 @@ import styled from '@emotion/styled';
 import Blank from 'components/commons/blank/Blank';
 import Line from 'components/commons/line';
 import UserProfile from 'components/commons/profile/profile';
+import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userState } from 'recoil/user';
 import { Colors } from 'styles/Colors';
-import { IPropsListCard } from './ListCard.types';
+import { IPropsActivityList } from './ListCard.types';
 
-export default function ListCard(props: IPropsListCard) {
+export default function ListCard(props: IPropsActivityList) {
+  const userInfo = useRecoilValue(userState);
+  const { url, name } = userInfo;
   return (
-    <Wrapper>
-      <div className="imgContainer">
-        <img src={props.el.img} />
-        <div className="addressContainer">{props.el.location}</div>
-      </div>
-
-      <Blank height={10} />
-      <div className="infoBox">
-        <div className="contentsBox">{props.el.contents}</div>
-        <Line />
-        <div className="userInfo">
-          <UserProfile size={25} />
-          <li>{props.el.user}</li>
-          <li>{props.el.dday}</li>
+    <Wrapper id={props.el.id}>
+      <Link to={`/activity/${props.el.id}`}>
+        <div className="imgContainer">
+          <img src={props.el.url} />
+          <div className="addressContainer">{props.el.location}</div>
         </div>
-      </div>
+
+        <Blank height={10} />
+        <div className="infoBox">
+          <div className="contentsBox">{props.el.description}</div>
+          <Line />
+          <div className="userInfo">
+            <UserProfile size={25} avataUrl={url} name={name} />
+            {/* <li>{props.el.user}</li> */}
+            <li>{props.el.createAt}</li>
+          </div>
+        </div>
+      </Link>
     </Wrapper>
   );
 }

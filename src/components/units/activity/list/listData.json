@@ -1,0 +1,21 @@
+{
+  "activitycategory": {
+    "category": "플로깅",
+    "createAt": "2022-06-15T17:28:10.240Z",
+    "deleteAt": null,
+    "id": "aee56ce2-d270-4ccc-8e88-9bed1b61fa7e"
+  },
+
+  "createAt": "2022-06-23T05:13:12.374Z",
+  "dday": "2022-06-22T15:00:00.000Z",
+  "deleteAt": null,
+  "description": "<p>과연 날짜 제대로 등록이 되었을까?</p>",
+  "id": "93819a66-76aa-4504-928a-47b998a9ee5c",
+  "location": "서울 구로구",
+  "maxpeople": null,
+  "people": 1,
+  "subdescription": "준비물",
+  "title": "날짜 test",
+  "updateAt": "2022-06-23T05:13:12.374Z",
+  "url": "https://storage.googleapis.com/earthmas/activity/1655961171501-엑박 이미지.jpg,https://storage.googleapis.com/earthmas/activity/1655961173833-495773655269005(복사본).jpg,https://storage.googleapis.com/earthmas/activity/1655961178682-플로깅.jpg"
+}
