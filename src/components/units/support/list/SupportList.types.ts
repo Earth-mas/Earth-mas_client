@@ -7,6 +7,7 @@ export interface ISupportListUIProps {
   refetch: any;
   data: { data: ISupportListProps[] } | any;
   setSelect: Dispatch<SetStateAction<boolean>>;
+  isPreviousData: boolean;
 }
 export interface ISupportListProps {
   createAt: string;
