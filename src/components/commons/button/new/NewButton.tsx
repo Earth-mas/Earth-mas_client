@@ -12,7 +12,7 @@ export const NewButton = () => {
 const LinkNew = styled(Link)`
   z-index: 10;
   position: fixed;
-  right: 55px;
+  right: 50px;
   bottom: 40px;
   width: 60px;
   height: 60px;
