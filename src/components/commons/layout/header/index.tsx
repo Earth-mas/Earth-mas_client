@@ -26,9 +26,9 @@ const Header = () => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    store.remove('accessToken');
-    setIsOpen(prev => !prev);
-    resetUser();
+    // store.remove('accessToken');
+    // setIsOpen(prev => !prev);
+    // resetUser();
   };
 
   return (
