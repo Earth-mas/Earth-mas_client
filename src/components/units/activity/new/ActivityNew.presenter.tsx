@@ -1,32 +1,36 @@
 import styled from '@emotion/styled';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-// import DatePicker01 from 'components/commons/datePicker';
+import DatePicker02 from 'components/commons/datePicker/02';
 import Dropdown01 from 'components/commons/dropdown/01/Dropdown01';
 import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
-
-// import { Dispatch, FormEvent, SetStateAction, SyntheticEvent } from 'react';
+import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
+import { Controller } from 'react-hook-form';
 import {
+  Control,
+  FieldValues,
   SubmitHandler,
   UseFormHandleSubmit,
   UseFormRegister,
 } from 'react-hook-form/dist/types';
+import { RootObject } from '../detail/ActivityDetail.container';
 import { FormValues } from './ActivityNew.container';
 
 interface IActivityNewUIProps {
+  newData?: RootObject;
+  handleChangeQuill: any;
+  isSelected: string;
+  control: Control<FieldValues, any>;
+  urls: string[];
+  contents: any;
+  setUrls: Dispatch<SetStateAction<string[]>>;
+  setIsSelected: Dispatch<React.SetStateAction<string>>;
   handleSubmit: UseFormHandleSubmit<FormValues>;
   onClickSubmit: SubmitHandler<FormValues>;
   register: UseFormRegister<FormValues>;
-  // date: Date | null | undefined;
-  // urls: string[];
-  // setUrls: Dispatch<SetStateAction<string[]>>;
-  // onChangeDate: (
-  //   date: Date | null,
-  //   event: SyntheticEvent<unknown, Event> | undefined,
-  // ) => void;
 }
 
 export default function ActivityNewUI(props: IActivityNewUIProps) {
@@ -44,7 +48,13 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
         />
 
         <ColumnWrap>
-          {/* <Dropdown01 page={1} /> */}
+          <Dropdown01
+            page={1}
+            isSelected={
+              props.newData?.activitycategory?.category ? props.isSelected : ''
+            }
+            setIsSelected={props.setIsSelected}
+          />
           {/* <DatePicker01
             onChangeDate={props.onChangeDate}
             date={props.date}
@@ -52,6 +62,21 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
           /> */}
           {/* 달력 보여지는 위치 조정해주기 */}
           {/* 토, 일 색깔 적용하기 */}
+          <Controller
+            control={props.control}
+            name="dday"
+            // onChange={props.onChangeDate}
+            render={({ field: { onChange, value } }) => (
+              <DatePicker02
+                selected={
+                  props.newData?.dday
+                    ? value || new Date(props.newData?.dday)
+                    : value
+                }
+                onChange={date => onChange(date)}
+              />
+            )}
+          />
         </ColumnWrap>
 
         <ColumnWrap>
@@ -65,6 +90,7 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
 
           <Input01
             type="number"
+            id="number"
             placeholder="모집 인원"
             pattern="[0-9]+"
             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$0');"
@@ -86,9 +112,14 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
           register={props.register('subdescription')}
         />
 
-        {/* <Upload01 page="activity" urls={props.urls} setUrls={props.setUrls} /> */}
+        <Upload01 page="activity" urls={props.urls} setUrls={props.setUrls} />
         <Blank height={25} />
-        {/* <QuillEditor page={1} /> */}
+        <QuillEditor
+          page={1}
+          name="description"
+          onChange={props.handleChangeQuill}
+          value={props.contents || props.newData?.description || ''}
+        />
         <Blank height={60} />
         <div className="buttonWrap">
           <ContainedButton01

@@ -66,21 +66,21 @@ export default function MarketNew(props: IMarketNewProps) {
       category: isSelected,
       url: urlString,
     };
-    // console.log(variables);
-    // await axios
-    //   .post(`https://earth-mas.shop/server/market/ `, variables, {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //   })
-    //   .then(res => {
-    //     console.log('응답', res);
-    //     // console.log('상품 id', res.data?.id);
-    //     // navigate(`/market/${res.data?.id}`);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    console.log(variables);
+    await axios
+      .post(`https://earth-mas.shop/server/market/ `, variables, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then(res => {
+        console.log('응답', res);
+        // console.log('상품 id', res.data?.id);
+        // navigate(`/market/${res.data?.id}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   const onClickUpdate = async (data: FormValues) => {

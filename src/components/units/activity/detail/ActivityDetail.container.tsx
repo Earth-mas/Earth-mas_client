@@ -4,52 +4,77 @@ import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
-import OutlinedButton01 from 'components/commons/button/outlined/OutlinedButton01';
+import Slide from 'components/commons/slide';
+import DOMPurify from 'dompurify';
+// import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
+// import OutlinedButton01 from 'components/commons/button/outlined/OutlinedButton01';
 import { useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
+// import ReactQuill from 'react-quill';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-import ActivityDetailUI from './ActivityDetail.presenter';
+// import ActivityDetailUI from './ActivityDetail.presenter';
 
 export interface RootObject {
   activitycategory: Activitycategory;
-  id: string;
   createAt: string;
   dday: string;
   deleteAt?: any;
   description: string;
+  id: string;
   location: string;
   maxpeople: number;
   people: number;
   subdescription: string;
   title: string;
   updateAt: string;
-  url: string;
+  url?: string;
 }
 
 interface Activitycategory {
-  category: string;
+  category?: string;
   createAt: string;
   deleteAt?: any;
+  id: string;
+}
+
+interface IpropsMainImg {
+  width?: number;
+  height?: number;
 }
 
 export default function ActivityDetail() {
+  const params = useParams();
+
   const [activityData, setActivityData] = useState<RootObject>();
 
+  // useEffect(() => {
+  //   const result = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `https://earth-mas.shop/server/activity/${params.id}`,
+  //       );
+  //       console.log('response 값: ', response);
+  //       setActivityData(response.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   result();
+  // }, []);
   useEffect(() => {
-    const result = async () => {
-      try {
-        const response = await axios.get(
-          'https://earth-mas.shop/server/activity/finddcs',
-        );
-        console.log(response);
-        setActivityData(response.data[0]);
-      } catch (error) {
-        console.log(error);
-      }
+    const getActivityData = async () => {
+      await axios
+        .get(`https://earth-mas.shop/server/activity/${params.id}`)
+        .then(res => {
+          setActivityData(res.data);
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     };
-    result();
+    getActivityData();
   }, []);
 
   const onClickSubmit = () => {
@@ -59,14 +84,14 @@ export default function ActivityDetail() {
   return (
     <Wrap>
       <MainImg>
-        <img
+        {/* <img
           className="slide"
-          // style={{ width: '100%', height: '380px' }}
           src={`https://storage.googleapis.com/${activityData?.url}`}
           onError={event =>
             (event.currentTarget.src = '/images/activity/XBox.jpg')
           }
-        />
+        /> */}
+        <Slide banner={activityData?.url?.split(',')} slide={'sub'} />
       </MainImg>
       <Blank height={50} />
       <PostBox>
@@ -84,7 +109,7 @@ export default function ActivityDetail() {
             </li>
             <ul>
               <text>카테고리</text>
-              <li>{activityData?.activitycategory.category}</li>
+              <li>{activityData?.activitycategory?.category}</li>
               <text>지역</text>
               <li>{activityData?.location}</li>
               <text>모집인원</text>
@@ -95,8 +120,14 @@ export default function ActivityDetail() {
         </div>
         <Blank height={25} />
         <div className="postContents">
-          준비물 :<p>{activityData?.subdescription}</p>
-          본문 :<p>{activityData?.description}</p>
+          준비물 :{activityData?.subdescription}
+          <br />
+          본문 :
+          <div
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(String(activityData?.description)),
+            }}
+          />
         </div>
       </PostBox>
       <ContainedButton01
@@ -114,15 +145,14 @@ const Wrap = styled.div`
   max-width: 1024px;
   width: 100%;
   margin-top: 50px;
-  background-color: green;
 `;
 
 const MainImg = styled.div`
-  .slide {
-    width: 100%;
-    height: 380px;
-    border-radius: 5px;
-  }
+  width: 100%;
+  /* height: ${(props: IpropsMainImg) =>
+    props.height ? `${380}px` : 'none'}; */
+  height: 380px;
+  border-radius: 5px;
 `;
 
 const PostBox = styled.div`
@@ -137,14 +167,12 @@ const PostBox = styled.div`
     border: 1px solid ${Colors.B60};
     border-radius: 8px;
     padding: 12px 20px;
-    background-color: red;
     display: flex;
 
     & img {
       width: 45px;
       height: 45px;
       border-radius: 50%;
-      background-color: yellow;
     }
 
     .userInfo {

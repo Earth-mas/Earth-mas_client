@@ -3,8 +3,9 @@ import axios from 'axios';
 import store from 'storejs';
 import { activityRoute } from 'utils/APIRoutes';
 import ActivityNewUI from './ActivityNew.presenter';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 
 export interface FormValues {
   title?: string;
@@ -18,55 +19,42 @@ export interface FormValues {
 }
 
 export default function ActivityNew() {
-  // const navigate = useNavigate();
-
+  const navigate = useNavigate();
   const accessToken = store.get('accessToken');
+  const [urls, setUrls] = useState<string[]>([]);
+  const urlsToString = urls.toString();
+  const [isSelected, setIsSelected] = useState('');
 
-  // const [title, setTitle] = useState('');
-  // const [date, setDate] = useState<Date | null>();
-  // const [headCount, setHeadCount] = useState('');
-  // const [location, setLocation] = useState('');
-  // const [subDescription, setSubDescrition] = useState('');
-  // const [description, setDescription] = useState();
-  // const [urls, setUrls] = useState<string[]>([]);
-  // const [category, setCategory] = useState();
+  const { register, handleSubmit, setValue, trigger, getValues, control } =
+    useForm<FormValues>({
+      mode: 'onSubmit',
+      reValidateMode: 'onChange',
+    });
 
-  const { register, handleSubmit } = useForm<FormValues>({
-    mode: 'onSubmit',
-    reValidateMode: 'onChange',
-  });
+  const handleChangeQuill = (value: string) => {
+    console.log(value);
+    setValue('description', value === '<p><br><p>' ? '' : value);
+    trigger('description');
+  };
 
   const onClickSubmit = async (data: FormValues) => {
     console.log('등록할 데이터: ', data);
-    const variables = {
-      title: data?.title,
-      dday: data?.dday,
-      maxpeople: data?.maxpeople,
-      location: data?.location,
-      subdescription: data?.subdescription,
-      description: data?.description,
-      url: data?.url,
-      category: data?.category,
-    };
-    // if (
-    //   title === '' ||
-    //   date === null ||
-    //   headCount === '' ||
-    //   location === '' ||
-    //   subDescription === '' ||
-    //   description === '' ||
-    //   urls === [] ||
-    //   category === ''
-    // ) {
+    // if (!data) {
     //   alert('내용을 입력해주세요');
     //   return;
     // }
+    const variables = {
+      ...data,
+      category: isSelected,
+      url: urlsToString,
+    };
     try {
       const regisData = await axios.post(activityRoute, variables, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+      navigate(`/activity/${regisData.data?.id}`);
       console.log('등록된 데이터:', regisData);
     } catch (error) {
       console.log(error);
@@ -75,9 +63,16 @@ export default function ActivityNew() {
 
   return (
     <ActivityNewUI
+      control={control}
+      isSelected={isSelected}
+      setIsSelected={setIsSelected}
       onClickSubmit={onClickSubmit}
       register={register}
       handleSubmit={handleSubmit}
+      handleChangeQuill={handleChangeQuill}
+      urls={urls}
+      setUrls={setUrls}
+      contents={getValues('description')}
     />
   );
 }
