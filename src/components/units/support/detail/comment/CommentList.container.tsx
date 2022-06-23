@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { supportCommentRoute } from 'utils/APIRoutes';
 import store from 'storejs';
 import { useParams } from 'react-router-dom';
@@ -12,11 +12,18 @@ export default function CommentList() {
   const queryClient = useQueryClient();
 
   const [comments, setComments] = useState('');
+  const [clickPage, setClickPage] = useState(1);
+  const [startPage, setStartPage] = useState(1);
+
+  const inputRef = useRef<any>(null);
+  const onClearInput = () => {
+    inputRef.current.value = '';
+  };
 
   const { data, refetch: getAllComment } = useQuery('allComment', async () => {
     return await axios.post(`${supportCommentRoute}/findall`, {
       id: id,
-      page: 1,
+      page: clickPage,
     });
   });
 
@@ -30,6 +37,7 @@ export default function CommentList() {
     },
     {
       onSuccess: () => {
+        onClearInput();
         queryClient.invalidateQueries('allComment', { refetchInactive: true });
       },
       onError: err => {
@@ -57,7 +65,6 @@ export default function CommentList() {
 
     if (handleValidation()) {
       try {
-        setComments('');
         getAllComment();
       } catch (err) {
         console.log(err);
@@ -70,6 +77,12 @@ export default function CommentList() {
       getAllCommentData={getAllCommentData}
       handleChange={handleChange}
       data={data}
+      clickPage={clickPage}
+      setClickPage={setClickPage}
+      startPage={startPage}
+      setStartPage={setStartPage}
+      refetch={getAllComment}
+      inputRef={inputRef}
     />
   );
 }

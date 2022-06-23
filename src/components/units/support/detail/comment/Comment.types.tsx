@@ -1,5 +1,11 @@
 import { AxiosResponse } from 'axios';
-import { ChangeEvent, FormEventHandler } from 'react';
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEventHandler,
+  LegacyRef,
+  SetStateAction,
+} from 'react';
 
 export interface ICommentProps {
   el: {
@@ -15,6 +21,12 @@ export interface ICommentProps {
 }
 
 export interface ICommentListUIProps {
+  inputRef: LegacyRef<HTMLInputElement> | undefined;
+  clickPage: number;
+  setClickPage: Dispatch<SetStateAction<number>>;
+  startPage: number;
+  setStartPage: Dispatch<SetStateAction<number>>;
+  refetch: any;
   getAllCommentData: FormEventHandler<HTMLFormElement> | undefined;
   handleChange: (arg0: ChangeEvent<HTMLInputElement>) => void;
   data: AxiosResponse<any, any> | undefined;

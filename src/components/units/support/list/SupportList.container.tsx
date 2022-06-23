@@ -6,25 +6,28 @@ import SupportListUI from './SupportList.presenter';
 
 export default function SupportList() {
   const [select, setSelect] = useState<boolean>(false);
+  const [clickPage, setClickPage] = useState(1);
+  const [startPage, setStartPage] = useState(1);
 
-  const { data, refetch } = useQuery('supportList', () => {
+  const { data, refetch } = useQuery('supportList', async () => {
     return select
-      ? axios.post(`${supportRoute}/finddcs`, { page: 1 })
-      : axios.post(`${supportRoute}/finddday`, { page: 1 });
+      ? axios.post(`${supportRoute}/finddday`, { page: clickPage })
+      : axios.post(`${supportRoute}/finddcs`, { page: clickPage });
   });
 
-  // console.log(data);
-
-  function refetchList() {
-    if (select) {
-      refetch();
-    } else {
-      refetch();
-    }
-  }
   useEffect(() => {
-    refetchList();
+    refetch();
   }, [select]);
 
-  return <SupportListUI data={data} setSelect={setSelect} />;
+  return (
+    <SupportListUI
+      data={data}
+      setSelect={setSelect}
+      refetch={refetch}
+      clickPage={clickPage}
+      setClickPage={setClickPage}
+      startPage={startPage}
+      setStartPage={setStartPage}
+    />
+  );
 }

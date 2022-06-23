@@ -17,7 +17,7 @@ export default function SupportDetail() {
   const today = new Date();
   const dDay = new Date(data?.dday);
   const leftDay = Math.ceil(
-    (today.getTime() - dDay.getTime()) / (1000 * 60 * 60 * 24),
+    (today.getTime() - dDay.getTime()) / (1000 * 60 * 60 * 24) - 1,
   );
 
   const { mutate: deleteContent } = useMutation(

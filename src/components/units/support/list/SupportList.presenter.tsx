@@ -24,11 +24,19 @@ export default function SupportListUI(props: ISupportListUIProps) {
           <Dropdown02 page={1} setSelect={props.setSelect} />
         </div>
         <CardWrapper>
-          {props.data?.data?.map((el: ISupportListProps) => (
+          {props.data?.data?.arr?.map((el: ISupportListProps) => (
             <SupportCard key={uuidv4()} el={el} />
           ))}
         </CardWrapper>
-        <Pagination />
+        <Pagination
+          page="list"
+          listCount={props.data?.data?.length}
+          refetch={props.refetch}
+          clickPage={props.clickPage}
+          setClickPage={props.setClickPage}
+          startPage={props.startPage}
+          setStartPage={props.setStartPage}
+        />
       </Wrapper>
     </>
   );
@@ -55,6 +63,7 @@ const Wrapper = styled.div`
   }
 `;
 const CardWrapper = styled.div`
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 40px 30px;
