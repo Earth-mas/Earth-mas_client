@@ -2,46 +2,83 @@ import { HeartOutlineRedIcon, ShareIcon } from 'assets/svgs';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import OutlinedButton01 from 'components/commons/button/outlined/OutlinedButton01';
 import * as S from './DetailOverview.styles';
-import image from '../../../../../assets/images/market/banner/banner1.jpeg';
 import Title01 from 'components/commons/text/title/Title01';
 import { IMarketDetail } from '../MarketDetail.types';
 import { v4 as uuid4 } from 'uuid';
-import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
 import { getAvgStar } from 'commons/utils/getStars';
 import { getMoney, getPercent } from 'commons/utils/getAmount';
+import axios from 'axios';
+import { SyntheticEvent, useEffect, useState } from 'react';
+import logo from '../../../../../assets/svgs/logo/logo-icon-w.svg';
+import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
 
 interface IDetailOverviewProps {
   detailData?: IMarketDetail;
-  deleteMarketItem: () => void;
 }
 // console.log(props.detailData);
 
 export default function DetailOverview(props: IDetailOverviewProps) {
+  const [image, setImage] = useState('');
+
+  const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
+    event.currentTarget.src = logo;
+  };
+
+  const deleteMarketItem = async () => {
+    await axios
+      .delete(`https://earth-mas.shop/server/market/${props.detailData?.id}`)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    setImage(`${props.detailData?.url.split(',')[0]}`);
+  }, [props.detailData]);
+
   return (
     <main>
       <S.ItemImage>
-        <div className="carousel-preview">
+        <div className="cover-image-list">
           <ul>
             {props.detailData?.url.split(',').map(el => (
-              <li className="carousel-preview-image" key={uuid4()}>
-                <img src={el} />
+              <li key={uuid4()}>
+                <img
+                  src={el}
+                  onMouseOver={() => {
+                    setImage(el);
+                  }}
+                  onError={onErrorImg}
+                />
               </li>
             ))}
           </ul>
         </div>
-        <div className="carousel-zoom">
+        <div className="cover-image">
           <div>
-            <img src={image} />
+            <img
+              //  src={image ? image : logo}
+              src={image}
+              onError={onErrorImg}
+            />
           </div>
-
-          {/* state에 url 담아서 보여주기.. 어떻게..? */}
         </div>
       </S.ItemImage>
       <S.ItemInfo>
         <div className="title-wrap">
           <Title01 size="C" content={props.detailData?.title} margin={15} />
-          <Dropdown03 page="market" deleteContent={props.deleteMarketItem} />
+          <Dropdown05
+            page="market"
+            deleteContent={deleteMarketItem}
+            title="게시물을 삭제하시겠습니까?"
+            contents="삭제 후 되돌릴 수 없습니다"
+            cancelMessage="취소"
+            okMessage="삭제"
+          />
         </div>
         <p className="description">{props.detailData?.minidescription}</p>
         <div className="review">

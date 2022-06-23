@@ -51,6 +51,9 @@ export default function QuillEditor(props: IQuillEditorProps) {
     toolbar: {
       container: toolbarOptions,
     },
+    clipboard: {
+      matchVisual: false,
+    },
   };
 
   // console.log(props.value);

@@ -1,13 +1,11 @@
-import styled from '@emotion/styled';
 import { Avatar } from 'assets/svgs';
 import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
-import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
+import UserProfile from 'components/commons/profile/profile';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
 
-import { useParams } from 'react-router-dom';
-import { Colors } from 'styles/Colors';
-import { FontFamily, FontSize } from 'styles/FontStyles';
+import * as S from './ReviewDetail.styles';
+
 import { IMarketReviewDetail } from './ReviewDetail.types';
 interface IReviewDetailProps {
   reviewData: IMarketReviewDetail;
@@ -28,12 +26,8 @@ export default function ReviewDetail(props: IReviewDetailProps) {
       });
   };
 
-  const onClickDeleteReview = async () => {
-    alert('리뷰 삭제');
-  };
-
   return (
-    <Wrap>
+    <S.Wrap>
       <div className="user">
         <Avatar />
         <p>{props.reviewData?.user?.email}</p>
@@ -48,59 +42,22 @@ export default function ReviewDetail(props: IReviewDetailProps) {
               }
             />
           </span>
+          <p>{props.reviewData?.user?.email}</p>
           <span className="review-date">
             {GetDate(props.reviewData?.createAt)}
           </span>
         </div>
+        <div className="review-image">
+          <ul>
+            {props.reviewData?.url.split(',').map(el => (
+              <li>
+                <img src={el} />
+              </li>
+            ))}
+          </ul>
+        </div>
         <p className="review-content">{props.reviewData?.contents}</p>
       </div>
-      {/* <div className="button"></div> */}
-    </Wrap>
+    </S.Wrap>
   );
 }
-
-const Wrap = styled.div`
-  width: 100%;
-  padding: 30px 15px;
-  display: flex;
-  grid-gap: 20px;
-  font-family: ${FontFamily.MEDIUM};
-  font-size: ${FontSize.SMALL};
-  color: ${Colors.B60};
-  border-bottom: 1px solid ${Colors.B40};
-
-  .user {
-    width: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    svg {
-      width: 30px;
-      height: 30px;
-      margin-bottom: 5px;
-    }
-    p {
-    }
-  }
-
-  .review {
-    width: calc(100% - 150px);
-    .review-info {
-      display: flex;
-      .review-date {
-        margin-left: 5px;
-      }
-    }
-
-    .review-content {
-      font-family: ${FontFamily.MEDIUM};
-      font-size: ${FontSize.SMALL};
-      color: ${Colors.B100};
-      margin-top: 8px;
-    }
-  }
-  .button {
-    width: 50px;
-    background-color: aqua;
-  }
-`;

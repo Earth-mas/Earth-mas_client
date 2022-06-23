@@ -6,47 +6,40 @@ export const ItemImage = styled.section`
   width: 100%;
   display: flex;
   grid-gap: 5px;
-  .carousel-preview {
+  .cover-image-list {
     ul {
       display: flex;
       flex-direction: column;
       grid-gap: 5px;
-    }
-    li.carousel-preview-image {
-      width: 60px;
-      aspect-ratio: 1 / 1;
-      border-radius: 10px;
-      overflow: hidden;
-      :hover {
-        cursor: pointer;
-        border: 2px solid ${Colors.MAIN};
-      }
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+      li {
+        width: 60px;
+        aspect-ratio: 1 / 1;
+        border-radius: 10px;
+        overflow: hidden;
         :hover {
-          transform: scale(1.1);
-          transition: all 0.3s ease-in-out;
+          cursor: pointer;
+          border: 2px solid ${Colors.MAIN};
+        }
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          :hover {
+            transform: scale(1.1);
+            transition: all 0.3s ease-in-out;
+          }
         }
       }
     }
   }
 
-  .carousel-zoom {
+  .cover-image {
     width: 100%;
-    /* aspect-ratio: 1 / 1; */
-    /* border-radius: 10px; */
-    /* overflow: hidden; */
-    :hover {
-      cursor: pointer;
-    }
-    div {
+    & div {
       width: 100%;
       height: 442px;
       overflow: hidden;
       border-radius: 10px;
-      background-color: aqua;
       img {
         width: 100%;
         height: 442px;

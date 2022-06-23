@@ -41,7 +41,7 @@ const ModalWrapper = styled.div`
   display: flex;
   position: absolute;
   flex-direction: column;
-  width: 520px;
+  width: 600px;
   /* height: 55vh; */
   border: 1px solid ${Colors.B40};
   overflow: hidden;

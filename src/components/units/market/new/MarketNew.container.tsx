@@ -4,36 +4,15 @@ import { useForm } from 'react-hook-form';
 import MarketNewUI from './MarketNew.presenter';
 import store from 'storejs';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IMarketDetail } from '../detail/MarketDetail.types';
+import {
+  FormValues,
+  IMarketNewProps,
+  IUpdateVariables,
+} from './MarketNew.types';
 
-export interface FormValues {
-  title?: string;
-  stock?: number;
-  amount?: number;
-  discount?: number;
-  minidescription?: string;
-  description?: string;
-}
-
-interface IMarketNewProps {
-  isEdit: boolean;
-  itemData?: IMarketDetail;
-}
-
-interface IUpdateVariables {
-  title?: string;
-  minidescription?: string;
-  description?: string;
-  url?: string;
-  amount?: number;
-  discount?: number;
-  stock?: number;
-  category?: string;
-}
 export default function MarketNew(props: IMarketNewProps) {
   const accessToken = store.get('accessToken');
-  const [urls, setUrls] = useState<string[]>([]);
-  const urlString = urls.toString();
+  const [urlString, setUrlString] = useState('');
   const [isSelected, setIsSelected] = useState('');
   const params = useParams();
   const navigate = useNavigate();
@@ -51,20 +30,21 @@ export default function MarketNew(props: IMarketNewProps) {
   });
 
   const onChangeQuill = (value: any) => {
-    // console.log(value);
-    setValue('description', value === '<p><br><p>' ? '' : value);
+    setValue('description', value === '<p><br></p>' ? ' ' : value);
     trigger('description');
   };
 
   const onClickSubmit = async (data: FormValues) => {
     // console.log(data);
     const variables = {
-      ...data,
+      title: data.title,
+      minidescription: data.minidescription,
+      description: data.description,
       amount: Number(data.amount),
       discount: Number(data.discount),
       stock: Number(data.stock),
-      category: isSelected,
       url: urlString,
+      category: isSelected,
     };
     console.log(variables);
     await axios
@@ -76,7 +56,7 @@ export default function MarketNew(props: IMarketNewProps) {
       .then(res => {
         console.log('응답', res);
         // console.log('상품 id', res.data?.id);
-        // navigate(`/market/${res.data?.id}`);
+        navigate(`/market/${res.data?.id}`);
       })
       .catch(error => {
         console.log(error);
@@ -84,31 +64,35 @@ export default function MarketNew(props: IMarketNewProps) {
   };
 
   const onClickUpdate = async (data: FormValues) => {
+    // console.log(data)
     if (
       !data.title &&
       !data.stock &&
       !data.amount &&
       !data.discount &&
-      !data.minidescription &&
-      data.description === props.itemData?.description &&
-      urlString === props.itemData?.url
-      // && props.itemData?.marketcategory.name === isSelected
-    ) {
+      !data.minidescription
+    )
       return alert('수정된 내용이 없습니다');
-    }
 
     const updateVariables: IUpdateVariables = {
-      ...props.itemData,
+      title: props.itemData?.title,
+      minidescription: props.itemData?.minidescription,
+      description: props.itemData?.description,
+      amount: props.itemData?.amount,
+      discount: props.itemData?.discount,
+      stock: props.itemData?.stock,
+      url: props.itemData?.url,
+      category: props.itemData?.marketcategory.name,
     };
     if (data.title) updateVariables.title = data.title;
-    if (data.stock) updateVariables.stock = data.stock;
-    if (data.amount) updateVariables.amount = data.amount;
-    if (data.discount) updateVariables.discount = data.discount;
+    if (data.stock) updateVariables.stock = Number(data.stock);
+    if (data.amount) updateVariables.amount = Number(data.amount);
+    if (data.discount) updateVariables.discount = Number(data.discount);
     if (data.minidescription)
       updateVariables.minidescription = data.minidescription;
     if (data.description) updateVariables.description = data.description;
-
-    // console.log(updateVariables);
+    if (urlString) updateVariables.url = urlString;
+    console.log(updateVariables);
     await axios
       .put(
         `https://earth-mas.shop/server/market/${params.id} `,
@@ -131,8 +115,8 @@ export default function MarketNew(props: IMarketNewProps) {
 
   return (
     <MarketNewUI
-      urls={urls}
-      setUrls={setUrls}
+      urlString={urlString}
+      setUrlString={setUrlString}
       isEdit={props.isEdit}
       itemData={props.itemData}
       register={register}

@@ -33,6 +33,11 @@ export const Wrap = styled.div`
       :hover {
         cursor: pointer;
       }
+      /* .heart {
+        path {
+          fill: yellow;
+        }
+      } */
     }
   }
 

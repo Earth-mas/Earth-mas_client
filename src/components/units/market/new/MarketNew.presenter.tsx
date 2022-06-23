@@ -6,10 +6,11 @@ import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
 import Upload01 from 'components/commons/upload/01/Upload01';
+import Upload01Copy from 'components/commons/upload/01/Upload01.copy';
 import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, UseFormHandleSubmit } from 'react-hook-form/dist/types';
 import { IMarketDetail } from '../detail/MarketDetail.types';
-import { FormValues } from './MarketNew.container';
+import { FormValues } from './MarketNew.types';
 
 interface IMarketNewUIProps {
   register: any;
@@ -22,12 +23,13 @@ interface IMarketNewUIProps {
   isSelected?: string;
   setIsSelected: Dispatch<React.SetStateAction<string>>;
   contents: any;
-  setUrls: Dispatch<SetStateAction<string[]>>;
-  urls: string[];
+
+  urlString: string;
+  setUrlString: Dispatch<React.SetStateAction<string>>;
 }
 
 export default function MarketNewUI(props: IMarketNewUIProps) {
-  // console.log(props.register('title'));
+  // console.log(props.itemData?.url);
   return (
     <Wrap>
       <Title01
@@ -102,11 +104,17 @@ export default function MarketNewUI(props: IMarketNewUIProps) {
               : ''
           }
         />
-
+        {/* 
         <Upload01
           page="market"
           urls={props.urls}
           setUrls={props.setUrls}
+          fetchData={props.itemData?.url.split(',')}
+        /> */}
+        <Upload01Copy
+          page="market"
+          urlString={props.urlString}
+          setUrlString={props.setUrlString}
           fetchData={props.itemData?.url.split(',')}
         />
         <Blank height={25} />
@@ -116,11 +124,13 @@ export default function MarketNewUI(props: IMarketNewUIProps) {
           value={props.contents || props.itemData?.description || ''}
         />
         <Blank height={60} />
-        <ContainedButton01
-          content={props.isEdit ? '상품 수정' : '상품등록'}
-          color="main"
-          type="submit"
-        />
+        <div className="button">
+          <ContainedButton01
+            content={props.isEdit ? '상품 수정' : '상품등록'}
+            color="main"
+            type="submit"
+          />
+        </div>
       </form>
     </Wrap>
   );
@@ -130,6 +140,13 @@ const Wrap = styled.div`
   max-width: 1024px;
   width: 100%;
   padding: 30px 0px 100px 0px;
+  .button {
+    display: flex;
+    justify-content: center;
+    button {
+      width: 250px;
+    }
+  }
 `;
 
 const ColumnWrap = styled.div`
