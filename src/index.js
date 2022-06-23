@@ -5,6 +5,7 @@ import App from './App';
 import { RecoilRoot } from 'recoil';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 //prettier-ignore
 root.render(
   // <React.StrictMode>

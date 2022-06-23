@@ -19,12 +19,12 @@ export default function SupportListUI(props: ISupportListUIProps) {
       <Wrapper>
         <div className="topWrapper">
           <p className="totalCount">
-            전체 기부 <span>{props.list?.data.length}</span>개
+            전체 기부 <span>{props.data?.data?.length}</span>개
           </p>
           <Dropdown02 page={1} setSelect={props.setSelect} />
         </div>
         <CardWrapper>
-          {props.list?.data.map((el: ISupportListProps) => (
+          {props.data?.data?.map((el: ISupportListProps) => (
             <SupportCard key={uuidv4()} el={el} />
           ))}
         </CardWrapper>

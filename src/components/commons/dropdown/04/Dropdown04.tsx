@@ -1,25 +1,23 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { ReactComponent as DropdownIcon } from 'assets/svgs/icons/dropdown-icon.svg';
 import * as S from './Dropdown04.styles';
+import { getPrice } from 'commons/utils/utils';
 
 const Price = [
-  { string: '1,000', number: 1000 },
-  { string: '5,000', number: 5000 },
-  { string: '10,000', number: 10000 },
-  { string: '30,000', number: 30000 },
-  { string: '50,000', number: 50000 },
+  { price: 1000 },
+  { price: 5000 },
+  { price: 10000 },
+  { price: 30000 },
+  { price: 50000 },
 ];
 
 interface IDropdown02Props {
   setSelectAmount: Dispatch<SetStateAction<string>>;
-  // page: 0 | 1; // market | activity,support
-  // setSelect?: any;
-  // setSelect?: Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Dropdown04(props: IDropdown02Props) {
   const [isActive, setIsActive] = useState(false);
-  const [isSelected, setIsSelected] = useState('1,000');
+  const [isSelected, setIsSelected] = useState('1000');
 
   const onClickCategory = () => {
     setIsActive(prev => !prev);
@@ -30,7 +28,6 @@ export default function Dropdown04(props: IDropdown02Props) {
     onClickCategory();
     setIsSelected(el);
     props.setSelectAmount(el);
-    // props.setSelect((prev: boolean) => !prev);
   };
 
   return (
@@ -38,18 +35,18 @@ export default function Dropdown04(props: IDropdown02Props) {
       onClick={onClickCategory}
       className={isActive ? 'activated' : ''}
     >
-      <span className="selected">{isSelected}</span>
+      <span className="selected">{getPrice(Number(isSelected))}</span>
       <DropdownIcon />
       {isActive && (
         <S.Option>
           <ul>
             {Price.map((el, index) => (
               <li
-                value={el.number}
+                value={el.price}
                 key={index}
-                onClick={onClickOption(el.string)}
+                onClick={onClickOption(el.price.toString())}
               >
-                {el.string}
+                {getPrice(Number(el.price))}
               </li>
             ))}
           </ul>

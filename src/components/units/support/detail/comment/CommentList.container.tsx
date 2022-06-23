@@ -14,7 +14,10 @@ export default function CommentList() {
   const [comments, setComments] = useState('');
 
   const { data, refetch: getAllComment } = useQuery('allComment', async () => {
-    return await axios.post(`${supportCommentRoute}/findall`, { id: id });
+    return await axios.post(`${supportCommentRoute}/findall`, {
+      id: id,
+      page: 1,
+    });
   });
 
   const { mutate } = useMutation(
