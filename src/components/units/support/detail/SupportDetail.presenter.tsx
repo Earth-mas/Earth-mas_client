@@ -6,7 +6,7 @@ import Dompurify from 'dompurify';
 import { getPrice } from 'commons/utils/utils';
 import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
 import { ISupportDetailUIProps } from './SupportDetail.types';
-import { ParticipationListContainer } from './ParticipationList.container';
+import { ParticipationListContainer } from './participationList/ParticipationList.container';
 import CommentContainer from './comment/CommentList.container';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 export interface ISupportListUIProps {
-  list: { data: ISupportListProps[] } | any;
+  data: { data: ISupportListProps[] } | any;
   setSelect: Dispatch<SetStateAction<boolean>>;
 }
 export interface ISupportListProps {

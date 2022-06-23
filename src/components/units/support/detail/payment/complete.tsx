@@ -1,10 +1,15 @@
 import styled from '@emotion/styled';
+import { getPrice } from 'commons/utils/utils';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
+import { Link } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
-export default function SupportComplete() {
+export default function SupportComplete(props: {
+  completeData: { data: { amount: number } };
+}) {
+  console.log(props);
+
   return (
     <Wrapper>
       <Top>
@@ -18,7 +23,7 @@ export default function SupportComplete() {
       <Bottom>
         <p>기부정보 확인</p>
         <div className="payment">
-          <span>1,000</span>
+          <span>{getPrice(props.completeData?.data?.amount)}</span>
           <span>원 기부되었습니다.</span>
         </div>
         <div className="grid">
@@ -27,9 +32,9 @@ export default function SupportComplete() {
           <p>단체명</p>
           <p>사회복지공동모금회</p>
         </div>
-        <div className="buttonWrap">
+        <Link to={'/support'} className="buttonWrap">
           <ContainedButton01 content="확인" color="main" />
-        </div>
+        </Link>
       </Bottom>
     </Wrapper>
   );
@@ -122,7 +127,8 @@ const Bottom = styled.div`
     }
   }
 
-  .buttonWrap {
+  a.buttonWrap {
+    display: block;
     width: 250px;
     margin: 0 auto;
   }

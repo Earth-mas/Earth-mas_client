@@ -137,11 +137,9 @@ export const Contents = styled.div`
   h4,
   h5 {
     font-family: ${FontFamily.BOLD};
-    /* margin-bottom: 15px; */
     color: ${Colors.B100};
   }
   p {
-    /* margin-bottom: 35px; */
     line-height: 30px;
     font-size: ${FontSize.MEDIUM_C};
     color: ${Colors.B100};
@@ -174,8 +172,8 @@ export const ParticipationList = styled.div`
     :last-of-type {
       border-bottom: 0;
     }
-    span:first-of-type {
-      padding-right: 10px;
+    .userName {
+      margin-right: 10px;
     }
   }
   .more {
@@ -206,4 +204,17 @@ export const ThirdSection = styled.section`
   > div:last-of-type {
     margin-bottom: 0;
   }
+`;
+
+export const MyPayment = styled.span`
+  display: inline-block;
+  height: 18px;
+  line-height: 17px;
+  font-size: 0.75rem;
+  text-align: center;
+  color: ${Colors.SUB2};
+  border: 1px solid ${Colors.SUB2};
+  border-radius: 10px;
+  padding: 0 5px;
+  margin-right: 10px;
 `;

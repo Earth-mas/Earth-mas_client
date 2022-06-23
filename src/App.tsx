@@ -24,7 +24,6 @@ import SupportNewPage from 'pages/support/new';
 import SupportDetailPage from 'pages/support/[supportid]';
 import SupportEditPage from 'pages/support/[supportid]/edit';
 import SupportPaymentPage from 'pages/support/[supportid]/payment';
-import SupportCompletePage from 'pages/support/[supportid]/payment/complete';
 
 import useSetUser from 'hooks/useSetUser';
 import ScrollToTop from 'commons/utils/scrolltotop';
@@ -62,10 +61,6 @@ const App = () => {
                 <Route
                   path="/support/:id/payment"
                   element={<SupportPaymentPage />}
-                />
-                <Route
-                  path="/support/:id/payment/complete"
-                  element={<SupportCompletePage />}
                 />
                 <Route path="/chat" element={<ChatPage />} />
 

@@ -8,10 +8,12 @@ export default function SupportList() {
   const [select, setSelect] = useState<boolean>(false);
 
   const { data, refetch } = useQuery('supportList', () => {
-    return axios.get(
-      select ? `${supportRoute}/finddcs` : `${supportRoute}/finddday`,
-    );
+    return select
+      ? axios.post(`${supportRoute}/finddcs`, { page: 1 })
+      : axios.post(`${supportRoute}/finddday`, { page: 1 });
   });
+
+  // console.log(data);
 
   function refetchList() {
     if (select) {
@@ -24,5 +26,5 @@ export default function SupportList() {
     refetchList();
   }, [select]);
 
-  return <SupportListUI list={data} setSelect={setSelect} />;
+  return <SupportListUI data={data} setSelect={setSelect} />;
 }
