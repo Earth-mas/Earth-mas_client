@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { MouseEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as S from './MarketDetail.styles';
 import { IMarketDetail } from './MarketDetail.types';
 import Title01 from 'components/commons/text/title/Title01';
@@ -14,24 +14,12 @@ export default function MarketDetail() {
   const [nowTab, setNowTab] = useState('content');
   const [detailData, setDetailData] = useState<IMarketDetail>();
 
-  const getMarketItem = async () => {
+  const getItem = async () => {
     await axios
       .get(`https://earth-mas.shop/server/market/${params.id}`)
       .then(res => {
         setDetailData(res.data);
-        // console.log(detailData);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  const deleteMarketItem = async () => {
-    alert('삭제');
-    await axios
-      .delete(`https://earth-mas.shop/server/market/${params.id}`)
-      .then(res => {
-        console.log(res);
+        console.log(detailData);
       })
       .catch(error => {
         console.log(error);
@@ -39,7 +27,7 @@ export default function MarketDetail() {
   };
 
   useEffect(() => {
-    getMarketItem();
+    getItem();
     // console.log(DetailData);
   }, []);
 
@@ -57,10 +45,7 @@ export default function MarketDetail() {
           size="C"
         />
       </nav>
-      <DetailOverview
-        detailData={detailData}
-        deleteMarketItem={deleteMarketItem}
-      />
+      <DetailOverview detailData={detailData} />
       <nav className="tab-nav">
         <ul>
           <li>

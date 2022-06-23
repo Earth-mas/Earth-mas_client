@@ -29,6 +29,9 @@ export const Wrap = styled.div`
         display: flex;
         text-align: center;
         a {
+          :hover {
+            cursor: pointer;
+          }
           width: 90px;
           height: 40px;
           line-height: 40px;

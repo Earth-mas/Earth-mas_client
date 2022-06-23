@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import axios from 'axios';
 import { getAvg, getAvgStar } from 'commons/utils/getStars';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
-
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';

@@ -40,4 +40,5 @@ export interface IMarketReviewDetail {
   updatedAt: string;
   market: IMarket;
   user: IUser;
+  url: string;
 }

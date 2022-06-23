@@ -5,6 +5,7 @@ import { IReviewNewUIProps } from './ReviewNew.types';
 import logo from '../../../../../assets/svgs/logo/logo-icon-w.svg';
 import { SyntheticEvent } from 'react';
 import RatingStars from 'components/commons/stars/ratingStars/RatingStars';
+import Upload02 from 'components/commons/upload/02/Upload02';
 
 export default function ReviewNewUI(props: IReviewNewUIProps) {
   const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -38,6 +39,17 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
             {...props.register('score')}
           /> */}
           <RatingStars register={props.register} />
+        </div>
+        <div className="input-wrap">
+          <h1>사진 첨부</h1>
+          <Upload02
+            page="marketreview"
+            // urls={props.urls}
+            // setUrls={props.setUrls}
+            fetchData={props.REVIEW_DATA?.url.split(',')}
+            urlString={props.urlString}
+            setUrlString={props.setUrlString}
+          />
         </div>
         <div className="input-wrap">
           <h1>리뷰 작성</h1>
