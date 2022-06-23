@@ -8,10 +8,10 @@ import { ko } from 'date-fns/esm/locale';
 
 interface IDatePickerProps {
   defaultValue?: Date | null | undefined;
-  onChangeDate: (
-    date: Date | null,
-    event: SyntheticEvent<any, Event> | undefined,
-  ) => void;
+  // onChangeDate: (
+  //   date: Date | null,
+  //   event: SyntheticEvent<any, Event> | undefined,
+  // ) => void;
   date: Date | null | undefined;
   name: string;
 }

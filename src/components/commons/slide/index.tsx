@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 
 export default function Slide(props: {
-  banner: string[];
+  banner: string[] | undefined;
   slide: string; // main | sub
   autoplay?: boolean; // true | false
 }) {
