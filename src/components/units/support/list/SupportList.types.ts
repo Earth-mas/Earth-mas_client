@@ -2,8 +2,6 @@ import { Dispatch, SetStateAction } from 'react';
 export interface ISupportListUIProps {
   clickPage: number;
   setClickPage: Dispatch<SetStateAction<number>>;
-  startPage: number;
-  setStartPage: Dispatch<SetStateAction<number>>;
   refetch: any;
   data: { data: ISupportListProps[] } | any;
   setSelect: Dispatch<SetStateAction<boolean>>;

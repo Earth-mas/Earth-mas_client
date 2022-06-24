@@ -32,14 +32,10 @@ export default function SupportListUI(props: ISupportListUIProps) {
         </S.CardWrapper>
         <Pagination
           page="list"
-          isPreviousData={props.isPreviousData}
           listCount={props.data?.data?.length}
           refetch={props.refetch}
           clickPage={props.clickPage}
           setClickPage={props.setClickPage}
-          startPage={props.startPage}
-          setStartPage={props.setStartPage}
-          data={props.data}
         />
         <NewButton />
       </S.Wrapper>

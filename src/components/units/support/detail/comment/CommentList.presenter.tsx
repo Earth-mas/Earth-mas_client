@@ -48,14 +48,10 @@ export default function CommentListUI(props: ICommentListUIProps) {
       {props.data?.data?.length >= 1 && (
         <Pagination
           page="comment"
-          data={props.data}
-          isPreviousData={props.isPreviousData}
           refetch={props.refetch}
           listCount={props.data?.data?.length}
           clickPage={props.clickPage}
           setClickPage={props.setClickPage}
-          startPage={props.startPage}
-          setStartPage={props.setStartPage}
         />
       )}
     </>
