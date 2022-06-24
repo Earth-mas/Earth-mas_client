@@ -24,3 +24,4 @@ export { ReactComponent as StarOutlinedIcon } from './icons/star-outlined-icon.s
 export { ReactComponent as StarsIcon } from './icons/star-five-icon.svg';
 export { ReactComponent as ModalXbuttonIcon } from './icons/modal-xbutton-icon.svg';
 export { ReactComponent as ChatIcon } from './icons/chat-icon.svg';
+export { ReactComponent as CheckIcon } from './icons/check-icon.svg';

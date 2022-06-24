@@ -9,6 +9,7 @@ import category4 from '../../../assets/images/market/category/category4.jpeg';
 import category5 from '../../../assets/images/market/category/category5.jpeg';
 
 import Line from '../line';
+import { Dispatch } from 'react';
 
 const CATEGORY = [
   [
@@ -32,6 +33,7 @@ const CATEGORY = [
 
 interface ICategoryProps {
   page: 0 | 1;
+  setNowCategory: Dispatch<React.SetStateAction<string>>;
 }
 
 export default function Category(props: ICategoryProps) {
@@ -40,7 +42,12 @@ export default function Category(props: ICategoryProps) {
       <Title01 content="카테고리" size="T" margin={35} />
       <ul>
         {CATEGORY[props.page].map(el => (
-          <li key={el.category}>
+          <li
+            key={el.category}
+            onClick={() => {
+              props.setNowCategory(el.category);
+            }}
+          >
             <span>#{el.category}</span>
             <img src={el.image} />
           </li>

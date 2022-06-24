@@ -18,8 +18,7 @@ import { IMarketList } from 'components/units/market/list/MarketList.types';
 interface IMarketCardProps {
   listData: IMarketCard;
   key?: string;
-  // likeData: any;
-  myListData?: any;
+  myListData?: IMarketList[];
   index: number;
   id?: string;
 }

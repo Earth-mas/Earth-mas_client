@@ -37,7 +37,7 @@ export const Option = styled.div`
   width: 100px;
   height: 30px;
   top: -5px;
-  left: 20px;
+  left: -110px;
   border: 1px solid ${Colors.MAIN};
   border-radius: 20px;
   z-index: 2;

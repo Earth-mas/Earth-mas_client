@@ -1,10 +1,9 @@
 import { Avatar } from 'assets/svgs';
 import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
-import UserProfile from 'components/commons/profile/profile';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
-
 import * as S from './ReviewDetail.styles';
+import { v4 as uuid4 } from 'uuid';
 
 import { IMarketReviewDetail } from './ReviewDetail.types';
 interface IReviewDetailProps {
@@ -30,19 +29,16 @@ export default function ReviewDetail(props: IReviewDetailProps) {
     <S.Wrap>
       <div className="user">
         <Avatar />
-        <p>{props.reviewData?.user?.email}</p>
+        <p>{props.reviewData?.user?.name}</p>
       </div>
       <div className="review" onClick={getReview}>
-        <div className="review-info">
-          <span>
-            <ViewStars
-              color="sub2"
-              contained={
-                props.reviewData?.score && (props.reviewData?.score / 5) * 100
-              }
-            />
-          </span>
-          <p>{props.reviewData?.user?.email}</p>
+        <div>
+          <ViewStars
+            color="sub2"
+            contained={
+              props.reviewData?.score && (props.reviewData?.score / 5) * 100
+            }
+          />
           <span className="review-date">
             {GetDate(props.reviewData?.createAt)}
           </span>
@@ -50,7 +46,7 @@ export default function ReviewDetail(props: IReviewDetailProps) {
         <div className="review-image">
           <ul>
             {props.reviewData?.url.split(',').map(el => (
-              <li>
+              <li key={uuid4()}>
                 <img src={el} />
               </li>
             ))}
