@@ -1,7 +1,11 @@
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { FontSize } from 'styles/FontStyles';
-import { IPaginationStyleProps } from './Pagination.type';
+import {
+  IPaginationNextProps,
+  IPaginationPrevProps,
+  IPaginationStyleProps,
+} from './Pagination.type';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -14,7 +18,7 @@ export const Wrapper = styled.div`
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    cursor: pointer;
+    /* cursor: pointer; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,18 +42,26 @@ export const PageNumber = styled.div`
   &:last-of-type {
     margin-right: 0 !important;
   }
+  cursor: pointer;
 `;
 
 export const Prev = styled.div`
   margin-right: 10px;
-  background-color: ${Colors.B20};
+  background-color: ${(props: IPaginationPrevProps) =>
+    props.startPage !== 1 ? Colors.B40 : Colors.B20};
+  cursor: ${(props: IPaginationPrevProps) =>
+    props.startPage !== 1 ? 'pointer' : 'auto'};
 `;
 export const PrevArrow = styled.div`
   transform: rotate(-135deg);
   margin-left: 3px;
 `;
 export const Next = styled.div`
-  background-color: ${Colors.B20};
+  /* background-color: ${Colors.B20}; */
+  background-color: ${(props: IPaginationNextProps) =>
+    props.startPage + 10 >= props.lastPage ? Colors.B20 : Colors.B40};
+  cursor: ${(props: IPaginationNextProps) =>
+    props.startPage + 10 >= props.lastPage ? 'auto' : 'pointer'};
 `;
 export const NextArrow = styled.div`
   transform: rotate(45deg);
