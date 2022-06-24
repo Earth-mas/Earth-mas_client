@@ -29,6 +29,7 @@ import useSetUser from 'hooks/useSetUser';
 import ScrollToTop from 'commons/utils/scrolltotop';
 import { ChatPage } from 'pages/chat';
 import { AxiosInterceptor } from 'commons/utils/axiosInstance';
+import MarketPaymentPage from 'pages/market/[marketId]/payment';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -53,6 +54,10 @@ const App = () => {
                 <Route path="/market/new" element={<MarketNewPage />} />
                 <Route path="/market/:id" element={<MarketDetailPage />} />
                 <Route path="/market/:id/edit" element={<MarketEditPage />} />
+                <Route
+                  path="/market/:id/payment"
+                  element={<MarketPaymentPage />}
+                />
 
                 <Route path="/support" element={<SupportPage />} />
                 <Route path="/support/new" element={<SupportNewPage />} />

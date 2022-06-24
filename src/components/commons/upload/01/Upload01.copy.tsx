@@ -28,6 +28,7 @@ export default function Upload01Copy(props: IUpload01Props) {
     temp.push(url);
     setUrls(temp);
     props.setUrlString(temp.toString());
+    // console.log(temp.toString());
   };
 
   const onChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +52,7 @@ export default function Upload01Copy(props: IUpload01Props) {
     temp.splice(index, 1);
     setUrls(temp);
     props.setUrlString(temp.toString());
+    // console.log(temp.toString());
   };
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const onDragEnd = (result: any) => {
@@ -61,6 +63,7 @@ export default function Upload01Copy(props: IUpload01Props) {
     const [reorderedData] = originData.splice(source.index, 1);
     originData.splice(destination.index, 0, reorderedData);
     setUrls(originData);
+    props.setUrlString(originData.toString());
   };
 
   return (
@@ -80,33 +83,36 @@ export default function Upload01Copy(props: IUpload01Props) {
         </S.UploadButton>
         <Droppable droppableId="imageList" direction="horizontal">
           {provided => (
-            <ul {...provided.droppableProps} ref={provided.innerRef}>
-              {urls.map((el, index) => (
-                <Draggable draggableId={el} index={index} key={el}>
-                  {provided => (
-                    <li>
-                      <S.ImageWrap
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <S.XButton onClick={onClickDelete(index)}>
-                          <XbuttonIcon />
-                        </S.XButton>
-                        <S.Image>
-                          {index === 0 && (
-                            <S.Text>
-                              <span>대표사진</span>
-                            </S.Text>
-                          )}
-                          <img src={el} />
-                        </S.Image>
-                      </S.ImageWrap>
-                    </li>
-                  )}
-                </Draggable>
-              ))}
-            </ul>
+            <>
+              <ul {...provided.droppableProps} ref={provided.innerRef}>
+                {urls.map((el, index) => (
+                  <Draggable draggableId={el} index={index} key={el}>
+                    {provided => (
+                      <li>
+                        <S.ImageWrap
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <S.XButton onClick={onClickDelete(index)}>
+                            <XbuttonIcon />
+                          </S.XButton>
+                          <S.Image>
+                            {index === 0 && (
+                              <S.Text>
+                                <span>대표사진</span>
+                              </S.Text>
+                            )}
+                            <img src={el} />
+                          </S.Image>
+                        </S.ImageWrap>
+                      </li>
+                    )}
+                  </Draggable>
+                ))}
+              </ul>
+              <span style={{ display: 'none' }}>{provided.placeholder}</span>
+            </>
           )}
         </Droppable>
       </DragDropContext>

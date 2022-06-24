@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { MouseEvent, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import * as S from './MarketDetail.styles';
 import { IMarketDetail } from './MarketDetail.types';
 import Title01 from 'components/commons/text/title/Title01';
@@ -13,6 +13,17 @@ export default function MarketDetail() {
   const params = useParams();
   const [nowTab, setNowTab] = useState('content');
   const [detailData, setDetailData] = useState<IMarketDetail>();
+
+  const tabMenu = [
+    { id: 'content', name: '상세정보' },
+    { id: 'review', name: `리뷰 (${detailData?.reviewpeople})` },
+    { id: 'delivery', name: '배송 및 교환' },
+  ];
+
+  const onClickTab = (event: MouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+    setNowTab(target.id);
+  };
 
   const getItem = async () => {
     await axios
@@ -31,11 +42,6 @@ export default function MarketDetail() {
     // console.log(DetailData);
   }, []);
 
-  const onClickTab = (event: MouseEvent<HTMLElement>) => {
-    const target = event.target as HTMLElement;
-    setNowTab(target.id);
-  };
-
   return (
     <S.Wrap>
       <nav>
@@ -48,33 +54,17 @@ export default function MarketDetail() {
       <DetailOverview detailData={detailData} />
       <nav className="tab-nav">
         <ul>
-          <li>
-            <a
-              id="content"
-              onClick={onClickTab}
-              className={nowTab === 'content' ? 'active' : ''}
-            >
-              상세정보
-            </a>
-          </li>
-          <li>
-            <a
-              id="review"
-              onClick={onClickTab}
-              className={nowTab === 'review' ? 'active' : ''}
-            >
-              리뷰 ({detailData?.reviewpeople})
-            </a>
-          </li>
-          <li>
-            <a
-              id="delivery"
-              onClick={onClickTab}
-              className={nowTab === 'delivery' ? 'active' : ''}
-            >
-              배송 및 교환
-            </a>
-          </li>
+          {tabMenu.map(el => (
+            <li key={el.id}>
+              <span
+                id={el.id}
+                onClick={onClickTab}
+                className={nowTab === `${el.id}` ? 'active' : ''}
+              >
+                {el.name}
+              </span>
+            </li>
+          ))}
         </ul>
       </nav>
       {nowTab === 'content' && (

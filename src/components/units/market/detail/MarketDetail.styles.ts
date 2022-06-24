@@ -28,10 +28,7 @@ export const Wrap = styled.div`
       li {
         display: flex;
         text-align: center;
-        a {
-          :hover {
-            cursor: pointer;
-          }
+        span {
           width: 90px;
           height: 40px;
           line-height: 40px;
@@ -47,6 +44,7 @@ export const Wrap = styled.div`
             font-family: ${FontFamily.BOLD};
             color: ${Colors.MAIN};
             border-bottom: 1px solid ${Colors.MAIN};
+            cursor: pointer;
           }
         }
       }

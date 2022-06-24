@@ -5,7 +5,6 @@ import MarketCard from 'components/commons/card/market/MarketCard';
 import { IMarketCard } from 'components/commons/card/market/MarketCard.types';
 import Category from 'components/commons/category/Category';
 import Input02 from 'components/commons/inputs/Input02';
-import Title02 from 'components/commons/text/title/Title02';
 import { Fragment, useEffect, useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
 import store from 'storejs';
@@ -17,28 +16,27 @@ import ContentModal from 'components/commons/modal/contentModal/contentModal';
 import ReviewNew from '../review/new/ReviewNew.container';
 import OutlinedButton02 from 'components/commons/button/outlined/OutlinedButton02';
 import { IMarketList } from './MarketList.types';
+import Title01 from 'components/commons/text/title/Title01';
+import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 
 export default function MarketList() {
   const [listData, setListData] = useState<IMarketList[]>();
   const [myListData, setMyListData] = useState<IMarketList[]>();
   const [isOpen, setIsOpen] = useState(false);
   const accessToken = store.get('accessToken');
-  // const [nowTab, setNowTab] = useState('전체');
-
-  // const categoryTab = [
-  //   { name: '계정 설정', content: <UserInfo /> },
-  //   { name: '액티비티', content: '내가 모집한 액티비티' },
-  //   { name: '후원', content: '후원' },
-  //   { name: '마켓', content: '마켓' },
-  // ];
+  const [nowCategory, setNowCategory] = useState('전체');
+  const [select, setSelect] = useState<boolean>(false);
 
   const getItemsALl = async () => {
-    const config = {
-      category: '전체',
-    };
-
     await axios
-      .post(`https://earth-mas.shop/server/market/finddcs`, config)
+      .post(
+        `https://earth-mas.shop/server/market/${
+          select ? 'finddcs' : 'findlike'
+        }`,
+        {
+          category: nowCategory,
+        },
+      )
       .then(res => {
         // console.log('all Data :', res.data);
         setListData(res.data);
@@ -68,7 +66,7 @@ export default function MarketList() {
     getItemsALl();
     getItemsMyLike();
     // console.log(DetailData);
-  }, []);
+  }, [nowCategory, select]);
 
   return (
     <Wrap>
@@ -86,11 +84,14 @@ export default function MarketList() {
       <div className="input-wrap">
         <Input02 placeholder="상품을 검색해주세요" />
       </div>
-      <section className="category">
-        <Category page={0} />
-      </section>
-      <section className="item-list">
-        <Title02 content="전체 인기상품" margin={35} />
+      <nav className="category">
+        <Category page={0} setNowCategory={setNowCategory} />
+      </nav>
+      <main className="item-list">
+        <header>
+          <Title01 size="T" content={`${nowCategory} `} margin={35} />
+          <Dropdown02 page={0} setSelect={setSelect} />
+        </header>
         <CardWrap>
           {listData &&
             listData.map((el: IMarketCard, index) => (
@@ -102,12 +103,12 @@ export default function MarketList() {
                   index={index}
                   // id={myListData?.id}
                 />
-                {/* <ContainedButton02
+                <ContainedButton02
                   color="main"
                   content="리뷰 작성"
                   size="small"
                   onClick={() => setIsOpen(prev => !prev)}
-                /> */}
+                />
                 {/* <OutlinedButton02
                   onClickEdit={() => setIsOpen(prev => !prev)}
                   onClickDelete={() => {
@@ -117,7 +118,7 @@ export default function MarketList() {
               </Fragment>
             ))}
         </CardWrap>
-      </section>
+      </main>
     </Wrap>
   );
 }
@@ -126,6 +127,10 @@ const Wrap = styled.div`
   .input-wrap {
     display: flex;
     justify-content: end;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
   }
 `;
 

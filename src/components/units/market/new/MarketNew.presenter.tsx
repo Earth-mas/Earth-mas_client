@@ -5,9 +5,8 @@ import Dropdown01 from 'components/commons/dropdown/01/Dropdown01';
 import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
-import Upload01 from 'components/commons/upload/01/Upload01';
 import Upload01Copy from 'components/commons/upload/01/Upload01.copy';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch } from 'react';
 import { SubmitHandler, UseFormHandleSubmit } from 'react-hook-form/dist/types';
 import { IMarketDetail } from '../detail/MarketDetail.types';
 import { FormValues } from './MarketNew.types';
@@ -22,8 +21,7 @@ interface IMarketNewUIProps {
   isEdit: boolean;
   isSelected?: string;
   setIsSelected: Dispatch<React.SetStateAction<string>>;
-  contents: any;
-
+  contents?: string;
   urlString: string;
   setUrlString: Dispatch<React.SetStateAction<string>>;
 }

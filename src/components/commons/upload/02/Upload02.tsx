@@ -3,7 +3,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import {
   ChangeEvent,
   Dispatch,
-  SetStateAction,
   SyntheticEvent,
   useEffect,
   useState,
@@ -68,6 +67,7 @@ export default function Upload02(props: IUpload02Props) {
     const [reorderedData] = originData.splice(source.index, 1);
     originData.splice(destination.index, 0, reorderedData);
     setUrls(originData);
+    props.setUrlString(originData.toString());
   };
 
   const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -91,28 +91,31 @@ export default function Upload02(props: IUpload02Props) {
         </S.UploadButton>
         <Droppable droppableId="imageList" direction="horizontal">
           {provided => (
-            <ul {...provided.droppableProps} ref={provided.innerRef}>
-              {urls.map((el, index) => (
-                <Draggable draggableId={el} index={index} key={uuid4()}>
-                  {provided => (
-                    <li>
-                      <S.ImageWrap
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <S.XButton onClick={onClickDelete(index)}>
-                          <XbuttonIcon />
-                        </S.XButton>
-                        <S.Image>
-                          <img src={el} onError={onErrorImg} />
-                        </S.Image>
-                      </S.ImageWrap>
-                    </li>
-                  )}
-                </Draggable>
-              ))}
-            </ul>
+            <>
+              <ul {...provided.droppableProps} ref={provided.innerRef}>
+                {urls.map((el, index) => (
+                  <Draggable draggableId={el} index={index} key={uuid4()}>
+                    {provided => (
+                      <li>
+                        <S.ImageWrap
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <S.XButton onClick={onClickDelete(index)}>
+                            <XbuttonIcon />
+                          </S.XButton>
+                          <S.Image>
+                            <img src={el} onError={onErrorImg} />
+                          </S.Image>
+                        </S.ImageWrap>
+                      </li>
+                    )}
+                  </Draggable>
+                ))}
+              </ul>
+              <span style={{ display: 'none' }}>{provided.placeholder}</span>
+            </>
           )}
         </Droppable>
       </DragDropContext>

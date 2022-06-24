@@ -29,10 +29,11 @@ export const Wrap = styled.div`
 
   .review {
     width: calc(100% - 120px);
-    .review-info {
+    > div:nth-of-type(1) {
       display: flex;
+      margin-bottom: 5px;
       .review-date {
-        margin-left: 5px;
+        margin-left: 10px;
       }
     }
     .review-image {
