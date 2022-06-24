@@ -12,7 +12,7 @@ const Input = styled.input`
   color: ${Colors.B80};
   font-family: ${FontFamily.MEDIUM};
   font-size: ${FontSize.MEDIUM_C};
-  margin-bottom: ${(props: IInput01Props) =>
+  margin-bottom: ${(props: IInput03Props) =>
     props.margin ? `${props.margin}px` : '0px'};
 
   ::placeholder {
@@ -25,7 +25,8 @@ const Input = styled.input`
   }
 `;
 
-interface IInput01Props {
+interface IInput03Props {
+  inputRef?: LegacyRef<HTMLInputElement> | undefined;
   name?: string;
   placeholder?: string;
   type: string;
@@ -41,7 +42,7 @@ interface IInput01Props {
   defaultValue?: string | number | readonly string[] | undefined;
 }
 
-export default function Input01(props: IInput01Props) {
+export default function Input03(props: IInput03Props) {
   // console.log('props', props.register);
   return (
     <Input
@@ -54,6 +55,7 @@ export default function Input01(props: IInput01Props) {
       id={props.id}
       margin={props.margin}
       name={props.name}
+      ref={props.inputRef}
       defaultValue={props.defaultValue}
     />
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import {
   Next,
   NextArrow,
@@ -7,37 +7,51 @@ import {
   PrevArrow,
   Wrapper,
 } from './Pagination.styles';
+import { IPaginationProps } from './Pagination.type';
 
-export default function Pagination() {
-  const [clickPage, setClickPage] = useState(1);
-  const [startPage, setStartPage] = useState(1);
+// page: 'list' | 'comment'
+export default function Pagination(props: IPaginationProps) {
+  const startPage = props.startPage;
+  const setStartPage = props.setStartPage;
+  const clickPage = props.clickPage;
+  const setClickPage = props.setClickPage;
 
-  const lastPage = 1000;
+  const lastPage = () => {
+    if (props.page === 'list') return Math.ceil(props.listCount / 12);
+    else if (props.page === 'comment') return Math.ceil(props.listCount / 10);
+  };
+
+  const onClickPage = (event: { currentTarget: { id: any } }) => {
+    setClickPage(Number(event.currentTarget.id));
+    props.refetch(Number(event.currentTarget.id));
+  };
 
   const onClickPrevPage = () => {
     if (startPage === 1) return;
     setStartPage(prev => prev - 10);
     setClickPage(startPage - 10);
+    props.refetch(startPage - 10);
   };
 
   const onClickNextPage = () => {
-    if (startPage + 10 > lastPage) return;
+    if (startPage + 10 > Number(lastPage())) return;
     setStartPage(prev => prev + 10);
     setClickPage(startPage + 10);
+    props.refetch(startPage + 10);
   };
 
   return (
     <Wrapper>
-      <Prev startPage={startPage} onClick={onClickPrevPage}>
+      <Prev onClick={onClickPrevPage}>
         <PrevArrow />
       </Prev>
 
       {new Array(10).fill(1).map(
         (_, index) =>
-          index + startPage <= lastPage && (
+          index + startPage <= Number(lastPage()) && (
             <PageNumber
               key={index + startPage}
-              // onClick={onClickPage}
+              onClick={onClickPage}
               id={String(index + startPage)}
               clickPage={clickPage}
             >
@@ -46,7 +60,7 @@ export default function Pagination() {
           ),
       )}
 
-      <Next startPage={startPage} lastPage={lastPage} onClick={onClickNextPage}>
+      <Next onClick={onClickNextPage}>
         <NextArrow />
       </Next>
     </Wrapper>

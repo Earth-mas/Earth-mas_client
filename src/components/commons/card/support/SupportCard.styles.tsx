@@ -4,12 +4,27 @@ import { FontFamily, FontSize } from 'styles/FontStyles';
 // import { ISupportCardStyleProps } from './SupportCard.types';
 
 export const Container = styled.div`
+  position: relative;
   width: 100%;
   border: 1px solid ${Colors.B20};
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
+  /* ${(props: { leftDay: number }) => (props.leftDay <= 0 ? '' : '')} */
 
+  ::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: ${(props: { leftDay: number }) =>
+      props.leftDay > 0 ? '0.5' : '0'};
+    display: ${(props: { leftDay: number }) =>
+      props.leftDay > 0 ? 'block' : 'none'};
+  }
   .imgContainer {
     height: 231.5px;
     img {
@@ -17,6 +32,20 @@ export const Container = styled.div`
       height: 100%;
       object-fit: cover;
     }
+  }
+
+  .leftDay {
+    position: absolute;
+    z-index: 99;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: ${Colors.BW};
+    font-size: ${FontSize.LARGE_T};
+
+    display: ${(props: { leftDay: number }) =>
+      props.leftDay > 0 ? 'block' : 'none'};
   }
 
   .contents {
