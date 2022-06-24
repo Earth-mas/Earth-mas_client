@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import store from 'storejs';
 import { useMutation, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -28,6 +28,19 @@ export default function SupportPayment() {
     const { data } = await axios.get(`${supportRoute}/${id}`);
     return data;
   });
+
+  useEffect(() => {
+    const jquery = document.createElement('script');
+    jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
+    const iamport = document.createElement('script');
+    iamport.src = 'https://cdn.iamport.kr/js/iamport.payment-1.2.0.js';
+    document.head.appendChild(jquery);
+    document.head.appendChild(iamport);
+    return () => {
+      document.head.removeChild(jquery);
+      document.head.removeChild(iamport);
+    };
+  }, []);
 
   const { mutate: supportPayment } = useMutation(
     (rsp: { imp_uid: string }) => {
@@ -72,7 +85,11 @@ export default function SupportPayment() {
         // callback
         if (rsp.success) {
           // console.log(rsp.imp_uid);
+          // try {
           supportPayment(rsp);
+          // } catch (err) {
+          //   console.log(err);
+          // }
         } else {
           console.log(rsp.error_msg);
         }

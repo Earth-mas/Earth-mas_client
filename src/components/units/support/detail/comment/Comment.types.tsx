@@ -21,6 +21,7 @@ export interface ICommentProps {
 }
 
 export interface ICommentListUIProps {
+  isPreviousData: boolean;
   inputRef: LegacyRef<HTMLInputElement> | undefined;
   clickPage: number;
   setClickPage: Dispatch<SetStateAction<number>>;

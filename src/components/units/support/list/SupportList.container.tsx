@@ -9,11 +9,14 @@ export default function SupportList() {
   const [clickPage, setClickPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
 
-  const { data, refetch } = useQuery('supportList', async () => {
-    return select
-      ? axios.post(`${supportRoute}/finddday`, { page: clickPage })
-      : axios.post(`${supportRoute}/finddcs`, { page: clickPage });
-  });
+  const { data, refetch, isPreviousData } = useQuery(
+    'supportList',
+    async () => {
+      return select
+        ? axios.post(`${supportRoute}/finddday`, { page: clickPage })
+        : axios.post(`${supportRoute}/finddcs`, { page: clickPage });
+    },
+  );
 
   useEffect(() => {
     refetch();
@@ -28,6 +31,7 @@ export default function SupportList() {
       setClickPage={setClickPage}
       startPage={startPage}
       setStartPage={setStartPage}
+      isPreviousData={isPreviousData}
     />
   );
 }

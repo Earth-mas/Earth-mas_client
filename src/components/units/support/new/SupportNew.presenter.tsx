@@ -8,6 +8,7 @@ import Upload01 from 'components/commons/upload/01/Upload01';
 import DatePicker02 from 'components/commons/datePicker/02';
 import { ISupportNewUIProps } from './SupportNew.types';
 import { Controller } from 'react-hook-form';
+import Upload01Copy from 'components/commons/upload/01/Upload01.copy';
 
 export default function SupportNewUI(props: ISupportNewUIProps) {
   return (
@@ -31,6 +32,7 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
           name="title"
           margin={25}
           defaultValue={props.fetchData?.title ? props.fetchData?.title : ''}
+          maxLength={30}
         />
 
         <Input01
@@ -38,6 +40,7 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
           type="number"
           placeholder="희망하는 목표 금액을 입력해주세요"
           name="wishamount"
+          pattern={`/^[0-9]/g`}
           margin={25}
           defaultValue={
             props.fetchData?.wishamount
@@ -49,7 +52,6 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
         <Controller
           control={props.control}
           name="dday"
-          // onChange={props.onChangeDate}
           render={({ field: { onChange, value } }) => (
             <DatePicker02
               selected={
@@ -58,15 +60,20 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
                   : value
               }
               onChange={date => onChange(date)}
-              // value={undefined}
             />
           )}
         />
-        <Upload01
+        {/* <Upload01
           page="support"
           urls={props.urls}
           setUrls={props.setUrls}
           // fetchData={props.fetchData?.url}
+        /> */}
+        <Upload01Copy
+          page={'support'}
+          urlString={props.urls}
+          setUrlString={props.setUrls}
+          fetchData={props.fetchData?.url.split(',')}
         />
         <Blank height={25} />
         <QuillEditor

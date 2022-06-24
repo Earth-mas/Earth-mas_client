@@ -20,7 +20,11 @@ export default function CommentList() {
     inputRef.current.value = '';
   };
 
-  const { data, refetch: getAllComment } = useQuery('allComment', async () => {
+  const {
+    data,
+    refetch: getAllComment,
+    isPreviousData,
+  } = useQuery('allComment', async () => {
     return await axios.post(`${supportCommentRoute}/findall`, {
       id: id,
       page: clickPage,
@@ -83,6 +87,7 @@ export default function CommentList() {
       setStartPage={setStartPage}
       refetch={getAllComment}
       inputRef={inputRef}
+      isPreviousData={isPreviousData}
     />
   );
 }

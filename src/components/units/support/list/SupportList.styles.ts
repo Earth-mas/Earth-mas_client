@@ -1,16 +1,34 @@
 import styled from '@emotion/styled';
+import { Colors } from 'styles/Colors';
+import { FontFamily, FontSize } from 'styles/FontStyles';
 
+export const SlideWrapper = styled.div`
+  width: 100%;
+  height: 400px;
+`;
 export const Wrapper = styled.div`
   width: 1024px;
-`;
-export const Container = styled.div`
-  display: grid;
-  grid-template-columns: 5fr 3fr;
-  gap: 30px;
-  padding: 50px;
+  padding: 50px 0 100px;
+  .topWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
 
-  .slide {
-    border: 1px solid black;
-    height: 415px;
+    .totalCount {
+      font-family: ${FontFamily.BOLD};
+      font-size: ${FontSize.MEDIUM_T};
+      color: ${Colors.B100};
+      span {
+        font-family: ${FontFamily.BOLD};
+        color: ${Colors.MAIN};
+      }
+    }
   }
+`;
+export const CardWrapper = styled.div`
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px 30px;
 `;

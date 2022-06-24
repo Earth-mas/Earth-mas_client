@@ -15,6 +15,8 @@ import { Link } from 'react-router-dom';
 export default function SupportDetailUI(props: ISupportDetailUIProps) {
   const userInfo = useRecoilValue(userState);
 
+  console.log(props.data);
+
   return (
     <S.Wrapper>
       <S.FirstSection>
