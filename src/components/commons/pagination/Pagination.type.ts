@@ -3,8 +3,6 @@ import { Dispatch, SetStateAction } from 'react';
 export interface IPaginationProps {
   clickPage: number;
   setClickPage: Dispatch<SetStateAction<number>>;
-  startPage: number;
-  setStartPage: Dispatch<SetStateAction<number>>;
   listCount: number;
   refetch: any;
   page: string;
@@ -13,10 +11,10 @@ export interface IPaginationStyleProps {
   clickPage: number;
   id: string;
 }
-export interface IPrevArrowStyleProps {
+export interface IPaginationPrevProps {
   startPage: number;
 }
-export interface INextArrowStyleProps {
+export interface IPaginationNextProps {
   startPage: number;
-  lastPage: number;
+  lastPage: any;
 }
