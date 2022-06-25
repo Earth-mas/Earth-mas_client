@@ -1,7 +1,7 @@
-import { RootObject } from './ActivityDetail.container';
+import { ActivityDetail } from './ActivityDetail.container';
 
 interface IActivityDetailUIProps {
-  data?: RootObject;
+  data?: ActivityDetail;
 }
 
 export default function ActivityDetailUI(props: IActivityDetailUIProps) {

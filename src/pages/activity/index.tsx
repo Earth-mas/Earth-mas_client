@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import Blank from 'components/commons/blank/Blank';
+import { NewButton } from 'components/commons/button/new/NewButton';
 import Category from 'components/commons/category/Category';
+import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 import Input02 from 'components/commons/inputs/Input02';
 import Slide from 'components/commons/slide';
 import ActivityList from 'components/units/activity/list/ActivityList.container';
@@ -26,6 +28,7 @@ export default function ActivityPage() {
         <Category page={1} />
       </CategoryWrap>
       <ActivityList />
+      <NewButton />
       <Blank height={200} />
     </>
   );
@@ -38,6 +41,8 @@ const Wrap = styled.div`
 const CategoryWrap = styled.div`
   max-width: 1024px;
   width: 100%;
+  display: flex;
+  justify-content: end;
 `;
 
 const Search = styled.div`

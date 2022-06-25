@@ -1,4 +1,8 @@
 {
+  "activityjoin": {
+    "admin": "master",
+    "id": "47ca3903-4e99-4ef3-bed7-d1689cce9916"
+  },
   "activitycategory": {
     "category": "플로깅",
     "createAt": "2022-06-15T17:28:10.240Z",

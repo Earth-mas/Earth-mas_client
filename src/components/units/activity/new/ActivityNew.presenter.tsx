@@ -16,11 +16,11 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from 'react-hook-form/dist/types';
-import { RootObject } from '../detail/ActivityDetail.container';
+import { ActivityDetail } from '../detail/ActivityDetail.container';
 import { FormValues } from './ActivityNew.container';
 
 interface IActivityNewUIProps {
-  newData?: RootObject;
+  newData?: ActivityDetail;
   handleChangeQuill: any;
   isSelected: string;
   control: Control<FieldValues, any>;
@@ -90,7 +90,7 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
 
           <Input01
             type="number"
-            id="number"
+            id="maxpeople"
             placeholder="모집 인원"
             pattern="[0-9]+"
             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$0');"
