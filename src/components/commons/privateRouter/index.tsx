@@ -6,12 +6,9 @@ import Header from '../layout/header';
 import Footer from '../layout/footer';
 
 const PrivateRouteLayout = () => {
-  const [isLogined, setIsLogined] = useState(false);
   const accessToken = store.get('accessToken');
 
-  if (accessToken) setIsLogined(true);
-
-  if (!isLogined) {
+  if (!accessToken) {
     alert('권한이 없습니다. 로그인해주세요.');
     return <Navigate to="/" />;
   }
