@@ -6,8 +6,10 @@ import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 import Input02 from 'components/commons/inputs/Input02';
 import Slide from 'components/commons/slide';
 import ActivityList from 'components/units/activity/list/ActivityList.container';
+import { useState } from 'react';
 
 export default function ActivityPage() {
+  const [nowCategory, setNowCategory] = useState('전체');
   return (
     <>
       <Wrap>
@@ -25,9 +27,9 @@ export default function ActivityPage() {
         <Input02 placeholder="검색어를 입력해주세요" />
       </Search>
       <CategoryWrap>
-        <Category page={1} />
+        <Category page={1} setNowCategory={setNowCategory} />
       </CategoryWrap>
-      <ActivityList />
+      <ActivityList nowCategory={nowCategory} />
       <NewButton />
       <Blank height={200} />
     </>

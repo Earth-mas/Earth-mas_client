@@ -13,7 +13,7 @@ import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
 export interface ActivityDetail {
-  activityjoing: Activityjoin;
+  activityjoin: Activityjoin;
   activitycategory: Activitycategory;
   createAt: string;
   dday: string;
@@ -104,13 +104,6 @@ export default function ActivityDetail() {
   return (
     <Wrap>
       <MainImg>
-        {/* <img
-          className="slide"
-          src={`https://storage.googleapis.com/${activityData?.url}`}
-          onError={event =>
-            (event.currentTarget.src = '/images/activity/XBox.jpg')
-          }
-        /> */}
         <Slide banner={activityData?.url?.split(',')} slide={'sub'} />
       </MainImg>
       <Blank height={50} />
@@ -120,12 +113,12 @@ export default function ActivityDetail() {
         <div className="postInfoBox">
           <div className="userInfo">
             <img
-              src={activityData?.user?.url}
+              src={activityData?.activityjoin?.user?.url}
               onError={event =>
                 (event.currentTarget.src = '/images/avatar.svg')
               }
             />
-            <span>{activityData?.user?.name}</span>
+            <span>{activityData?.activityjoin?.user?.name}</span>
           </div>
           <section className="detailInfo">
             <li>
@@ -141,7 +134,6 @@ export default function ActivityDetail() {
               <li>{activityData?.maxpeople}명</li>
             </ul>
           </section>
-          {/* <FrameIcon className="icon" /> */}
           <section className="icon2">
             <Dropdown03 page={'2'} />
           </section>
@@ -167,7 +159,6 @@ export default function ActivityDetail() {
         />
       </div>
       <Blank height={100} />
-      {/* <ActivityDetailUI data={data} /> */}
     </Wrap>
   );
 }
@@ -217,17 +208,6 @@ const PostBox = styled.div`
       width: 12%;
       margin-right: 20px;
     }
-
-    /* & div:last-of-type {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-    } */
-    /* & div > div {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-    } */
 
     .detailInfo {
       display: flex;

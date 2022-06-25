@@ -6,6 +6,7 @@ import ActivityNewUI from './ActivityNew.presenter';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+// import { ActivityDetail } from '../detail/ActivityDetail.container';
 
 export interface FormValues {
   title?: string;
@@ -17,6 +18,11 @@ export interface FormValues {
   url?: string;
   category?: string;
 }
+
+// interface IActivityNewProps {
+//   isEdit?: boolean;
+//   editDetail?: ActivityDetail;
+// }
 
 export default function ActivityNew() {
   const navigate = useNavigate();
@@ -39,10 +45,18 @@ export default function ActivityNew() {
 
   const onClickSubmit = async (data: FormValues) => {
     console.log('등록할 데이터: ', data);
-    // if (!data) {
-    //   alert('내용을 입력해주세요');
-    //   return;
-    // }
+    if (
+      !data.title ||
+      !data.category ||
+      !data.dday ||
+      !data.location ||
+      !data.maxpeople ||
+      !data.subdescription ||
+      !data.url
+    ) {
+      alert('내용을 입력해주세요');
+      return;
+    }
     const variables = {
       ...data,
       category: isSelected,
@@ -61,12 +75,17 @@ export default function ActivityNew() {
     }
   };
 
+  // const onClickUpdate = async(data: FormValues) => {
+
+  // }
+
   return (
     <ActivityNewUI
       control={control}
       isSelected={isSelected}
       setIsSelected={setIsSelected}
       onClickSubmit={onClickSubmit}
+      // onClickUpdate={onClickUpdate}
       register={register}
       handleSubmit={handleSubmit}
       handleChangeQuill={handleChangeQuill}
