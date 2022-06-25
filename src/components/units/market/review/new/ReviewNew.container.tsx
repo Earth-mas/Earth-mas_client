@@ -8,8 +8,6 @@ import { useEffect, useState } from 'react';
 export default function ReviewNew(props: IReviewNewProps) {
   const accessToken = store.get('accessToken');
   const { register, handleSubmit } = useForm<FormReviewValues>();
-  // const [urls, setUrls] = useState<string[]>([]);
-  // const urlString = urls.toString();
   const [urlString, setUrlString] = useState('');
 
   useEffect(() => {
@@ -70,8 +68,6 @@ export default function ReviewNew(props: IReviewNewProps) {
 
   return (
     <ReviewNewUI
-      // urls={urls}
-      // setUrls={setUrls}
       register={register}
       handleSubmit={handleSubmit}
       onClickPostReview={onClickPostReview}

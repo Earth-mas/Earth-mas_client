@@ -32,7 +32,7 @@ export default function Dropdown01(props: IDropdown01Props) {
       className={isActive ? 'activated' : ''}
     >
       <span className={props.isSelected ? 'selected' : ''}>
-        {props.isSelected || '카테고리 선택'}
+        {props.isSelected || '(필수) 카테고리 선택'}
       </span>
       <DropdownIcon />
       {isActive && (
