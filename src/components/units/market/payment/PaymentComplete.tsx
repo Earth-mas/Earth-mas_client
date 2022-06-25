@@ -1,15 +1,17 @@
 import styled from '@emotion/styled';
-import { getPrice } from 'commons/utils/utils';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import { Link } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+import { getMoney } from 'commons/utils/getAmount';
 
-export default function SupportComplete(props: {
-  completeData: { data: { amount: number } };
-}) {
-  console.log(props);
-
+interface IMarketCompleteProps {
+  completeData: {
+    title: string;
+    amount: number;
+  };
+}
+export default function MarketComplete(props: IMarketCompleteProps) {
   return (
     <Wrapper>
       <Top>
@@ -18,21 +20,19 @@ export default function SupportComplete(props: {
         </div>
         결제완료
       </Top>
-      <p>"감사합니다. 기부금을 소중하게 사용하겠습니다."</p>
+      <p>"감사합니다. 판매금을 소중하게 전달하겠습니다."</p>
       <Line />
       <Bottom>
-        <p>기부정보 확인</p>
+        <p>결제정보 확인</p>
         <div className="payment">
-          <span>{getPrice(props.completeData?.data?.amount)}</span>
-          <span>원 기부되었습니다.</span>
+          <span>{getMoney(props.completeData.amount)}</span>
+          <span>원 결제되었습니다.</span>
         </div>
         <div className="grid">
-          <p>모금함명</p>
-          <p>MBN 소나무 투병 중인 지적 장애인 부부 이야기</p>
-          <p>단체명</p>
-          <p>사회복지공동모금회</p>
+          <p>상품명</p>
+          <p>{props.completeData.title}</p>
         </div>
-        <Link to={'/support'} className="buttonWrap">
+        <Link to={'/market'} className="buttonWrap">
           <ContainedButton01 content="확인" color="main" />
         </Link>
       </Bottom>
