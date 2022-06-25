@@ -14,13 +14,14 @@ import store from 'storejs';
 import { getAvg } from 'commons/utils/getStars';
 import { getMoney, getPercent } from 'commons/utils/getAmount';
 import { IMarketList } from 'components/units/market/list/MarketList.types';
+import Modal from 'components/commons/modal';
+import ContentModal from 'components/commons/modal/contentModal/contentModal';
+import ReviewNew from 'components/units/market/review/new/ReviewNew.container';
+import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
 
 interface IMarketCardProps {
   listData: IMarketCard;
-  key?: string;
   myListData?: IMarketList[];
-  index: number;
-  id?: string;
 }
 
 export default function MarketCard(props: IMarketCardProps) {
@@ -66,9 +67,41 @@ export default function MarketCard(props: IMarketCardProps) {
   useEffect(() => {
     findLike();
   }, [props.myListData]);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const toggleEditModal = () => {
+    setIsEditOpen(prev => !prev);
+  };
+
+  const marketData = {
+    id: props.listData.id,
+    title: props.listData.title,
+    minidescription: props.listData.minidescription,
+    url: props.listData.url,
+  };
 
   return (
     <S.Wrap>
+      {isEditOpen && (
+        <Modal>
+          <ContentModal
+            onClickCancel={toggleEditModal}
+            children={
+              <ReviewNew
+                onClickCancel={toggleEditModal}
+                // reviewData={reviewData}
+                marketData={marketData}
+              />
+            }
+          />
+        </Modal>
+      )}
+      <ContainedButton02
+        size="small"
+        color="main"
+        content=""
+        onClick={toggleEditModal}
+      />
       <div className="image-box">
         <div className="like" onClick={onClickPostLike}>
           {likeActive ? <HeartRedIcon /> : <HeartWhiteIcon />}

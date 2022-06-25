@@ -63,7 +63,4 @@ export const Wrap = styled.div`
       margin-top: 8px;
     }
   }
-  .button {
-    width: 50px;
-  }
 `;

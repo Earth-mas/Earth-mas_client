@@ -17,18 +17,18 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
       <div className="info-wrap">
         <div className="image">
           <img
-            src={props.MARKET_DATA?.url ? props.MARKET_DATA?.url : logo}
+            src={props.marketData?.url ? props.marketData?.url : logo}
             onError={onErrorImg}
           />
         </div>
         <div className="info">
-          <p className="title">상품 제목입니다</p>
-          <p className="minidescription">상품에 대한 설명입니다</p>
+          <p className="title">{props.marketData?.title}</p>
+          <p className="minidescription">{props.marketData?.minidescription}</p>
         </div>
       </div>
       <form
         onSubmit={props.handleSubmit(
-          props.REVIEW_DATA ? props.onClickPutReview : props.onClickPostReview,
+          props.reviewData ? props.onClickPutReview : props.onClickPostReview,
         )}
       >
         <div className="input-wrap">
@@ -46,7 +46,7 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
             page="marketreview"
             // urls={props.urls}
             // setUrls={props.setUrls}
-            fetchData={props.REVIEW_DATA?.url.split(',')}
+            fetchData={props.reviewData?.url.split(',')}
             urlString={props.urlString}
             setUrlString={props.setUrlString}
           />
@@ -55,7 +55,7 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
           <h1>리뷰 작성</h1>
           <textarea
             defaultValue={
-              props.REVIEW_DATA?.contents ? props.REVIEW_DATA?.contents : ''
+              props.reviewData?.contents ? props.reviewData?.contents : ''
             }
             placeholder="솔직한 리뷰는 다른 고객에게 큰 도움이 됩니다. (최대 80자) "
             {...props.register('contents')}
@@ -71,7 +71,7 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
           />
           <ContainedButton01
             color="main"
-            content={props.REVIEW_DATA ? '리뷰 수정' : '리뷰 등록'}
+            content={props.reviewData ? '리뷰 수정' : '리뷰 등록'}
             type="submit"
           />
         </div>

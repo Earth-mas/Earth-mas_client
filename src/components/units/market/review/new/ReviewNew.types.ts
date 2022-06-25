@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
 import { SubmitHandler, UseFormHandleSubmit } from 'react-hook-form/dist/types';
+import { IMarketReviewDetail } from '../detail/ReviewDetail.types';
 export interface IReviewNewProps {
   onClickCancel: () => void;
-  reviewData?: {
-    contents: string;
-    createAt: string;
-    deletdAt: any;
+  reviewData?: IMarketReviewDetail;
+  marketData?: {
     id: string;
-    score: number;
-    updatedAt: string;
+    title: string;
+    minidescription: string;
+    url?: string;
   };
 }
 
@@ -31,17 +31,12 @@ export interface IReviewNewUIProps {
   urlString: string;
   setUrlString: Dispatch<React.SetStateAction<string>>;
 
-  MARKET_DATA: {
+  marketData?: {
     id: string;
     title: string;
     minidescription: string;
     url?: string;
   };
 
-  REVIEW_DATA?: {
-    contents: string;
-    id: string;
-    score: number;
-    url: string;
-  };
+  reviewData?: IMarketReviewDetail;
 }
