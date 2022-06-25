@@ -7,7 +7,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { accessTokenState, userState } from 'recoil/user';
 import axiosApiInstance from 'commons/utils/axiosInstance';
-import GoogleLoginBtn from './googleLogin';
 
 interface IProps {
   handleClose: () => void;
