@@ -83,7 +83,8 @@ const LoginContents = ({ handleClose }: IProps) => {
   const onClickGoogle = () => {
     axiosApiInstance
       .post('auth/login/google')
-      .then(res => console.log(res.data));
+      .then(res => console.log(res.data))
+      .catch(error => console.log(error));
   };
 
   return (
