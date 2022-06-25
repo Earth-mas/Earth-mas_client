@@ -6,8 +6,12 @@ import { Sub1 } from '../SupportDetail.styles';
 import { v4 as uuidv4 } from 'uuid';
 import Pagination from 'components/commons/pagination';
 import Input03 from 'components/commons/inputs/Input03';
+import { useRecoilValue } from 'recoil';
+import { userState } from 'recoil/user';
 
 export default function CommentListUI(props: ICommentListUIProps) {
+  const userInfo = useRecoilValue(userState);
+
   return (
     <>
       <div className="commentTitle">
@@ -19,7 +23,7 @@ export default function CommentListUI(props: ICommentListUIProps) {
       <CommentWrapper>
         <div className="userImg">
           <img
-            src="/images/profileDefault.png"
+            src={userInfo.url}
             onError={e => {
               e.currentTarget.src = '/images/profileDefault.png';
             }}
@@ -48,8 +52,6 @@ export default function CommentListUI(props: ICommentListUIProps) {
           listCount={props.data?.data?.length}
           clickPage={props.clickPage}
           setClickPage={props.setClickPage}
-          startPage={props.startPage}
-          setStartPage={props.setStartPage}
         />
       )}
     </>

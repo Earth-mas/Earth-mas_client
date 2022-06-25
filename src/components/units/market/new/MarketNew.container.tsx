@@ -17,19 +17,13 @@ export default function MarketNew(props: IMarketNewProps) {
   const params = useParams();
   const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    trigger,
-    // formState: { errors }
-    getValues,
-  } = useForm<FormValues>({
-    mode: 'onSubmit',
-    reValidateMode: 'onChange',
-  });
+  const { register, handleSubmit, setValue, trigger, getValues } =
+    useForm<FormValues>({
+      mode: 'onSubmit',
+      reValidateMode: 'onChange',
+    });
 
-  const onChangeQuill = (value: any) => {
+  const onChangeQuill = (value: string) => {
     setValue('description', value === '<p><br></p>' ? ' ' : value);
     trigger('description');
   };
@@ -92,7 +86,7 @@ export default function MarketNew(props: IMarketNewProps) {
       updateVariables.minidescription = data.minidescription;
     if (data.description) updateVariables.description = data.description;
     if (urlString) updateVariables.url = urlString;
-    console.log(updateVariables);
+    // console.log(updateVariables.url);
     await axios
       .put(
         `https://earth-mas.shop/server/market/${params.id} `,
@@ -112,6 +106,10 @@ export default function MarketNew(props: IMarketNewProps) {
         console.log(error);
       });
   };
+
+  // useEffect(() => {
+  //   console.log(urlString);
+  // }, [urlString]);
 
   return (
     <MarketNewUI

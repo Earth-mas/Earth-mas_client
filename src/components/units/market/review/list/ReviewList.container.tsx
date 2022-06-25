@@ -2,12 +2,13 @@ import styled from '@emotion/styled';
 import axios from 'axios';
 import { getAvg, getAvgStar } from 'commons/utils/getStars';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { v4 as uuid4 } from 'uuid';
 import ReviewDetail from '../detail/ReviewDetail';
+import { IMarketReviewDetail } from '../detail/ReviewDetail.types';
 
 interface IMarketReviewListProps {
   reviewscore?: number;
@@ -49,7 +50,11 @@ export default function ReviewList(props: IMarketReviewListProps) {
         <p className="score">{getAvg(props.reviewscore, props.reviewpeople)}</p>
       </Score>
       {reviewData &&
-        reviewData.map(el => <ReviewDetail reviewData={el} key={uuid4()} />)}
+        reviewData.map(el => (
+          <Fragment key={uuid4()}>
+            <ReviewDetail reviewData={el} />
+          </Fragment>
+        ))}
     </Wrap>
   );
 }

@@ -21,11 +21,10 @@ export interface ICommentProps {
 }
 
 export interface ICommentListUIProps {
+  isPreviousData: boolean;
   inputRef: LegacyRef<HTMLInputElement> | undefined;
   clickPage: number;
   setClickPage: Dispatch<SetStateAction<number>>;
-  startPage: number;
-  setStartPage: Dispatch<SetStateAction<number>>;
   refetch: any;
   getAllCommentData: FormEventHandler<HTMLFormElement> | undefined;
   handleChange: (arg0: ChangeEvent<HTMLInputElement>) => void;

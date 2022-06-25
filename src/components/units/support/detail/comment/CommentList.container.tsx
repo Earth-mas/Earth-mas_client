@@ -13,19 +13,26 @@ export default function CommentList() {
 
   const [comments, setComments] = useState('');
   const [clickPage, setClickPage] = useState(1);
-  const [startPage, setStartPage] = useState(1);
 
   const inputRef = useRef<any>(null);
   const onClearInput = () => {
     inputRef.current.value = '';
   };
 
-  const { data, refetch: getAllComment } = useQuery('allComment', async () => {
-    return await axios.post(`${supportCommentRoute}/findall`, {
-      id: id,
-      page: clickPage,
-    });
-  });
+  const {
+    data,
+    refetch: getAllComment,
+    isPreviousData,
+  } = useQuery(
+    ['allComment', clickPage],
+    async () => {
+      return await axios.post(`${supportCommentRoute}/findall`, {
+        id: id,
+        page: clickPage,
+      });
+    },
+    { keepPreviousData: true },
+  );
 
   const { mutate } = useMutation(
     () => {
@@ -79,10 +86,9 @@ export default function CommentList() {
       data={data}
       clickPage={clickPage}
       setClickPage={setClickPage}
-      startPage={startPage}
-      setStartPage={setStartPage}
       refetch={getAllComment}
       inputRef={inputRef}
+      isPreviousData={isPreviousData}
     />
   );
 }

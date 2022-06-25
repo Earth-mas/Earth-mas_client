@@ -1,18 +1,11 @@
-import { useEffect } from 'react';
-import {
-  Next,
-  NextArrow,
-  PageNumber,
-  Prev,
-  PrevArrow,
-  Wrapper,
-} from './Pagination.styles';
+import { useState } from 'react';
+import * as S from './Pagination.styles';
 import { IPaginationProps } from './Pagination.type';
 
 // page: 'list' | 'comment'
 export default function Pagination(props: IPaginationProps) {
-  const startPage = props.startPage;
-  const setStartPage = props.setStartPage;
+  const [startPage, setStartPage] = useState(1);
+
   const clickPage = props.clickPage;
   const setClickPage = props.setClickPage;
 
@@ -21,9 +14,10 @@ export default function Pagination(props: IPaginationProps) {
     else if (props.page === 'comment') return Math.ceil(props.listCount / 10);
   };
 
-  const onClickPage = (event: { currentTarget: { id: any } }) => {
+  const onClickPage = (event: { target: any; currentTarget: { id: any } }) => {
+    if (event.target instanceof Element)
+      props.refetch(Number(event.currentTarget.id));
     setClickPage(Number(event.currentTarget.id));
-    props.refetch(Number(event.currentTarget.id));
   };
 
   const onClickPrevPage = () => {
@@ -41,28 +35,34 @@ export default function Pagination(props: IPaginationProps) {
   };
 
   return (
-    <Wrapper>
-      <Prev onClick={onClickPrevPage}>
-        <PrevArrow />
-      </Prev>
+    <S.Wrapper>
+      <S.Prev onClick={onClickPrevPage} startPage={startPage}>
+        <S.PrevArrow />
+      </S.Prev>
 
       {new Array(10).fill(1).map(
         (_, index) =>
           index + startPage <= Number(lastPage()) && (
-            <PageNumber
+            <S.PageNumber
               key={index + startPage}
-              onClick={onClickPage}
+              onClick={event => {
+                onClickPage(event);
+              }}
               id={String(index + startPage)}
               clickPage={clickPage}
             >
               {` ${index + startPage} `}
-            </PageNumber>
+            </S.PageNumber>
           ),
       )}
 
-      <Next onClick={onClickNextPage}>
-        <NextArrow />
-      </Next>
-    </Wrapper>
+      <S.Next
+        onClick={onClickNextPage}
+        startPage={startPage}
+        lastPage={Number(lastPage())}
+      >
+        <S.NextArrow />
+      </S.Next>
+    </S.Wrapper>
   );
 }

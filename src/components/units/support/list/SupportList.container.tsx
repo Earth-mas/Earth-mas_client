@@ -7,15 +7,19 @@ import SupportListUI from './SupportList.presenter';
 export default function SupportList() {
   const [select, setSelect] = useState<boolean>(false);
   const [clickPage, setClickPage] = useState(1);
-  const [startPage, setStartPage] = useState(1);
 
-  const { data, refetch } = useQuery('supportList', async () => {
-    return select
-      ? axios.post(`${supportRoute}/finddday`, { page: clickPage })
-      : axios.post(`${supportRoute}/finddcs`, { page: clickPage });
-  });
+  const { data, refetch, isPreviousData } = useQuery(
+    ['supportList', clickPage],
+    async () => {
+      return select
+        ? axios.post(`${supportRoute}/finddday`, { page: clickPage })
+        : axios.post(`${supportRoute}/finddcs`, { page: clickPage });
+    },
+    { keepPreviousData: true },
+  );
 
   useEffect(() => {
+    setClickPage(1);
     refetch();
   }, [select]);
 
@@ -26,8 +30,7 @@ export default function SupportList() {
       refetch={refetch}
       clickPage={clickPage}
       setClickPage={setClickPage}
-      startPage={startPage}
-      setStartPage={setStartPage}
+      isPreviousData={isPreviousData}
     />
   );
 }

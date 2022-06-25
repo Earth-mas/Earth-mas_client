@@ -4,9 +4,12 @@ import ContainedButton01 from 'components/commons/button/contained/ContainedButt
 import { Link } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-import { ISupportCompleteProps } from './complete.types';
 
-export default function SupportComplete(props: ISupportCompleteProps) {
+export default function SupportComplete(props: {
+  completeData: { data: { amount: number } };
+}) {
+  console.log(props);
+
   return (
     <Wrapper>
       <Top>
@@ -25,9 +28,9 @@ export default function SupportComplete(props: ISupportCompleteProps) {
         </div>
         <div className="grid">
           <p>모금함명</p>
-          <p>{props.completeData?.data?.donation?.title}</p>
+          <p>MBN 소나무 투병 중인 지적 장애인 부부 이야기</p>
           <p>단체명</p>
-          <p>{props.completeData?.data?.donation?.user?.name}</p>
+          <p>사회복지공동모금회</p>
         </div>
         <Link to={'/support'} className="buttonWrap">
           <ContainedButton01 content="확인" color="main" />

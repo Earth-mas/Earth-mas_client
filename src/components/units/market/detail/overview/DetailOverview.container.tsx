@@ -12,14 +12,21 @@ import axios from 'axios';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import logo from '../../../../../assets/svgs/logo/logo-icon-w.svg';
 import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
+import store from 'storejs';
+import { IMarketList } from '../../list/MarketList.types';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface IDetailOverviewProps {
   detailData?: IMarketDetail;
 }
-// console.log(props.detailData);
 
 export default function DetailOverview(props: IDetailOverviewProps) {
   const [image, setImage] = useState('');
+  const accessToken = store.get('accessToken');
+  const [myListData, setMyListData] = useState<IMarketList[]>();
+  const [likeActive, setLikeActive] = useState<boolean>();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = logo;
@@ -36,9 +43,80 @@ export default function DetailOverview(props: IDetailOverviewProps) {
       });
   };
 
+  // const findLike = () => {
+  //   if (props.detailData && myListData) {
+  //     for (let i = 0; i < myListData.length; i++) {
+  //       if (props.detailData.id === myListData[i].id) {
+  //         return setLikeActive(true);
+  //       }
+  //       return setLikeActive(false);
+  //     }
+  //   }
+  // };
+
+  const getItemsMyLike = async () => {
+    const findLike = () => {
+      if (props.detailData && myListData) {
+        for (let i = 0; i < myListData.length; i++) {
+          if (props.detailData.id === myListData[i].id) {
+            setLikeActive(true);
+            // alert('찜한 상품');
+          }
+        }
+        setLikeActive(false);
+        // alert('찜 안함');
+      }
+      // console.log(likeActive);
+    };
+    await axios
+      .get(`https://earth-mas.shop/server/market/findmylike`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then(res => {
+        // console.log('like Data :', res.data);
+        setMyListData(res.data);
+        findLike();
+        // console.log(likeActive);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const onClickPostLike = async () => {
+    const variables = {
+      id: props.detailData?.id,
+    };
+    // console.log(variables);
+    await axios
+      .post(`https://earth-mas.shop/server/market/like`, variables, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then(res => {
+        alert('찜');
+        console.log(res);
+        // if (res.data.isLike = true)
+        setLikeActive(res.data.isLike ? true : false);
+        // location.reload();
+      })
+      .catch(error => {
+        console.log(error);
+        alert('로그인이 필요한 서비스입니다');
+      });
+  };
+
   useEffect(() => {
     setImage(`${props.detailData?.url.split(',')[0]}`);
+    getItemsMyLike();
   }, [props.detailData]);
+
+  useEffect(() => {
+    getItemsMyLike();
+  }, []);
 
   return (
     <main>
@@ -60,11 +138,7 @@ export default function DetailOverview(props: IDetailOverviewProps) {
         </div>
         <div className="cover-image">
           <div>
-            <img
-              //  src={image ? image : logo}
-              src={image}
-              onError={onErrorImg}
-            />
+            <img src={image} onError={onErrorImg} />
           </div>
         </div>
       </S.ItemImage>
@@ -122,12 +196,24 @@ export default function DetailOverview(props: IDetailOverviewProps) {
           </span>
         </div>
         <div className="buttons">
-          <ContainedButton01 color="main" content="구매하기" />
+          <ContainedButton01
+            color="main"
+            content="구매하기"
+            onClick={() => {
+              navigate(`/market/${id}/payment`);
+            }}
+          />
           <div className="button-wrap">
             <OutlinedButton01
               color="main"
-              content={<HeartOutlineRedIcon />}
-              // onClick={postReview}
+              onClick={onClickPostLike}
+              content={
+                likeActive ? (
+                  <HeartOutlineRedIcon />
+                ) : (
+                  <HeartOutlineRedIcon fill="#D92828" />
+                )
+              }
             />
             <OutlinedButton01 color="main" content={<ShareIcon />} />
           </div>

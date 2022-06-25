@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ChangeEvent, LegacyRef } from 'react';
+import { ChangeEvent } from 'react';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
@@ -39,6 +39,7 @@ interface IInput01Props {
   pattern?: string;
   register?: any;
   defaultValue?: string | number | readonly string[] | undefined;
+  maxLength?: number;
 }
 
 export default function Input01(props: IInput01Props) {
@@ -47,6 +48,7 @@ export default function Input01(props: IInput01Props) {
     <Input
       {...props.register}
       type={props.type}
+      maxLength={props.maxLength}
       placeholder={props.placeholder}
       onChange={props.onChange}
       disabled={props.disabled}
