@@ -4,7 +4,7 @@ import { UseMutateFunction } from 'react-query';
 
 export interface ISupportPaymentUIProps {
   completeData: any;
-  isComplete: any;
+  isComplete: boolean;
   data: {
     title: string;
     user: {

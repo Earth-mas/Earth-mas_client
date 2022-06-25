@@ -1,3 +1,6 @@
+import { AxiosResponse } from 'axios';
+import { UseMutateFunction } from 'react-query';
+
 export interface ISupportDetailUIProps {
   data: {
     url: string;
@@ -13,5 +16,10 @@ export interface ISupportDetailUIProps {
   };
   percent: number;
   leftDay: number;
-  deleteContent: any;
+  deleteContent: UseMutateFunction<
+    AxiosResponse<any, any>,
+    unknown,
+    void,
+    unknown
+  >;
 }

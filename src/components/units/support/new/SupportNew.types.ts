@@ -22,9 +22,9 @@ export interface ISupportNewProps {
 }
 export interface ISupportNewUIProps {
   onClickEdit: (data: FormValues) => Promise<void>;
-  onClickSubmit: (data: FormValues) => Promise<void>;
+  onClickSubmit: (data: FormValues) => Promise<false | undefined>;
   control: Control<FieldValues, any>;
-  handleChangeQuill: (value: any) => void;
+  handleChangeQuill: (value: string) => void;
   contents: any;
   handleSubmit: UseFormHandleSubmit<FieldValues>;
   register: UseFormRegister<FieldValues>;

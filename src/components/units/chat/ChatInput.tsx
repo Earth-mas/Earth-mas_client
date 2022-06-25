@@ -22,12 +22,12 @@ export const ChatInput = (handleSendMsg: any) => {
 
   return (
     <Wrapper onSubmit={e => sendChat(e)}>
-      <textarea
+      <input
         name="chatInput"
         placeholder="메시지를 입력해주세요"
         maxLength={500}
         onChange={e => setChatMsg(e.target.value)}
-      ></textarea>
+      ></input>
       <div>
         <p>
           <span>{chatMsg.length}</span>/500
@@ -45,7 +45,7 @@ const Wrapper = styled.form`
   border-radius: 10px;
   padding: 10px;
 
-  textarea {
+  input {
     width: 100%;
     height: calc(100% - 25px);
     border: 0;

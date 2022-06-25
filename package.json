@@ -17,6 +17,7 @@
     "@types/react-dom": "^18.0.5",
     "@types/react-slick": "^0.23.8",
     "@types/uuid": "^8.3.4",
+    "autosize": "^5.0.1",
     "axios": "^0.27.2",
     "dompurify": "^2.3.8",
     "emoji-picker-react": "^3.5.1",

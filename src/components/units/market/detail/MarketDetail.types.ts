@@ -47,6 +47,7 @@ export interface IMarketDetail {
   updateAt: string;
   url: string;
   marketcategory: IMarketCategory;
+  user: IUser;
 }
 
 export interface IMarketCategory {

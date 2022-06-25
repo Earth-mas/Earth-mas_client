@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import store from 'storejs';
 import { useMutation, useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { supportRoute, supporttrRoute } from 'utils/APIRoutes';
 import SupportPaymentUI from './payment.presenter';
 import { userState } from 'recoil/user';
@@ -19,6 +18,7 @@ export default function SupportPayment() {
   const { id } = useParams();
   const accessToken = store.get('accessToken');
   const userInfo = useRecoilValue(userState);
+  const navigate = useNavigate();
 
   const [selectAmount, setSelectAmount] = useState('1000');
   const [completeData, setCompleteData] = useState({});
@@ -29,7 +29,7 @@ export default function SupportPayment() {
     return data;
   });
 
-  useEffect(() => {
+  /* useEffect(() => {
     const jquery = document.createElement('script');
     jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
     const iamport = document.createElement('script');
@@ -40,7 +40,7 @@ export default function SupportPayment() {
       document.head.removeChild(jquery);
       document.head.removeChild(iamport);
     };
-  }, []);
+  }, []); */
 
   const { mutate: supportPayment } = useMutation(
     (rsp: { imp_uid: string }) => {
@@ -84,14 +84,10 @@ export default function SupportPayment() {
       (rsp: any) => {
         // callback
         if (rsp.success) {
-          // console.log(rsp.imp_uid);
-          // try {
           supportPayment(rsp);
-          // } catch (err) {
-          //   console.log(err);
-          // }
         } else {
-          console.log(rsp.error_msg);
+          alert(rsp.error_msg);
+          navigate(`/support/${id}`);
         }
       },
     );

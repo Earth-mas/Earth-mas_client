@@ -15,6 +15,10 @@ import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
 import store from 'storejs';
 import { IMarketList } from '../../list/MarketList.types';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userState } from 'recoil/user';
+import Modal from 'components/commons/modal';
+import AlertModal from 'components/commons/modal/alertModal/alertModal';
 
 interface IDetailOverviewProps {
   detailData?: IMarketDetail;
@@ -23,10 +27,10 @@ interface IDetailOverviewProps {
 export default function DetailOverview(props: IDetailOverviewProps) {
   const [image, setImage] = useState('');
   const accessToken = store.get('accessToken');
-  const [myListData, setMyListData] = useState<IMarketList[]>();
   const [likeActive, setLikeActive] = useState<boolean>();
   const navigate = useNavigate();
   const { id } = useParams();
+  const userInfo = useRecoilValue(userState);
 
   const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = logo;
@@ -43,31 +47,19 @@ export default function DetailOverview(props: IDetailOverviewProps) {
       });
   };
 
-  // const findLike = () => {
-  //   if (props.detailData && myListData) {
-  //     for (let i = 0; i < myListData.length; i++) {
-  //       if (props.detailData.id === myListData[i].id) {
-  //         return setLikeActive(true);
-  //       }
-  //       return setLikeActive(false);
-  //     }
-  //   }
-  // };
+  const findLike = (myLike: IMarketList[]) => {
+    if (props.detailData) {
+      for (let i = 0; i < myLike.length; i++) {
+        if (props.detailData.id === myLike[i].id) {
+          // console.log('찜한 상품: ', props.detailData.id);
+          setLikeActive(true);
+          break;
+        }
+      }
+    }
+  };
 
   const getItemsMyLike = async () => {
-    const findLike = () => {
-      if (props.detailData && myListData) {
-        for (let i = 0; i < myListData.length; i++) {
-          if (props.detailData.id === myListData[i].id) {
-            setLikeActive(true);
-            // alert('찜한 상품');
-          }
-        }
-        setLikeActive(false);
-        // alert('찜 안함');
-      }
-      // console.log(likeActive);
-    };
     await axios
       .get(`https://earth-mas.shop/server/market/findmylike`, {
         headers: {
@@ -76,9 +68,7 @@ export default function DetailOverview(props: IDetailOverviewProps) {
       })
       .then(res => {
         // console.log('like Data :', res.data);
-        setMyListData(res.data);
-        findLike();
-        // console.log(likeActive);
+        findLike(res.data);
       })
       .catch(error => {
         console.log(error);
@@ -99,9 +89,7 @@ export default function DetailOverview(props: IDetailOverviewProps) {
       .then(res => {
         alert('찜');
         console.log(res);
-        // if (res.data.isLike = true)
         setLikeActive(res.data.isLike ? true : false);
-        // location.reload();
       })
       .catch(error => {
         console.log(error);
@@ -116,10 +104,27 @@ export default function DetailOverview(props: IDetailOverviewProps) {
 
   useEffect(() => {
     getItemsMyLike();
-  }, []);
+  }, [likeActive]);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const toggleDeleteModal = () => {
+    setIsDeleteOpen(prev => !prev);
+  };
 
   return (
     <main>
+      {isDeleteOpen && (
+        <Modal>
+          <AlertModal
+            title="💬 정말 삭제하시겠어요?"
+            contents="해당 상품의 모든 정보가 삭제되며, 복구할 수 없습니다."
+            okMessage="네, 삭제할게요"
+            cancelMessage="아니오, 취소할게요"
+            onClickCancel={toggleDeleteModal}
+            onClickOk={deleteMarketItem}
+          />
+        </Modal>
+      )}
       <S.ItemImage>
         <div className="cover-image-list">
           <ul>
@@ -145,14 +150,9 @@ export default function DetailOverview(props: IDetailOverviewProps) {
       <S.ItemInfo>
         <div className="title-wrap">
           <Title01 size="C" content={props.detailData?.title} margin={15} />
-          <Dropdown05
-            page="market"
-            deleteContent={deleteMarketItem}
-            title="게시물을 삭제하시겠습니까?"
-            contents="삭제 후 되돌릴 수 없습니다"
-            cancelMessage="취소"
-            okMessage="삭제"
-          />
+          {props.detailData?.user.id === userInfo.id && (
+            <Dropdown05 page="market" toggleDeleteModal={toggleDeleteModal} />
+          )}
         </div>
         <p className="description">{props.detailData?.minidescription}</p>
         <div className="review">
@@ -209,9 +209,9 @@ export default function DetailOverview(props: IDetailOverviewProps) {
               onClick={onClickPostLike}
               content={
                 likeActive ? (
-                  <HeartOutlineRedIcon />
-                ) : (
                   <HeartOutlineRedIcon fill="#D92828" />
+                ) : (
+                  <HeartOutlineRedIcon />
                 )
               }
             />

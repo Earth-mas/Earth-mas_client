@@ -11,10 +11,11 @@ export default function HomePage() {
       <Slide
         slide="main"
         banner={[
-          '/images/mainBanner/banner1.jpg',
           '/images/mainBanner/banner2.jpg',
           '/images/mainBanner/banner3.jpg',
+          '/images/mainBanner/banner1.jpg',
         ]}
+        autoplay={true}
       />
       <Wrapper>
         <Section>

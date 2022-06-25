@@ -16,7 +16,7 @@ interface IMarketReviewListProps {
 }
 export default function ReviewList(props: IMarketReviewListProps) {
   const params = useParams();
-  const [reviewData, setReviewData] = useState([]);
+  const [reviewsData, setReviewsData] = useState<IMarketReviewDetail[]>([]);
 
   const getReviews = async () => {
     await axios
@@ -25,7 +25,7 @@ export default function ReviewList(props: IMarketReviewListProps) {
       })
       .then(res => {
         console.log(res);
-        setReviewData(res.data);
+        setReviewsData(res.data);
         // console.log(reviewData);
       })
       .catch(error => {
@@ -49,10 +49,10 @@ export default function ReviewList(props: IMarketReviewListProps) {
         />
         <p className="score">{getAvg(props.reviewscore, props.reviewpeople)}</p>
       </Score>
-      {reviewData &&
-        reviewData.map(el => (
+      {reviewsData &&
+        reviewsData.map(el => (
           <Fragment key={uuid4()}>
-            <ReviewDetail reviewData={el} />
+            <ReviewDetail reviewsData={el} />
           </Fragment>
         ))}
     </Wrap>
