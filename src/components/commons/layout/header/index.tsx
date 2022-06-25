@@ -9,7 +9,6 @@ import store from 'storejs';
 import { useState } from 'react';
 import Modal from 'components/commons/modal';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
-import axios from 'axios';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 
 const Header = () => {
