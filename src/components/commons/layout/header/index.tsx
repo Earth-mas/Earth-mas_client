@@ -21,7 +21,7 @@ const Header = () => {
   const accessToken = store.get('accessToken');
 
   const onClickLogout = () => {
-    axiosApiInstance.post('auth/logout', {
+    axiosApiInstance.post('auth/logout', null, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

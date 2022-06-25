@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { accessTokenState, userState } from 'recoil/user';
 import axiosApiInstance from 'commons/utils/axiosInstance';
+import GoogleLoginBtn from './googleLogin';
 
 interface IProps {
   handleClose: () => void;
@@ -80,6 +81,12 @@ const LoginContents = ({ handleClose }: IProps) => {
       });
   };
 
+  const onClickGoogle = () => {
+    axiosApiInstance
+      .post('auth/login/google')
+      .then(res => console.log(res.data));
+  };
+
   return (
     <ModalBackGround>
       <LoginWrapper>
@@ -111,7 +118,7 @@ const LoginContents = ({ handleClose }: IProps) => {
           <p>또는</p>
           <p>SNS계정으로 간편하게 로그인하기</p>
           <section>
-            <button>
+            <button onClick={onClickGoogle}>
               <GoogleIcon />
             </button>
             <button>
