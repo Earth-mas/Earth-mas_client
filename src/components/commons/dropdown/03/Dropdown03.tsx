@@ -1,9 +1,16 @@
 import { useState } from 'react';
 import * as S from './Dropdown03.styles';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { AxiosResponse } from 'axios';
+import { UseMutateFunction } from 'react-query';
 
 interface IDropdown03Props {
-  deleteContent?: any;
+  deleteContent: UseMutateFunction<
+    AxiosResponse<any, any>,
+    unknown,
+    void,
+    unknown
+  >;
   page: string; // market | activity | support
 }
 

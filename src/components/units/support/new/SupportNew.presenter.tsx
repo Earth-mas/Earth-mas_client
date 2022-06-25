@@ -4,7 +4,6 @@ import ContainedButton01 from 'components/commons/button/contained/ContainedButt
 import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
-import Upload01 from 'components/commons/upload/01/Upload01';
 import DatePicker02 from 'components/commons/datePicker/02';
 import { ISupportNewUIProps } from './SupportNew.types';
 import { Controller } from 'react-hook-form';
@@ -63,12 +62,6 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
             />
           )}
         />
-        {/* <Upload01
-          page="support"
-          urls={props.urls}
-          setUrls={props.setUrls}
-          // fetchData={props.fetchData?.url}
-        /> */}
         <Upload01Copy
           page={'support'}
           urlString={props.urls}

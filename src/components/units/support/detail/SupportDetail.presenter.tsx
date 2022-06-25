@@ -11,14 +11,14 @@ import CommentContainer from './comment/CommentList.container';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
 import { Link } from 'react-router-dom';
+import { ChatButton } from 'components/units/chat/button';
 
 export default function SupportDetailUI(props: ISupportDetailUIProps) {
   const userInfo = useRecoilValue(userState);
 
-  console.log(props.data);
-
   return (
     <S.Wrapper>
+      <ChatButton userInfo={props.data?.user} />
       <S.FirstSection>
         <Slide slide="sub" banner={props.data?.url?.split(',')} />
         <S.MainContent percent={props.percent}>

@@ -1,42 +1,111 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
+import { useRecoilValue } from 'recoil';
+import { chatUserState } from 'recoil/chatUser';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+import { chat } from 'utils/APIRoutes';
+import { v4 as uuidv4 } from 'uuid';
+import store from 'storejs';
 
 export const ChatList = (props: {
-  el: {
-    user: {
-      url: string | undefined;
-      name: string;
-    };
-    createdAt: string;
-    currentMsg: string;
-  };
+  currentUser: any;
+  changeChat: (arg0: any) => void;
+  socket: { on: (arg0: string, arg1: (data: any) => void) => void };
+  contacts: any;
+  data?: any;
 }) => {
-  return (
-    <Wrapper>
-      <div className="user">
-        <div className="userImg">
-          <img
-            src={props.el?.user?.url}
-            onError={e => {
-              e.currentTarget.src = '/images/profileDefault.png';
-            }}
-          />
-        </div>
-      </div>
+  const accessToken = store.get('accessToken');
 
-      <div className="userInfo">
-        <div className="name-date">
-          <p className="userName">{props.el?.user?.name}</p>
-          <p className="date">{props.el?.createdAt}</p>
-        </div>
-        <p>{props.el?.currentMsg}</p>
-      </div>
-    </Wrapper>
+  const [currentUserName, setCurrentUserName] = useState(undefined);
+  const [currentUserImage, setCurrentUserImage] = useState(undefined);
+  const [currentSelected, setCurrentSelected] = useState(undefined);
+
+  // const chatUser = useRecoilValue(chatUserState);
+
+  useEffect(() => {
+    if (props.currentUser) {
+      setCurrentUserImage(props.currentUser?.url);
+      setCurrentUserName(props.currentUser?.name);
+    }
+  }, [props.currentUser]); // 유저가 변경될 때마다 함수 실행
+
+  const changeCurrentChat = (index: any, contact: any) => {
+    setCurrentSelected(index);
+    props.changeChat(contact);
+  }; // 채팅을 클릭할 때마다 채팅 유저 리스트를 변경하여 현재 선택된 설정으로 되게
+
+  /* props.socket.on('user-send-emit', function (data) {
+    console.log(data);
+  }); */
+
+  console.log(props.data);
+
+  // console.log('chatlist', props.contacts);
+
+  return (
+    <>
+      {currentUserImage && currentUserName && (
+        <ListContainer>
+          {props.data?.map((el: any, index: any) => (
+            // <ChatList el={el} />
+            <List
+              className={`contact ${
+                index === currentSelected ? 'selected' : ''
+              }`}
+              key={uuidv4()}
+              onClick={() => changeCurrentChat(index, el)}
+            >
+              <div className="user">
+                <div className="userImg">
+                  <img
+                    src={el?.url}
+                    onError={e => {
+                      e.currentTarget.src = '/images/profileDefault.png';
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="userInfo">
+                <div className="name-date">
+                  <p className="userName">{el?.name}</p>
+                  <p className="date">{el?.createdAt}</p>
+                </div>
+                <p>{el?.currentMsg}</p>
+              </div>
+            </List>
+          ))}
+        </ListContainer>
+      )}
+    </>
   );
 };
 
-const Wrapper = styled.div`
+const ListContainer = styled.div`
+  height: calc(100% - 65px);
+  overflow-y: auto;
+  :hover {
+    &::-webkit-scrollbar {
+      width: 0.5rem;
+      &-thumb {
+        background-color: ${Colors.MAIN};
+        width: 0.3rem;
+        border-radius: 1rem;
+      }
+    }
+  }
+
+  > div {
+    border-bottom: 1px solid ${Colors.B20};
+    :last-of-type {
+      border: 0;
+    }
+  }
+`;
+const List = styled.div`
   height: 65px;
   padding: 0 15px;
   display: flex;

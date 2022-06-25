@@ -56,8 +56,6 @@ export default function Upload01(props: IUpload01Props) {
     setUrls(originData);
   };
 
-  // console.log(props.fetchData);
-
   return (
     <S.Wrap>
       <DragDropContext onDragEnd={onDragEnd}>
