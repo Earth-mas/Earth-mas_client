@@ -4,17 +4,16 @@ import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import UserProfile from 'components/commons/profile/profile';
+import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
 import Slide from 'components/commons/slide';
 import DOMPurify from 'dompurify';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { userState } from 'recoil/user';
+import { useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
-export interface RootObject {
+export interface ActivityDetail {
+  activityjoing: Activityjoin;
   activitycategory: Activitycategory;
   createAt: string;
   dday: string;
@@ -28,6 +27,7 @@ export interface RootObject {
   title: string;
   updateAt: string;
   url?: string;
+  user: User;
 }
 
 interface Activitycategory {
@@ -37,6 +37,28 @@ interface Activitycategory {
   id: string;
 }
 
+interface Activityjoin {
+  admin: string;
+  id: string;
+  user: User;
+}
+
+interface User {
+  address1: string;
+  address2: string;
+  addressnumber: string;
+  createAt: string;
+  delete?: string | null;
+  email: string;
+  id: string;
+  name: string;
+  password: string;
+  phone: string;
+  role: string;
+  updateAt: string;
+  url: string | undefined;
+}
+
 interface IpropsMainImg {
   width?: number;
   height?: number;
@@ -44,9 +66,7 @@ interface IpropsMainImg {
 
 export default function ActivityDetail() {
   const params = useParams();
-  const userInfo = useRecoilValue(userState);
-  const { url, name } = userInfo;
-  const [activityData, setActivityData] = useState<RootObject>();
+  const [activityData, setActivityData] = useState<ActivityDetail>();
 
   // useEffect(() => {
   //   const result = async () => {
@@ -99,16 +119,15 @@ export default function ActivityDetail() {
         <Blank height={25} />
         <div className="postInfoBox">
           <div className="userInfo">
-            {/* <img
-              src=""
+            <img
+              src={activityData?.user?.url}
               onError={event =>
                 (event.currentTarget.src = '/images/avatar.svg')
               }
-            /> */}
-            <UserProfile size={40} avataUrl={url} name={name} />
-            {/* <text>KB star</text> */}
+            />
+            <span>{activityData?.user?.name}</span>
           </div>
-          <div className="detailInfo">
+          <section className="detailInfo">
             <li>
               <CalenderIcon className="icon" />
               {GetDate(activityData?.createAt)}~{GetDate(activityData?.dday)}
@@ -119,10 +138,13 @@ export default function ActivityDetail() {
               <text>지역</text>
               <li>{activityData?.location}</li>
               <text>모집인원</text>
-              <li>{activityData?.people}명</li>
+              <li>{activityData?.maxpeople}명</li>
             </ul>
-          </div>
-          <FrameIcon className="icon" />
+          </section>
+          {/* <FrameIcon className="icon" /> */}
+          <section className="icon2">
+            <Dropdown03 page={'2'} />
+          </section>
         </div>
         <Blank height={25} />
         <div className="postContents">
@@ -136,12 +158,15 @@ export default function ActivityDetail() {
           />
         </div>
       </PostBox>
-      <ContainedButton01
-        content={'참여하기'}
-        color={'main'}
-        type="submit"
-        onClick={onClickSubmit}
-      />
+      <div className="button" style={{ margin: 'auto' }}>
+        <ContainedButton01
+          content={'참여하기'}
+          color={'main'}
+          type="submit"
+          onClick={onClickSubmit}
+        />
+      </div>
+      <Blank height={100} />
       {/* <ActivityDetailUI data={data} /> */}
     </Wrap>
   );
@@ -151,6 +176,9 @@ const Wrap = styled.div`
   max-width: 1024px;
   width: 100%;
   margin-top: 50px;
+  .button {
+    width: 20%;
+  }
 `;
 
 const MainImg = styled.div`
@@ -211,7 +239,8 @@ const PostBox = styled.div`
   .icon {
     margin-right: 5px;
   }
-  .icon:last-child {
+  .icon2 {
+    margin-top: 15px;
     margin-left: auto;
   }
 

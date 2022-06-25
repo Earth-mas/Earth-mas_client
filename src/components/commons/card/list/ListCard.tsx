@@ -1,33 +1,42 @@
 import styled from '@emotion/styled';
+import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import Line from 'components/commons/line';
-import UserProfile from 'components/commons/profile/profile';
+import Dompurify from 'dompurify';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { userState } from 'recoil/user';
 import { Colors } from 'styles/Colors';
-import { IPropsActivityList } from './ListCard.types';
+import { IPropsActivityCardList } from './ListCard.types';
 
-export default function ListCard(props: IPropsActivityList) {
-  const userInfo = useRecoilValue(userState);
-  const { url, name } = userInfo;
+export default function ListCard(props: IPropsActivityCardList) {
   return (
     <Wrapper id={props.el.id}>
       <Link to={`/activity/${props.el.id}`}>
         <div className="imgContainer">
-          <img src={props.el.url} />
+          <img src={props.el?.url?.split(',')[0]} />
           <div className="addressContainer">{props.el.location}</div>
         </div>
 
         <Blank height={10} />
         <div className="infoBox">
-          <div className="contentsBox">{props.el.description}</div>
+          <div
+            className="contentsBox"
+            dangerouslySetInnerHTML={{
+              __html: Dompurify.sanitize(props.el.description),
+            }}
+          />
           <Line />
-          <div className="userInfo">
-            <UserProfile size={25} avataUrl={url} name={name} />
-            {/* <li>{props.el.user}</li> */}
-            <li>{props.el.createAt}</li>
-          </div>
+          <UserInfoBox>
+            <div className="userImg">
+              <img
+                src={props.el?.activityJoin?.user?.url}
+                onError={e => {
+                  e.currentTarget.src = '/images/avatar.svg';
+                }}
+              />
+            </div>
+            <span>{props.el?.activityJoin?.user?.name}</span>
+            <span>{GetDate(props.el.createAt)}</span>
+          </UserInfoBox>
         </div>
       </Link>
     </Wrapper>
@@ -80,10 +89,49 @@ const Wrapper = styled.div`
     }
   }
 
-  .userInfo {
+  /* .userInfo {
     padding: 8px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    .userImg {
+      min-width: 30px;
+      max-width: 30px;
+      width: 100%;
+      height: 30px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 12px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  } */
+`;
+
+const UserInfoBox = styled.div`
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .userImg {
+    min-width: 30px;
+    max-width: 30px;
+    width: 100%;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 12px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 `;
