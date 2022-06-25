@@ -22,6 +22,7 @@ export interface IPropsActivityList {
   title: string;
   updateAt: string;
   url: string;
+  nowCategory: string;
 }
 
 interface Activitycategory {
@@ -37,7 +38,11 @@ interface Activityjoin {
   user: User;
 }
 
-export default function ActivityList() {
+interface IPropsCategory {
+  nowCategory: string;
+}
+
+export default function ActivityList(props: IPropsCategory) {
   const [activityListData, setActivityListData] =
     useState<IPropsActivityList>();
 
@@ -61,7 +66,7 @@ export default function ActivityList() {
   return (
     <Wrap>
       <section>
-        <Title03 content="#전체" margin={35} />
+        <Title03 content={props.nowCategory} margin={35} />
         <CardWrap>
           {activityListData?.map((el: IPropsActivityList) => (
             <ListCard key={uuidv4()} el={el} />
