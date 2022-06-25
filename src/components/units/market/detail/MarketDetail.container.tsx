@@ -30,7 +30,7 @@ export default function MarketDetail() {
       .get(`https://earth-mas.shop/server/market/${params.id}`)
       .then(res => {
         setDetailData(res.data);
-        console.log(detailData);
+        console.log(res.data);
       })
       .catch(error => {
         console.log(error);

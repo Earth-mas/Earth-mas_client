@@ -1,7 +1,116 @@
+import axios from 'axios';
+import store from 'storejs';
+import { getMoney } from 'commons/utils/getAmount';
 import Line from 'components/commons/line';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userState } from 'recoil/user';
+import { IMarketDetail } from '../detail/MarketDetail.types';
 import * as S from './MarketPayment.styles';
+import { IRsp } from './MarketPayment.types';
 
 export default function MarketPayment() {
+  const accessToken = store.get('accessToken');
+  const userInfo = useRecoilValue(userState);
+  const { id } = useParams();
+  const [detailData, setDetailData] = useState<IMarketDetail>();
+  const [payAmount, setPayAmount] = useState(0);
+
+  const getItem = async () => {
+    await axios
+      .get(`https://earth-mas.shop/server/market/${id}`)
+      .then(res => {
+        setDetailData(res.data);
+        // console.log(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const marketTransaction = async (rsp: IRsp) => {
+    await axios
+      .post(
+        `https://earth-mas.shop/server/markettransaction/create`,
+        {
+          impUid: rsp.imp_uid,
+          // amount: payAmount + 3000,
+          amount: 100,
+          marketnumber: 1,
+          marketid: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const onClickPayment = () => {
+    const IMP: any = window.IMP;
+    IMP.init('imp76469515');
+
+    IMP.request_pay(
+      {
+        // param
+        pg: 'html5_inicis',
+        pay_method: 'card',
+        name: '얼스마스',
+        // amount: payAmount + 3000,
+        amount: 100,
+        buyer_email: userInfo.email,
+        buyer_name: userInfo.name,
+        buyer_tel: userInfo.phone,
+        buyer_addr: userInfo.address1,
+        buyer_postcode: userInfo.addressnumber,
+      },
+      async (rsp: IRsp) => {
+        console.log(rsp);
+        if (rsp.success) {
+          // 결제 성공 시 로직,
+          console.log(rsp.imp_uid);
+          try {
+            // alert('결제시도');
+            console.log(rsp);
+            marketTransaction(rsp);
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          // 결제 실패 시 로직,
+          console.log('결제 실패');
+        }
+      },
+    );
+  };
+
+  useEffect(() => {
+    getItem();
+
+    const jquery = document.createElement('script');
+    jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
+    const iamport = document.createElement('script');
+    iamport.src = 'https://cdn.iamport.kr/js/iamport.payment-1.2.0.js';
+    document.head.appendChild(jquery);
+    document.head.appendChild(iamport);
+    return () => {
+      document.head.removeChild(jquery);
+      document.head.removeChild(iamport);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (detailData) setPayAmount(detailData?.amount);
+  }, [detailData]);
+
   return (
     <S.Wrapper>
       <S.Top>
@@ -10,23 +119,24 @@ export default function MarketPayment() {
         </div>
         결제하기
       </S.Top>
-      <p>"구매자님의 소중한 마음으로 놀라운 변화가 일어납니다."</p>
+      <p>"구매자님의 소중한 마음으로 건강한 변화가 일어납니다."</p>
       <p>낭비 없는 소비를 실천하는 당신과 함께하겠습니다</p>
       <Line color="#2C3131" margin={30} />
       <S.Bottom>
         <div className="bottomLeft">
-          <p>[주방] NO 플라스틱 주방용품 키트</p>
           <p>
-            에너지를 더해주는 아미노산과 식물 유래 전해질로 건강한 수분 보충
-            어쩌구 저쩌구
+            [{detailData?.marketcategory.name}] {detailData?.title}
           </p>
+          <p>{detailData?.minidescription}</p>
           <div className="grid">
             <p>주문자 이름</p>
-            <p>김감자</p>
+            <p>{userInfo.name}</p>
             <p>배송지</p>
-            <p>서울시 구로구 디지털로 300, 13층 패스트파이브 코드캠프</p>
+            <p>
+              {userInfo.address1}, {userInfo.address2}
+            </p>
             <p>상품 금액</p>
-            <p>15,600원</p>
+            <p>{getMoney(detailData?.amount)}원</p>
             <p>배송비</p>
             <p>3,000원</p>
             <p>결제 수단</p>
@@ -45,9 +155,7 @@ export default function MarketPayment() {
 
           <form
             className="payment"
-            onSubmit={() => {
-              alert('submit');
-            }}
+            // onSubmit={onClickPayment}
           >
             <div className="contents">
               <div className="inputWrap">
@@ -61,11 +169,13 @@ export default function MarketPayment() {
                 </span>
               </div>
               <div className="rowGrid">
-                <p>총 기부 금액</p>
-                <p>13,600원</p>
+                <p>총 결제 금액</p>
+                {detailData && <p>{getMoney(detailData?.amount + 3000)}원</p>}
               </div>
             </div>
-            <button>기부하기</button>
+            <button type="button" onClick={onClickPayment}>
+              결제하기
+            </button>
           </form>
         </div>
       </S.Bottom>
