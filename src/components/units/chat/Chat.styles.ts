@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
   width: 1024px;
   height: 715px;
   border: 1.5px solid ${Colors.MAIN};
+  border-spacing: 1px;
   border-radius: 10px;
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -57,28 +58,6 @@ export const LeftContainer = styled.section`
       font-family: ${FontFamily.BOLD};
       color: ${Colors.B100};
       margin-left: 12px;
-    }
-  }
-
-  .listContainer {
-    height: calc(100% - 65px);
-    overflow-y: auto;
-    :hover {
-      &::-webkit-scrollbar {
-        width: 0.5rem;
-        &-thumb {
-          background-color: ${Colors.MAIN};
-          width: 0.3rem;
-          border-radius: 1rem;
-        }
-      }
-    }
-
-    > div {
-      border-bottom: 1px solid ${Colors.B20};
-      :last-of-type {
-        border: 0;
-      }
     }
   }
 `;

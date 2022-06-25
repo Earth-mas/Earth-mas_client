@@ -39,17 +39,18 @@ export default function SupportNew(props: ISupportNewProps) {
           });
     },
     {
-      onSuccess: (res: any) => {
+      onSuccess: res => {
         console.log(res);
         navigate(`/support/${res.data.id}`);
       },
-      onError: (err: any) => {
+      onError: err => {
         console.log(err);
+        alert('필수 입력사항입니다');
       },
     },
   );
 
-  const handleChangeQuill = (value: any) => {
+  const handleChangeQuill = (value: string) => {
     setValue('description', value === '<p><br></p>' ? '' : value);
     trigger('description');
   };
@@ -58,6 +59,17 @@ export default function SupportNew(props: ISupportNewProps) {
     const formData = {
       ...data,
     };
+
+    if (
+      formData.title === '' &&
+      formData.wishamount &&
+      formData.dday === undefined &&
+      formData.url === '' &&
+      formData.description === ''
+    ) {
+      alert('필수 입력사항입니다');
+      return false;
+    }
 
     mutate({ formData });
   };
@@ -77,7 +89,7 @@ export default function SupportNew(props: ISupportNewProps) {
     if (data.wishamount) formData.wishamount = Number(data.wishamount);
     if (data.dday) formData.dday = data.dday;
     if (data.description) formData.description = data.description;
-    if (urls) formData.url = urls;
+    if (data.url) formData.url = urls;
 
     mutate({ formData });
   };

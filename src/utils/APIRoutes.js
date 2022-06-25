@@ -9,3 +9,4 @@ export const activityCategoryRoute = `${host}/server/ActivityCategory`;
 export const supportRoute = `${host}/server/support`;
 export const supporttrRoute = `${host}/server/supporttr`;
 export const supportCommentRoute = `${host}/server/supportcomment`;
+export const chat = `${host}/server/chat`;

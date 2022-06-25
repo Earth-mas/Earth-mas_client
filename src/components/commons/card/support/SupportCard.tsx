@@ -21,7 +21,13 @@ export default function SupportCard(props: ISupportCardProps) {
       <p className="leftDay">마감</p>
       <Link to={`/support/${props.el.id}`}>
         <div className="imgContainer">
-          <img src={props.el?.url.split(',')[0]} alt="titleImg" />
+          <img
+            src={props.el?.url && props.el?.url.split(',')[0]}
+            onError={e => {
+              e.currentTarget.src = `/images/logo-icon.png`;
+            }}
+            alt="titleImg"
+          />
         </div>
         <div className="contents">
           <div className="textBox">

@@ -10,7 +10,6 @@ export const Container = styled.div`
   border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
-  /* ${(props: { leftDay: number }) => (props.leftDay <= 0 ? '' : '')} */
 
   ::after {
     content: '';
@@ -21,16 +20,31 @@ export const Container = styled.div`
     bottom: 0;
     background-color: black;
     opacity: ${(props: { leftDay: number }) =>
-      props.leftDay > 0 ? '0.5' : '0'};
+      props.leftDay > 1 ? '0.5' : '0'};
     display: ${(props: { leftDay: number }) =>
-      props.leftDay > 0 ? 'block' : 'none'};
+      props.leftDay > 1 ? 'block' : 'none'};
   }
   .imgContainer {
     height: 231.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2 linear;
+    overflow: hidden;
+
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: all 0.2 linear;
+    }
+  }
+  :hover {
+    .imgContainer {
+      img {
+        transition: all 0.2s linear;
+        transform: scale(1.2);
+      }
     }
   }
 
@@ -45,7 +59,7 @@ export const Container = styled.div`
     font-size: ${FontSize.LARGE_T};
 
     display: ${(props: { leftDay: number }) =>
-      props.leftDay > 0 ? 'block' : 'none'};
+      props.leftDay > 1 ? 'block' : 'none'};
   }
 
   .contents {
