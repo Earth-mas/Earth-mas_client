@@ -14,6 +14,7 @@ import logo from '../../../../../assets/svgs/logo/logo-icon-w.svg';
 import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
 import store from 'storejs';
 import { IMarketList } from '../../list/MarketList.types';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface IDetailOverviewProps {
   detailData?: IMarketDetail;
@@ -24,6 +25,8 @@ export default function DetailOverview(props: IDetailOverviewProps) {
   const accessToken = store.get('accessToken');
   const [myListData, setMyListData] = useState<IMarketList[]>();
   const [likeActive, setLikeActive] = useState<boolean>();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = logo;
@@ -193,7 +196,13 @@ export default function DetailOverview(props: IDetailOverviewProps) {
           </span>
         </div>
         <div className="buttons">
-          <ContainedButton01 color="main" content="구매하기" />
+          <ContainedButton01
+            color="main"
+            content="구매하기"
+            onClick={() => {
+              navigate(`/market/${id}/payment`);
+            }}
+          />
           <div className="button-wrap">
             <OutlinedButton01
               color="main"
