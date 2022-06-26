@@ -20,17 +20,7 @@ import store from 'storejs';
 import { userState } from 'recoil/user';
 // import { userInfo } from 'os';
 
-export const ChatList = (props: {
-  currentUser: any;
-  changeChat: (arg0: any) => void;
-  // socket: { on: (arg0: string, arg1: (data: any) => void) => void };
-  contacts: any;
-  data?: any;
-  roomUser?: any;
-  setRoomid: any;
-  setUserId: any;
-  createUserId: any;
-}) => {
+export const ChatList = (props: any) => {
   const accessToken = store.get('accessToken');
   const userInfo = useRecoilValue(userState);
 
@@ -52,6 +42,10 @@ export const ChatList = (props: {
     props.setRoomid(index);
     props.changeChat(contact);
     props.createUserId();
+
+    props.socket.emit('connection', {
+      roomid: props.roomid,
+    });
 
     // props.setUserId(contact);
     // console.log(contact);

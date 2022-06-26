@@ -104,18 +104,6 @@ export const ChatContainer = (props: any) => {
                     message.userid === userInfo.id ? 'sended' : 'recieved'
                   }`}
                 >
-                  <div className="userImg">
-                    {message.userid !== userInfo.id ? (
-                      <img
-                        src={props.clickUserId?.data[0]?.url}
-                        onError={e => {
-                          e.currentTarget.src = '/images/profileDefault.png';
-                        }}
-                      />
-                    ) : (
-                      ''
-                    )}
-                  </div>
                   <div
                     className={`message ${
                       message.userid === userInfo.id ? 'sended' : 'recieved'
@@ -145,7 +133,6 @@ const Wrapper = styled.div`
   width: 100%;
   padding: 0 15px 15px;
   overflow: hidden;
-  overflow-x: auto;
 
   > div {
     height: 530px;
@@ -154,16 +141,18 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 10px;
+
     > .messageWrap {
       width: 100%;
       display: flex;
       align-items: center;
       margin-bottom: 10px;
+      :last-of-type {
+        margin-bottom: 0;
+      }
       &.sended {
         justify-content: flex-end;
-        .userImg {
-          display: none;
-        }
         .message {
           .content {
             background-color: ${Colors.SUB1};
@@ -188,7 +177,7 @@ const Wrapper = styled.div`
             color: ${Colors.B100};
           }
         }
-        :first-of-type {
+        &:first-of-type {
           .message {
             .content {
               border-top-left-radius: 0;
@@ -196,28 +185,12 @@ const Wrapper = styled.div`
           }
         }
       }
-      :first-of-type {
-        margin-top: 10px;
-        .userImg {
-          width: 35px;
-          height: 35px;
-          border-radius: 50%;
-          overflow: hidden;
-
-          img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-          }
-        }
-      }
     }
+
     .message {
       width: auto;
       display: flex;
       align-items: center;
-      margin-left: 10px;
 
       .content {
         width: auto;

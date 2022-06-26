@@ -20,7 +20,7 @@ export const ChatButton = (props: { userInfo?: any }) => {
 
   console.log(props.userInfo?.id);
 
-  const { mutate } = useMutation(
+  const { data, mutate } = useMutation(
     () => {
       return axios.post(
         `${chat}/findroom`,
@@ -41,7 +41,9 @@ export const ChatButton = (props: { userInfo?: any }) => {
   const joinChatRoom = () => {
     // setChatUser(props.userInfo);
     mutate();
-    socket.emit('connection', {});
+    socket.emit('connection', {
+      roomid: data?.data?.id,
+    });
     socket.on('connection', function (data: any) {
       console.log(data);
       console.log('채팅방입장');

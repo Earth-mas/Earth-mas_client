@@ -40,7 +40,7 @@ export const Chat = () => {
 
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) {
-      console.log('유저정보 없음');
+      alert('로그인을 해주세요');
       navigate('/');
     } else {
       const functionSetCurrentUser = () => {
@@ -153,11 +153,12 @@ export const Chat = () => {
 
           <ChatList
             // socket={socketRef}
-            setUserId={setUserId}
-            contacts={contacts}
+            // setUserId={setUserId}
+            // contacts={contacts}
             changeChat={handleChatChange}
-            currentUser={currentUser}
+            // currentUser={currentUser}
             data={data}
+            roomid={roomid}
             setRoomid={setRoomid}
             // roomUser={roomUser}
             createUserId={createUserId}
