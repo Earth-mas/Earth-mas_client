@@ -52,6 +52,7 @@ export const ChatList = (props: {
     props.setRoomid(index);
     props.changeChat(contact);
     props.createUserId();
+
     // props.setUserId(contact);
     // console.log(contact);
   }; // 채팅을 클릭할 때마다 채팅 유저 리스트를 변경하여 현재 선택된 설정으로 되게

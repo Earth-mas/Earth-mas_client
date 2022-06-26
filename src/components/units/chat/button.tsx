@@ -31,11 +31,9 @@ export const ChatButton = (props: { userInfo?: any }) => {
     {
       onSuccess: res => {
         console.log(res);
-        // navigate(`/support/${res.data.id}`);
       },
       onError: err => {
         console.log(err);
-        // alert('필수 입력사항입니다');
       },
     },
   );
@@ -43,20 +41,12 @@ export const ChatButton = (props: { userInfo?: any }) => {
   const joinChatRoom = () => {
     // setChatUser(props.userInfo);
     mutate();
-    socket.emit('hello11', function (data: any) {
+    socket.emit('connection', {});
+    socket.on('connection', function (data: any) {
       console.log(data);
       console.log('채팅방입장');
     });
 
-    // function
-
-    // socket.emit('user-load', props.userInfo?.id);
-
-    /* socket.emit('user-send', {
-      name: props.userInfo?.name,
-      content: 'dd',
-      roomid: props.userInfo?.id,
-    }); */
     /* socket.on('connect', () => {
       console.log(socket.id);
       console.log(socket.connected); // true
