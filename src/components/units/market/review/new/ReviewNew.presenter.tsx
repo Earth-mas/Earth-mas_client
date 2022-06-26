@@ -44,8 +44,6 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
           <h1>사진 첨부</h1>
           <Upload02
             page="marketreview"
-            // urls={props.urls}
-            // setUrls={props.setUrls}
             fetchData={props.reviewData?.url.split(',')}
             urlString={props.urlString}
             setUrlString={props.setUrlString}

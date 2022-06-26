@@ -13,7 +13,7 @@ import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 
 export default function MarketList() {
   const [listData, setListData] = useState<IMarketList[]>();
-  const [myListData, setMyListData] = useState<IMarketList[]>();
+  const [, setMyListData] = useState<IMarketList[]>();
   const accessToken = store.get('accessToken');
   const [nowCategory, setNowCategory] = useState('전체');
   const [select, setSelect] = useState<boolean>(false);
@@ -58,7 +58,6 @@ export default function MarketList() {
   useEffect(() => {
     getItemsALl();
     getItemsMyLike();
-    // console.log(DetailData);
   }, [nowCategory, select]);
 
   return (
@@ -78,7 +77,10 @@ export default function MarketList() {
           {listData &&
             listData.map((el: IMarketCard) => (
               <Fragment key={uuid4()}>
-                <MarketCard listData={el} myListData={myListData} />
+                <MarketCard
+                  listData={el}
+                  // myListData={myListData}
+                />
               </Fragment>
             ))}
         </CardWrap>

@@ -21,7 +21,6 @@ import ContainedButton02 from 'components/commons/button/contained/ContainedButt
 
 interface IMarketCardProps {
   listData: IMarketCard;
-  myListData?: IMarketList[];
 }
 
 export default function MarketCard(props: IMarketCardProps) {
@@ -32,9 +31,38 @@ export default function MarketCard(props: IMarketCardProps) {
     event.currentTarget.src = logo;
   };
 
+  const findLike = (myLike: IMarketList[]) => {
+    if (props.listData) {
+      for (let i = 0; i < myLike.length; i++) {
+        if (props.listData.id === myLike[i].id) {
+          // console.log('찜한 상품: ', props.detailData.id);
+          setLikeActive(true);
+          break;
+        }
+        setLikeActive(false);
+      }
+    }
+  };
+
+  const getItemsILike = async () => {
+    await axios
+      .get(`https://earth-mas.shop/server/market/findmylike`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then(res => {
+        // console.log('like Data :', res.data);
+        findLike(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   const onClickPostLike = async () => {
     const variables = {
-      id: props.listData.id,
+      id: props.listData?.id,
     };
     // console.log(variables);
     await axios
@@ -46,7 +74,7 @@ export default function MarketCard(props: IMarketCardProps) {
       .then(res => {
         alert('찜');
         console.log(res);
-        location.reload();
+        setLikeActive(res.data.isLike ? true : false);
       })
       .catch(error => {
         console.log(error);
@@ -54,21 +82,11 @@ export default function MarketCard(props: IMarketCardProps) {
       });
   };
 
-  const findLike = () => {
-    if (props.listData && props.myListData) {
-      for (let i = 0; i < props.myListData.length; i++) {
-        if (props.listData.id === props.myListData[i].id) {
-          setLikeActive(true);
-        }
-      }
-    }
-  };
-
   useEffect(() => {
-    findLike();
-  }, [props.myListData]);
-  const [isEditOpen, setIsEditOpen] = useState(false);
+    getItemsILike();
+  }, [likeActive]);
 
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const toggleEditModal = () => {
     setIsEditOpen(prev => !prev);
   };
@@ -89,7 +107,6 @@ export default function MarketCard(props: IMarketCardProps) {
             children={
               <ReviewNew
                 onClickCancel={toggleEditModal}
-                // reviewData={reviewData}
                 marketData={marketData}
               />
             }
