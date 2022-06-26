@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
-export const ChatInput = (handleSendMsg: any) => {
+export const ChatInput = (/* handleSendMsg: any */ props: any) => {
   const [chatMsg, setChatMsg] = useState('');
 
   /* const handleEmojiClick = (event: any, emoji: { emoji: any }) => {
@@ -11,23 +11,25 @@ export const ChatInput = (handleSendMsg: any) => {
     message += emoji.emoji;
     setChatMsg(message);
   }; */ // 이모지삽입
+  // console.log(props.data?.data[0]?.user2?.name);
 
   const sendChat = (event: { preventDefault: () => void }) => {
     event.preventDefault();
+
     if (chatMsg.length > 0) {
-      handleSendMsg(chatMsg); // container에서 socket에 발송
+      props.handleSendMsg(chatMsg); // container에서 socket에 발송
       setChatMsg(''); // 문자 메세지를 발송하면 빈값으로 반환
     }
   };
 
   return (
     <Wrapper onSubmit={e => sendChat(e)}>
-      <input
+      <textarea
         name="chatInput"
         placeholder="메시지를 입력해주세요"
         maxLength={500}
         onChange={e => setChatMsg(e.target.value)}
-      ></input>
+      ></textarea>
       <div>
         <p>
           <span>{chatMsg.length}</span>/500
@@ -45,9 +47,9 @@ const Wrapper = styled.form`
   border-radius: 10px;
   padding: 10px;
 
-  input {
+  textarea {
     width: 100%;
-    height: calc(100% - 25px);
+    height: calc(100% - 28px);
     border: 0;
     ::placeholder {
       color: ${Colors.B60};

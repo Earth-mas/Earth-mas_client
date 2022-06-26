@@ -22,7 +22,7 @@ export default function SupportCard(props: ISupportCardProps) {
       <Link to={`/support/${props.el.id}`}>
         <div className="imgContainer">
           <img
-            src={props.el?.url && props.el?.url.split(',')[0]}
+            src={props.el?.url !== null ? props.el.url.split(',')[0] : ''}
             onError={e => {
               e.currentTarget.src = `/images/logo-icon.png`;
             }}

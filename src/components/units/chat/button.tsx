@@ -18,13 +18,13 @@ export const ChatButton = (props: { userInfo?: any }) => {
     upgrade: false,
   });
 
-  // console.log(props.userInfo);
+  console.log(props.userInfo?.id);
 
   const { mutate } = useMutation(
     () => {
       return axios.post(
         `${chat}/findroom`,
-        { user: props.userInfo.id },
+        { user: props.userInfo?.id },
         { headers: { Authorization: `Bearer ${accessToken}` } },
       );
     },
@@ -50,7 +50,7 @@ export const ChatButton = (props: { userInfo?: any }) => {
 
     // function
 
-    socket.emit('user-load', props.userInfo?.id);
+    // socket.emit('user-load', props.userInfo?.id);
 
     /* socket.emit('user-send', {
       name: props.userInfo?.name,
@@ -66,7 +66,7 @@ export const ChatButton = (props: { userInfo?: any }) => {
         console.log(data);
       });
     }); */
-    // navigate('/chat');
+    navigate('/chat');
   };
 
   return <button onClick={joinChatRoom}>채팅</button>;

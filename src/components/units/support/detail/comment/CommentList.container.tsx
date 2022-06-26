@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { supportCommentRoute } from 'utils/APIRoutes';
 import store from 'storejs';
 import { useParams } from 'react-router-dom';

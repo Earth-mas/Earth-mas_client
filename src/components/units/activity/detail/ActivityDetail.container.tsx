@@ -134,9 +134,7 @@ export default function ActivityDetail() {
               <li>{activityData?.maxpeople}명</li>
             </ul>
           </section>
-          <section className="icon2">
-            <Dropdown03 page={'2'} />
-          </section>
+          <section className="icon2">{/* <Dropdown03 page={'2'} /> */}</section>
         </div>
         <Blank height={25} />
         <div className="postContents">
