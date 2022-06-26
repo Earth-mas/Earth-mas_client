@@ -1,23 +1,37 @@
 import styled from '@emotion/styled';
-import {
-  JSXElementConstructor,
-  ReactElement,
-  ReactFragment,
-  ReactPortal,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import axios from 'axios';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { useMutation } from 'react-query';
+import { useRecoilValue } from 'recoil';
+import { userState } from 'recoil/user';
 import { Colors } from 'styles/Colors';
 import { FontSize } from 'styles/FontStyles';
+import { chat } from 'utils/APIRoutes';
 import { v4 as uuidv4 } from 'uuid';
-import chat from './chat.json';
+// import chat from './chat.json';
 import { ChatInput } from './ChatInput';
+import store from 'storejs';
 
 export const ChatContainer = (props: any) => {
-  const [messages, setMessages] = useState<any>();
+  const [messages, setMessages] = useState<any>([]);
   const [arrivalMessage, setArrivalMessage] = useState({});
+  const userInfo = useRecoilValue(userState);
+  const accessToken = store.get('accessToken');
   const scrollRef = useRef<any>();
+
+  useEffect(() => {
+    if (props.currentChat) {
+      props.socket.emit('user-load', {
+        roomid: props.data?.data[Number(props.roomid)]?.id,
+      });
+      props.socket.on('user-load-emit', (data: any) => {
+        // console.log(data);
+        setMessages(data);
+      });
+    }
+  }, [props.currentChat]);
+
+  // console.log(props.clickUserId);
 
   // 보내는 메시지 api post
   const handleSendMsg = (msg: any) => {
@@ -26,66 +40,98 @@ export const ChatContainer = (props: any) => {
       from: props.currentUser._id,
       message: msg,
     }); */
-    props.socket.emit('user-send', {
-      name: props.userInfo?.name,
-      content: msg,
-      roomid: '1',
-    });
+    if (props.data?.data) {
+      /* props.socket.emit('', {
+        userid: userInfo.id,
+        name: userInfo.name,
+        content: msg,
+        roomid: props.data?.data[Number(props.roomid)]?.id,
+      }); */
+
+      props.socket.emit('user-send', {
+        userid: userInfo.id,
+        name: userInfo.name,
+        content: msg,
+        roomid: props.userId.id,
+      });
+    }
 
     const msgs = [...messages];
     // 메시지의 배열과 동일하도록 한 가지 작업을 수행
-    // msgs.push({ fromSelf: true, message: msg });
+    msgs.push({ id: userInfo.id, message: msg });
     // currentUser가 보낸 메시지를 메시지 배열에 푸시
     setMessages(msgs);
+    // console.log(msgs);
+
     // msgs로 설정
   };
+
+  // console.log(props.data?.data[Number(props.roomid)]?.id);
 
   useEffect(() => {
     if (props.socket.connect) {
       props.socket.on('user-send-emit', (msg: any) => {
-        console.log({ msg });
+        // console.log({ msg });
         setArrivalMessage({ content: msg });
         // 메시지를 수신하지 않았기에 false로 지정하고 메시지를 담아줌
       }); // 작성한 메시지를 수신
     }
   }, []);
 
-  /* useEffect(() => {
-    arrivalMessage && setMessages((prev: any) => [...prev, arrivalMessage]);
-  }, [arrivalMessage]); */ // arrivalMessage와 이전 메시지를 배열에 담아줌
-
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]); // 메시지에 변경사항이 있을 때마다 실행
+    arrivalMessage && setMessages((prev: any) => [...prev, arrivalMessage]);
+  }, [arrivalMessage]); // arrivalMessage와 이전 메시지를 배열에 담아줌
+
+  // useEffect(() => {
+  //   scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // }, [messages]); // 메시지에 변경사항이 있을 때마다 실행
 
   return (
     <Wrapper>
-      <div>
-        {messages?.map((message: any) => {
-          return (
-            <div ref={scrollRef} key={uuidv4()}>
-              <div className="userImg">
-                <img
-                  src={message.user.url}
-                  onError={e => {
-                    e.currentTarget.src = '/images/profileDefault.png';
-                  }}
-                />
-              </div>
-              <div
-                className={`message ${
-                  /* message.fromSelf ? */ 'sended' /* : 'recieved' */
-                }`}
-              >
-                <div className="content">
-                  <p>{message.message}</p>
+      {props.currentChat && (
+        <>
+          <div>
+            {messages?.map((message: any) => {
+              return (
+                <div
+                  ref={scrollRef}
+                  key={uuidv4()}
+                  className={`messageWrap ${
+                    message.userid === userInfo.id ? 'sended' : 'recieved'
+                  }`}
+                >
+                  <div className="userImg">
+                    {message.userid !== userInfo.id ? (
+                      <img
+                        src={props.clickUserId?.data[0]?.url}
+                        onError={e => {
+                          e.currentTarget.src = '/images/profileDefault.png';
+                        }}
+                      />
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                  <div
+                    className={`message ${
+                      message.userid === userInfo.id ? 'sended' : 'recieved'
+                    }`}
+                  >
+                    <div className="content">
+                      <p>{message.content}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <ChatInput handleSendMsg={handleSendMsg} />
+              );
+            })}
+          </div>
+          <ChatInput
+            handleSendMsg={handleSendMsg}
+            socket={props.socket}
+            data={props.data}
+          />
+        </>
+      )}
     </Wrapper>
   );
 };
@@ -93,21 +139,34 @@ export const ChatContainer = (props: any) => {
 const Wrapper = styled.div`
   max-width: 100%;
   width: 100%;
-  height: calc(100% - 65px);
   padding: 0 15px 15px;
+  overflow: hidden;
+  overflow-x: auto;
 
   > div {
-    height: calc(100% - 100px);
+    height: 530px;
+    max-height: 530px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    > div {
-      width: 90%;
-      /* width: 100%; */
-      /* height: 100%; */
+    > .messageWrap {
+      width: 100%;
       display: flex;
       align-items: center;
-
+      margin-bottom: 10px;
+      &.sended {
+        justify-content: flex-end;
+        .userImg {
+          display: none;
+        }
+      }
+      &.recieved {
+        justify-content: flex-start;
+      }
+      :first-of-type {
+        margin-top: 10px;
+      }
       .userImg {
         width: 35px;
         height: 35px;
@@ -124,15 +183,12 @@ const Wrapper = styled.div`
     }
     .message {
       width: auto;
-      /* height: 100%; */
-      /* display: flex; */
-      /* align-items: center; */
+      display: flex;
+      align-items: center;
       margin-left: 10px;
 
       .content {
-        max-width: 90%;
         width: auto;
-        /* overflow-wrap: break-word; */
         padding: 10px;
         font-size: ${FontSize.SMALL};
         border-radius: 1rem;
@@ -140,16 +196,19 @@ const Wrapper = styled.div`
       }
 
       &.sended {
-        justify-content: flex-end;
+        /* justify-content: flex-end; */
         .content {
           background-color: ${Colors.SUB1};
           color: ${Colors.BW};
         }
       }
       &.recieved {
-        justify-content: flex-start;
+        /* justify-content: flex-start; */
+        border-top-left-radius: 0;
+
         .content {
           background-color: ${Colors.B20};
+          color: ${Colors.B100};
         }
       }
     }

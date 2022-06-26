@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { NewButton } from 'components/commons/button/new/NewButton';
 import SupportCard from 'components/commons/card/support/SupportCard';
 import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';

@@ -16,6 +16,8 @@ import { ChatButton } from 'components/units/chat/button';
 export default function SupportDetailUI(props: ISupportDetailUIProps) {
   const userInfo = useRecoilValue(userState);
 
+  console.log(props.data?.url?.split(','));
+
   return (
     <S.Wrapper>
       <ChatButton userInfo={props.data?.user} />

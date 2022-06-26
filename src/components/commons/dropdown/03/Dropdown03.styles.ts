@@ -48,11 +48,18 @@ export const Option = styled.div`
     justify-content: space-evenly;
 
     li {
+      width: 100%;
       line-height: 30px;
+      text-align: center;
       color: ${Colors.B60};
       font-family: ${FontFamily.BOLD};
       font-size: ${FontSize.SMALL};
-
+      :first-of-type {
+        padding-left: 5px;
+      }
+      :last-of-type {
+        padding-right: 5px;
+      }
       :hover {
         color: ${Colors.MAIN};
         a {

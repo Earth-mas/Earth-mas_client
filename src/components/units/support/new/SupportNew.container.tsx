@@ -58,6 +58,7 @@ export default function SupportNew(props: ISupportNewProps) {
   const onClickSubmit = async (data: FormValues) => {
     const formData = {
       ...data,
+      url: urls,
     };
 
     if (

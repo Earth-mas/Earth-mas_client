@@ -4,7 +4,7 @@ import { LeftContainer, RightContainer, Wrapper } from './Chat.styles';
 import { SetStateAction, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userState } from 'recoil/user';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 // import Modal from 'components/commons/modal';
 // import ModalMenu from '../login/LoginContents';
 import { chat, host, userRoute } from 'utils/APIRoutes';
@@ -12,7 +12,7 @@ import io from 'socket.io-client';
 import { BeforeChat } from './BeforeChat';
 import axios from 'axios';
 import { chatUserState } from 'recoil/chatUser';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import store from 'storejs';
 
 export const Chat = () => {
@@ -21,15 +21,19 @@ export const Chat = () => {
   const accessToken = store.get('accessToken');
 
   // const { url, name } = userInfo;
-  // const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState([]);
 
   const [currentUser, setCurrentUser] = useState<any>(undefined);
   const [currentChat, setCurrentChat] = useState(undefined);
+  const [userId, setUserId] = useState<any>();
+  const [roomid, setRoomid] = useState('');
 
-  const chatUser = useRecoilValue(chatUserState);
+  // const chatUser = useRecoilValue(chatUserState);
+  const queryClient = useQueryClient();
+
   // const [isOpen, setIsOpen] = useState(true);
 
-  // const socketRef = useRef();
+  // const socketRef = useRef<any>();
   // const io = require("socket.io-client");
 
   // const handleClick = () => setIsOpen(prev => !prev);
@@ -37,58 +41,56 @@ export const Chat = () => {
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) {
       console.log('유저정보 없음');
+      navigate('/');
     } else {
       const functionSetCurrentUser = () => {
         setCurrentUser(userInfo);
       };
       functionSetCurrentUser();
     }
+
+    mutate();
   }, []);
 
-  const socket = io(`${host}/server/chat`, {
-    // transports: ['websocket'],
+  const socket = io(`${chat}`, {
+    transports: ['websocket'],
     upgrade: false,
   });
 
   useEffect(() => {
     if (currentUser) {
       socket.on('connect', () => {
-        console.log(socket.id);
+        // console.log(socket.id);
       });
       // socket.emit('user-send', currentUser.id);
       // 사용자가 로그인 할 때마다 사용자의 ID를 전달함
     }
+    setContacts(
+      userInfo.id !== data?.data[Number(roomid)].user1?.id
+        ? data?.data[Number(roomid)].user1
+        : data?.data[Number(roomid)].user2,
+    );
   }, [currentUser]);
-
-  // console.log(currentUser);
-  // console.log(currentUser.id);
 
   const handleChatChange = (chat: SetStateAction<undefined>) => {
     setCurrentChat(chat); // 대화 내용이 currentChat에 담김
+    // console.log(chat);
+    setUserId(chat);
   };
 
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     const fetchData = async () => {
-  //       const data = await axios.get(`${userRoute}/${currentUser._id}`);
-  //       setContacts(data.data); // 유저에 대한 값
-  //     };
-  //     fetchData();
-  //   } // 현재 사용자가 로드 된 후 호출할 것이기에 현재 사용자가 localStorage에서 가져와야하기 때문에
-  // }, [currentUser]); // currentUser를 설정할 때마다 실행; // api 호출식
-
-  const { data } = useMutation(
+  const { data, mutate } = useMutation(
     () => {
-      return axios.post(
-        `${chat}/findmychat`,
-
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      );
+      return axios.post(`${chat}/findmychat`, null, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
     },
     {
       onSuccess: res => {
         console.log(res);
-        // navigate(`/support/${res.data.id}`);
+        // window.location.reload();
+
+        // queryClient.invalidateQueries('detailList', { refetchInactive: true });
+        // navigate(`/chat`);
       },
       onError: err => {
         console.log(err);
@@ -97,9 +99,41 @@ export const Chat = () => {
     },
   );
 
+  const { data: clickUserId, mutate: createUserId } = useMutation(
+    () => {
+      return axios.post(
+        `${chat}/finduser`,
+        {
+          user:
+            userId?.user1.id === userInfo.id
+              ? userId?.user2.id
+              : userId?.user1.id,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
+    },
+    {
+      onSuccess: res => {
+        console.log(res);
+      },
+      onError: err => {
+        console.log(err);
+      },
+    },
+  );
+  // console.log('userInfo', userInfo.id);
+  // console.log(
+  //   userId?.user1.id === userInfo.id ? userId?.user2.id : userId?.user1.id,
+  // );
+  // console.log(clickUserId?.url);
+
+  /* console.log(
+    userInfo.id !== data?.data[Number(roomid.index)].user1?.id &&
+      data?.data[Number(roomid)].user1,
+  ); */
+
   return (
     <>
-      {/* <ChatButton /> */}
       <Wrapper>
         <LeftContainer>
           <div className="user">
@@ -115,38 +149,46 @@ export const Chat = () => {
           </div>
 
           <ChatList
-            socket={socket}
-            contacts={chatUser}
+            // socket={socketRef}
+            setUserId={setUserId}
+            contacts={contacts}
             changeChat={handleChatChange}
             currentUser={currentUser}
             data={data}
+            setRoomid={setRoomid}
+            // roomUser={roomUser}
+            createUserId={createUserId}
           />
         </LeftContainer>
 
         <RightContainer>
-          {/* {data === undefined ? (
+          {currentChat === undefined ? (
             <BeforeChat />
           ) : (
-            <> */}
-          <div className="user">
-            <div className="userImg">
-              <img
-                src="/images/profileDefault.png"
-                onError={e => {
-                  e.currentTarget.src = '/images/profileDefault.png';
-                }}
-              />
-            </div>
-            <p className="userName">너너너너</p>
-          </div>
+            <>
+              <div className="user">
+                <div className="userImg">
+                  <img
+                    src="/images/profileDefault.png"
+                    onError={e => {
+                      e.currentTarget.src = '/images/profileDefault.png';
+                    }}
+                  />
+                </div>
+                <p className="userName">너너너너</p>
+              </div>
 
-          <ChatContainer
-            currentChat={currentChat}
-            currentUser={currentUser}
-            socket={socket}
-          />
-          {/* </>
-          )} */}
+              <ChatContainer
+                currentChat={currentChat}
+                currentUser={currentUser}
+                clickUserId={clickUserId}
+                userId={userId}
+                socket={socket}
+                data={data}
+                roomid={roomid}
+              />
+            </>
+          )}
         </RightContainer>
       </Wrapper>
     </>

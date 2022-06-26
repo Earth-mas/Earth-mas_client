@@ -6,14 +6,33 @@ import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { ParticipationList } from './ParticipationList';
 import { IpaymentListElement } from './ParticipationList.types';
-
+import { useState } from 'react';
+let index = 0;
 export const ParticipationListContainer = () => {
   const { id } = useParams();
+  const [list, setList] = useState<any>({
+    items: [],
+  });
+
+  /* const viewMore = () => {
+    addList();
+  }; */
+
+  const addList = () => {
+    const items = [];
+    for (let i = 0; i < 10; i++) {
+      items.push({
+        idx: index * 10 + i,
+        name: `hello` + i,
+      });
+    }
+    setList({ items: [...list, ...items] });
+    index++;
+  };
 
   const { data: paymentList } = useQuery('Support', async () => {
     const { data } = await axios.post(`${supportRoute}/supported`, {
       id: id,
-      page: 1,
     });
     return data;
   });
@@ -29,7 +48,9 @@ export const ParticipationListContainer = () => {
         <ParticipationList key={uuidv4()} el={el} />
       ))}
 
-      <p className="more">더보기</p>
+      <p className="more" onClick={addList}>
+        더보기
+      </p>
     </S.ParticipationList>
   );
 };

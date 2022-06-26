@@ -1,6 +1,14 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import {
+  Fragment,
+  JSXElementConstructor,
+  ReactElement,
+  ReactFragment,
+  ReactPortal,
+  useEffect,
+  useState,
+} from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { chatUserState } from 'recoil/chatUser';
@@ -9,15 +17,22 @@ import { FontFamily, FontSize } from 'styles/FontStyles';
 import { chat } from 'utils/APIRoutes';
 import { v4 as uuidv4 } from 'uuid';
 import store from 'storejs';
+import { userState } from 'recoil/user';
+// import { userInfo } from 'os';
 
 export const ChatList = (props: {
   currentUser: any;
   changeChat: (arg0: any) => void;
-  socket: { on: (arg0: string, arg1: (data: any) => void) => void };
+  // socket: { on: (arg0: string, arg1: (data: any) => void) => void };
   contacts: any;
   data?: any;
+  roomUser?: any;
+  setRoomid: any;
+  setUserId: any;
+  createUserId: any;
 }) => {
   const accessToken = store.get('accessToken');
+  const userInfo = useRecoilValue(userState);
 
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
@@ -25,61 +40,135 @@ export const ChatList = (props: {
 
   // const chatUser = useRecoilValue(chatUserState);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (props.currentUser) {
       setCurrentUserImage(props.currentUser?.url);
       setCurrentUserName(props.currentUser?.name);
     }
-  }, [props.currentUser]); // 유저가 변경될 때마다 함수 실행
+  }, [props.currentUser]); */ // 유저가 변경될 때마다 함수 실행
 
   const changeCurrentChat = (index: any, contact: any) => {
     setCurrentSelected(index);
+    props.setRoomid(index);
     props.changeChat(contact);
+    props.createUserId();
+    // props.setUserId(contact);
+    // console.log(contact);
   }; // 채팅을 클릭할 때마다 채팅 유저 리스트를 변경하여 현재 선택된 설정으로 되게
 
   /* props.socket.on('user-send-emit', function (data) {
     console.log(data);
   }); */
 
-  console.log(props.data);
-
   // console.log('chatlist', props.contacts);
 
   return (
     <>
-      {currentUserImage && currentUserName && (
-        <ListContainer>
-          {props.data?.map((el: any, index: any) => (
-            // <ChatList el={el} />
-            <List
-              className={`contact ${
-                index === currentSelected ? 'selected' : ''
-              }`}
-              key={uuidv4()}
-              onClick={() => changeCurrentChat(index, el)}
-            >
-              <div className="user">
-                <div className="userImg">
-                  <img
-                    src={el?.url}
-                    onError={e => {
-                      e.currentTarget.src = '/images/profileDefault.png';
-                    }}
-                  />
+      {
+        /* currentUserImage && currentUserName && */ <ListContainer>
+          {
+            /* props.roomUser?.data?.map(
+            (
+              el: {
+                user1: {
+                  url: string | undefined;
+                  name: string;
+                };
+                currentMsg: string;
+              },
+              index: undefined,
+            ) => (
+              <List
+                className={`contact ${
+                  index === currentSelected ? 'selected' : ''
+                }`}
+                key={uuidv4()}
+                onClick={() => changeCurrentChat(index, el)}
+              >
+                <div className="user">
+                  <div className="userImg">
+                    <img
+                      src={el?.user1?.url}
+                      onError={e => {
+                        e.currentTarget.src = '/images/profileDefault.png';
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="userInfo">
-                <div className="name-date">
-                  <p className="userName">{el?.name}</p>
-                  <p className="date">{el?.createdAt}</p>
+                <div className="userInfo">
+                  <div className="name-date">
+                    <p className="userName">{el?.user1?.name}</p>
+                    {/* <p className="date">{el?.user1?.createdAt}</p> 
+                  </div>
+                  <p>{el?.currentMsg}</p>
                 </div>
-                <p>{el?.currentMsg}</p>
-              </div>
-            </List>
-          ))}
+              </List>
+            ),
+          ) || */
+            props.data?.data?.map((el: any, index: any) => (
+              // <ChatList el={el} />
+              <Fragment key={uuidv4()}>
+                {el.user1?.id === userInfo.id ? (
+                  <List
+                    className={`contact ${
+                      index === currentSelected ? 'selected' : ''
+                    }`}
+                    onClick={() => changeCurrentChat(index, el)}
+                    id={index}
+                  >
+                    <div className="user">
+                      <div className="userImg">
+                        <img
+                          src={el?.user2?.url}
+                          onError={e => {
+                            e.currentTarget.src = '/images/profileDefault.png';
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="userInfo">
+                      <div className="name-date">
+                        <p className="userName">{el?.user2?.name}</p>
+                        <p className="date">{el?.user2?.createdAt}</p>
+                      </div>
+                      <p>{el?.currentMsg}</p>
+                    </div>
+                  </List>
+                ) : (
+                  <List
+                    className={`contact ${
+                      index === currentSelected ? 'selected' : ''
+                    }`}
+                    onClick={() => changeCurrentChat(index, el)}
+                    id={index}
+                  >
+                    <div className="user">
+                      <div className="userImg">
+                        <img
+                          src={el?.user1?.url}
+                          onError={e => {
+                            e.currentTarget.src = '/images/profileDefault.png';
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="userInfo">
+                      <div className="name-date">
+                        <p className="userName">{el?.user1?.name}</p>
+                        <p className="date">{el?.user1?.createdAt}</p>
+                      </div>
+                      <p>{el?.currentMsg}</p>
+                    </div>
+                  </List>
+                )}
+              </Fragment>
+            ))
+          }
         </ListContainer>
-      )}
+      }
     </>
   );
 };
@@ -111,6 +200,9 @@ const List = styled.div`
   display: flex;
   align-items: center;
   :hover {
+    background-color: rgba(0, 160, 91, 0.1);
+  }
+  .selected {
     background-color: rgba(0, 160, 91, 0.1);
   }
 
