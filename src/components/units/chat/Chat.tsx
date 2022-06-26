@@ -59,9 +59,9 @@ export const Chat = () => {
 
   useEffect(() => {
     if (currentUser) {
-      socket.on('connect', () => {
+      /* socket.on('connect', () => {
         // console.log(socket.id);
-      });
+      }); */
       // socket.emit('user-send', currentUser.id);
       // 사용자가 로그인 할 때마다 사용자의 ID를 전달함
     }
@@ -132,6 +132,9 @@ export const Chat = () => {
       data?.data[Number(roomid)].user1,
   ); */
 
+  console.log(clickUserId);
+  console.log(clickUserId?.data[0]?.url);
+
   return (
     <>
       <Wrapper>
@@ -169,13 +172,14 @@ export const Chat = () => {
               <div className="user">
                 <div className="userImg">
                   <img
-                    src="/images/profileDefault.png"
+                    // src="/images/profileDefault.png"
+                    src={clickUserId?.data[0]?.url}
                     onError={e => {
                       e.currentTarget.src = '/images/profileDefault.png';
                     }}
                   />
                 </div>
-                <p className="userName">너너너너</p>
+                <p className="userName">{clickUserId?.data[0]?.name}</p>
               </div>
 
               <ChatContainer
