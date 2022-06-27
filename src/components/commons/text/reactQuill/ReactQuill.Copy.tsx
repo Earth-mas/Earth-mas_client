@@ -1,11 +1,10 @@
-import ReactQuill, { Quill } from 'react-quill';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { PLACEHOLDER } from './ReactQuill.data';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import axios from 'axios';
-import quill from 'quill';
 interface IQuillEditorProps {
   page: number;
   onChange?: any;
@@ -16,29 +15,20 @@ interface IQuillEditorProps {
 }
 
 export default function QuillEditorCopy(props: IQuillEditorProps) {
-  const quillRef = useRef(null);
-
-  // 사용하고 싶은 옵션, 나열 되었으면 하는 순서대로 나열
-  const toolbarOptions = [
-    [{ header: [1, 2, 3, false] }],
-    ['link', 'image'],
-    ['bold', 'italic', 'underline', 'strike'],
-    ['blockquote'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-  ];
+  const QuillRef = useRef<ReactQuill>();
 
   const handleImage = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.setAttribute('accept', 'image/*');
     input.click();
+
     input.onchange = async () => {
       const file = input.files?.[0];
-      // const range = quill.getSelection(true);
 
       if (!file) return;
+
+      const range = QuillRef.current?.getEditor().getSelection()?.index;
       const formData = new FormData();
       formData.append('files', file);
       await axios
@@ -47,7 +37,14 @@ export default function QuillEditorCopy(props: IQuillEditorProps) {
           const url = `https://storage.googleapis.com/${res.data[0]}`;
           console.log(url);
 
-          // quill.insertEmbed(2, 'image', url);
+          if (range !== null && range !== undefined) {
+            const quill = QuillRef.current?.getEditor();
+            quill?.setSelection(range, 1);
+            quill?.clipboard.dangerouslyPasteHTML(
+              range,
+              `<img src=${url} alt="이미지 태그가 삽입됩니다." />`,
+            );
+          }
         })
         .catch(error => {
           console.log(error);
@@ -55,25 +52,29 @@ export default function QuillEditorCopy(props: IQuillEditorProps) {
     };
   };
 
-  // const quill = new Quill('#editor', {
-  //   modules: {
-  //     toolbar: {
-  //       container: toolbarOptions,
-  //       handlers: { image: handleImage },
-  //     },
-  //   },
-  // });
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, false] }],
+          ['link', 'image'],
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }],
+        ],
 
-  const modules = {
-    toolbar: {
-      container: toolbarOptions,
-      handlers: {
-        image: handleImage,
+        handlers: {
+          image: handleImage,
+        },
       },
-    },
-  };
+    }),
+    [],
+  );
+
   useEffect(() => {
-    console.log(quillRef.current);
+    // console.log(quillRef.current);
   }, []);
   return (
     <QuillWrap>
@@ -83,8 +84,11 @@ export default function QuillEditorCopy(props: IQuillEditorProps) {
         placeholder={PLACEHOLDER[props.page]}
         onChange={props.onChange}
         {...props.resgister}
-        ref={quillRef}
-        //  formats={formats}
+        ref={element => {
+          if (element !== null) {
+            QuillRef.current = element;
+          }
+        }}
         value={props.value}
       />
     </QuillWrap>

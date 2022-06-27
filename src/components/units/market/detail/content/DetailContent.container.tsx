@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Dompurify from 'dompurify';
 
 interface IDetailContentProps {
   description?: string;
@@ -6,18 +7,17 @@ interface IDetailContentProps {
 export default function DetailContent(props: IDetailContentProps) {
   return (
     <Wrap>
-      <div>
+      {props.description && (
         <div
-          dangerouslySetInnerHTML={{ __html: String(props.description) }}
+          dangerouslySetInnerHTML={{
+            __html: Dompurify.sanitize(props.description),
+          }}
         ></div>
-      </div>
+      )}
     </Wrap>
   );
 }
 
 const Wrap = styled.div`
-  /* background-color: beige; */
-  > div {
-    padding: 40px 20px;
-  }
+  padding: 40px 80px;
 `;
