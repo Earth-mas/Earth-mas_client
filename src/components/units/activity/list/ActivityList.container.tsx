@@ -8,7 +8,7 @@ import Title03 from 'components/commons/text/title/Title03';
 
 export interface IPropsActivityList {
   activitycategory: Activitycategory;
-  activityJoin: Activityjoin;
+  activityjoin: Activityjoin;
   map: any;
   createAt: string;
   dday: string;

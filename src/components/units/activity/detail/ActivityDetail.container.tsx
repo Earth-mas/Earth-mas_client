@@ -15,7 +15,7 @@ import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
 export interface ActivityDetail {
-  activityjoin: Activityjoin;
+  activityjoin: Activityjoin[];
   activitycategory: Activitycategory;
   createAt: string;
   dday: string;
@@ -23,7 +23,7 @@ export interface ActivityDetail {
   description: string;
   id: string;
   location: string;
-  maxpeople: number;
+  maxpeople: number | null;
   people: number;
   subdescription: string;
   title: string;
@@ -53,7 +53,7 @@ interface User {
   delete?: string | null;
   email: string;
   id: string;
-  name: string;
+  name: string | undefined;
   password: string;
   phone: string;
   role: string;
@@ -92,7 +92,14 @@ export default function ActivityDetail() {
         .get(`https://earth-mas.shop/server/activity/${params.id}`)
         .then(res => {
           setActivityData(res.data);
-          console.log(res.data);
+          console.log(res.data.activityjoin[0].user.name);
+          // console.log(
+          //   'userUrl: ',
+          //   String(activityData?.activityjoin?.user?.url),
+          // );
+          // console.log('name: ', activityData?.activityjoin?.user?.name);
+          // console.log('maxPeople: ', Number(activityData?.maxpeople));
+          // console.log('category: ', activityData?.activitycategory.category);
         })
         .catch(error => {
           console.log(error);
@@ -101,18 +108,20 @@ export default function ActivityDetail() {
     getActivityData();
   }, []);
 
-  const onClickSubmit = () => {
+  const onClickJoin = () => {
     setISModalOpen(true);
     // navigate('/chat');
   };
 
   const onClickJoinChat = () => {
-    navigate('/chat');
+    navigate('/chat/groupChat');
   };
 
   const onClickCancelModal = () => {
     setISModalOpen(false);
   };
+
+  // db엔 등록된 정보들이 get해올 땐 undefined 또는 null 값으로 가져온다.
 
   return (
     <>
@@ -139,12 +148,16 @@ export default function ActivityDetail() {
           <div className="postInfoBox">
             <div className="userInfo">
               <img
-                src={activityData?.activityjoin?.user?.url}
+                src={activityData?.activityjoin[0].user?.url}
                 onError={event =>
-                  (event.currentTarget.src = '/images/avatar.svg')
+                  (event.currentTarget.src = '/images/logo-icon.png')
                 }
               />
-              <span>{activityData?.activityjoin?.user?.name}</span>
+              <span>
+                {activityData?.activityjoin[0].user?.name
+                  ? activityData.activityjoin[0].user?.name
+                  : '에러지롱!'}
+              </span>
             </div>
             <section className="detailInfo">
               <li>
@@ -157,7 +170,12 @@ export default function ActivityDetail() {
                 <text>지역</text>
                 <li>{activityData?.location}</li>
                 <text>모집인원</text>
-                <li>{activityData?.maxpeople}명</li>
+                <li>
+                  {Number(activityData?.maxpeople)
+                    ? activityData?.maxpeople
+                    : '나오겠냐?'}
+                  명
+                </li>
               </ul>
             </section>
             <section className="icon2">
@@ -181,7 +199,7 @@ export default function ActivityDetail() {
             content={'참여하기'}
             color={'main'}
             type="submit"
-            onClick={onClickSubmit}
+            onClick={onClickJoin}
           />
         </div>
         <Blank height={100} />

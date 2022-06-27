@@ -89,8 +89,9 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
           />
 
           <Input01
+            register={props.register('maxpeople')}
             type="number"
-            id="maxpeople"
+            name="maxpeople"
             placeholder="모집 인원"
             pattern="[0-9]+"
             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$0');"

@@ -15,7 +15,7 @@ export interface FormValues {
   location?: string;
   subdescription?: string;
   description?: string;
-  url?: string;
+  // url?: string;
   category?: string;
 }
 
@@ -44,24 +44,27 @@ export default function ActivityNew() {
   };
 
   const onClickSubmit = async (data: FormValues) => {
-    console.log('등록할 데이터: ', data);
-    if (
-      !data.title ||
-      !data.category ||
-      !data.dday ||
-      !data.location ||
-      !data.maxpeople ||
-      !data.subdescription ||
-      !data.url
-    ) {
-      alert('내용을 입력해주세요');
-      return;
-    }
+    console.log('form 데이터: ', data);
+    // if (
+    //   !data.title ||
+    //   !data.category ||
+    //   !data.dday ||
+    //   !data.location ||
+    //   !data.maxpeople ||
+    //   !data.subdescription ||
+    //   !data.url
+    // ) {
+    //   alert('내용을 입력해주세요');
+    //   return;
+    // }
     const variables = {
       ...data,
+      maxpeople: Number(data.maxpeople),
       category: isSelected,
       url: urlsToString,
     };
+
+    console.log('variables: ', variables);
     try {
       const regisData = await axios.post(activityRoute, variables, {
         headers: {

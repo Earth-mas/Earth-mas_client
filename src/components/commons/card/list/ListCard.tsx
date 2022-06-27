@@ -28,14 +28,18 @@ export default function ListCard(props: IPropsActivityCardList) {
           <UserInfoBox>
             <div className="userImg">
               <img
-                src={props.el?.activityJoin?.user?.url}
+                src={String(props.el?.activityjoin?.user?.url)}
                 onError={e => {
                   e.currentTarget.src = '/images/avatar.svg';
                 }}
               />
             </div>
-            <span>{props.el?.activityJoin?.user?.name}</span>
-            <span>{GetDate(props.el.createAt)}</span>
+            <span>
+              {props.el?.activityjoin?.user?.name
+                ? props.el?.activityjoin?.user?.name
+                : '에러지롱!'}
+            </span>
+            <text>{GetDate(props.el.createAt)}</text>
           </UserInfoBox>
         </div>
       </Link>
