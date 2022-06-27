@@ -33,12 +33,10 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
       >
         <div className="input-wrap">
           <h1>별점 평가</h1>
-          {/* <input
-            type="number"
-            defaultValue={props.reviewData?.score ? props.reviewData?.score : 0}
-            {...props.register('score')}
-          /> */}
-          <RatingStars register={props.register} />
+          <RatingStars
+            register={props.register}
+            score={props.reviewData?.score ? props.reviewData?.score : 0}
+          />
         </div>
         <div className="input-wrap">
           <h1>사진 첨부</h1>

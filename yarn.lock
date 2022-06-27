@@ -1601,11 +1601,6 @@
   resolved "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@looop/quill-image-resize-module-react@^3.1.5":
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/@looop/quill-image-resize-module-react/-/quill-image-resize-module-react-3.1.5.tgz#1b46e9f29ada229e50b2339e9ea96d6b7104bdea"
-  integrity sha512-Rr8R8ScVoKYFzSKMG92sWv91AFggOq0qovrToRoVJFMVxHavltLdrpUIzsEXxsRkECI7EY+SSyiXFIu2Cj5W1Q==
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
