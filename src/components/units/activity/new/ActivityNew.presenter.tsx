@@ -6,8 +6,8 @@ import Dropdown01 from 'components/commons/dropdown/01/Dropdown01';
 import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
-import Upload01 from 'components/commons/upload/01/Upload01';
-import { Dispatch, SetStateAction, SyntheticEvent } from 'react';
+import Upload01Copy from 'components/commons/upload/01/Upload01.copy';
+import { Dispatch } from 'react';
 import { Controller } from 'react-hook-form';
 import {
   Control,
@@ -20,24 +20,34 @@ import { ActivityDetail } from '../detail/ActivityDetail.container';
 import { FormValues } from './ActivityNew.container';
 
 interface IActivityNewUIProps {
-  newData?: ActivityDetail;
-  handleChangeQuill: any;
+  editData?: ActivityDetail | undefined;
   isSelected: string;
-  control: Control<FieldValues, any>;
-  urls: string[];
-  contents: any;
-  setUrls: Dispatch<SetStateAction<string[]>>;
+  isEdit?: boolean;
+  control: Control<FieldValues, unknown>;
+  contents?: string;
+  urlString: string;
+  handleChangeQuill: (value: string) => void;
+  setUrlString: Dispatch<React.SetStateAction<string>>;
   setIsSelected: Dispatch<React.SetStateAction<string>>;
   handleSubmit: UseFormHandleSubmit<FormValues>;
   onClickSubmit: SubmitHandler<FormValues>;
+  onClickUpdate: SubmitHandler<FormValues>;
   register: UseFormRegister<FormValues>;
 }
 
 export default function ActivityNewUI(props: IActivityNewUIProps) {
   return (
     <Wrap>
-      <Title01 content="액티비티 등록" margin={35} size="C" />
-      <form onSubmit={props.handleSubmit(props.onClickSubmit)}>
+      <Title01
+        content={props.isEdit ? '액티비티 수정' : '액티비티 등록'}
+        margin={35}
+        size="C"
+      />
+      <form
+        onSubmit={props.handleSubmit(
+          props.isEdit ? props.onClickUpdate : props.onClickSubmit,
+        )}
+      >
         <Input01
           id="title"
           type="text"
@@ -45,32 +55,28 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
           margin={25}
           name="title"
           register={props.register('title')}
+          defaultValue={props.editData?.title ? props.editData?.title : ''}
         />
 
         <ColumnWrap>
           <Dropdown01
             page={1}
             isSelected={
-              props.newData?.activitycategory?.category ? props.isSelected : ''
+              props.isEdit
+                ? props.editData?.activitycategory?.category
+                : props.isSelected
             }
             setIsSelected={props.setIsSelected}
           />
-          {/* <DatePicker01
-            onChangeDate={props.onChangeDate}
-            date={props.date}
-            name={'dday'}
-          /> */}
-          {/* 달력 보여지는 위치 조정해주기 */}
           {/* 토, 일 색깔 적용하기 */}
           <Controller
             control={props.control}
             name="dday"
-            // onChange={props.onChangeDate}
             render={({ field: { onChange, value } }) => (
               <DatePicker02
                 selected={
-                  props.newData?.dday
-                    ? value || new Date(props.newData?.dday)
+                  props.editData?.dday
+                    ? value || new Date(props.editData?.dday)
                     : value
                 }
                 onChange={date => onChange(date)}
@@ -86,6 +92,9 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
             margin={25}
             name="location"
             register={props.register('location')}
+            defaultValue={
+              props.editData?.location ? props.editData.location : ''
+            }
           />
 
           <Input01
@@ -93,15 +102,11 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
             type="number"
             name="maxpeople"
             placeholder="모집 인원"
-            pattern="[0-9]+"
-            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$0');"
+            defaultValue={
+              props.editData?.maxpeople ? props.editData.maxpeople : ''
+            }
           />
-          {/* <div className="PlusMinus">
-              <MinusIcon style={{ cursor: 'pointer' }} onClick={onClickMinus} />
-              {count}
-              <PlusIcon style={{ cursor: 'pointer' }} onClick={onClickPlus} />
-            </div> */}
-          {/* </div> */}
+
           {/* nightmare로 + - 증감 인원 input창에 적용시켜보기 */}
         </ColumnWrap>
 
@@ -111,20 +116,28 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
           margin={25}
           name="subdescription"
           register={props.register('subdescription')}
+          defaultValue={
+            props.editData?.subdescription ? props.editData.subdescription : ''
+          }
         />
 
-        <Upload01 page="activity" urls={props.urls} setUrls={props.setUrls} />
+        <Upload01Copy
+          page={'support'}
+          urlString={props.urlString}
+          setUrlString={props.setUrlString}
+          fetchData={props.editData?.url?.split(',')}
+        />
         <Blank height={25} />
         <QuillEditor
           page={1}
           name="description"
           onChange={props.handleChangeQuill}
-          value={props.contents || props.newData?.description || ''}
+          value={props.contents || props.editData?.description || ''}
         />
         <Blank height={60} />
         <div className="buttonWrap">
           <ContainedButton01
-            content="액티비티 등록"
+            content={props.isEdit ? '액티비티 수정' : '액티비티 등록'}
             color="main"
             type="submit"
           />

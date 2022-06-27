@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 export default function ActivityEditPage() {
-  const [, setEditData] = useState();
+  const [editData, setEditData] = useState();
   const params = useParams();
 
   const getEditDetailData = async () => {
@@ -12,6 +12,7 @@ export default function ActivityEditPage() {
       .get(`https://earth-mas.shop/server/activity/${params.id}`)
       .then(res => {
         setEditData(res.data);
+        console.log('수정할 데이터: ', res.data);
       })
       .catch(error => {
         console.log(error);
@@ -22,10 +23,5 @@ export default function ActivityEditPage() {
     getEditDetailData();
   }, []);
 
-  return (
-    <ActivityNew
-    // isEdit={true}
-    // editData={editData}
-    />
-  );
+  return <ActivityNew isEdit={true} editData={editData} />;
 }

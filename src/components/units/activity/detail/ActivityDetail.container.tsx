@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { CalenderIcon, FrameIcon } from 'assets/svgs';
+import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
+import { CalenderIcon } from 'assets/svgs';
 import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
@@ -13,13 +14,16 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+import { activityRoute } from 'utils/APIRoutes';
+import Modal from 'components/commons/modal';
+import AlertModal from 'components/commons/modal/alertModal/alertModal';
 
 export interface ActivityDetail {
   activityjoin: Activityjoin[];
   activitycategory: Activitycategory;
   createAt: string;
   dday: string;
-  deleteAt?: any;
+  deleteAt?: string;
   description: string;
   id: string;
   location: string;
@@ -35,7 +39,7 @@ export interface ActivityDetail {
 interface Activitycategory {
   category?: string;
   createAt?: string;
-  deleteAt?: any;
+  deleteAt?: string;
   id: string;
 }
 
@@ -67,25 +71,12 @@ interface IpropsMainImg {
 }
 
 export default function ActivityDetail() {
+  const navigate = useNavigate();
   const params = useParams();
   const [activityData, setActivityData] = useState<ActivityDetail>();
   const navigate = useNavigate();
   const [isModalOpen, setISModalOpen] = useState(false);
 
-  // useEffect(() => {
-  //   const result = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `https://earth-mas.shop/server/activity/${params.id}`,
-  //       );
-  //       console.log('response 값: ', response);
-  //       setActivityData(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   result();
-  // }, []);
   useEffect(() => {
     const getActivityData = async () => {
       await axios
@@ -106,6 +97,8 @@ export default function ActivityDetail() {
         });
     };
     getActivityData();
+    deleteActivityData();
+    // navigate(`/activity`);
   }, []);
 
   const onClickJoin = () => {
@@ -269,16 +262,16 @@ const PostBox = styled.div`
     margin-left: auto;
   }
 
-  UL {
+  .UL {
     & > text {
       color: ${Colors.B60};
       margin-right: 5px;
     }
-  }
-  LI {
-    display: inline;
-    font-size: ${FontSize.MEDIUM_C};
-    margin-right: 20px;
+    LI {
+      display: inline;
+      font-size: ${FontSize.MEDIUM_C};
+      margin-right: 20px;
+    }
   }
 
   .postContents {

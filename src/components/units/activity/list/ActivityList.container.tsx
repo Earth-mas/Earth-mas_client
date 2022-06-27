@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { User } from 'components/commons/card/list/ListCard.types';
-import Title03 from 'components/commons/text/title/Title03';
+import Title01 from 'components/commons/text/title/Title01';
+import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 
 export interface IPropsActivityList {
   activitycategory: Activitycategory;
@@ -12,23 +13,23 @@ export interface IPropsActivityList {
   map: any;
   createAt: string;
   dday: string;
-  deleteAt?: any;
+  deleteAt?: string;
   description: string;
   id: string;
   location: string;
-  maxpeople?: any;
+  maxpeople?: number;
   people: number;
   subdescription: string;
   title: string;
   updateAt: string;
   url: string;
-  nowCategory: string;
+  // nowCategory: string;
 }
 
 interface Activitycategory {
   category: string;
   createAt: string;
-  deleteAt?: any;
+  deleteAt?: string;
   id: string;
 }
 
@@ -46,9 +47,16 @@ export default function ActivityList(props: IPropsCategory) {
   const [activityListData, setActivityListData] =
     useState<IPropsActivityList>();
 
+  const [select, setSelect] = useState<boolean>(false);
+
   const getActivityListData = async () => {
     await axios
-      .post(`https://earth-mas.shop/server/activity/finddcs`, { page: 1 })
+      .post(
+        `https://earth-mas.shop/server/activity/${
+          select ? 'finddcs' : 'finddday'
+        }`,
+        { category: props.nowCategory, page: 1 },
+      )
       .then(res => {
         setActivityListData(res.data);
         console.log(res);
@@ -59,18 +67,22 @@ export default function ActivityList(props: IPropsCategory) {
   };
   useEffect(() => {
     getActivityListData();
-  }, []);
+  }, [props.nowCategory, select]);
 
   console.log('데이톼: ', activityListData);
 
   return (
     <Wrap>
       <section>
-        <Title03 content={props.nowCategory} margin={35} />
+        <header>
+          <Title01 content={props.nowCategory} margin={35} size={'T'} />
+          <Dropdown02 page={1} setSelect={setSelect} />
+        </header>
         <CardWrap>
-          {activityListData?.map((el: IPropsActivityList) => (
-            <ListCard key={uuidv4()} el={el} />
-          ))}
+          {activityListData &&
+            activityListData?.map((el: IPropsActivityList) => (
+              <ListCard key={uuidv4()} el={el} />
+            ))}
         </CardWrap>
       </section>
     </Wrap>
@@ -80,6 +92,10 @@ export default function ActivityList(props: IPropsCategory) {
 const Wrap = styled.div`
   max-width: 1024px;
   width: 100%;
+  header {
+    display: flex;
+    justify-content: space-between;
+  }
 `;
 
 const CardWrap = styled.div`
