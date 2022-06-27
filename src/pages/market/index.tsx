@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { NewButton } from 'components/commons/button/new/NewButton';
 import Slide from 'components/commons/slide';
 import MarketList from 'components/units/market/list/MarketList.container';
 import banner1 from '../../assets/images/market/banner/banner1.jpeg';
@@ -10,6 +11,7 @@ export default function MarketPage() {
     <Wrap>
       <Slide slide="main" banner={[banner1, banner2, banner3]} />
       <main className="main-contents">
+        <NewButton />
         <MarketList />
       </main>
     </Wrap>

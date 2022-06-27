@@ -44,8 +44,9 @@ export const ChatList = (props: any) => {
     props.createUserId();
 
     props.socket.emit('connection', {
-      roomid: props.roomid,
+      roomid: props.roomid?.id,
     });
+    console.log(props.roomid);
 
     // props.setUserId(contact);
     // console.log(contact);

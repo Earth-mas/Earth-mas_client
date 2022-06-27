@@ -32,7 +32,7 @@ export default function UpdateImage(props: IProps) {
         setNewUrl(url);
         axios
           .put(
-            `https://earth-mas.shop/server/user/${props.id}`,
+            `https://earth-mas.shop/server/user`,
             {
               url,
             },
@@ -55,7 +55,7 @@ export default function UpdateImage(props: IProps) {
     }
     axios
       .put(
-        `http://34.64.224.198:3000/server/user/${props.id}`,
+        `http://34.64.224.198:3000/server/user/`,
         {
           url: null,
         },

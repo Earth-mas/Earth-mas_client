@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { chatUserState } from 'recoil/chatUser';
@@ -12,6 +12,7 @@ export const ChatButton = (props: { userInfo?: any }) => {
 
   const navigate = useNavigate();
   const setChatUser = useSetRecoilState(chatUserState);
+  const queryClient = useQueryClient();
 
   const socket = io(`${host}/server/chat`, {
     // transports: ['websocket'],
@@ -31,6 +32,7 @@ export const ChatButton = (props: { userInfo?: any }) => {
     {
       onSuccess: res => {
         console.log(res);
+        queryClient.invalidateQueries('findmychat', { refetchInactive: true });
       },
       onError: err => {
         console.log(err);
@@ -41,13 +43,15 @@ export const ChatButton = (props: { userInfo?: any }) => {
   const joinChatRoom = () => {
     // setChatUser(props.userInfo);
     mutate();
+
     socket.emit('connection', {
       roomid: data?.data?.id,
     });
-    socket.on('connection', function (data: any) {
+
+    /* socket.on('connection', function (data: any) {
       console.log(data);
       console.log('채팅방입장');
-    });
+    }); */
 
     /* socket.on('connect', () => {
       console.log(socket.id);

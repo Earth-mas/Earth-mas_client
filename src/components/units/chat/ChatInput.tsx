@@ -1,15 +1,12 @@
 import styled from '@emotion/styled';
-import { useState, useRef, FormEvent } from 'react';
+import { useState, useRef } from 'react';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
-export const ChatInput = (/* handleSendMsg: any */ props: any) => {
+export const ChatInput = (props: any) => {
   const [chatMsg, setChatMsg] = useState('');
 
   const inputRef = useRef<any>(null);
-  const onClearInput = () => {
-    inputRef.current.value = '';
-  };
 
   /* const handleEmojiClick = (event: any, emoji: { emoji: any }) => {
     let message = chatMsg;
@@ -19,14 +16,14 @@ export const ChatInput = (/* handleSendMsg: any */ props: any) => {
   // console.log(props.data?.data[0]?.user2?.name);
 
   const sendChat = (event: any) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && chatMsg.length > 0) {
       event.preventDefault();
-      if (chatMsg.length > 0) {
-        props.handleSendMsg(chatMsg); // container에서 socket에 발송
-        // onSignup()
-        onClearInput();
-        setChatMsg(''); // 문자 메세지를 발송하면 빈값으로 반환
-      }
+      // if (chatMsg.length > 0) {
+      props.handleSendMsg(chatMsg); // container에서 socket에 발송
+      // onSignup()
+      inputRef.current.value = '';
+      setChatMsg(''); // 문자 메세지를 발송하면 빈값으로 반환
+      // }
     }
   };
 

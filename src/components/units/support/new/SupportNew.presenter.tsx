@@ -8,6 +8,7 @@ import DatePicker02 from 'components/commons/datePicker/02';
 import { ISupportNewUIProps } from './SupportNew.types';
 import { Controller } from 'react-hook-form';
 import Upload01Copy from 'components/commons/upload/01/Upload01.copy';
+import QuillEditorCopy from 'components/commons/text/reactQuill/ReactQuill.Copy';
 
 export default function SupportNewUI(props: ISupportNewUIProps) {
   return (
@@ -69,7 +70,13 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
           fetchData={props.fetchData?.url.split(',')}
         />
         <Blank height={25} />
-        <QuillEditor
+        {/* <QuillEditor
+          name="description"
+          page={0}
+          onChange={props.handleChangeQuill}
+          value={props.contents || props.fetchData?.description || ''}
+        /> */}
+        <QuillEditorCopy
           name="description"
           page={0}
           onChange={props.handleChangeQuill}

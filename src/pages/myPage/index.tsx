@@ -8,7 +8,6 @@ import { useSearchParams } from 'react-router-dom';
 import { FontSize } from 'styles/FontStyles';
 import Line from 'components/commons/line';
 import Blank from 'components/commons/blank/Blank';
-import store from 'storejs';
 
 interface IMenu {
   name: string;
@@ -19,12 +18,6 @@ export default function MyPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const menuQuery = searchParams.getAll('menu');
   const [currentTab, setCurrentTab] = useState(Number(menuQuery));
-  const accessToken = store.get('accessToken');
-
-  if (!accessToken) {
-    alert('로그인을 해주세요.');
-    return <></>;
-  }
 
   const selectMenuHandler = (index: number) => {
     setCurrentTab(index);

@@ -14,7 +14,7 @@ export default function MarketNew(props: IMarketNewProps) {
   const accessToken = store.get('accessToken');
   const [urlString, setUrlString] = useState('');
   const [isSelected, setIsSelected] = useState('');
-  const params = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const { register, handleSubmit, setValue, trigger, getValues } =
@@ -29,7 +29,15 @@ export default function MarketNew(props: IMarketNewProps) {
   };
 
   const onClickSubmit = async (data: FormValues) => {
-    // console.log(data);
+    // if (
+    //   !data.title ||
+    //   !data.stock ||
+    //   !data.amount ||
+    //   !data.discount ||
+    //   !isSelected
+    // )
+    //   return alert('필수 항목을 입력해주세요');
+
     const variables = {
       title: data.title,
       minidescription: data.minidescription,
@@ -41,6 +49,7 @@ export default function MarketNew(props: IMarketNewProps) {
       category: isSelected,
     };
     console.log(variables);
+
     await axios
       .post(`https://earth-mas.shop/server/market/ `, variables, {
         headers: {
@@ -86,17 +95,13 @@ export default function MarketNew(props: IMarketNewProps) {
       updateVariables.minidescription = data.minidescription;
     if (data.description) updateVariables.description = data.description;
     if (urlString) updateVariables.url = urlString;
-    // console.log(updateVariables.url);
+    console.log(updateVariables.url);
     await axios
-      .put(
-        `https://earth-mas.shop/server/market/${params.id} `,
-        updateVariables,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+      .put(`https://earth-mas.shop/server/market/${id} `, updateVariables, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-      )
+      })
       .then(res => {
         console.log('응답', res);
         // console.log('상품 id', res.data?.id);
@@ -106,10 +111,6 @@ export default function MarketNew(props: IMarketNewProps) {
         console.log(error);
       });
   };
-
-  // useEffect(() => {
-  //   console.log(urlString);
-  // }, [urlString]);
 
   return (
     <MarketNewUI

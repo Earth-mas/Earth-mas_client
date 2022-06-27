@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import Input01 from 'components/commons/inputs/Input01';
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import store from 'storejs';
 
 export default function UpdatePassword() {

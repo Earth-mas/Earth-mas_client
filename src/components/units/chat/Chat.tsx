@@ -31,6 +31,11 @@ export const Chat = () => {
   // const chatUser = useRecoilValue(chatUserState);
   const queryClient = useQueryClient();
 
+  const socket = io(`${chat}`, {
+    transports: ['websocket'],
+    upgrade: false,
+  });
+
   // const [isOpen, setIsOpen] = useState(true);
 
   // const socketRef = useRef<any>();
@@ -47,24 +52,17 @@ export const Chat = () => {
         setCurrentUser(userInfo);
       };
       functionSetCurrentUser();
+
+      /* socket.on('connect', () => {
+        console.log(socket.id);
+        // 사용자가 로그인 할 때마다 사용자의 ID를 전달함
+      }); */
     }
 
     mutate();
   }, []);
 
-  const socket = io(`${chat}`, {
-    transports: ['websocket'],
-    upgrade: false,
-  });
-
   useEffect(() => {
-    if (currentUser) {
-      /* socket.on('connect', () => {
-        // console.log(socket.id);
-      }); */
-      // socket.emit('user-send', currentUser.id);
-      // 사용자가 로그인 할 때마다 사용자의 ID를 전달함
-    }
     setContacts(
       userInfo.id !== data?.data[Number(roomid)].user1?.id
         ? data?.data[Number(roomid)].user1
@@ -74,7 +72,6 @@ export const Chat = () => {
 
   const handleChatChange = (chat: SetStateAction<undefined>) => {
     setCurrentChat(chat); // 대화 내용이 currentChat에 담김
-    // console.log(chat);
     setUserId(chat);
   };
 
@@ -87,19 +84,16 @@ export const Chat = () => {
     {
       onSuccess: res => {
         console.log(res);
-        // window.location.reload();
-
-        // queryClient.invalidateQueries('detailList', { refetchInactive: true });
-        // navigate(`/chat`);
+        queryClient.invalidateQueries('finduser', { refetchInactive: true });
       },
       onError: err => {
         console.log(err);
-        // alert('필수 입력사항입니다');
       },
     },
   );
 
   const { data: clickUserId, mutate: createUserId } = useMutation(
+    ['userId', userId?.user2.id || userId?.user1.id],
     () => {
       return axios.post(
         `${chat}/finduser`,
@@ -115,6 +109,7 @@ export const Chat = () => {
     {
       onSuccess: res => {
         console.log(res);
+        queryClient.invalidateQueries('findmychat', { refetchInactive: true });
       },
       onError: err => {
         console.log(err);
@@ -132,8 +127,8 @@ export const Chat = () => {
       data?.data[Number(roomid)].user1,
   ); */
 
-  console.log(clickUserId);
-  console.log(clickUserId?.data[0]?.url);
+  // console.log(userId?.id);
+  /* console.log(clickUserId?.data[0]?.url); */
 
   return (
     <>
@@ -152,13 +147,13 @@ export const Chat = () => {
           </div>
 
           <ChatList
-            // socket={socketRef}
+            socket={socket}
             // setUserId={setUserId}
             // contacts={contacts}
             changeChat={handleChatChange}
             // currentUser={currentUser}
             data={data}
-            roomid={roomid}
+            roomid={userId}
             setRoomid={setRoomid}
             // roomUser={roomUser}
             createUserId={createUserId}

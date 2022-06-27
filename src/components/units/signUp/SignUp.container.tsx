@@ -10,6 +10,7 @@ import Blank from 'components/commons/blank/Blank';
 import PostCode from 'components/commons/daumpostcode';
 import { useNavigate } from 'react-router-dom';
 import store from 'storejs';
+import useInterval from 'hooks/useInterval';
 
 export interface IPostCodeData {
   zonecode: string;
@@ -39,6 +40,13 @@ export default function SignUp() {
   const [passwordErrMsg, setPasswordErrMsg] = useState<string | null>('');
   const [passwordErrMsg2, setPasswordErrMsg2] = useState<string | null>('');
   const [nameErrMsg, setNameErrMsg] = useState<string | null>('');
+
+  const [phoneToken, setPhoneToken] = useState('');
+  const [isTokenSend, setIsTokenSend] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(false);
+  const [time, setTime] = useState(180);
+  const min = Math.floor(time / 60);
+  const sec = time - min * 60;
 
   const navigate = useNavigate();
 
@@ -94,6 +102,21 @@ export default function SignUp() {
     });
   };
 
+  const onClickPhoneNumber = () => {
+    axios
+      .post('https://earth-mas.shop/server/user/phone', { phone: inputs.phone })
+      .then(() => {
+        setIsTokenSend(true);
+        setTime(180);
+      });
+  };
+
+  useInterval(() => {
+    if (time > 0 && isTokenSend) {
+      setTime(prev => prev - 1);
+    }
+  }, 1000);
+
   const onClickSignUp = (
     e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
   ) => {
@@ -102,7 +125,8 @@ export default function SignUp() {
       emailErrMsg !== null ||
       passwordErrMsg !== null ||
       passwordErrMsg2 !== null ||
-      nameErrMsg !== null
+      nameErrMsg !== null ||
+      !isTokenValid
     ) {
       alert('입력 정보를 다시 확인해주세요.');
       return;
@@ -119,18 +143,39 @@ export default function SignUp() {
       });
   };
 
+  const onChangeToken = (e: ChangeEvent<HTMLInputElement>) => {
+    setPhoneToken(e.target.value);
+  };
+
+  const onClickTokenCheck = () => {
+    axios
+      .post('https://earth-mas.shop/server/user/check', {
+        phone: inputs.phone,
+        token: phoneToken,
+      })
+      .then(res => {
+        if (!res.data) {
+          alert('인증번호가 일치하지 않습니다. 다시 전송해주세요.');
+          setTime(0);
+          setIsTokenSend(false);
+        }
+        setIsTokenValid(res.data);
+      });
+  };
+
   return (
     <SignUpWrapper>
       <h1>회원가입</h1>
+
       <div className="socialSignUp">
         <p>SNS계정으로 간편하게 가입하기</p>
         <section>
-          <button>
+          <a href="https://earth-mas.shop/server/auth/login/google">
             <GoogleIcon />
-          </button>
-          <button>
+          </a>
+          <a href="https://earth-mas.shop/server/auth/login/kakao">
             <KaKaoIcon />
-          </button>
+          </a>
         </section>
       </div>
       <form onSubmit={onClickSignUp}>
@@ -175,17 +220,31 @@ export default function SignUp() {
             id="phone"
             type="tel"
             onChange={onChangeInputs}
-            placeholder="010-0000-0000"
+            placeholder="숫자만 입력해주세요."
           />
           <button
             type="button"
             className="defaultButton"
             style={{ width: 250, marginLeft: 10 }}
+            onClick={isTokenSend ? onClickTokenCheck : onClickPhoneNumber}
           >
-            인증번호 발송
+            {isTokenSend ? (
+              <>
+                <p>인증번호 확인</p>
+                {min}:{sec}
+              </>
+            ) : (
+              '인증번호 발송'
+            )}
           </button>
         </InputWrapper>
-        <Input01 type="text" placeholder="인증번호를 입력해주세요." />
+        {isTokenSend && (
+          <Input01
+            type="text"
+            placeholder="인증번호를 입력 후 인증번호 확인 버튼을 눌러주세요."
+            onChange={onChangeToken}
+          />
+        )}
         <Label>주소</Label>
         <InputWrapper>
           <Input01
