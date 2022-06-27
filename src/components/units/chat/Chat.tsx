@@ -83,7 +83,7 @@ export const Chat = () => {
     },
     {
       onSuccess: res => {
-        console.log(res);
+        // console.log(res);
         queryClient.invalidateQueries('finduser', { refetchInactive: true });
       },
       onError: err => {
@@ -108,7 +108,7 @@ export const Chat = () => {
     },
     {
       onSuccess: res => {
-        console.log(res);
+        // console.log(res);
         queryClient.invalidateQueries('findmychat', { refetchInactive: true });
       },
       onError: err => {

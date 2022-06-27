@@ -28,7 +28,7 @@ export const ChatContainer = (props: any) => {
     },
     {
       onSuccess: res => {
-        console.log(res.data);
+        // console.log(res.data);
         setMessages(res.data);
 
         // queryClient.invalidateQueries('findroom', { refetchInactive: true });
