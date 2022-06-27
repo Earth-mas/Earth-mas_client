@@ -9,7 +9,7 @@ import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 
 export interface IPropsActivityList {
   activitycategory: Activitycategory;
-  activityJoin: Activityjoin;
+  activityjoin: Activityjoin;
   map: any;
   createAt: string;
   dday: string;

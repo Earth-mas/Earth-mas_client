@@ -98,8 +98,9 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
           />
 
           <Input01
+            register={props.register('maxpeople')}
             type="number"
-            id="maxpeople"
+            name="maxpeople"
             placeholder="모집 인원"
             defaultValue={
               props.editData?.maxpeople ? props.editData.maxpeople : ''
