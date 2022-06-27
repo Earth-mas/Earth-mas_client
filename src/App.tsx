@@ -11,8 +11,9 @@ import MyPage from 'pages/myPage';
 import SignUpPage from 'pages/signUp';
 
 import ActivityPage from 'pages/activity';
-import ActivityNew from 'components/units/activity/new/ActivityNew.container';
+import ActivityNewPage from 'pages/activity/new';
 import ActivityDetailPage from 'pages/activity/[activityId]';
+import ActivityEditPage from 'pages/activity/[activityId]/edit';
 
 import MarketPage from 'pages/market';
 import MarketNewPage from 'pages/market/new';
@@ -46,9 +47,14 @@ const App = () => {
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<HomePage />} />
+
                 <Route path="/activity" element={<ActivityPage />} />
-                <Route path="/activity/new" element={<ActivityNew />} />
+                <Route path="/activity/new" element={<ActivityNewPage />} />
                 <Route path="/activity/:id" element={<ActivityDetailPage />} />
+                <Route
+                  path="/activity/:id/edit"
+                  element={<ActivityEditPage />}
+                />
 
                 <Route path="/market" element={<MarketPage />} />
                 <Route path="/market/new" element={<MarketNewPage />} />

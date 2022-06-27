@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import Blank from 'components/commons/blank/Blank';
 import { NewButton } from 'components/commons/button/new/NewButton';
 import Category from 'components/commons/category/Category';
-import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 import Input02 from 'components/commons/inputs/Input02';
 import Slide from 'components/commons/slide';
 import ActivityList from 'components/units/activity/list/ActivityList.container';
