@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as S from './Dropdown05.styles';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 interface IDropdown05Props {
   // refetch: any;
@@ -46,20 +46,6 @@ export default function Dropdown05(props: IDropdown05Props) {
               )}
               <li onClick={props.toggleDeleteModal}>삭제</li>
             </ul>
-
-            {/* {props.page === 'marketreview' ? (
-              <ul>
-                <li onClick={props.toggleEditModal}>수정</li>
-                <li onClick={props.toggleDeleteModal}>삭제</li>
-              </ul>
-            ) : (
-              <ul>
-                <li>
-                  <Link to={`/${props.page}/${id}/edit`}>수정</Link>
-                </li>
-                <li onClick={props.toggleDeleteModal}>삭제</li>
-              </ul>
-            )} */}
           </S.Option>
         )}
       </S.Dropdown>

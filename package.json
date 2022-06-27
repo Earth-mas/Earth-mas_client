@@ -24,6 +24,7 @@
     "github-label-sync": "^2.2.0",
     "husky": "^8.0.1",
     "prettier": "^2.6.2",
+    "quill-image-resize-module-react": "^3.0.0",
     "react": "^18.1.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-datepicker": "^4.8.0",

@@ -153,8 +153,12 @@ export const Bottom = styled.div`
           margin: 10px 0 40px;
           display: flex;
           align-items: center;
-          input {
-            margin-right: 5px;
+          label {
+            display: flex;
+            align-items: center;
+            input {
+              margin-right: 5px;
+            }
           }
         }
 

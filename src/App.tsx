@@ -31,6 +31,7 @@ import ScrollToTop from 'commons/utils/scrolltotop';
 import { ChatPage } from 'pages/chat';
 import { AxiosInterceptor } from 'commons/utils/axiosInstance';
 import MarketPaymentPage from 'pages/market/[marketId]/payment';
+import PrivateRouteLayout from 'components/commons/privateRouter';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => {
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
+              {/* 모든권한 접근가능페이지 */}
               <Route element={<Layout />}>
                 <Route path="/" element={<HomePage />} />
 
@@ -57,27 +59,36 @@ const App = () => {
                 />
 
                 <Route path="/market" element={<MarketPage />} />
-                <Route path="/market/new" element={<MarketNewPage />} />
                 <Route path="/market/:id" element={<MarketDetailPage />} />
+
+                <Route path="/support" element={<SupportPage />} />
+                <Route path="/support/:id" element={<SupportDetailPage />} />
+
+                <Route path="/signup" element={<SignUpPage />} />
+                <Route path="*" element={<div>404</div>} />
+              </Route>
+
+              {/* 권한분기 필요한 페이지 */}
+              <Route element={<PrivateRouteLayout />}>
+                <Route path="/activity/new" element={<ActivityNew />} />
+
+                <Route path="/market/new" element={<MarketNewPage />} />
                 <Route path="/market/:id/edit" element={<MarketEditPage />} />
                 <Route
                   path="/market/:id/payment"
                   element={<MarketPaymentPage />}
                 />
 
-                <Route path="/support" element={<SupportPage />} />
                 <Route path="/support/new" element={<SupportNewPage />} />
-                <Route path="/support/:id" element={<SupportDetailPage />} />
                 <Route path="/support/:id/edit" element={<SupportEditPage />} />
                 <Route
                   path="/support/:id/payment"
                   element={<SupportPaymentPage />}
                 />
+
                 <Route path="/chat" element={<ChatPage />} />
 
                 <Route path="/mypage" element={<MyPage />} />
-                <Route path="/signup" element={<SignUpPage />} />
-                <Route path="*" element={<div>404</div>} />
               </Route>
             </Routes>
           </BrowserRouter>

@@ -40,6 +40,7 @@ interface IInput01Props {
   register?: any;
   defaultValue?: string | number | readonly string[] | undefined;
   maxLength?: number;
+  min?: number;
 }
 
 export default function Input01(props: IInput01Props) {
@@ -57,6 +58,7 @@ export default function Input01(props: IInput01Props) {
       margin={props.margin}
       name={props.name}
       defaultValue={props.defaultValue}
+      min={props.min}
     />
   );
 }

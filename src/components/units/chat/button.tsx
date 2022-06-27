@@ -18,24 +18,22 @@ export const ChatButton = (props: { userInfo?: any }) => {
     upgrade: false,
   });
 
-  // console.log(props.userInfo);
+  console.log(props.userInfo?.id);
 
   const { mutate } = useMutation(
     () => {
       return axios.post(
         `${chat}/findroom`,
-        { user: props.userInfo.id },
+        { user: props.userInfo?.id },
         { headers: { Authorization: `Bearer ${accessToken}` } },
       );
     },
     {
       onSuccess: res => {
         console.log(res);
-        // navigate(`/support/${res.data.id}`);
       },
       onError: err => {
         console.log(err);
-        // alert('필수 입력사항입니다');
       },
     },
   );
@@ -43,20 +41,12 @@ export const ChatButton = (props: { userInfo?: any }) => {
   const joinChatRoom = () => {
     // setChatUser(props.userInfo);
     mutate();
-    socket.emit('hello11', function (data: any) {
+    socket.emit('connection', {});
+    socket.on('connection', function (data: any) {
       console.log(data);
       console.log('채팅방입장');
     });
 
-    // function
-
-    socket.emit('user-load', props.userInfo?.id);
-
-    /* socket.emit('user-send', {
-      name: props.userInfo?.name,
-      content: 'dd',
-      roomid: props.userInfo?.id,
-    }); */
     /* socket.on('connect', () => {
       console.log(socket.id);
       console.log(socket.connected); // true
@@ -66,7 +56,7 @@ export const ChatButton = (props: { userInfo?: any }) => {
         console.log(data);
       });
     }); */
-    // navigate('/chat');
+    navigate('/chat');
   };
 
   return <button onClick={joinChatRoom}>채팅</button>;

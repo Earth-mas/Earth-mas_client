@@ -23,4 +23,8 @@ const LinkNew = styled(Link)`
   color: ${Colors.BW};
   font-family: ${FontFamily.BOLD};
   font-size: ${FontSize.LARGE_T};
+  :hover {
+    transition: all 0.2s linear;
+    font-size: 2.5rem;
+  }
 `;
