@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import { Colors } from 'styles/Colors';
@@ -18,68 +18,76 @@ export const ChatContainer = (props: any) => {
   const userInfo = useRecoilValue(userState);
   const accessToken = store.get('accessToken');
   const scrollRef = useRef<any>();
+  const queryClient = useQueryClient();
+
+  const { data, mutate } = useMutation(
+    () => {
+      return axios.post(`${chat}/getchat`, {
+        roomid: props.data?.data[Number(props.roomid)]?.id,
+      });
+    },
+    {
+      onSuccess: res => {
+        console.log(res.data);
+        setMessages(res.data);
+
+        // queryClient.invalidateQueries('findroom', { refetchInactive: true });
+      },
+      onError: err => {
+        console.log(err);
+      },
+    },
+  );
 
   useEffect(() => {
     if (props.currentChat) {
-      props.socket.emit('user-load', {
-        roomid: props.data?.data[Number(props.roomid)]?.id,
-      });
+      // props.socket.emit('user-load', {
+      // });
       props.socket.on('user-load-emit', (data: any) => {
         // console.log(data);
         setMessages(data);
       });
     }
+    mutate();
   }, [props.currentChat]);
 
-  // console.log(props.clickUserId);
-
-  // 보내는 메시지 api post
+  // 보내는 메시지
   const handleSendMsg = (msg: any) => {
-    /* props.socket.emit('send-user', {
-      to: props.currentChat._id,
-      from: props.currentUser._id,
-      message: msg,
-    }); */
     if (props.data?.data) {
-      /* props.socket.emit('', {
-        userid: userInfo.id,
-        name: userInfo.name,
-        content: msg,
-        roomid: props.data?.data[Number(props.roomid)]?.id,
-      }); */
-
       props.socket.emit('user-send', {
         userid: userInfo.id,
         name: userInfo.name,
         content: msg,
         roomid: props.data?.data[Number(props.roomid)]?.id,
       });
+      console.log(msg);
     }
 
     // const msgs = [...messages];
     // // 메시지의 배열과 동일하도록 한 가지 작업을 수행
     // msgs.push({ id: userInfo.id, message: msg });
     // // currentUser가 보낸 메시지를 메시지 배열에 푸시
-    // setMessages(msgs);
+    // setMessages(msg);
     // console.log('msgs', msgs);
     // console.log('messages', messages);
 
     // msgs로 설정
   };
 
+  /* useEffect(() => {
+    return () => {
+      props.socket.close();
+    };
+  }, []); */
   // console.log(props.data?.data[Number(props.roomid)]?.id);
 
   useEffect(() => {
-    if (props.socket.connect) {
-      props.socket.on('user-send-emit', (msg: any) => {
-        console.log({ msg });
-        setArrivalMessage(msg);
-        // 메시지를 수신하지 않았기에 false로 지정하고 메시지를 담아줌
-      }); // 작성한 메시지를 수신
-    }
-  }, []);
-
-  useEffect(() => {
+    props.socket.on('user-send-emit', (msg: any) => {
+      // console.log({ msg });
+      setArrivalMessage(msg);
+      // setMessages(msg);
+      // 메시지를 수신하지 않았기에 false로 지정하고 메시지를 담아줌
+    }); // 작성한 메시지를 수신
     arrivalMessage && setMessages((prev: any) => [...prev, arrivalMessage]);
     // window.location.reload();
   }, [arrivalMessage]); // arrivalMessage와 이전 메시지를 배열에 담아줌
@@ -87,7 +95,7 @@ export const ChatContainer = (props: any) => {
   useEffect(() => {
     // event?.stopImmediatePropagation();
     scrollRef.current?.scrollIntoView(/* { behavior: 'smooth' } */);
-  }, [messages]); // 메시지에 변경사항이 있을 때마다 실행
+  }, [messages, data]); // 메시지에 변경사항이 있을 때마다 실행
   // console.log(messages);
 
   return (
@@ -104,18 +112,6 @@ export const ChatContainer = (props: any) => {
                     message.userid === userInfo.id ? 'sended' : 'recieved'
                   }`}
                 >
-                  <div className="userImg">
-                    {message.userid !== userInfo.id ? (
-                      <img
-                        src={props.clickUserId?.data[0]?.url}
-                        onError={e => {
-                          e.currentTarget.src = '/images/profileDefault.png';
-                        }}
-                      />
-                    ) : (
-                      ''
-                    )}
-                  </div>
                   <div
                     className={`message ${
                       message.userid === userInfo.id ? 'sended' : 'recieved'
@@ -145,7 +141,6 @@ const Wrapper = styled.div`
   width: 100%;
   padding: 0 15px 15px;
   overflow: hidden;
-  overflow-x: auto;
 
   > div {
     height: 530px;
@@ -154,16 +149,18 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 10px;
+
     > .messageWrap {
       width: 100%;
       display: flex;
       align-items: center;
       margin-bottom: 10px;
+      :last-of-type {
+        margin-bottom: 0;
+      }
       &.sended {
         justify-content: flex-end;
-        .userImg {
-          display: none;
-        }
         .message {
           .content {
             background-color: ${Colors.SUB1};
@@ -188,7 +185,7 @@ const Wrapper = styled.div`
             color: ${Colors.B100};
           }
         }
-        :first-of-type {
+        &:first-of-type {
           .message {
             .content {
               border-top-left-radius: 0;
@@ -196,28 +193,12 @@ const Wrapper = styled.div`
           }
         }
       }
-      :first-of-type {
-        margin-top: 10px;
-        .userImg {
-          width: 35px;
-          height: 35px;
-          border-radius: 50%;
-          overflow: hidden;
-
-          img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-          }
-        }
-      }
     }
+
     .message {
       width: auto;
       display: flex;
       align-items: center;
-      margin-left: 10px;
 
       .content {
         width: auto;

@@ -3,13 +3,10 @@ import { useState, useRef } from 'react';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
-export const ChatInput = (/* handleSendMsg: any */ props: any) => {
+export const ChatInput = (props: any) => {
   const [chatMsg, setChatMsg] = useState('');
 
   const inputRef = useRef<any>(null);
-  const onClearInput = () => {
-    inputRef.current.value = '';
-  };
 
   /* const handleEmojiClick = (event: any, emoji: { emoji: any }) => {
     let message = chatMsg;
@@ -18,18 +15,26 @@ export const ChatInput = (/* handleSendMsg: any */ props: any) => {
   }; */ // 이모지삽입
   // console.log(props.data?.data[0]?.user2?.name);
 
-  const sendChat = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-
-    if (chatMsg.length > 0) {
+  const sendChat = (event: any) => {
+    if (event.key === 'Enter' && chatMsg.length > 0) {
+      event.preventDefault();
+      // if (chatMsg.length > 0) {
       props.handleSendMsg(chatMsg); // container에서 socket에 발송
-      onClearInput();
+      // onSignup()
+      inputRef.current.value = '';
       setChatMsg(''); // 문자 메세지를 발송하면 빈값으로 반환
+      // }
     }
   };
 
+  /* const onCheckEnter = e => {
+    if (e.key === 'Enter') {
+      // onSignup()
+    }
+  }; */
+
   return (
-    <Wrapper onSubmit={e => sendChat(e)}>
+    <Wrapper onSubmit={e => sendChat(e)} onKeyDown={sendChat}>
       <textarea
         name="chatInput"
         placeholder="메시지를 입력해주세요"
@@ -41,7 +46,7 @@ export const ChatInput = (/* handleSendMsg: any */ props: any) => {
         <p>
           <span>{chatMsg.length}</span>/500
         </p>
-        <button>전송</button>
+        <button type="submit">전송</button>
       </div>
     </Wrapper>
   );
