@@ -50,20 +50,20 @@ export default function MarketNew(props: IMarketNewProps) {
     };
     console.log(variables);
 
-    // await axios
-    //   .post(`https://earth-mas.shop/server/market/ `, variables, {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //   })
-    //   .then(res => {
-    //     console.log('응답', res);
-    //     // console.log('상품 id', res.data?.id);
-    //     navigate(`/market/${res.data?.id}`);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    await axios
+      .post(`https://earth-mas.shop/server/market/ `, variables, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then(res => {
+        console.log('응답', res);
+        // console.log('상품 id', res.data?.id);
+        navigate(`/market/${res.data?.id}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   const onClickUpdate = async (data: FormValues) => {
@@ -95,7 +95,7 @@ export default function MarketNew(props: IMarketNewProps) {
       updateVariables.minidescription = data.minidescription;
     if (data.description) updateVariables.description = data.description;
     if (urlString) updateVariables.url = urlString;
-    // console.log(updateVariables.url);
+    console.log(updateVariables.url);
     await axios
       .put(`https://earth-mas.shop/server/market/${id} `, updateVariables, {
         headers: {
