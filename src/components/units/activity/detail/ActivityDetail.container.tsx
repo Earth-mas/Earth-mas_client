@@ -5,10 +5,12 @@ import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
+import Modal from 'components/commons/modal';
+import AlertModal from 'components/commons/modal/alertModal/alertModal';
 import Slide from 'components/commons/slide';
 import DOMPurify from 'dompurify';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
@@ -67,6 +69,8 @@ interface IpropsMainImg {
 export default function ActivityDetail() {
   const params = useParams();
   const [activityData, setActivityData] = useState<ActivityDetail>();
+  const navigate = useNavigate();
+  const [isModalOpen, setISModalOpen] = useState(false);
 
   // useEffect(() => {
   //   const result = async () => {
@@ -98,66 +102,91 @@ export default function ActivityDetail() {
   }, []);
 
   const onClickSubmit = () => {
-    alert('채팅참여');
+    setISModalOpen(true);
+    // navigate('/chat');
+  };
+
+  const onClickJoinChat = () => {
+    navigate('/chat');
+  };
+
+  const onClickCancelModal = () => {
+    setISModalOpen(false);
   };
 
   return (
-    <Wrap>
-      <MainImg>
-        <Slide banner={activityData?.url?.split(',')} slide={'sub'} />
-      </MainImg>
-      <Blank height={50} />
-      <PostBox>
-        <p className="title">{activityData?.title}</p>
-        <Blank height={25} />
-        <div className="postInfoBox">
-          <div className="userInfo">
-            <img
-              src={activityData?.activityjoin?.user?.url}
-              onError={event =>
-                (event.currentTarget.src = '/images/avatar.svg')
-              }
-            />
-            <span>{activityData?.activityjoin?.user?.name}</span>
+    <>
+      {isModalOpen && (
+        <Modal>
+          <AlertModal
+            title="해당 작성자와 1:1 채팅 또는 단체 채팅으로 참여할 수 있습니다."
+            contents="참여하시겠습니까?"
+            okMessage="참여하기"
+            cancelMessage="취소"
+            onClickOk={onClickJoinChat}
+            onClickCancel={onClickCancelModal}
+          />
+        </Modal>
+      )}
+      <Wrap>
+        <MainImg>
+          <Slide banner={activityData?.url?.split(',')} slide={'sub'} />
+        </MainImg>
+        <Blank height={50} />
+        <PostBox>
+          <p className="title">{activityData?.title}</p>
+          <Blank height={25} />
+          <div className="postInfoBox">
+            <div className="userInfo">
+              <img
+                src={activityData?.activityjoin?.user?.url}
+                onError={event =>
+                  (event.currentTarget.src = '/images/avatar.svg')
+                }
+              />
+              <span>{activityData?.activityjoin?.user?.name}</span>
+            </div>
+            <section className="detailInfo">
+              <li>
+                <CalenderIcon className="icon" />
+                {GetDate(activityData?.createAt)}~{GetDate(activityData?.dday)}
+              </li>
+              <ul>
+                <text>카테고리</text>
+                <li>{activityData?.activitycategory?.category}</li>
+                <text>지역</text>
+                <li>{activityData?.location}</li>
+                <text>모집인원</text>
+                <li>{activityData?.maxpeople}명</li>
+              </ul>
+            </section>
+            <section className="icon2">
+              {/* <Dropdown03 page={'2'} /> */}
+            </section>
           </div>
-          <section className="detailInfo">
-            <li>
-              <CalenderIcon className="icon" />
-              {GetDate(activityData?.createAt)}~{GetDate(activityData?.dday)}
-            </li>
-            <ul>
-              <text>카테고리</text>
-              <li>{activityData?.activitycategory?.category}</li>
-              <text>지역</text>
-              <li>{activityData?.location}</li>
-              <text>모집인원</text>
-              <li>{activityData?.maxpeople}명</li>
-            </ul>
-          </section>
-          <section className="icon2">{/* <Dropdown03 page={'2'} /> */}</section>
-        </div>
-        <Blank height={25} />
-        <div className="postContents">
-          준비물 :{activityData?.subdescription}
-          <br />
-          본문 :
-          <div
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(String(activityData?.description)),
-            }}
+          <Blank height={25} />
+          <div className="postContents">
+            준비물 :{activityData?.subdescription}
+            <br />
+            본문 :
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(String(activityData?.description)),
+              }}
+            />
+          </div>
+        </PostBox>
+        <div className="button" style={{ margin: 'auto' }}>
+          <ContainedButton01
+            content={'참여하기'}
+            color={'main'}
+            type="submit"
+            onClick={onClickSubmit}
           />
         </div>
-      </PostBox>
-      <div className="button" style={{ margin: 'auto' }}>
-        <ContainedButton01
-          content={'참여하기'}
-          color={'main'}
-          type="submit"
-          onClick={onClickSubmit}
-        />
-      </div>
-      <Blank height={100} />
-    </Wrap>
+        <Blank height={100} />
+      </Wrap>
+    </>
   );
 }
 
