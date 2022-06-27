@@ -1,10 +1,12 @@
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
+import ImageResize from 'quill-image-resize-module-react';
 import 'react-quill/dist/quill.snow.css';
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { PLACEHOLDER } from './ReactQuill.data';
 import { useEffect, useMemo, useRef } from 'react';
 import axios from 'axios';
+
 interface IQuillEditorProps {
   page: number;
   onChange?: any;
@@ -15,6 +17,7 @@ interface IQuillEditorProps {
 }
 
 export default function QuillEditorCopy(props: IQuillEditorProps) {
+  Quill.register('modules/imageResize', ImageResize);
   const QuillRef = useRef<ReactQuill>();
 
   const handleImage = () => {
@@ -68,6 +71,9 @@ export default function QuillEditorCopy(props: IQuillEditorProps) {
         handlers: {
           image: handleImage,
         },
+      },
+      imageResize: {
+        parchment: Quill.import('parchment'),
       },
     }),
     [],
