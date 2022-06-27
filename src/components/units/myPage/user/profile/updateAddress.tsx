@@ -45,7 +45,7 @@ export default function UpdateAddress(props: IProps) {
       return alert('변경된 항목이 없습니다.');
     axios
       .put(
-        `https://earth-mas.shop/server/user/${props.id}`,
+        `https://earth-mas.shop/server/user`,
         {
           ...addressInput,
         },

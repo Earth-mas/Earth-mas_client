@@ -78,15 +78,7 @@ const LoginContents = ({ handleClose }: IProps) => {
       .catch(error => {
         // alert(error.response.data.message);
         console.log(error);
-        
       });
-  };
-
-  const onClickGoogle = () => {
-    axiosApiInstance
-      .post('auth/login/google')
-      .then(res => console.log(res.data))
-      .catch(error => console.log(error));
   };
 
   return (
@@ -120,12 +112,12 @@ const LoginContents = ({ handleClose }: IProps) => {
           <p>또는</p>
           <p>SNS계정으로 간편하게 로그인하기</p>
           <section>
-            <button onClick={onClickGoogle}>
+            <a href="https://earth-mas.shop/server/auth/login/google">
               <GoogleIcon />
-            </button>
-            <button>
+            </a>
+            <a href="https://earth-mas.shop/server/auth/login/kakao">
               <KaKaoIcon />
-            </button>
+            </a>
           </section>
         </div>
         <p className="signUp">

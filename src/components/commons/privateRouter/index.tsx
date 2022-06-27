@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import styled from '@emotion/styled';
 import store from 'storejs';
