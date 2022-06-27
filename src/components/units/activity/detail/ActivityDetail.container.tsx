@@ -1,23 +1,27 @@
 import styled from '@emotion/styled';
-import { CalenderIcon, FrameIcon } from 'assets/svgs';
+import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
+import { CalenderIcon } from 'assets/svgs';
 import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
+import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
 import Slide from 'components/commons/slide';
 import DOMPurify from 'dompurify';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { SyntheticEvent, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+import { activityRoute } from 'utils/APIRoutes';
+import Modal from 'components/commons/modal';
+import AlertModal from 'components/commons/modal/alertModal/alertModal';
 
 export interface ActivityDetail {
   activityjoin: Activityjoin;
   activitycategory: Activitycategory;
   createAt: string;
   dday: string;
-  deleteAt?: any;
+  deleteAt?: string;
   description: string;
   id: string;
   location: string;
@@ -33,7 +37,7 @@ export interface ActivityDetail {
 interface Activitycategory {
   category?: string;
   createAt?: string;
-  deleteAt?: any;
+  deleteAt?: string;
   id: string;
 }
 
@@ -65,99 +69,131 @@ interface IpropsMainImg {
 }
 
 export default function ActivityDetail() {
+  const navigate = useNavigate();
   const params = useParams();
   const [activityData, setActivityData] = useState<ActivityDetail>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // useEffect(() => {
-  //   const result = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `https://earth-mas.shop/server/activity/${params.id}`,
-  //       );
-  //       console.log('response 값: ', response);
-  //       setActivityData(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   result();
-  // }, []);
+  const onErrorImg = (e: SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = logo;
+  };
+
+  const getActivityData = async () => {
+    await axios
+      .get(`https://earth-mas.shop/server/activity/${params.id}`)
+      .then(res => {
+        setActivityData(res.data);
+        console.log('상세 데이터: ', res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const deleteActivityData = async () => {
+    await axios
+      .delete(`${activityRoute}/${activityData?.id}`)
+      .then(res => {
+        console.log('삭제할 데이터:', res);
+        // navigate(`/activity`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    // navigate(`/activity`);
+  };
+
   useEffect(() => {
-    const getActivityData = async () => {
-      await axios
-        .get(`https://earth-mas.shop/server/activity/${params.id}`)
-        .then(res => {
-          setActivityData(res.data);
-          console.log(res.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
     getActivityData();
+    deleteActivityData();
+    // navigate(`/activity`);
   }, []);
+
+  const cancelDeleteModal = () => {
+    setIsModalOpen(prev => !prev);
+  };
 
   const onClickSubmit = () => {
     alert('채팅참여');
   };
 
   return (
-    <Wrap>
-      <MainImg>
-        <Slide banner={activityData?.url?.split(',')} slide={'sub'} />
-      </MainImg>
-      <Blank height={50} />
-      <PostBox>
-        <p className="title">{activityData?.title}</p>
-        <Blank height={25} />
-        <div className="postInfoBox">
-          <div className="userInfo">
-            <img
-              src={activityData?.activityjoin?.user?.url}
-              onError={event =>
-                (event.currentTarget.src = '/images/avatar.svg')
-              }
-            />
-            <span>{activityData?.activityjoin?.user?.name}</span>
+    <>
+      {isModalOpen && (
+        <Modal>
+          <AlertModal
+            title={'삭제하시겠습니까?'}
+            contents={'해당 게시글의 모든 정보가 완전히 삭제됩니다.'}
+            okMessage={'삭제하겠습니다'}
+            cancelMessage={'취소하겠습니다'}
+            onClickOk={deleteActivityData}
+            onClickCancel={cancelDeleteModal}
+          />
+        </Modal>
+      )}
+      <Wrap>
+        <MainImg>
+          <Slide banner={activityData?.url?.split(',')} slide={'sub'} />
+        </MainImg>
+        <Blank height={50} />
+        <PostBox>
+          <p className="title">{activityData?.title}</p>
+          <Blank height={25} />
+          <div className="postInfoBox">
+            <div className="userInfo">
+              <img
+                src={activityData?.activityjoin?.user?.url}
+                onError={onErrorImg}
+                // {event =>
+                //   (event.currentTarget.src = '/images/avatar.svg')
+                // }
+              />
+              <span>{activityData?.activityjoin?.user?.name}</span>
+            </div>
+            <section className="detailInfo">
+              <span>
+                <CalenderIcon className="icon" />
+                {GetDate(activityData?.createAt)}~{GetDate(activityData?.dday)}
+              </span>
+              <ul className="UL">
+                <text>카테고리</text>
+                <li>{activityData?.activitycategory?.category}</li>
+                <text>지역</text>
+                <li>{activityData?.location}</li>
+                <text>모집인원</text>
+                <li>{activityData?.maxpeople}명</li>
+              </ul>
+            </section>
+            <section className="icon2">
+              <Dropdown05
+                page="activity"
+                toggleDeleteModal={cancelDeleteModal}
+              />
+            </section>
           </div>
-          <section className="detailInfo">
-            <li>
-              <CalenderIcon className="icon" />
-              {GetDate(activityData?.createAt)}~{GetDate(activityData?.dday)}
-            </li>
-            <ul>
-              <text>카테고리</text>
-              <li>{activityData?.activitycategory?.category}</li>
-              <text>지역</text>
-              <li>{activityData?.location}</li>
-              <text>모집인원</text>
-              <li>{activityData?.maxpeople}명</li>
-            </ul>
-          </section>
-          <section className="icon2">{/* <Dropdown03 page={'2'} /> */}</section>
-        </div>
-        <Blank height={25} />
-        <div className="postContents">
-          준비물 :{activityData?.subdescription}
-          <br />
-          본문 :
-          <div
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(String(activityData?.description)),
-            }}
+          <Blank height={25} />
+          <div className="postContents">
+            준비물 :{activityData?.subdescription}
+            <br />
+            본문 :
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(String(activityData?.description)),
+              }}
+            />
+          </div>
+        </PostBox>
+        <div className="button" style={{ margin: 'auto' }}>
+          <ContainedButton01
+            content={'참여하기'}
+            color={'main'}
+            type="submit"
+            onClick={onClickSubmit}
           />
         </div>
-      </PostBox>
-      <div className="button" style={{ margin: 'auto' }}>
-        <ContainedButton01
-          content={'참여하기'}
-          color={'main'}
-          type="submit"
-          onClick={onClickSubmit}
-        />
-      </div>
-      <Blank height={100} />
-    </Wrap>
+        <Blank height={100} />
+      </Wrap>
+    </>
   );
 }
 
@@ -222,16 +258,16 @@ const PostBox = styled.div`
     margin-left: auto;
   }
 
-  UL {
+  .UL {
     & > text {
       color: ${Colors.B60};
       margin-right: 5px;
     }
-  }
-  LI {
-    display: inline;
-    font-size: ${FontSize.MEDIUM_C};
-    margin-right: 20px;
+    LI {
+      display: inline;
+      font-size: ${FontSize.MEDIUM_C};
+      margin-right: 20px;
+    }
   }
 
   .postContents {

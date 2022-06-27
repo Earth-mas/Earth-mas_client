@@ -19,6 +19,11 @@ export default function Dropdown05(props: IDropdown05Props) {
     setIsActive(prev => !prev);
   };
 
+  // const onClickDelete = () => {
+  //   props.toggleDeleteModal;
+  //   navigate(`/${props.page}`);
+  // };
+
   return (
     <>
       <S.Dropdown
