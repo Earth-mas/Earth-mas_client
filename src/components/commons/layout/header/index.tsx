@@ -45,7 +45,21 @@ const Header = () => {
             />
           </Modal>
         )}
-        <h1>Header</h1>
+        <h1>LOGO</h1>
+        <ul style={{ display: 'contents' }}>
+          <h3>
+            <Link to={'/'}>홈</Link>
+          </h3>
+          <h3>
+            <Link to="/activity">모임활동</Link>
+          </h3>
+          <h3>
+            <Link to="/support">후원</Link>
+          </h3>
+          <h3>
+            <Link to="/market">마켓</Link>
+          </h3>
+        </ul>
         {id ? (
           <span>
             <Link to="/mypage">
