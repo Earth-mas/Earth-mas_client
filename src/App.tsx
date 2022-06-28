@@ -52,7 +52,6 @@ const App = () => {
                 <Route path="/" element={<HomePage />} />
 
                 <Route path="/activity" element={<ActivityPage />} />
-                <Route path="/activity/new" element={<ActivityNewPage />} />
                 <Route path="/activity/:id" element={<ActivityDetailPage />} />
                 <Route
                   path="/activity/:id/edit"
@@ -71,8 +70,7 @@ const App = () => {
 
               {/* 권한분기 필요한 페이지 */}
               <Route element={<PrivateRouteLayout />}>
-                <Route path="/activity/new" element={<ActivityNew />} />
-
+                <Route path="/activity/new" element={<ActivityNewPage />} />
                 <Route path="/market/new" element={<MarketNewPage />} />
                 <Route path="/market/:id/edit" element={<MarketEditPage />} />
                 <Route
