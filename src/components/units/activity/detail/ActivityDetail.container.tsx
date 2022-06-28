@@ -15,8 +15,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { activityRoute } from 'utils/APIRoutes';
-import Modal from 'components/commons/modal';
-import AlertModal from 'components/commons/modal/alertModal/alertModal';
+// import Modal from 'components/commons/modal';
+// import AlertModal from 'components/commons/modal/alertModal/alertModal';
 
 export interface ActivityDetail {
   activityjoin: Activityjoin[];
@@ -74,7 +74,7 @@ export default function ActivityDetail() {
   const navigate = useNavigate();
   const params = useParams();
   const [activityData, setActivityData] = useState<ActivityDetail>();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [isModalOpen, setISModalOpen] = useState(false);
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export default function ActivityDetail() {
         });
     };
     getActivityData();
-    deleteActivityData();
+    // deleteActivityData();
     // navigate(`/activity`);
   }, []);
 

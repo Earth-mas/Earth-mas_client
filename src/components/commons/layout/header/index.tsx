@@ -28,6 +28,7 @@ const Header = () => {
     store.remove('accessToken');
     setIsOpen(prev => !prev);
     resetUser();
+    location.reload();
   };
 
   return (
