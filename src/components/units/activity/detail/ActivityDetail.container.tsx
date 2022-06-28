@@ -15,6 +15,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { activityRoute } from 'utils/APIRoutes';
+import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
+import Dropdown06 from 'components/commons/dropdown/06/Dropdown06';
 // import Modal from 'components/commons/modal';
 // import AlertModal from 'components/commons/modal/alertModal/alertModal';
 
@@ -74,47 +76,45 @@ export default function ActivityDetail() {
   const navigate = useNavigate();
   const params = useParams();
   const [activityData, setActivityData] = useState<ActivityDetail>();
-  // const navigate = useNavigate();
   const [isModalOpen, setISModalOpen] = useState(false);
 
+  const getActivityData = async () => {
+    await axios
+      .get(`https://earth-mas.shop/server/activity/${params.id}`)
+      .then(res => {
+        setActivityData(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const deleteActivityData = async () => {
+    await axios
+      .delete(`${activityRoute}/${params.id}`)
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
-    const getActivityData = async () => {
-      await axios
-        .get(`https://earth-mas.shop/server/activity/${params.id}`)
-        .then(res => {
-          setActivityData(res.data);
-          console.log(res.data.activityjoin[0].user.name);
-          // console.log(
-          //   'userUrl: ',
-          //   String(activityData?.activityjoin?.user?.url),
-          // );
-          // console.log('name: ', activityData?.activityjoin?.user?.name);
-          // console.log('maxPeople: ', Number(activityData?.maxpeople));
-          // console.log('category: ', activityData?.activitycategory.category);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
     getActivityData();
-    // deleteActivityData();
-    // navigate(`/activity`);
   }, []);
 
   const onClickJoin = () => {
-    setISModalOpen(true);
-    // navigate('/chat');
+    setISModalOpen(prev => !prev);
   };
 
   const onClickJoinChat = () => {
     navigate('/chat/groupChat');
   };
 
-  const onClickCancelModal = () => {
-    setISModalOpen(false);
-  };
-
-  // db엔 등록된 정보들이 get해올 땐 undefined 또는 null 값으로 가져온다.
+  // const onClickCancelModal = () => {
+  //   setISModalOpen(false);
+  // };
 
   return (
     <>
@@ -126,7 +126,7 @@ export default function ActivityDetail() {
             okMessage="참여하기"
             cancelMessage="취소"
             onClickOk={onClickJoinChat}
-            onClickCancel={onClickCancelModal}
+            onClickCancel={onClickJoin}
           />
         </Modal>
       )}
@@ -153,10 +153,10 @@ export default function ActivityDetail() {
               </span>
             </div>
             <section className="detailInfo">
-              <li>
+              <div>
                 <CalenderIcon className="icon" />
                 {GetDate(activityData?.createAt)}~{GetDate(activityData?.dday)}
-              </li>
+              </div>
               <ul>
                 <text>카테고리</text>
                 <li>{activityData?.activitycategory?.category}</li>
@@ -164,15 +164,18 @@ export default function ActivityDetail() {
                 <li>{activityData?.location}</li>
                 <text>모집인원</text>
                 <li>
-                  {Number(activityData?.maxpeople)
-                    ? activityData?.maxpeople
+                  {activityData?.maxpeople
+                    ? Number(activityData?.maxpeople)
                     : '나오겠냐?'}
                   명
                 </li>
               </ul>
             </section>
             <section className="icon2">
-              {/* <Dropdown03 page={'2'} /> */}
+              <Dropdown06
+                page={'activity'}
+                toggleDeleteModal={deleteActivityData}
+              />
             </section>
           </div>
           <Blank height={25} />
@@ -262,16 +265,16 @@ const PostBox = styled.div`
     margin-left: auto;
   }
 
-  .UL {
-    & > text {
+  UL {
+    text {
       color: ${Colors.B60};
       margin-right: 5px;
     }
-    LI {
-      display: inline;
-      font-size: ${FontSize.MEDIUM_C};
-      margin-right: 20px;
-    }
+  }
+  li {
+    display: inline;
+    font-size: ${FontSize.MEDIUM_C};
+    margin-right: 20px;
   }
 
   .postContents {

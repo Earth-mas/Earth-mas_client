@@ -93,6 +93,9 @@ export default function ActivityNew(props: IActivityNewProps) {
     console.log('수정할 데이터:', data);
     const updateVariables: IUpdateVariables = {
       ...props.editData,
+      maxpeople: Number(data.maxpeople),
+      category: isSelected,
+      url: urlString,
     };
     await axios
       .put(
