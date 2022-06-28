@@ -4,13 +4,13 @@ import MarketCard from 'components/commons/card/market/MarketCard';
 import { IMarketCard } from 'components/commons/card/market/MarketCard.types';
 import Category from 'components/commons/category/Category';
 import Input02 from 'components/commons/inputs/Input02';
-import { Fragment, useEffect, useState } from 'react';
+import { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
 import store from 'storejs';
 import { IMarketList } from './MarketList.types';
 import Title01 from 'components/commons/text/title/Title01';
 import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
-
+import _ from 'lodash';
 export default function MarketList() {
   const [listData, setListData] = useState<IMarketList[]>();
   const [, setMyListData] = useState<IMarketList[]>();
@@ -18,7 +18,30 @@ export default function MarketList() {
   const [nowCategory, setNowCategory] = useState('전체');
   const [select, setSelect] = useState<boolean>(false);
 
-  const getItemsALl = async () => {
+  const getItemsSearch = async (data: string) => {
+    await axios
+      .post(`https://earth-mas.shop/server/market/search`, {
+        search: data,
+      })
+      .then(res => {
+        console.log(res);
+        setListData(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const onChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    getDebounce(event.target.value);
+  };
+
+  const getDebounce = _.debounce(data => {
+    getItemsSearch(data);
+    console.log(data);
+  }, 1000);
+
+  const getItemsAll = async () => {
     await axios
       .post(
         `https://earth-mas.shop/server/market/${
@@ -56,14 +79,14 @@ export default function MarketList() {
   };
 
   useEffect(() => {
-    getItemsALl();
+    getItemsAll();
     getItemsMyLike();
   }, [nowCategory, select]);
 
   return (
     <Wrap>
       <div className="input-wrap">
-        <Input02 placeholder="상품을 검색해주세요" />
+        <Input02 placeholder="상품을 검색해주세요" onChange={onChangeSearch} />
       </div>
       <nav className="category">
         <Category page={0} setNowCategory={setNowCategory} />

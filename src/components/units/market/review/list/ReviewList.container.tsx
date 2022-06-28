@@ -2,10 +2,12 @@ import styled from '@emotion/styled';
 import axios from 'axios';
 import { getAvg, getAvgStar } from 'commons/utils/getStars';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
+import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
+import { marketReviewRoute } from 'utils/APIRoutes';
 import { v4 as uuid4 } from 'uuid';
 import ReviewDetail from '../detail/ReviewDetail';
 import { IMarketReviewDetail } from '../detail/ReviewDetail.types';
@@ -15,27 +17,24 @@ interface IMarketReviewListProps {
   reviewpeople?: number;
 }
 export default function ReviewList(props: IMarketReviewListProps) {
-  const params = useParams();
-  const [reviewsData, setReviewsData] = useState<IMarketReviewDetail[]>([]);
+  const { id } = useParams();
 
-  const getReviews = async () => {
-    await axios
-      .post(`https://earth-mas.shop/server/marketreview/findall`, {
-        market: String(params.id),
-      })
-      .then(res => {
-        console.log(res);
-        setReviewsData(res.data);
-        // console.log(reviewData);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+  const { data: reviewsData } = useQuery(
+    'getReviews',
+    async () =>
+      await axios
+        .post(`${marketReviewRoute}/findall`, {
+          market: id,
+        })
+        .then(res => {
+          return res.data;
+        })
+        .catch(error => {
+          console.log(error);
+        }),
+  );
+  // console.log(reviewsData);
 
-  useEffect(() => {
-    getReviews();
-  }, []);
   return (
     <Wrap>
       <Score>
@@ -50,7 +49,7 @@ export default function ReviewList(props: IMarketReviewListProps) {
         <p className="score">{getAvg(props.reviewscore, props.reviewpeople)}</p>
       </Score>
       {reviewsData &&
-        reviewsData.map(el => (
+        reviewsData.map((el: IMarketReviewDetail) => (
           <Fragment key={uuid4()}>
             <ReviewDetail reviewsData={el} />
           </Fragment>

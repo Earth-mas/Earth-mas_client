@@ -13,6 +13,8 @@ import ReviewNew from '../new/ReviewNew.container';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
+import { QueryClient, useMutation, useQuery } from 'react-query';
+import { marketReviewRoute } from 'utils/APIRoutes';
 interface IReviewDetailProps {
   reviewsData: IMarketReviewDetail;
 }
@@ -27,9 +29,10 @@ interface IReviewMarketData {
 export default function ReviewDetail(props: IReviewDetailProps) {
   const userInfo = useRecoilValue(userState);
   const [marketData, setMarketData] = useState<IReviewMarketData>();
-  const [reviewData, setReviewData] = useState<IMarketReviewDetail>();
+  // const [reviewData, setReviewData] = useState<IMarketReviewDetail>();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const queryClient = new QueryClient();
 
   const toggleDeleteModal = () => {
     setIsDeleteOpen(prev => !prev);
@@ -39,41 +42,66 @@ export default function ReviewDetail(props: IReviewDetailProps) {
     setIsEditOpen(prev => !prev);
   };
 
-  const getReview = async () => {
-    await axios
-      .get(
-        `https://earth-mas.shop/server/marketreview/${props.reviewsData?.id}`,
-      )
-      .then(res => {
-        // console.log(res);
-        setReviewData(res.data);
+  const { data: reviewData } = useQuery(
+    'getReview',
+    async () =>
+      await axios
+        .get(`${marketReviewRoute}/${props.reviewsData?.id}`)
+        .then(res => {
+          return res.data;
+        })
+        .catch(error => {
+          console.log(error);
+        }),
+    {
+      onSuccess: res => {
         setMarketData({
-          id: res.data.market.id,
-          title: res.data.market.title,
-          minidescription: res.data.market.minidescription,
-          url: res.data.market.url,
+          id: res.market.id,
+          title: res.market.title,
+          minidescription: res.market.minidescription,
+          url: res.market.url,
         });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+      },
+    },
+  );
 
-  const deleteMarketReview = async () => {
-    await axios
-      .delete(
-        `https://earth-mas.shop/server/marketreview/${props.reviewsData.id}`,
-      )
-      .then(res => {
-        console.log(res);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+  // const deleteReview = async () => {
+  //   await axios
+  //     .delete(
+  //       `https://earth-mas.shop/server/marketreview/${props.reviewsData.id}`,
+  //     )
+  //     .then(res => {
+  //       console.log(res);
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // };
+
+  const { mutate: deleteReview } = useMutation(
+    async () => {
+      await axios
+        .delete(`${marketReviewRoute}/${props.reviewsData.id}`)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    {
+      onSuccess: () => {
+        // postTodo가 성공하면 todos로 맵핑된 useQuery api 함수를 실행합니다.
+        console.log('삭제성공');
+        setIsDeleteOpen(false);
+        queryClient.invalidateQueries('getReviews');
+      },
+    },
+  );
 
   useEffect(() => {
-    getReview();
+    // console.log(props.reviewsData);
   }, [props.reviewsData]);
 
   return (
@@ -86,7 +114,7 @@ export default function ReviewDetail(props: IReviewDetailProps) {
             okMessage="네, 삭제할게요"
             cancelMessage="아니오, 취소할게요"
             onClickCancel={toggleDeleteModal}
-            onClickOk={deleteMarketReview}
+            onClickOk={deleteReview}
           />
         </Modal>
       )}
@@ -121,13 +149,15 @@ export default function ReviewDetail(props: IReviewDetailProps) {
           </span>
         </div>
         <div className="review-image">
-          <ul>
-            {props.reviewsData?.url.split(',').map(el => (
-              <li key={uuid4()}>
-                <img src={el} />
-              </li>
-            ))}
-          </ul>
+          {props.reviewsData?.url !== '' && (
+            <ul>
+              {props.reviewsData?.url.split(',').map(el => (
+                <li key={uuid4()}>
+                  <img src={el} />
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
         <p className="review-content">{props.reviewsData?.contents}</p>
       </div>

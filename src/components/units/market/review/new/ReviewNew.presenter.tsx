@@ -44,9 +44,11 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
           <h1>사진 첨부</h1>
           <Upload02
             page="marketreview"
-            fetchData={props.reviewData?.url.split(',')}
             urlString={props.urlString}
             setUrlString={props.setUrlString}
+            fetchData={
+              props.reviewData?.url ? props.reviewData?.url.split(',') : []
+            }
           />
         </div>
         <div className="input-wrap">

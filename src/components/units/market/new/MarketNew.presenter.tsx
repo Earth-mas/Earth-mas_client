@@ -92,7 +92,7 @@ export default function MarketNewUI(props: IMarketNewUIProps) {
           page="market"
           urlString={props.urlString}
           setUrlString={props.setUrlString}
-          fetchData={props.itemData?.url.split(',')}
+          fetchData={props.itemData?.url ? props.itemData?.url.split(',') : []}
         />
         <Blank height={25} />
         {/* <QuillEditor

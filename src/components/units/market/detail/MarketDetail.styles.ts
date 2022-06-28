@@ -2,10 +2,6 @@ import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
-interface IProps {
-  nowTab?: string;
-}
-
 export const Wrap = styled.div`
   width: 1024px;
   padding: 50px 0px 100px 0px;

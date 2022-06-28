@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { ReactComponent as SearchIcon } from 'assets/svgs/icons/search-icon.svg';
+import { ChangeEvent } from 'react';
 
 const Search = styled.div`
   width: 240px;
@@ -34,6 +35,7 @@ const Input = styled.input`
 
 interface IInput02Props {
   placeholder?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function Input02(props: IInput02Props) {
@@ -42,7 +44,11 @@ export default function Input02(props: IInput02Props) {
       <span>
         <SearchIcon />
       </span>
-      <Input type="text" placeholder={props.placeholder} />
+      <Input
+        type="text"
+        placeholder={props.placeholder}
+        onChange={props.onChange}
+      />
     </Search>
   );
 }

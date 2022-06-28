@@ -24,6 +24,9 @@ export default function Upload02(props: IUpload02Props) {
 
   useEffect(() => {
     if (props.fetchData) setUrls(props.fetchData);
+    // if (props.fetchData && urls.length === 0) {
+    //   setUrls(props.fetchData);
+    // }
   }, []);
 
   const formData = new FormData();
@@ -94,7 +97,7 @@ export default function Upload02(props: IUpload02Props) {
             <>
               <ul {...provided.droppableProps} ref={provided.innerRef}>
                 {urls.map((el, index) => (
-                  <Draggable draggableId={el} index={index} key={uuid4()}>
+                  <Draggable draggableId={uuid4()} index={index} key={uuid4()}>
                     {provided => (
                       <li>
                         <S.ImageWrap
