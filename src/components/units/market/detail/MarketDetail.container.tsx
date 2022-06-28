@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, Suspense, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as S from './MarketDetail.styles';
 import { IMarketDetail } from './MarketDetail.types';
@@ -8,11 +8,31 @@ import DetailOverview from './overview/DetailOverview.container';
 import DetailContent from './content/DetailContent.container';
 import DetailDelivery from './delivery/DetailDelivery.container';
 import ReviewList from '../review/list/ReviewList.container';
+import { useQuery } from 'react-query';
+import { marketRoute } from 'utils/APIRoutes';
 
 export default function MarketDetail() {
   const params = useParams();
   const [nowTab, setNowTab] = useState('content');
-  const [detailData, setDetailData] = useState<IMarketDetail>();
+  // const [detailData, setDetailData] = useState<IMarketDetail>();
+
+  const onClickTab = (event: MouseEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement;
+    setNowTab(target.id);
+  };
+
+  const { data: detailData } = useQuery(
+    'getItem',
+    async () =>
+      await axios
+        .get(`${marketRoute}/${params.id}`)
+        .then(res => {
+          return res.data;
+        })
+        .catch(error => {
+          console.log(error);
+        }),
+  );
 
   const tabMenu = [
     { id: 'content', name: '상세정보' },
@@ -20,27 +40,11 @@ export default function MarketDetail() {
     { id: 'delivery', name: '배송 및 교환' },
   ];
 
-  const onClickTab = (event: MouseEvent<HTMLElement>) => {
-    const target = event.target as HTMLElement;
-    setNowTab(target.id);
-  };
-
-  const getItem = async () => {
-    await axios
-      .get(`https://earth-mas.shop/server/market/${params.id}`)
-      .then(res => {
-        setDetailData(res.data);
-        console.log(res.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
   useEffect(() => {
-    getItem();
+    // getItem();
     // console.log(DetailData);
-  }, []);
+    console.log('useEffect :', detailData);
+  }, [detailData]);
 
   return (
     <S.Wrap>
@@ -52,6 +56,7 @@ export default function MarketDetail() {
         />
       </nav>
       <DetailOverview detailData={detailData} />
+
       <nav className="tab-nav">
         <ul>
           {tabMenu.map(el => (
