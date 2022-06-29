@@ -91,27 +91,30 @@ export default function ActivityNew(props: IActivityNewProps) {
 
   const onClickUpdate = async (data: FormValues) => {
     console.log('수정할 데이터:', data);
-    // const updateVariables: IUpdateVariables = {
-    //   ...props.editData,
-    // };
-    // await axios
-    //   .put(
-    //     `https://earth-mas.shop/server/activity/${params.id}`,
-    //     updateVariables,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${accessToken}`,
-    //       },
-    //     },
-    //   )
-    //   .then(res => {
-    //     console.log('res: ', res);
-    //     navigate(`/activity/${res.data?.id}`);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     alert('잘못된 주소입니다');
-    //   });
+    const updateVariables: IUpdateVariables = {
+      ...props.editData,
+      maxpeople: Number(data.maxpeople),
+      category: isSelected,
+      url: urlString,
+    };
+    await axios
+      .put(
+        `https://earth-mas.shop/server/activity/${params.id}`,
+        updateVariables,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then(res => {
+        console.log('res: ', res);
+        navigate(`/activity/${res.data?.id}`);
+      })
+      .catch(error => {
+        console.log(error);
+        alert('잘못된 주소입니다');
+      });
   };
 
   return (
