@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
-import ListCard from 'components/commons/card/list/ListCard';
+import ListCard from 'components/commons/card/activity/ActivityCard';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { User } from 'components/commons/card/list/ListCard.types';
+import { User } from 'components/commons/card/activity/ActivityCard.types';
 import Title01 from 'components/commons/text/title/Title01';
 import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 
 export interface IPropsActivityList {
   activitycategory: Activitycategory;
-  activityjoin: Activityjoin;
+  activityjoin: Activityjoin[];
   map: any;
   createAt: string;
   dday: string;
@@ -23,7 +23,6 @@ export interface IPropsActivityList {
   title: string;
   updateAt: string;
   url: string;
-  // nowCategory: string;
 }
 
 interface Activitycategory {

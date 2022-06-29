@@ -5,15 +5,15 @@ import Line from 'components/commons/line';
 import Dompurify from 'dompurify';
 import { Link } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
-import { IPropsActivityCardList } from './ListCard.types';
+import { IPropsActivityCardList } from './ActivityCard.types';
 
-export default function ListCard(props: IPropsActivityCardList) {
+export default function ActivityCard(props: IPropsActivityCardList) {
   return (
     <Wrapper id={props.el.id}>
       <Link to={`/activity/${props.el.id}`}>
         <div className="imgContainer">
           <img src={props.el?.url?.split(',')[0]} />
-          <div className="addressContainer">{props.el.location}</div>
+          <div className="addressContainer">{props.el?.location}</div>
         </div>
 
         <Blank height={10} />
@@ -21,25 +21,25 @@ export default function ListCard(props: IPropsActivityCardList) {
           <div
             className="contentsBox"
             dangerouslySetInnerHTML={{
-              __html: Dompurify.sanitize(props.el.description),
+              __html: Dompurify.sanitize(props.el?.description),
             }}
           />
           <Line />
           <UserInfoBox>
             <div className="userImg">
               <img
-                src={String(props.el?.activityjoin?.user?.url)}
+                src={props.el?.activityjoin[0].user?.url}
                 onError={e => {
                   e.currentTarget.src = '/images/avatar.svg';
                 }}
               />
             </div>
             <span>
-              {props.el?.activityjoin?.user?.name
-                ? props.el?.activityjoin?.user?.name
+              {props.el?.activityjoin[0].user?.name
+                ? props.el?.activityjoin[0].user?.name
                 : '에러지롱!'}
             </span>
-            <text>{GetDate(props.el.createAt)}</text>
+            <text>{GetDate(props.el?.createAt)}</text>
           </UserInfoBox>
         </div>
       </Link>
@@ -92,29 +92,6 @@ const Wrapper = styled.div`
       overflow-y: scroll;
     }
   }
-
-  /* .userInfo {
-    padding: 8px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    .userImg {
-      min-width: 30px;
-      max-width: 30px;
-      width: 100%;
-      height: 30px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-right: 12px;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-  } */
 `;
 
 const UserInfoBox = styled.div`
@@ -130,7 +107,6 @@ const UserInfoBox = styled.div`
     height: 30px;
     border-radius: 50%;
     overflow: hidden;
-    margin-right: 12px;
 
     img {
       width: 100%;

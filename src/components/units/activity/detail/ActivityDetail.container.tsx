@@ -1,11 +1,9 @@
 import styled from '@emotion/styled';
-import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
 import { CalenderIcon } from 'assets/svgs';
 import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
 import Modal from 'components/commons/modal';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
 import Slide from 'components/commons/slide';
@@ -15,8 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { activityRoute } from 'utils/APIRoutes';
-// import Modal from 'components/commons/modal';
-// import AlertModal from 'components/commons/modal/alertModal/alertModal';
+import Dropdown06 from 'components/commons/dropdown/06/Dropdown06';
 
 export interface ActivityDetail {
   activityjoin: Activityjoin[];
@@ -74,51 +71,64 @@ export default function ActivityDetail() {
   const navigate = useNavigate();
   const params = useParams();
   const [activityData, setActivityData] = useState<ActivityDetail>();
-  // const navigate = useNavigate();
-  const [isModalOpen, setISModalOpen] = useState(false);
+  const [isJoinModalOpen, setISJoinModalOpen] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+
+  const getActivityData = async () => {
+    await axios
+      .get(`https://earth-mas.shop/server/activity/${params.id}`)
+      .then(res => {
+        setActivityData(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const deleteActivityData = async () => {
+    await axios
+      .delete(`${activityRoute}/${params.id}`)
+      .then(res => {
+        console.log(res.data);
+        setIsDeleteModal(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    navigate('/activity');
+  };
 
   useEffect(() => {
-    const getActivityData = async () => {
-      await axios
-        .get(`https://earth-mas.shop/server/activity/${params.id}`)
-        .then(res => {
-          setActivityData(res.data);
-          console.log(res.data.activityjoin[0].user.name);
-          // console.log(
-          //   'userUrl: ',
-          //   String(activityData?.activityjoin?.user?.url),
-          // );
-          // console.log('name: ', activityData?.activityjoin?.user?.name);
-          // console.log('maxPeople: ', Number(activityData?.maxpeople));
-          // console.log('category: ', activityData?.activitycategory.category);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
     getActivityData();
-    // deleteActivityData();
-    // navigate(`/activity`);
   }, []);
 
-  const onClickJoin = () => {
-    setISModalOpen(true);
-    // navigate('/chat');
+  const onClickJoinandCancel = () => {
+    setISJoinModalOpen(prev => !prev);
+  };
+
+  const onClickOpenDeleteModal = () => {
+    setIsDeleteModal(prev => !prev);
   };
 
   const onClickJoinChat = () => {
     navigate('/chat/groupChat');
   };
 
-  const onClickCancelModal = () => {
-    setISModalOpen(false);
-  };
-
-  // db엔 등록된 정보들이 get해올 땐 undefined 또는 null 값으로 가져온다.
-
   return (
     <>
-      {isModalOpen && (
+      {isDeleteModal && (
+        <Modal>
+          <AlertModal
+            title="❗게시글을 삭제할 경우 해당 게시글에 대한 정보는 복구가 불가능합니다."
+            contents="그래도 삭제하시겠습니까?"
+            okMessage="삭제하기"
+            cancelMessage="취소"
+            onClickOk={deleteActivityData}
+            onClickCancel={onClickOpenDeleteModal}
+          />
+        </Modal>
+      )}
+      {isJoinModalOpen && (
         <Modal>
           <AlertModal
             title="해당 작성자와 1:1 채팅 또는 단체 채팅으로 참여할 수 있습니다."
@@ -126,7 +136,7 @@ export default function ActivityDetail() {
             okMessage="참여하기"
             cancelMessage="취소"
             onClickOk={onClickJoinChat}
-            onClickCancel={onClickCancelModal}
+            onClickCancel={onClickJoinandCancel}
           />
         </Modal>
       )}
@@ -153,10 +163,10 @@ export default function ActivityDetail() {
               </span>
             </div>
             <section className="detailInfo">
-              <li>
+              <div>
                 <CalenderIcon className="icon" />
                 {GetDate(activityData?.createAt)}~{GetDate(activityData?.dday)}
-              </li>
+              </div>
               <ul>
                 <text>카테고리</text>
                 <li>{activityData?.activitycategory?.category}</li>
@@ -164,15 +174,18 @@ export default function ActivityDetail() {
                 <li>{activityData?.location}</li>
                 <text>모집인원</text>
                 <li>
-                  {Number(activityData?.maxpeople)
-                    ? activityData?.maxpeople
+                  {activityData?.maxpeople
+                    ? Number(activityData?.maxpeople)
                     : '나오겠냐?'}
                   명
                 </li>
               </ul>
             </section>
             <section className="icon2">
-              {/* <Dropdown03 page={'2'} /> */}
+              <Dropdown06
+                page={'activity'}
+                toggleDeleteModal={onClickOpenDeleteModal}
+              />
             </section>
           </div>
           <Blank height={25} />
@@ -192,7 +205,7 @@ export default function ActivityDetail() {
             content={'참여하기'}
             color={'main'}
             type="submit"
-            onClick={onClickJoin}
+            onClick={onClickJoinandCancel}
           />
         </div>
         <Blank height={100} />
@@ -262,16 +275,16 @@ const PostBox = styled.div`
     margin-left: auto;
   }
 
-  .UL {
-    & > text {
+  UL {
+    text {
       color: ${Colors.B60};
       margin-right: 5px;
     }
-    LI {
-      display: inline;
-      font-size: ${FontSize.MEDIUM_C};
-      margin-right: 20px;
-    }
+  }
+  li {
+    display: inline;
+    font-size: ${FontSize.MEDIUM_C};
+    margin-right: 20px;
   }
 
   .postContents {
