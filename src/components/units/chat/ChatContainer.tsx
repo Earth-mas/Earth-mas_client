@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
@@ -8,7 +8,6 @@ import { Colors } from 'styles/Colors';
 import { FontSize } from 'styles/FontStyles';
 import { chat } from 'utils/APIRoutes';
 import { v4 as uuidv4 } from 'uuid';
-// import chat from './chat.json';
 import { ChatInput } from './ChatInput';
 import store from 'storejs';
 
@@ -21,82 +20,60 @@ export const ChatContainer = (props: any) => {
   const queryClient = useQueryClient();
 
   const { data, mutate } = useMutation(
+    ['getchat'],
     () => {
-      return axios.post(`${chat}/getchat`, {
-        roomid: props.data?.data[Number(props.roomid)]?.id,
-      });
+      return axios.post(
+        `${chat}/getchat`,
+        {
+          roomid: props.chatUserList?.data[Number(props.roomid)]?.id,
+          page: 1,
+        },
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
     },
     {
       onSuccess: res => {
-        // console.log(res.data);
+        console.log(res);
         setMessages(res.data);
 
-        // queryClient.invalidateQueries('findroom', { refetchInactive: true });
+        queryClient.invalidateQueries('findmychat', { refetchInactive: true });
       },
       onError: err => {
         console.log(err);
       },
     },
   );
-
-  useEffect(() => {
-    if (props.currentChat) {
-      // props.socket.emit('user-load', {
-      // });
-      props.socket.on('user-load-emit', (data: any) => {
-        // console.log(data);
-        setMessages(data);
-      });
-    }
-    mutate();
-  }, [props.currentChat]);
+  console.log(data);
 
   // 보내는 메시지
   const handleSendMsg = (msg: any) => {
-    if (props.data?.data) {
-      props.socket.emit('user-send', {
-        userid: userInfo.id,
-        name: userInfo.name,
-        content: msg,
-        roomid: props.data?.data[Number(props.roomid)]?.id,
-      });
-      console.log(msg);
-    }
-
-    // const msgs = [...messages];
-    // // 메시지의 배열과 동일하도록 한 가지 작업을 수행
-    // msgs.push({ id: userInfo.id, message: msg });
-    // // currentUser가 보낸 메시지를 메시지 배열에 푸시
-    // setMessages(msg);
-    // console.log('msgs', msgs);
-    // console.log('messages', messages);
-
-    // msgs로 설정
+    props.socketRef.current.emit('user-send', {
+      userid: userInfo.id,
+      name: userInfo.name,
+      content: msg,
+      roomid: props.chatUserList?.data[Number(props.roomid)]?.id,
+    });
   };
 
-  /* useEffect(() => {
-    return () => {
-      props.socket.close();
-    };
-  }, []); */
-  // console.log(props.data?.data[Number(props.roomid)]?.id);
+  useEffect(() => {
+    if (props.currentChat) {
+      mutate();
+    }
+  }, [props.currentChat]);
 
   useEffect(() => {
-    props.socket.on('user-send-emit', (msg: any) => {
-      // console.log({ msg });
-      setArrivalMessage(msg);
-      // setMessages(msg);
-      // 메시지를 수신하지 않았기에 false로 지정하고 메시지를 담아줌
-    }); // 작성한 메시지를 수신
     arrivalMessage && setMessages((prev: any) => [...prev, arrivalMessage]);
-    // window.location.reload();
   }, [arrivalMessage]); // arrivalMessage와 이전 메시지를 배열에 담아줌
 
   useEffect(() => {
-    // event?.stopImmediatePropagation();
-    scrollRef.current?.scrollIntoView(/* { behavior: 'smooth' } */);
-  }, [messages, data]); // 메시지에 변경사항이 있을 때마다 실행
-  // console.log(messages);
+    props.socketRef.current.on('user-send-emit', (msg: any) => {
+      setArrivalMessage(msg);
+    }); // 작성한 메시지를 수신
+    scrollRef.current?.scrollIntoView();
+  }, [messages]); // 메시지에 변경사항이 있을 때마다 실행
+
+  console.log(messages);
+  console.log(arrivalMessage);
 
   return (
     <Wrapper>
@@ -125,11 +102,7 @@ export const ChatContainer = (props: any) => {
               );
             })}
           </div>
-          <ChatInput
-            handleSendMsg={handleSendMsg}
-            socket={props.socket}
-            data={props.data}
-          />
+          <ChatInput handleSendMsg={handleSendMsg} />
         </>
       )}
     </Wrapper>

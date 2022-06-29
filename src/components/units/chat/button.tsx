@@ -3,9 +3,10 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { chatUserState } from 'recoil/chatUser';
-import io from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import { chat, host } from 'utils/APIRoutes';
 import store from 'storejs';
+import { useEffect } from 'react';
 
 export const ChatButton = (props: { userInfo?: any }) => {
   const accessToken = store.get('accessToken');
@@ -13,11 +14,6 @@ export const ChatButton = (props: { userInfo?: any }) => {
   const navigate = useNavigate();
   const setChatUser = useSetRecoilState(chatUserState);
   const queryClient = useQueryClient();
-
-  const socket = io(`${host}/server/chat`, {
-    // transports: ['websocket'],
-    upgrade: false,
-  });
 
   console.log(props.userInfo?.id);
 
@@ -32,6 +28,8 @@ export const ChatButton = (props: { userInfo?: any }) => {
     {
       onSuccess: res => {
         console.log(res);
+        navigate('/chat');
+
         queryClient.invalidateQueries('findmychat', { refetchInactive: true });
       },
       onError: err => {
@@ -43,10 +41,6 @@ export const ChatButton = (props: { userInfo?: any }) => {
   const joinChatRoom = () => {
     // setChatUser(props.userInfo);
     mutate();
-
-    socket.emit('connection', {
-      roomid: data?.data?.id,
-    });
 
     /* socket.on('connection', function (data: any) {
       console.log(data);
@@ -62,7 +56,6 @@ export const ChatButton = (props: { userInfo?: any }) => {
         console.log(data);
       });
     }); */
-    navigate('/chat');
   };
 
   return <button onClick={joinChatRoom}>채팅</button>;

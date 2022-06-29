@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   border-spacing: 1px;
   border-radius: 10px;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 330px 1fr;
   margin: 50px 0;
 
   > section {
@@ -62,6 +62,7 @@ export const LeftContainer = styled.section`
   }
 `;
 export const RightContainer = styled.section`
+  overflow: hidden;
   > .user {
     display: flex;
     align-items: center;
