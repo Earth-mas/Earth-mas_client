@@ -1,11 +1,9 @@
 import styled from '@emotion/styled';
-import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
 import { CalenderIcon } from 'assets/svgs';
 import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import Dropdown03 from 'components/commons/dropdown/03/Dropdown03';
 import Modal from 'components/commons/modal';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
 import Slide from 'components/commons/slide';
@@ -15,10 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { activityRoute } from 'utils/APIRoutes';
-import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
 import Dropdown06 from 'components/commons/dropdown/06/Dropdown06';
-// import Modal from 'components/commons/modal';
-// import AlertModal from 'components/commons/modal/alertModal/alertModal';
 
 export interface ActivityDetail {
   activityjoin: Activityjoin[];
@@ -76,7 +71,8 @@ export default function ActivityDetail() {
   const navigate = useNavigate();
   const params = useParams();
   const [activityData, setActivityData] = useState<ActivityDetail>();
-  const [isModalOpen, setISModalOpen] = useState(false);
+  const [isJoinModalOpen, setISJoinModalOpen] = useState(false);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
 
   const getActivityData = async () => {
     await axios
@@ -94,31 +90,45 @@ export default function ActivityDetail() {
       .delete(`${activityRoute}/${params.id}`)
       .then(res => {
         console.log(res.data);
+        setIsDeleteModal(res.data);
       })
       .catch(error => {
         console.log(error);
       });
+    navigate('/activity');
   };
 
   useEffect(() => {
     getActivityData();
   }, []);
 
-  const onClickJoin = () => {
-    setISModalOpen(prev => !prev);
+  const onClickJoinandCancel = () => {
+    setISJoinModalOpen(prev => !prev);
+  };
+
+  const onClickOpenDeleteModal = () => {
+    setIsDeleteModal(prev => !prev);
   };
 
   const onClickJoinChat = () => {
     navigate('/chat/groupChat');
   };
 
-  // const onClickCancelModal = () => {
-  //   setISModalOpen(false);
-  // };
-
   return (
     <>
-      {isModalOpen && (
+      {isDeleteModal && (
+        <Modal>
+          <AlertModal
+            title="❗게시글을 삭제할 경우 해당 게시글에 대한 정보는 복구가 불가능합니다."
+            contents="그래도 삭제하시겠습니까?"
+            okMessage="삭제하기"
+            cancelMessage="취소"
+            onClickOk={deleteActivityData}
+            onClickCancel={onClickOpenDeleteModal}
+          />
+        </Modal>
+      )}
+      {isJoinModalOpen && (
         <Modal>
           <AlertModal
             title="해당 작성자와 1:1 채팅 또는 단체 채팅으로 참여할 수 있습니다."
@@ -126,7 +136,7 @@ export default function ActivityDetail() {
             okMessage="참여하기"
             cancelMessage="취소"
             onClickOk={onClickJoinChat}
-            onClickCancel={onClickJoin}
+            onClickCancel={onClickJoinandCancel}
           />
         </Modal>
       )}
@@ -174,7 +184,7 @@ export default function ActivityDetail() {
             <section className="icon2">
               <Dropdown06
                 page={'activity'}
-                toggleDeleteModal={deleteActivityData}
+                toggleDeleteModal={onClickOpenDeleteModal}
               />
             </section>
           </div>
@@ -195,7 +205,7 @@ export default function ActivityDetail() {
             content={'참여하기'}
             color={'main'}
             type="submit"
-            onClick={onClickJoin}
+            onClick={onClickJoinandCancel}
           />
         </div>
         <Blank height={100} />

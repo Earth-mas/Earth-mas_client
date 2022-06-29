@@ -33,9 +33,7 @@ export default function Dropdown05(props: IDropdown05Props) {
               <text>
                 <Link to={`/${props.page}/${id}/edit`}>수정</Link>
               </text>
-              <text onClick={props.toggleDeleteModal}>
-                <Link to={`/${props.page}`}>삭제</Link>
-              </text>
+              <text onClick={props.toggleDeleteModal}>삭제</text>
             </div>
           </S.Option>
         )}
