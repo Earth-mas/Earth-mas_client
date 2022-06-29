@@ -3,21 +3,32 @@ import OutlinedButton01 from 'components/commons/button/outlined/OutlinedButton0
 import * as S from './ReviewNew.styles';
 import { IReviewNewUIProps } from './ReviewNew.types';
 import logo from '../../../../../assets/svgs/logo/logo-icon-w.svg';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import RatingStars from 'components/commons/stars/ratingStars/RatingStars';
 import Upload02 from 'components/commons/upload/02/Upload02';
+import { IMarketReviewDetail } from '../detail/ReviewDetail.types';
 
 export default function ReviewNewUI(props: IReviewNewUIProps) {
+  const [reviewData, setReviewData] = useState<IMarketReviewDetail>();
+
   const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = logo;
   };
+
+  useEffect(() => {
+    setReviewData(props.reviewData);
+  }, [props.reviewData]);
 
   return (
     <S.Wrap>
       <div className="info-wrap">
         <div className="image">
           <img
-            src={props.marketData?.url ? props.marketData?.url : logo}
+            src={
+              props.marketData?.url !== ''
+                ? props.marketData?.url?.split(',')[0]
+                : logo
+            }
             onError={onErrorImg}
           />
         </div>
@@ -28,7 +39,7 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
       </div>
       <form
         onSubmit={props.handleSubmit(
-          props.reviewData ? props.onClickPutReview : props.onClickPostReview,
+          reviewData ? props.onClickPutReview : props.onClickPostReview,
         )}
       >
         <div className="input-wrap">
@@ -44,17 +55,13 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
             page="marketreview"
             urlString={props.urlString}
             setUrlString={props.setUrlString}
-            fetchData={
-              props.reviewData?.url ? props.reviewData?.url.split(',') : []
-            }
+            fetchData={reviewData ? reviewData?.url.split(',') : []}
           />
         </div>
         <div className="input-wrap">
           <h1>리뷰 작성</h1>
           <textarea
-            defaultValue={
-              props.reviewData?.contents ? props.reviewData?.contents : ''
-            }
+            defaultValue={reviewData?.contents ? reviewData?.contents : ''}
             placeholder="솔직한 리뷰는 다른 고객에게 큰 도움이 됩니다. (최대 80자) "
             {...props.register('contents')}
             maxLength={80}
@@ -69,7 +76,7 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
           />
           <ContainedButton01
             color="main"
-            content={props.reviewData ? '리뷰 수정' : '리뷰 등록'}
+            content={reviewData ? '리뷰 수정' : '리뷰 등록'}
             type="submit"
           />
         </div>

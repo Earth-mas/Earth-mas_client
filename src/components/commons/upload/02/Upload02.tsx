@@ -23,11 +23,10 @@ export default function Upload02(props: IUpload02Props) {
   const [urls, setUrls] = useState<string[]>([]);
 
   useEffect(() => {
-    if (props.fetchData) setUrls(props.fetchData);
-    // if (props.fetchData && urls.length === 0) {
-    //   setUrls(props.fetchData);
-    // }
-  }, []);
+    if (props.fetchData && urls.length === 0) {
+      setUrls(props.fetchData);
+    }
+  }, [props.fetchData]);
 
   const formData = new FormData();
 

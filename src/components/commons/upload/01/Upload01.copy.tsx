@@ -66,9 +66,6 @@ export default function Upload01Copy(props: IUpload01Props) {
     props.setUrlString(originData.toString());
   };
 
-  useEffect(() => {
-    console.log(urls);
-  }, [urls]);
   return (
     <S.Wrap>
       <DragDropContext onDragEnd={onDragEnd}>

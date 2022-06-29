@@ -8,6 +8,7 @@ interface IDropdown05Props {
   page: string; // market | activity | support
   toggleEditModal?: () => void;
   toggleDeleteModal?: () => void;
+  id?: string;
 }
 
 export default function Dropdown05(props: IDropdown05Props) {

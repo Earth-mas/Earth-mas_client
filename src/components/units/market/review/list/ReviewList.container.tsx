@@ -9,6 +9,7 @@ import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { marketReviewRoute } from 'utils/APIRoutes';
 import { v4 as uuid4 } from 'uuid';
+import { IMarketDetailReview } from '../../detail/MarketDetail.types';
 import ReviewDetail from '../detail/ReviewDetail';
 import { IMarketReviewDetail } from '../detail/ReviewDetail.types';
 
@@ -18,22 +19,23 @@ interface IMarketReviewListProps {
 }
 export default function ReviewList(props: IMarketReviewListProps) {
   const { id } = useParams();
+  // const [reviewsData, SetReviewsData] = useState<any>();
 
-  const { data: reviewsData } = useQuery(
-    'getReviews',
-    async () =>
-      await axios
-        .post(`${marketReviewRoute}/findall`, {
-          market: id,
-        })
-        .then(res => {
-          return res.data;
-        })
-        .catch(error => {
-          console.log(error);
-        }),
+  const { data: reviewsData, refetch } = useQuery(
+    ['getReviews'],
+    async () => {
+      const result = await axios.post(`${marketReviewRoute}/findall`, {
+        market: id,
+      });
+      return result.data;
+    },
+    {
+      //refetchOnWindowFocus: false
+      onError: error => {
+        console.log(error);
+      },
+    },
   );
-  // console.log(reviewsData);
 
   return (
     <Wrap>
@@ -51,7 +53,7 @@ export default function ReviewList(props: IMarketReviewListProps) {
       {reviewsData &&
         reviewsData.map((el: IMarketReviewDetail) => (
           <Fragment key={uuid4()}>
-            <ReviewDetail reviewsData={el} />
+            <ReviewDetail reviewsData={el} refetch={refetch} />
           </Fragment>
         ))}
     </Wrap>

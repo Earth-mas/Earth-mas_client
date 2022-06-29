@@ -18,9 +18,16 @@ import Modal from 'components/commons/modal';
 import ContentModal from 'components/commons/modal/contentModal/contentModal';
 import ReviewNew from 'components/units/market/review/new/ReviewNew.container';
 import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
+import { useMutation, useQuery } from 'react-query';
+import { marketRoute } from 'utils/APIRoutes';
 
 interface IMarketCardProps {
   listData: IMarketCard;
+}
+interface IVariables {
+  variables: {
+    id: string;
+  };
 }
 
 export default function MarketCard(props: IMarketCardProps) {
@@ -31,11 +38,27 @@ export default function MarketCard(props: IMarketCardProps) {
     event.currentTarget.src = logo;
   };
 
-  const findLike = (myLike: IMarketList[]) => {
+  // const getItemsILike = async () => {
+  //   await axios
+  //     .get(`https://earth-mas.shop/server/market/findmylike`, {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     })
+  //     .then(res => {
+  //       // console.log('like Data :', res.data);
+  //       findLike(res.data);
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // };
+
+  const findLike = (ItemsLike: IMarketList[]) => {
     if (props.listData) {
-      for (let i = 0; i < myLike.length; i++) {
-        if (props.listData.id === myLike[i].id) {
-          // console.log('찜한 상품: ', props.detailData.id);
+      for (let i = 0; i < ItemsLike.length; i++) {
+        if (props.listData.id === ItemsLike[i].id) {
+          // console.log('찜한 상품: ', ItemsLike[i].id);
           setLikeActive(true);
           break;
         }
@@ -43,47 +66,64 @@ export default function MarketCard(props: IMarketCardProps) {
       }
     }
   };
-
-  const getItemsILike = async () => {
-    await axios
-      .get(`https://earth-mas.shop/server/market/findmylike`, {
+  const { data } = useQuery(
+    ['getItemsLike'],
+    async () => {
+      const result = await axios.get(`${marketRoute}/findmylike`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      })
-      .then(res => {
-        // console.log('like Data :', res.data);
-        findLike(res.data);
-      })
-      .catch(error => {
-        console.log(error);
       });
-  };
+      return result.data;
+    },
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: res => {
+        findLike(res);
+      },
+      onError: error => {
+        console.log(error);
+      },
+    },
+  );
 
   const onClickPostLike = async () => {
     const variables = {
-      id: props.listData?.id,
+      id: props.listData.id,
     };
+    postLike({ variables });
     // console.log(variables);
-    await axios
-      .post(`https://earth-mas.shop/server/market/like`, variables, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then(res => {
-        alert('찜');
-        console.log(res);
-        setLikeActive(res.data.isLike ? true : false);
-      })
-      .catch(error => {
-        console.log(error);
-        alert('로그인이 필요한 서비스입니다');
-      });
+    // await axios
+    //   .post(`https://earth-mas.shop/server/market/like`, variables, {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   })
+    //   .then(res => {
+    //     alert('찜');
+    //     console.log(res);
+    //     setLikeActive(res.data.isLike ? true : false);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     alert('로그인이 필요한 서비스입니다');
+    //   });
   };
 
+  const { mutate: postLike } = useMutation(async (id: IVariables) => {
+    // const variables = {
+    //   id: props.listData.id,
+    // };
+    const result = await axios.post(`${marketRoute}1/like`, id, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    console.log(result);
+  });
+
   useEffect(() => {
-    getItemsILike();
+    // getItemsILike();
   }, [likeActive]);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -100,7 +140,7 @@ export default function MarketCard(props: IMarketCardProps) {
 
   return (
     <S.Wrap>
-      {isEditOpen && (
+      {/* {isEditOpen && (
         <Modal>
           <ContentModal
             onClickCancel={toggleEditModal}
@@ -108,6 +148,7 @@ export default function MarketCard(props: IMarketCardProps) {
               <ReviewNew
                 onClickCancel={toggleEditModal}
                 marketData={marketData}
+                reviewId={props.listData?.id}
               />
             }
           />
@@ -118,7 +159,7 @@ export default function MarketCard(props: IMarketCardProps) {
         color="main"
         content=""
         onClick={toggleEditModal}
-      />
+      /> */}
       <div className="image-box">
         <div className="like" onClick={onClickPostLike}>
           {likeActive ? <HeartRedIcon /> : <HeartWhiteIcon />}
