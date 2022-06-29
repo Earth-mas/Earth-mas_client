@@ -13,26 +13,28 @@ import ReviewNew from '../new/ReviewNew.container';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
-import { QueryClient, useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { marketReviewRoute } from 'utils/APIRoutes';
+import { useParams } from 'react-router-dom';
 interface IReviewDetailProps {
   reviewsData: IMarketReviewDetail;
+  refetch: any;
 }
 
-interface IReviewMarketData {
-  id: string;
-  title: string;
-  minidescription: string;
-  url: string;
-}
+// interface IReviewMarketData {
+//   id: string;
+//   title: string;
+//   minidescription: string;
+//   url: string;
+// }
 
 export default function ReviewDetail(props: IReviewDetailProps) {
   const userInfo = useRecoilValue(userState);
-  const [marketData, setMarketData] = useState<IReviewMarketData>();
+  // const [marketData, setMarketData] = useState<IReviewMarketData>();
   // const [reviewData, setReviewData] = useState<IMarketReviewDetail>();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const queryClient = new QueryClient();
+  const { id } = useParams();
 
   const toggleDeleteModal = () => {
     setIsDeleteOpen(prev => !prev);
@@ -42,67 +44,30 @@ export default function ReviewDetail(props: IReviewDetailProps) {
     setIsEditOpen(prev => !prev);
   };
 
-  const { data: reviewData } = useQuery(
-    'getReview',
-    async () =>
-      await axios
-        .get(`${marketReviewRoute}/${props.reviewsData?.id}`)
-        .then(res => {
-          return res.data;
-        })
-        .catch(error => {
-          console.log(error);
-        }),
-    {
-      onSuccess: res => {
-        setMarketData({
-          id: res.market.id,
-          title: res.market.title,
-          minidescription: res.market.minidescription,
-          url: res.market.url,
-        });
-      },
-    },
-  );
-
-  // const deleteReview = async () => {
-  //   await axios
-  //     .delete(
-  //       `https://earth-mas.shop/server/marketreview/${props.reviewsData.id}`,
-  //     )
-  //     .then(res => {
-  //       console.log(res);
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // };
+  const marketData = {
+    id: props.reviewsData.market.id,
+    title: props.reviewsData.market.title,
+    minidescription: props.reviewsData.market.minidescription,
+    url: props.reviewsData.market.url,
+  };
 
   const { mutate: deleteReview } = useMutation(
     async () => {
-      await axios
-        .delete(`${marketReviewRoute}/${props.reviewsData.id}`)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      const result = await axios.delete(
+        `${marketReviewRoute}/${props.reviewsData.id}`,
+      );
+      return result.data;
     },
     {
       onSuccess: () => {
-        // postTodo가 성공하면 todos로 맵핑된 useQuery api 함수를 실행합니다.
-        console.log('삭제성공');
         setIsDeleteOpen(false);
-        queryClient.invalidateQueries('getReviews');
+        props.refetch();
+      },
+      onError: error => {
+        console.log(error);
       },
     },
   );
-
-  useEffect(() => {
-    // console.log(props.reviewsData);
-  }, [props.reviewsData]);
 
   return (
     <S.Wrap>
@@ -125,7 +90,8 @@ export default function ReviewDetail(props: IReviewDetailProps) {
             children={
               <ReviewNew
                 onClickCancel={toggleEditModal}
-                reviewData={reviewData}
+                // reviewData={reviewData}
+                reviewId={props.reviewsData?.id}
                 marketData={marketData}
               />
             }

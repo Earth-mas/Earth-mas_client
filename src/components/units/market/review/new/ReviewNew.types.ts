@@ -1,15 +1,16 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch } from 'react';
 import { SubmitHandler, UseFormHandleSubmit } from 'react-hook-form/dist/types';
 import { IMarketReviewDetail } from '../detail/ReviewDetail.types';
 export interface IReviewNewProps {
   onClickCancel: () => void;
   reviewData?: IMarketReviewDetail;
-  marketData?: {
+  marketData: {
     id: string;
     title: string;
     minidescription: string;
     url?: string;
   };
+  reviewId?: string;
 }
 
 export interface FormReviewValues {

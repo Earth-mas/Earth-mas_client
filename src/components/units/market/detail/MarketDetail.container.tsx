@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { MouseEvent, Suspense, useEffect, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as S from './MarketDetail.styles';
-import { IMarketDetail } from './MarketDetail.types';
+// import { IMarketDetail } from './MarketDetail.types';
 import Title01 from 'components/commons/text/title/Title01';
 import DetailOverview from './overview/DetailOverview.container';
 import DetailContent from './content/DetailContent.container';
@@ -22,16 +22,17 @@ export default function MarketDetail() {
   };
 
   const { data: detailData } = useQuery(
-    'getItem',
-    async () =>
-      await axios
-        .get(`${marketRoute}/${params.id}`)
-        .then(res => {
-          return res.data;
-        })
-        .catch(error => {
-          console.log(error);
-        }),
+    ['getItem'],
+    async () => {
+      const result = await axios.get(`${marketRoute}/${params.id}`);
+      return result.data;
+    },
+    {
+      refetchOnWindowFocus: false,
+      onError: error => {
+        console.log(error);
+      },
+    },
   );
 
   const tabMenu = [
@@ -39,12 +40,6 @@ export default function MarketDetail() {
     { id: 'review', name: `리뷰 (${detailData?.reviewpeople})` },
     { id: 'delivery', name: '배송 및 교환' },
   ];
-
-  useEffect(() => {
-    // getItem();
-    // console.log(DetailData);
-    console.log('useEffect :', detailData);
-  }, [detailData]);
 
   return (
     <S.Wrap>
