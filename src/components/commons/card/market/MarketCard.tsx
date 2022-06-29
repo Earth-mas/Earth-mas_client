@@ -66,7 +66,7 @@ export default function MarketCard(props: IMarketCardProps) {
       }
     }
   };
-  const { data } = useQuery(
+  const { data, refetch: getItemsLike } = useQuery(
     ['getItemsLike'],
     async () => {
       const result = await axios.get(`${marketRoute}/findmylike`, {
@@ -91,7 +91,7 @@ export default function MarketCard(props: IMarketCardProps) {
     const variables = {
       id: props.listData.id,
     };
-    postLike({ variables });
+    postLike(props.listData.id);
     // console.log(variables);
     // await axios
     //   .post(`https://earth-mas.shop/server/market/like`, variables, {
@@ -110,21 +110,36 @@ export default function MarketCard(props: IMarketCardProps) {
     //   });
   };
 
-  const { mutate: postLike } = useMutation(async (id: IVariables) => {
-    // const variables = {
-    //   id: props.listData.id,
-    // };
-    const result = await axios.post(`${marketRoute}1/like`, id, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+  const { mutate: postLike } = useMutation(
+    async (id: string) => {
+      // const variables = {
+      //   id: props.listData.id,
+      // };
+      const result = await axios.post(
+        `${marketRoute}/like`,
+        { id },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      return result.data;
+    },
+    {
+      onSuccess: res => {
+        // console.log(res);
+        return setLikeActive(res.isLike ? true : false);
       },
-    });
-    console.log(result);
-  });
+      onError: error => {
+        console.log(error);
+      },
+    },
+  );
 
   useEffect(() => {
-    // getItemsILike();
-  }, [likeActive]);
+    getItemsLike();
+  }, [likeActive, !likeActive]);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const toggleEditModal = () => {
@@ -162,7 +177,8 @@ export default function MarketCard(props: IMarketCardProps) {
       /> */}
       <div className="image-box">
         <div className="like" onClick={onClickPostLike}>
-          {likeActive ? <HeartRedIcon /> : <HeartWhiteIcon />}
+          {likeActive && <HeartRedIcon />}
+          {!likeActive && <HeartWhiteIcon />}
         </div>
         <Link to={`/market/${props.listData.id}`} id={props.listData.id}>
           <img
