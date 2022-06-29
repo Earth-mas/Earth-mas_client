@@ -10,36 +10,38 @@ import { IMarketDetail } from '../detail/MarketDetail.types';
 import * as S from './MarketPayment.styles';
 import { IRsp } from './MarketPayment.types';
 import MarketComplete from './PaymentComplete';
+import { useMutation, useQuery } from 'react-query';
+import { marketRoute, marketTransactionRoute } from 'utils/APIRoutes';
 
 export default function MarketPayment() {
   const accessToken = store.get('accessToken');
   const userInfo = useRecoilValue(userState);
   const { id } = useParams();
-  const [detailData, setDetailData] = useState<IMarketDetail>();
   const [payAmount, setPayAmount] = useState(0);
   const [complete, setComplete] = useState(false);
   const [completeData, setCompleteData] = useState({ title: '', amount: 0 });
 
-  const getItem = async () => {
-    await axios
-      .get(`https://earth-mas.shop/server/market/${id}`)
-      .then(res => {
-        setDetailData(res.data);
-        // console.log(res.data);
-      })
-      .catch(error => {
+  const { data: detailData } = useQuery(
+    ['getItem'],
+    async () => {
+      const result = await axios.get(`${marketRoute}/${id}`);
+      return result.data;
+    },
+    {
+      refetchOnWindowFocus: false,
+      onError: error => {
         console.log(error);
-      });
-  };
+      },
+    },
+  );
 
-  const marketTransaction = async (rsp: IRsp) => {
-    await axios
-      .post(
-        `https://earth-mas.shop/server/markettransaction/create`,
+  const { mutate: marketTransaction } = useMutation(
+    async (rsp: IRsp) => {
+      const result = await axios.post(
+        `${marketTransactionRoute}/create`,
         {
           impUid: rsp.imp_uid,
           amount: payAmount + 3000,
-          // amount: 100,
           marketnumber: 1,
           marketid: id,
         },
@@ -48,21 +50,21 @@ export default function MarketPayment() {
             Authorization: `Bearer ${accessToken}`,
           },
         },
-      )
-      .then(res => {
-        console.log(res);
-        if (res.data.status === 'PAYMENT') {
+      );
+      return result.data;
+    },
+    {
+      onSuccess: res => {
+        if (res.status === 'PAYMENT') {
           setComplete(true);
           setCompleteData({
-            title: res.data.market.title,
-            amount: res.data.market.amount,
+            title: res.market.title,
+            amount: Number(res.market.amount) + 3000,
           });
         }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+      },
+    },
+  );
 
   const onClickPayment = () => {
     const IMP: any = window.IMP;
@@ -75,7 +77,6 @@ export default function MarketPayment() {
         pay_method: 'card',
         name: '얼스마스',
         amount: payAmount + 3000,
-        // amount: 100,
         buyer_email: userInfo.email,
         buyer_name: userInfo.name,
         buyer_tel: userInfo.phone,
@@ -85,26 +86,20 @@ export default function MarketPayment() {
       async (rsp: IRsp) => {
         console.log(rsp);
         if (rsp.success) {
-          // 결제 성공 시 로직,
-          // console.log(rsp.imp_uid);
           try {
-            // alert('결제시도');
-            // console.log(rsp);
             marketTransaction(rsp);
           } catch (error) {
             console.log(error);
           }
         } else {
-          // 결제 실패 시 로직,
           console.log('결제 실패');
+          location.reload();
         }
       },
     );
   };
 
   useEffect(() => {
-    getItem();
-
     const jquery = document.createElement('script');
     jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
     const iamport = document.createElement('script');
@@ -118,6 +113,7 @@ export default function MarketPayment() {
   }, []);
 
   useEffect(() => {
+    console.log(detailData);
     if (detailData) setPayAmount(detailData?.amount);
   }, [detailData]);
 
@@ -167,31 +163,29 @@ export default function MarketPayment() {
                 </p>
               </div>
 
-              <form
-                className="payment"
-                // onSubmit={onClickPayment}
-              >
+              <form className="payment" onSubmit={onClickPayment}>
                 <div className="contents">
                   <div className="inputWrap">
-                    <label className="checkbox">
-                      <input type="checkbox" required />
-                      <span className="checkbox-icon" />
+                    <label>
+                      <input type="checkbox" required />위 상품의 판매조건을
+                      명확히 확인하였으며, <br />
+                      구매 진행에 동의합니다. (전자상거래법 제8조 2항)
                     </label>
-                    <span className="checkbox-text">
+                    {/* <label className="checkbox">
+                      <input type="checkbox" name="check" required />
+                      <span className="checkbox-icon" />
+                    </label> */}
+                    {/* <span className="checkbox-text">
                       위 상품의 판매조건을 명확히 확인하였으며, 구매 진행에
                       동의합니다. (전자상거래법 제8조 2항)
-                    </span>
+                    </span> */}
                   </div>
                   <div className="rowGrid">
                     <p>총 결제 금액</p>
-                    {detailData && (
-                      <p>{getMoney(detailData?.amount + 3000)}원</p>
-                    )}
+                    {<p>{getMoney(detailData?.amount + 3000)}원</p>}
                   </div>
                 </div>
-                <button type="button" onClick={onClickPayment}>
-                  결제하기
-                </button>
+                <button type="submit">결제하기</button>
               </form>
             </div>
           </S.Bottom>

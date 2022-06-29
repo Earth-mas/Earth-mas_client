@@ -10,7 +10,6 @@ import Upload01Copy from 'components/commons/upload/01/Upload01.copy';
 import { IMarketNewUIProps } from './MarketNew.types';
 
 export default function MarketNewUI(props: IMarketNewUIProps) {
-  // console.log(props.itemData?.url);
   return (
     <Wrap>
       <Title01

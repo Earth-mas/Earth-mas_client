@@ -7,7 +7,7 @@ import {
 import * as S from './MarketCard.styles';
 import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
 import { Link } from 'react-router-dom';
-import { IMarketCard } from './MarketCard.types';
+import { IMarketCard, IMarketCardProps } from './MarketCard.types';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import store from 'storejs';
@@ -21,15 +21,6 @@ import ContainedButton02 from 'components/commons/button/contained/ContainedButt
 import { useMutation, useQuery } from 'react-query';
 import { marketRoute } from 'utils/APIRoutes';
 
-interface IMarketCardProps {
-  listData: IMarketCard;
-}
-interface IVariables {
-  variables: {
-    id: string;
-  };
-}
-
 export default function MarketCard(props: IMarketCardProps) {
   const accessToken = store.get('accessToken');
   const [likeActive, setLikeActive] = useState<boolean>();
@@ -38,27 +29,10 @@ export default function MarketCard(props: IMarketCardProps) {
     event.currentTarget.src = logo;
   };
 
-  // const getItemsILike = async () => {
-  //   await axios
-  //     .get(`https://earth-mas.shop/server/market/findmylike`, {
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     })
-  //     .then(res => {
-  //       // console.log('like Data :', res.data);
-  //       findLike(res.data);
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // };
-
   const findLike = (ItemsLike: IMarketList[]) => {
     if (props.listData) {
       for (let i = 0; i < ItemsLike.length; i++) {
         if (props.listData.id === ItemsLike[i].id) {
-          // console.log('찜한 상품: ', ItemsLike[i].id);
           setLikeActive(true);
           break;
         }
@@ -87,34 +61,12 @@ export default function MarketCard(props: IMarketCardProps) {
     },
   );
 
-  const onClickPostLike = async () => {
-    const variables = {
-      id: props.listData.id,
-    };
+  const onClickPostLike = () => {
     postLike(props.listData.id);
-    // console.log(variables);
-    // await axios
-    //   .post(`https://earth-mas.shop/server/market/like`, variables, {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //   })
-    //   .then(res => {
-    //     alert('찜');
-    //     console.log(res);
-    //     setLikeActive(res.data.isLike ? true : false);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     alert('로그인이 필요한 서비스입니다');
-    //   });
   };
 
   const { mutate: postLike } = useMutation(
     async (id: string) => {
-      // const variables = {
-      //   id: props.listData.id,
-      // };
       const result = await axios.post(
         `${marketRoute}/like`,
         { id },
@@ -128,8 +80,8 @@ export default function MarketCard(props: IMarketCardProps) {
     },
     {
       onSuccess: res => {
-        // console.log(res);
-        return setLikeActive(res.isLike ? true : false);
+        res.islike ? alert('찜') : alert('찜 취소');
+        getItemsLike();
       },
       onError: error => {
         console.log(error);
@@ -137,11 +89,8 @@ export default function MarketCard(props: IMarketCardProps) {
     },
   );
 
-  useEffect(() => {
-    getItemsLike();
-  }, [likeActive, !likeActive]);
-
   const [isEditOpen, setIsEditOpen] = useState(false);
+
   const toggleEditModal = () => {
     setIsEditOpen(prev => !prev);
   };
@@ -155,7 +104,7 @@ export default function MarketCard(props: IMarketCardProps) {
 
   return (
     <S.Wrap>
-      {/* {isEditOpen && (
+      {isEditOpen && (
         <Modal>
           <ContentModal
             onClickCancel={toggleEditModal}
@@ -164,6 +113,7 @@ export default function MarketCard(props: IMarketCardProps) {
                 onClickCancel={toggleEditModal}
                 marketData={marketData}
                 reviewId={props.listData?.id}
+                toggleEditModal={toggleEditModal}
               />
             }
           />
@@ -174,7 +124,7 @@ export default function MarketCard(props: IMarketCardProps) {
         color="main"
         content=""
         onClick={toggleEditModal}
-      /> */}
+      />
       <div className="image-box">
         <div className="like" onClick={onClickPostLike}>
           {likeActive && <HeartRedIcon />}

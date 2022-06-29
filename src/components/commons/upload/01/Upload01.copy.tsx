@@ -4,7 +4,6 @@ import { ChangeEvent, Dispatch, useEffect, useState } from 'react';
 import { Colors } from 'styles/Colors';
 import * as S from './Upload01.styles';
 import { ImageIcon, XbuttonIcon } from 'assets/svgs';
-import { v4 as uuid4 } from 'uuid';
 interface IUpload01Props {
   page: 'market' | 'activity' | 'support' | 'user';
   fetchData?: string[];
@@ -52,7 +51,6 @@ export default function Upload01Copy(props: IUpload01Props) {
     temp.splice(index, 1);
     setUrls(temp);
     props.setUrlString(temp.toString());
-    // console.log(temp.toString());
   };
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const onDragEnd = (result: any) => {
@@ -87,34 +85,31 @@ export default function Upload01Copy(props: IUpload01Props) {
           {provided => (
             <>
               <ul {...provided.droppableProps} ref={provided.innerRef}>
-                {
-                  // urls[0] &&
-                  urls.map((el, index) => (
-                    <Draggable draggableId={uuid4()} index={index} key={el}>
-                      {provided => (
-                        <li>
-                          <S.ImageWrap
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <S.XButton onClick={onClickDelete(index)}>
-                              <XbuttonIcon />
-                            </S.XButton>
-                            <S.Image>
-                              {index === 0 && (
-                                <S.Text>
-                                  <span>대표사진</span>
-                                </S.Text>
-                              )}
-                              <img src={el} />
-                            </S.Image>
-                          </S.ImageWrap>
-                        </li>
-                      )}
-                    </Draggable>
-                  ))
-                }
+                {urls.map((el, index) => (
+                  <Draggable draggableId={el} index={index} key={el}>
+                    {provided => (
+                      <li>
+                        <S.ImageWrap
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <S.XButton onClick={onClickDelete(index)}>
+                            <XbuttonIcon />
+                          </S.XButton>
+                          <S.Image>
+                            {index === 0 && (
+                              <S.Text>
+                                <span>대표사진</span>
+                              </S.Text>
+                            )}
+                            <img src={el} />
+                          </S.Image>
+                        </S.ImageWrap>
+                      </li>
+                    )}
+                  </Draggable>
+                ))}
               </ul>
               <span style={{ display: 'none' }}>{provided.placeholder}</span>
             </>

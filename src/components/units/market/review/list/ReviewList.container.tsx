@@ -30,7 +30,6 @@ export default function ReviewList(props: IMarketReviewListProps) {
       return result.data;
     },
     {
-      //refetchOnWindowFocus: false
       onError: error => {
         console.log(error);
       },

@@ -4,8 +4,9 @@ import { useForm } from 'react-hook-form';
 import { FormReviewValues, IReviewNewProps } from './ReviewNew.types';
 import ReviewNewUI from './ReviewNew.presenter';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { marketReviewRoute } from 'utils/APIRoutes';
+import { useNavigate } from 'react-router-dom';
 
 export interface IReviewMarketData {
   id: string;
@@ -17,6 +18,7 @@ export default function ReviewNew(props: IReviewNewProps) {
   const accessToken = store.get('accessToken');
   const { register, handleSubmit } = useForm<FormReviewValues>();
   const [urlString, setUrlString] = useState('');
+  const navigate = useNavigate();
   // const [marketData, setMarketData] = useState<IReviewMarketData>();
 
   const { data: reviewData } = useQuery(
@@ -49,20 +51,27 @@ export default function ReviewNew(props: IReviewNewProps) {
       url: urlString,
       market: props.marketData.id,
     };
-    // console.log('리뷰 등록 :', variables);
-    await axios
-      .post(`https://earth-mas.shop/server/marketreview/ `, variables, {
+    newReview(variables);
+  };
+
+  const { mutate: newReview } = useMutation(
+    async (variables: FormReviewValues) => {
+      return await axios.post(`${marketReviewRoute}`, variables, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      })
-      .then(res => {
-        console.log('응답', res);
-      })
-      .catch(error => {
-        console.log(error);
       });
-  };
+    },
+    {
+      onSuccess: res => {
+        props.toggleEditModal();
+        navigate(`/market/${res.data.market}`);
+      },
+      onError: error => {
+        console.log(error);
+      },
+    },
+  );
 
   const onClickPutReview = async (data: FormReviewValues) => {
     const updateVariables: FormReviewValues = {
@@ -74,25 +83,29 @@ export default function ReviewNew(props: IReviewNewProps) {
     if (data.contents) updateVariables.contents = data.contents;
     if (data.score) updateVariables.score = Number(data.score);
     if (urlString) updateVariables.url = urlString;
+    // console.log('리뷰 수정 :', updateVariables);
+    updateReview(updateVariables);
+  };
 
-    console.log('리뷰 수정 :', updateVariables);
-    await axios
-      .put(
-        `https://earth-mas.shop/server/marketreview/${reviewData.id} `,
-        updateVariables,
+  const { mutate: updateReview } = useMutation(
+    async (variables: FormReviewValues) => {
+      return await axios.put(
+        `${marketReviewRoute}/${reviewData.id} `,
+        variables,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         },
-      )
-      .then(res => {
-        console.log('응답', res);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+      );
+    },
+    {
+      onSuccess: () => {
+        props.toggleEditModal();
+        props.refetch();
+      },
+    },
+  );
 
   return (
     <ReviewNewUI

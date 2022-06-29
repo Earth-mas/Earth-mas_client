@@ -12,7 +12,7 @@ import { useQuery } from 'react-query';
 import { marketRoute } from 'utils/APIRoutes';
 
 export default function MarketDetail() {
-  const params = useParams();
+  const { id } = useParams();
   const [nowTab, setNowTab] = useState('content');
   // const [detailData, setDetailData] = useState<IMarketDetail>();
 
@@ -24,7 +24,7 @@ export default function MarketDetail() {
   const { data: detailData } = useQuery(
     ['getItem'],
     async () => {
-      const result = await axios.get(`${marketRoute}/${params.id}`);
+      const result = await axios.get(`${marketRoute}/${id}`);
       return result.data;
     },
     {
