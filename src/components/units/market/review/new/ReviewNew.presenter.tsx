@@ -55,7 +55,7 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
             page="marketreview"
             urlString={props.urlString}
             setUrlString={props.setUrlString}
-            fetchData={reviewData ? reviewData?.url.split(',') : []}
+            fetchData={reviewData?.url ? reviewData?.url.split(',') : []}
           />
         </div>
         <div className="input-wrap">

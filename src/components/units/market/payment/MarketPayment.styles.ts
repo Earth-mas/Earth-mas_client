@@ -140,8 +140,14 @@ export const Bottom = styled.div`
           display: flex;
           /* align-items: center; */
           position: relative;
-
-          .checkbox input {
+          > label {
+            display: flex;
+            align-items: center;
+            input {
+              margin-right: 5px;
+            }
+          }
+          /* .checkbox input {
             display: none;
           }
           .checkbox-text {
@@ -178,7 +184,7 @@ export const Bottom = styled.div`
             border-style: solid;
             border-color: ${Colors.MAIN};
             transform: rotate(45deg);
-          }
+          } */
         }
 
         .rowGrid {

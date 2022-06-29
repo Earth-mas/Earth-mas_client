@@ -11,6 +11,8 @@ export interface IReviewNewProps {
     url?: string;
   };
   reviewId?: string;
+  toggleEditModal: () => void;
+  refetch?: any;
 }
 
 export interface FormReviewValues {

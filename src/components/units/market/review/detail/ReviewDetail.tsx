@@ -93,14 +93,18 @@ export default function ReviewDetail(props: IReviewDetailProps) {
                 // reviewData={reviewData}
                 reviewId={props.reviewsData?.id}
                 marketData={marketData}
+                toggleEditModal={toggleEditModal}
+                refetch={props.refetch}
               />
             }
           />
         </Modal>
       )}
       <div className="user">
-        <Avatar />
-        <p>{props.reviewsData?.user?.name}</p>
+        <div>
+          <img src={props.reviewsData?.user.url} />
+        </div>
+        <p>{props.reviewsData?.user.name}</p>
       </div>
       <div className="review">
         <div>
