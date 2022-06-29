@@ -31,6 +31,7 @@ export default function MarketCard(props: IMarketCardProps) {
 
   const findLike = (ItemsLike: IMarketList[]) => {
     if (props.listData) {
+      if (ItemsLike.length === 0) return setLikeActive(false);
       for (let i = 0; i < ItemsLike.length; i++) {
         if (props.listData.id === ItemsLike[i].id) {
           setLikeActive(true);
@@ -54,9 +55,6 @@ export default function MarketCard(props: IMarketCardProps) {
       refetchOnWindowFocus: false,
       onSuccess: res => {
         findLike(res);
-      },
-      onError: error => {
-        console.log(error);
       },
     },
   );
@@ -83,28 +81,25 @@ export default function MarketCard(props: IMarketCardProps) {
         res.islike ? alert('찜') : alert('찜 취소');
         getItemsLike();
       },
-      onError: error => {
-        console.log(error);
-      },
     },
   );
 
-  const [isEditOpen, setIsEditOpen] = useState(false);
+  // const [isEditOpen, setIsEditOpen] = useState(false);
 
-  const toggleEditModal = () => {
-    setIsEditOpen(prev => !prev);
-  };
+  // const toggleEditModal = () => {
+  //   setIsEditOpen(prev => !prev);
+  // };
 
-  const marketData = {
-    id: props.listData.id,
-    title: props.listData.title,
-    minidescription: props.listData.minidescription,
-    url: props.listData.url,
-  };
+  // const marketData = {
+  //   id: props.listData.id,
+  //   title: props.listData.title,
+  //   minidescription: props.listData.minidescription,
+  //   url: props.listData.url,
+  // };
 
   return (
     <S.Wrap>
-      {isEditOpen && (
+      {/* {isEditOpen && (
         <Modal>
           <ContentModal
             onClickCancel={toggleEditModal}
@@ -124,7 +119,7 @@ export default function MarketCard(props: IMarketCardProps) {
         color="main"
         content=""
         onClick={toggleEditModal}
-      />
+      /> */}
       <div className="image-box">
         <div className="like" onClick={onClickPostLike}>
           {likeActive && <HeartRedIcon />}

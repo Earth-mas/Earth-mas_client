@@ -9,7 +9,6 @@ import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import { marketReviewRoute } from 'utils/APIRoutes';
 import { v4 as uuid4 } from 'uuid';
-import { IMarketDetailReview } from '../../detail/MarketDetail.types';
 import ReviewDetail from '../detail/ReviewDetail';
 import { IMarketReviewDetail } from '../detail/ReviewDetail.types';
 
@@ -29,11 +28,7 @@ export default function ReviewList(props: IMarketReviewListProps) {
       });
       return result.data;
     },
-    {
-      onError: error => {
-        console.log(error);
-      },
-    },
+    {},
   );
 
   return (

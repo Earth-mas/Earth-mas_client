@@ -1,4 +1,3 @@
-import { Avatar } from 'assets/svgs';
 import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
@@ -7,7 +6,7 @@ import { v4 as uuid4 } from 'uuid';
 import { IMarketReviewDetail } from './ReviewDetail.types';
 import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
 import Modal from 'components/commons/modal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ContentModal from 'components/commons/modal/contentModal/contentModal';
 import ReviewNew from '../new/ReviewNew.container';
 import { useRecoilValue } from 'recoil';
@@ -15,7 +14,7 @@ import { userState } from 'recoil/user';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
 import { useMutation } from 'react-query';
 import { marketReviewRoute } from 'utils/APIRoutes';
-import { useParams } from 'react-router-dom';
+
 interface IReviewDetailProps {
   reviewsData: IMarketReviewDetail;
   refetch: any;
@@ -30,11 +29,8 @@ interface IReviewDetailProps {
 
 export default function ReviewDetail(props: IReviewDetailProps) {
   const userInfo = useRecoilValue(userState);
-  // const [marketData, setMarketData] = useState<IReviewMarketData>();
-  // const [reviewData, setReviewData] = useState<IMarketReviewDetail>();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const { id } = useParams();
 
   const toggleDeleteModal = () => {
     setIsDeleteOpen(prev => !prev);
@@ -63,9 +59,6 @@ export default function ReviewDetail(props: IReviewDetailProps) {
         setIsDeleteOpen(false);
         props.refetch();
       },
-      onError: error => {
-        console.log(error);
-      },
     },
   );
 
@@ -90,7 +83,6 @@ export default function ReviewDetail(props: IReviewDetailProps) {
             children={
               <ReviewNew
                 onClickCancel={toggleEditModal}
-                // reviewData={reviewData}
                 reviewId={props.reviewsData?.id}
                 marketData={marketData}
                 toggleEditModal={toggleEditModal}

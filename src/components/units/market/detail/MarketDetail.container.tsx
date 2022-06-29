@@ -29,9 +29,6 @@ export default function MarketDetail() {
     },
     {
       refetchOnWindowFocus: false,
-      onError: error => {
-        console.log(error);
-      },
     },
   );
 
