@@ -1,9 +1,8 @@
-import styled from '@emotion/styled';
 import { useState, useRef } from 'react';
-import { Colors } from 'styles/Colors';
-import { FontFamily, FontSize } from 'styles/FontStyles';
+import { InputWrapper } from './Chat.styles';
+import { ChatInputProps } from './Chat.types';
 
-export const ChatInput = (props: any) => {
+export const ChatInput = (props: ChatInputProps) => {
   const [chatMsg, setChatMsg] = useState('');
 
   const inputRef = useRef<any>(null);
@@ -13,7 +12,6 @@ export const ChatInput = (props: any) => {
     message += emoji.emoji;
     setChatMsg(message);
   }; */ // 이모지삽입
-  // console.log(props.data?.data[0]?.user2?.name);
 
   const sendChat = (event: any) => {
     event.preventDefault();
@@ -27,14 +25,8 @@ export const ChatInput = (props: any) => {
     }
   };
 
-  /* const onCheckEnter = e => {
-    if (e.key === 'Enter') {
-      // onSignup()
-    }
-  }; */
-
   return (
-    <Wrapper
+    <InputWrapper
       onKeyPress={e => {
         if (e.key === 'Enter') {
           sendChat(e);
@@ -54,51 +46,6 @@ export const ChatInput = (props: any) => {
         </p>
         <button type="submit">전송</button>
       </div>
-    </Wrapper>
+    </InputWrapper>
   );
 };
-
-const Wrapper = styled.form`
-  width: 100%;
-  height: 100px;
-  border: 1.5px solid ${Colors.MAIN};
-  border-radius: 10px;
-  padding: 10px;
-
-  textarea {
-    width: 100%;
-    height: calc(100% - 28px);
-    border: 0;
-    ::placeholder {
-      color: ${Colors.B60};
-      font-size: ${FontSize.SMALL};
-    }
-  }
-  > div {
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    p {
-      font-size: 0.75rem;
-      margin-right: 8px;
-      span {
-        color: ${Colors.SUB1};
-      }
-    }
-    button {
-      width: 55px;
-      min-height: 25px;
-      height: 25px;
-      font-family: ${FontFamily.BOLD};
-      font-size: ${FontSize.SMALL};
-      color: ${Colors.BW};
-      background-color: ${Colors.B40};
-      border-radius: 8px;
-
-      :hover {
-        background-color: ${Colors.SUB2};
-      }
-    }
-  }
-`;

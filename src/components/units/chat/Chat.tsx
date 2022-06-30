@@ -1,12 +1,12 @@
 import { ChatContainer } from './ChatContainer';
 import { ChatList } from './ChatList';
-import { LeftContainer, RightContainer, Wrapper } from './Chat.styles';
+import { ChatWrapper, LeftContainer, RightContainer } from './Chat.styles';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
 import { chat } from 'utils/APIRoutes';
-import io from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { BeforeChat } from './BeforeChat';
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
@@ -22,30 +22,7 @@ export const Chat = () => {
   const [roomid, setRoomid] = useState('');
 
   const queryClient = useQueryClient();
-  const socketRef = useRef<any>();
-
-  useEffect(() => {
-    if (!localStorage.getItem('accessToken')) {
-      alert('로그인을 해주세요');
-      navigate('/');
-    } else {
-      setCurrentUser(userInfo);
-    }
-
-    mutate();
-  }, []);
-
-  useEffect(() => {
-    if (currentUser) {
-      socketRef.current = io(`${chat}`, {
-        upgrade: false,
-      });
-      socketRef.current.emit('userconnection', {
-        roomid: currentChat?.id,
-        userid: userInfo.id,
-      });
-    }
-  }, [currentUser]);
+  const socketRef = useRef<any>(null);
 
   const { data: chatUserList, mutate } = useMutation(
     'findmychat',
@@ -56,7 +33,7 @@ export const Chat = () => {
     },
     {
       onSuccess: res => {
-        console.log(res);
+        // console.log(res);
         queryClient.invalidateQueries('finduser', { refetchInactive: true });
       },
       onError: err => {
@@ -81,7 +58,7 @@ export const Chat = () => {
     },
     {
       onSuccess: res => {
-        console.log(res);
+        // console.log(res);
         queryClient.invalidateQueries('findmychat', { refetchInactive: true });
       },
       onError: err => {
@@ -90,9 +67,37 @@ export const Chat = () => {
     },
   );
 
+  /* console.log(userInfo.id);
+  console.log(userInfo); */
+
+  useEffect(() => {
+    if (!localStorage.getItem('accessToken')) {
+      alert('로그인을 해주세요');
+      navigate('/');
+    } else {
+      if (userInfo.id.length > 0) return setCurrentUser(userInfo);
+    }
+
+    mutate();
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (currentUser) {
+      socketRef.current = io(`${chat}`, {
+        upgrade: false,
+      });
+      socketRef.current.emit('userconnection', {
+        roomid: currentChat?.id,
+        userid: userInfo.id,
+      });
+    }
+  }, [currentChat]);
+
+  // console.log(currentUser);
+
   return (
     <>
-      <Wrapper>
+      <ChatWrapper>
         <LeftContainer>
           <div className="user">
             <div className="userImg">
@@ -140,7 +145,7 @@ export const Chat = () => {
             </>
           )}
         </RightContainer>
-      </Wrapper>
+      </ChatWrapper>
     </>
   );
 };
