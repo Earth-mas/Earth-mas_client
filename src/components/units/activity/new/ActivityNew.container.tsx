@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { ActivityDetail } from '../detail/ActivityDetail.container';
+import { url } from 'inspector';
 
 export interface FormValues {
   title?: string;
@@ -15,7 +16,7 @@ export interface FormValues {
   location?: string;
   subdescription?: string;
   description?: string;
-  // url?: string;
+  url?: string;
   category?: string;
 }
 
@@ -49,25 +50,24 @@ export default function ActivityNew(props: IActivityNewProps) {
     });
 
   const handleChangeQuill = (value: string) => {
-    console.log(value);
     setValue('description', value === '<p><br><p>' ? '' : value);
     trigger('description');
   };
 
   const onClickSubmit = async (data: FormValues) => {
     console.log('form 데이터: ', data);
-    // if (
-    //   !data.title ||
-    //   !data.category ||
-    //   !data.dday ||
-    //   !data.location ||
-    //   !data.maxpeople ||
-    //   !data.subdescription ||
-    //   !data.url
-    // ) {
-    //   alert('내용을 입력해주세요');
-    //   return;
-    // }
+    if (
+      !data.title ||
+      !data.category ||
+      !data.dday ||
+      !data.location ||
+      !data.maxpeople ||
+      !data.subdescription ||
+      !data.url
+    ) {
+      alert('내용을 입력해주세요');
+      return;
+    }
     const variables = {
       ...data,
       maxpeople: Number(data.maxpeople),
@@ -93,10 +93,18 @@ export default function ActivityNew(props: IActivityNewProps) {
     console.log('수정할 데이터:', data);
     const updateVariables: IUpdateVariables = {
       ...props.editData,
-      maxpeople: Number(data.maxpeople),
-      category: isSelected,
-      url: urlString,
     };
+
+    if (data.title) updateVariables.title = data.title;
+    if (data.dday) updateVariables.dday = String(data.dday);
+    if (data.location) updateVariables.location = data.location;
+    if (data.maxpeople) updateVariables.maxpeople = Number(data.maxpeople);
+    if (data.subdescription)
+      updateVariables.subdescription = data.subdescription;
+    if (data.description) updateVariables.description = data.description;
+    if (data.url) updateVariables.url = data.url;
+
+    console.log('updateV :', updateVariables);
     await axios
       .put(
         `https://earth-mas.shop/server/activity/${params.id}`,
@@ -108,7 +116,7 @@ export default function ActivityNew(props: IActivityNewProps) {
         },
       )
       .then(res => {
-        console.log('res: ', res);
+        // console.log('res: ', res);
         navigate(`/activity/${res.data?.id}`);
       })
       .catch(error => {
