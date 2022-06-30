@@ -1,16 +1,10 @@
-import axios from 'axios';
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
-
-import Input01 from 'components/commons/inputs/Input01';
-import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-
-import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
-import { ErrorMsg, InputWrapper, Label, SignUpWrapper } from './SignUp.styles';
-import Blank from 'components/commons/blank/Blank';
-import PostCode from 'components/commons/daumpostcode';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import store from 'storejs';
 import useInterval from 'hooks/useInterval';
+import { emailRegex, nameRegex, passwordRegex } from './regex';
+import SignUpUI from './SignUp.presenter';
 
 export interface IPostCodeData {
   zonecode: string;
@@ -29,13 +23,6 @@ export default function SignUp() {
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const emailRegex =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-  const passwordRegex = /^[A-Za-z0-9]{6,12}$/;
-  // const phoneRegex = /^[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}$/;
-  const nameRegex = /^[\w\Wㄱ-ㅎㅏ-ㅣ가-힣]{2,20}$/;
-
   const [emailErrMsg, setEmailErrMsg] = useState<string | null>('');
   const [passwordErrMsg, setPasswordErrMsg] = useState<string | null>('');
   const [passwordErrMsg2, setPasswordErrMsg2] = useState<string | null>('');
@@ -98,7 +85,7 @@ export default function SignUp() {
     }
     setInputs({
       ...inputs,
-      [e.target.id]: e.target.value, //대괄호 안에 있는걸로 객체 key를 만듦
+      [e.target.id]: e.target.value,
     });
   };
 
@@ -117,6 +104,28 @@ export default function SignUp() {
     }
   }, 1000);
 
+  const onChangeToken = (e: ChangeEvent<HTMLInputElement>) => {
+    setPhoneToken(e.target.value);
+  };
+
+  const onClickTokenCheck = () => {
+    axios
+      .post('https://earth-mas.shop/server/user/check', {
+        phone: inputs.phone,
+        token: phoneToken,
+      })
+      .then(res => {
+        if (!res.data) {
+          alert('인증번호가 일치하지 않습니다. 다시 전송해주세요.');
+          setTime(0);
+          setIsTokenSend(false);
+          return;
+        }
+        setIsTokenValid(res.data);
+        setTime(0);
+      });
+  };
+
   const onClickSignUp = (
     e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
   ) => {
@@ -133,8 +142,7 @@ export default function SignUp() {
     }
     axios
       .post('https://earth-mas.shop/server/user', inputs)
-      .then(res => {
-        console.log(res);
+      .then(() => {
         alert('회원가입이 완료되었습니다.');
         navigate('/');
       })
@@ -143,156 +151,24 @@ export default function SignUp() {
       });
   };
 
-  const onChangeToken = (e: ChangeEvent<HTMLInputElement>) => {
-    setPhoneToken(e.target.value);
-  };
-
-  const onClickTokenCheck = () => {
-    axios
-      .post('https://earth-mas.shop/server/user/check', {
-        phone: inputs.phone,
-        token: phoneToken,
-      })
-      .then(res => {
-        if (!res.data) {
-          alert('인증번호가 일치하지 않습니다. 다시 전송해주세요.');
-          setTime(0);
-          setIsTokenSend(false);
-        }
-        setIsTokenValid(res.data);
-      });
-  };
-
   return (
-    <SignUpWrapper>
-      <h1>회원가입</h1>
-
-      <div className="socialSignUp">
-        <p>SNS계정으로 간편하게 가입하기</p>
-        <section>
-          <a href="https://earth-mas.shop/server/auth/login/google">
-            <GoogleIcon />
-          </a>
-          <a href="https://earth-mas.shop/server/auth/login/kakao">
-            <KaKaoIcon />
-          </a>
-        </section>
-      </div>
-      <form onSubmit={onClickSignUp}>
-        <Label> 이메일</Label>
-        <Input01
-          type="text"
-          onChange={onChangeInputs}
-          placeholder="이메일"
-          id="email"
-        />
-        <ErrorMsg>{emailErrMsg}</ErrorMsg>
-        <Label>비밀번호</Label>
-        <Input01
-          id="password"
-          type="password"
-          onChange={onChangeInputs}
-          placeholder="비밀번호"
-          autoComplete="false"
-        />
-        <Input01
-          id="password2"
-          type="password"
-          onChange={onChangeInputs}
-          placeholder="비밀번호 확인"
-          autoComplete="false"
-        />
-        <ErrorMsg>
-          <div>{passwordErrMsg}</div>
-          <div>{passwordErrMsg2}</div>
-        </ErrorMsg>
-        <Label>이름</Label>
-        <Input01
-          id="name"
-          type="text"
-          onChange={onChangeInputs}
-          placeholder="이름"
-        />
-        <ErrorMsg>{nameErrMsg}</ErrorMsg>
-        <Label>전화번호</Label>
-        <InputWrapper>
-          <Input01
-            id="phone"
-            type="tel"
-            onChange={onChangeInputs}
-            placeholder="숫자만 입력해주세요."
-          />
-          <button
-            type="button"
-            className="defaultButton"
-            style={{ width: 250, marginLeft: 10 }}
-            onClick={isTokenSend ? onClickTokenCheck : onClickPhoneNumber}
-          >
-            {isTokenSend ? (
-              <>
-                <p>인증번호 확인</p>
-                {min}:{sec}
-              </>
-            ) : (
-              '인증번호 발송'
-            )}
-          </button>
-        </InputWrapper>
-        {isTokenSend && (
-          <Input01
-            type="text"
-            placeholder="인증번호를 입력 후 인증번호 확인 버튼을 눌러주세요."
-            onChange={onChangeToken}
-          />
-        )}
-        <Label>주소</Label>
-        <InputWrapper>
-          <Input01
-            type="text"
-            id="addressnumber"
-            placeholder="우편번호 검색"
-            defaultValue={inputs.addressnumber}
-            disabled
-          />
-          <button
-            type="button"
-            className="defaultButton "
-            style={{ width: 250, marginLeft: 10 }}
-            onClick={() => setIsModalOpen(prev => !prev)}
-          >
-            우편번호 검색
-          </button>
-        </InputWrapper>
-        {isModalOpen && (
-          <div>
-            <PostCode handleComplete={handleComplete} />
-          </div>
-        )}
-        <Input01
-          type="text"
-          id="address1"
-          defaultValue={inputs.address1}
-          placeholder="우편번호를 검색해주세요."
-          disabled
-        />
-        <Input01
-          type="text"
-          id="address2"
-          onChange={onChangeInputs}
-          placeholder="상세주소를 입력해주세요."
-        />
-        <Blank height={15} />
-        <label>
-          <input type="checkbox" /> 이용약관과 개인정보 수집 및 이용에
-          동의합니다.
-        </label>
-        <Blank height={20} />
-        <ContainedButton01
-          color="main"
-          content="회원가입하기"
-          onClick={onClickSignUp}
-        />
-      </form>
-    </SignUpWrapper>
+    <SignUpUI
+      onClickSignUp={onClickSignUp}
+      onChangeInputs={onChangeInputs}
+      onChangeToken={onChangeToken}
+      onClickTokenCheck={onClickTokenCheck}
+      onClickPhoneNumber={onClickPhoneNumber}
+      setIsModalOpen={setIsModalOpen}
+      handleComplete={handleComplete}
+      emailErrMsg={emailErrMsg}
+      passwordErrMsg={passwordErrMsg}
+      passwordErrMsg2={passwordErrMsg2}
+      nameErrMsg={nameErrMsg}
+      isTokenSend={isTokenSend}
+      min={min}
+      sec={sec}
+      inputs={inputs}
+      isModalOpen={isModalOpen}
+    />
   );
 }

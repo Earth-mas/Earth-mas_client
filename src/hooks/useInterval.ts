@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const useInterval = (callback: any, delay: number) => {
   const savedCallback = useRef<any>(null);
 

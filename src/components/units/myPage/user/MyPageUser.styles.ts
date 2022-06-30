@@ -3,11 +3,14 @@ import { Colors } from 'styles/Colors';
 import { FontSize } from 'styles/FontStyles';
 
 export const UserWrapper = styled.div`
+  min-width: 720px;
   color: ${Colors.B100};
+
   .title {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    margin-left: 60px;
 
     h1 {
       font-size: ${FontSize.LARGE_C};
