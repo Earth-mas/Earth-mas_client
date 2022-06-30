@@ -7,7 +7,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { ActivityDetail } from '../detail/ActivityDetail.container';
-import { url } from 'inspector';
 
 export interface FormValues {
   title?: string;
