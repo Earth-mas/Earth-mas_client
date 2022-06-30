@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import { chat } from 'utils/APIRoutes';
@@ -19,15 +19,16 @@ export const ChatContainer = (props: IChatContainerProps) => {
 
   const [messages, setMessages] = useState<any>([]);
   const [arrivalMessage, setArrivalMessage] = useState({});
+  const [page, setPage] = useState(1);
 
   const { mutate } = useMutation(
-    'getchat',
+    ['getchat', page],
     () => {
       return axios.post(
         `${chat}/getchat`,
         {
           roomid: props.chatUserList?.data[Number(props.roomid)]?.id,
-          page: 1,
+          page: page,
         },
         { headers: { Authorization: `Bearer ${accessToken}` } },
       );
@@ -72,13 +73,12 @@ export const ChatContainer = (props: IChatContainerProps) => {
     window.scrollTo(0, 0);
   }, [messages]); // 메시지에 변경사항이 있을 때마다 실행
 
-  // console.log(messages);
-
   return (
-    <ContainerWrapper>
+    <>
       {props.currentChat && (
-        <>
+        <ContainerWrapper>
           <div>
+            <div ref={scrollRef}></div>
             {messages?.map((message: any) => (
               <div
                 ref={scrollRef}
@@ -95,8 +95,8 @@ export const ChatContainer = (props: IChatContainerProps) => {
             ))}
           </div>
           <ChatInput handleSendMsg={handleSendMsg} />
-        </>
+        </ContainerWrapper>
       )}
-    </ContainerWrapper>
+    </>
   );
 };

@@ -1,4 +1,5 @@
 export interface IChatListProps {
+  roomid: any;
   setRoomid: (arg0: any) => void;
   setCurrentChat: (arg0: any) => void;
   createUserId: () => void;
