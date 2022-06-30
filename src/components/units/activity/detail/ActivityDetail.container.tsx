@@ -24,7 +24,7 @@ export interface ActivityDetail {
   description: string;
   id: string;
   location: string;
-  maxpeople: number | null;
+  maxpeople: number;
   people: number;
   subdescription: string;
   title: string;
@@ -59,7 +59,7 @@ interface User {
   phone: string;
   role: string;
   updateAt: string;
-  url: string | undefined;
+  url: string;
 }
 
 interface IpropsMainImg {
@@ -173,12 +173,7 @@ export default function ActivityDetail() {
                 <text>지역</text>
                 <li>{activityData?.location}</li>
                 <text>모집인원</text>
-                <li>
-                  {activityData?.maxpeople
-                    ? Number(activityData?.maxpeople)
-                    : '나오겠냐?'}
-                  명
-                </li>
+                <li>{Number(activityData?.maxpeople)}명</li>
               </ul>
             </section>
             <section className="icon2">
