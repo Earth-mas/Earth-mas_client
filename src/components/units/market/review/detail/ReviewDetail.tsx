@@ -1,4 +1,3 @@
-import { Avatar } from 'assets/svgs';
 import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
@@ -7,32 +6,31 @@ import { v4 as uuid4 } from 'uuid';
 import { IMarketReviewDetail } from './ReviewDetail.types';
 import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
 import Modal from 'components/commons/modal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ContentModal from 'components/commons/modal/contentModal/contentModal';
 import ReviewNew from '../new/ReviewNew.container';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
-import { QueryClient, useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { marketReviewRoute } from 'utils/APIRoutes';
+
 interface IReviewDetailProps {
   reviewsData: IMarketReviewDetail;
+  refetch: any;
 }
 
-interface IReviewMarketData {
-  id: string;
-  title: string;
-  minidescription: string;
-  url: string;
-}
+// interface IReviewMarketData {
+//   id: string;
+//   title: string;
+//   minidescription: string;
+//   url: string;
+// }
 
 export default function ReviewDetail(props: IReviewDetailProps) {
   const userInfo = useRecoilValue(userState);
-  const [marketData, setMarketData] = useState<IReviewMarketData>();
-  // const [reviewData, setReviewData] = useState<IMarketReviewDetail>();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const queryClient = new QueryClient();
 
   const toggleDeleteModal = () => {
     setIsDeleteOpen(prev => !prev);
@@ -42,67 +40,27 @@ export default function ReviewDetail(props: IReviewDetailProps) {
     setIsEditOpen(prev => !prev);
   };
 
-  const { data: reviewData } = useQuery(
-    'getReview',
-    async () =>
-      await axios
-        .get(`${marketReviewRoute}/${props.reviewsData?.id}`)
-        .then(res => {
-          return res.data;
-        })
-        .catch(error => {
-          console.log(error);
-        }),
-    {
-      onSuccess: res => {
-        setMarketData({
-          id: res.market.id,
-          title: res.market.title,
-          minidescription: res.market.minidescription,
-          url: res.market.url,
-        });
-      },
-    },
-  );
-
-  // const deleteReview = async () => {
-  //   await axios
-  //     .delete(
-  //       `https://earth-mas.shop/server/marketreview/${props.reviewsData.id}`,
-  //     )
-  //     .then(res => {
-  //       console.log(res);
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // };
+  const marketData = {
+    id: props.reviewsData.market.id,
+    title: props.reviewsData.market.title,
+    minidescription: props.reviewsData.market.minidescription,
+    url: props.reviewsData.market.url,
+  };
 
   const { mutate: deleteReview } = useMutation(
     async () => {
-      await axios
-        .delete(`${marketReviewRoute}/${props.reviewsData.id}`)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      const result = await axios.delete(
+        `${marketReviewRoute}/${props.reviewsData.id}`,
+      );
+      return result.data;
     },
     {
       onSuccess: () => {
-        // postTodo가 성공하면 todos로 맵핑된 useQuery api 함수를 실행합니다.
-        console.log('삭제성공');
         setIsDeleteOpen(false);
-        queryClient.invalidateQueries('getReviews');
+        props.refetch();
       },
     },
   );
-
-  useEffect(() => {
-    // console.log(props.reviewsData);
-  }, [props.reviewsData]);
 
   return (
     <S.Wrap>
@@ -125,16 +83,20 @@ export default function ReviewDetail(props: IReviewDetailProps) {
             children={
               <ReviewNew
                 onClickCancel={toggleEditModal}
-                reviewData={reviewData}
+                reviewId={props.reviewsData?.id}
                 marketData={marketData}
+                toggleEditModal={toggleEditModal}
+                refetch={props.refetch}
               />
             }
           />
         </Modal>
       )}
       <div className="user">
-        <Avatar />
-        <p>{props.reviewsData?.user?.name}</p>
+        <div>
+          <img src={props.reviewsData?.user.url} />
+        </div>
+        <p>{props.reviewsData?.user.name}</p>
       </div>
       <div className="review">
         <div>

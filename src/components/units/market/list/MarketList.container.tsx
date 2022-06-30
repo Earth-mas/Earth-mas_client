@@ -6,82 +6,68 @@ import Category from 'components/commons/category/Category';
 import Input02 from 'components/commons/inputs/Input02';
 import { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
-import store from 'storejs';
 import { IMarketList } from './MarketList.types';
 import Title01 from 'components/commons/text/title/Title01';
 import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 import _ from 'lodash';
+import { marketRoute } from 'utils/APIRoutes';
+import { useQuery } from 'react-query';
+import Pagination from 'components/commons/pagination';
+
 export default function MarketList() {
   const [listData, setListData] = useState<IMarketList[]>();
-  const [, setMyListData] = useState<IMarketList[]>();
-  const accessToken = store.get('accessToken');
+
   const [nowCategory, setNowCategory] = useState('전체');
   const [select, setSelect] = useState<boolean>(false);
+  const [keyword, setKeyword] = useState<string>();
+  const [clickPage, setClickPage] = useState<number>(1);
 
-  const getItemsSearch = async (data: string) => {
-    await axios
-      .post(`https://earth-mas.shop/server/market/search`, {
-        search: data,
-      })
-      .then(res => {
-        console.log(res);
-        setListData(res.data);
-      })
-      .catch(error => {
-        console.log(error);
+  const { data: ItemsSearch, refetch: getItemsSearch } = useQuery(
+    ['getItemsSearch'],
+    async () => {
+      const result = await axios.post(`${marketRoute}/search`, {
+        search: keyword,
       });
-  };
+      return setListData(result.data);
+    },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   const onChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
     getDebounce(event.target.value);
   };
 
   const getDebounce = _.debounce(data => {
-    getItemsSearch(data);
-    console.log(data);
+    setKeyword(data);
   }, 1000);
 
-  const getItemsAll = async () => {
-    await axios
-      .post(
-        `https://earth-mas.shop/server/market/${
-          select ? 'finddcs' : 'findlike'
-        }`,
+  const { data: ItemsAll, refetch: getItemsAll } = useQuery(
+    ['getItemsAll', clickPage],
+    async () => {
+      const result = await axios.post(
+        `${marketRoute}/${select ? 'finddcs' : 'findlike'}`,
         {
           category: nowCategory,
-          page: 1,
+          page: clickPage,
         },
-      )
-      .then(res => {
-        console.log('all Data :', res.data.arr);
-        console.log('all Data length :', res.data.length);
-        setListData(res.data.arr);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  const getItemsMyLike = async () => {
-    await axios
-      .get(`https://earth-mas.shop/server/market/findmylike`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then(res => {
-        // console.log('like Data :', res.data);
-        setMyListData(res.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
+      );
+      setListData(result.data.arr);
+      return result.data;
+    },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
 
   useEffect(() => {
     getItemsAll();
-    getItemsMyLike();
   }, [nowCategory, select]);
+
+  useEffect(() => {
+    getItemsSearch();
+  }, [keyword]);
 
   return (
     <Wrap>
@@ -100,13 +86,17 @@ export default function MarketList() {
           {listData &&
             listData.map((el: IMarketCard) => (
               <Fragment key={uuid4()}>
-                <MarketCard
-                  listData={el}
-                  // myListData={myListData}
-                />
+                <MarketCard listData={el} />
               </Fragment>
             ))}
         </CardWrap>
+        <Pagination
+          clickPage={clickPage}
+          listCount={ItemsAll?.length}
+          page="list"
+          refetch={getItemsAll}
+          setClickPage={setClickPage}
+        />
       </main>
     </Wrap>
   );

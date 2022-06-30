@@ -1,3 +1,7 @@
+export interface IMarketCardProps {
+  listData: IMarketCard;
+}
+
 export interface IMarketCard {
   amount: number;
   createAt: string;

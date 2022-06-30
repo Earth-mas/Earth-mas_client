@@ -18,10 +18,17 @@ export const Wrap = styled.div`
     flex-direction: column;
     align-items: center;
 
-    svg {
+    & div {
       width: 30px;
       height: 30px;
+      border-radius: 50%;
+      overflow: hidden;
       margin-bottom: 5px;
+      & img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
     p {
     }

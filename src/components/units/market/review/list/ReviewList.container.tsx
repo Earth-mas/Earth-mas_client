@@ -18,22 +18,18 @@ interface IMarketReviewListProps {
 }
 export default function ReviewList(props: IMarketReviewListProps) {
   const { id } = useParams();
+  // const [reviewsData, SetReviewsData] = useState<any>();
 
-  const { data: reviewsData } = useQuery(
-    'getReviews',
-    async () =>
-      await axios
-        .post(`${marketReviewRoute}/findall`, {
-          market: id,
-        })
-        .then(res => {
-          return res.data;
-        })
-        .catch(error => {
-          console.log(error);
-        }),
+  const { data: reviewsData, refetch } = useQuery(
+    ['getReviews'],
+    async () => {
+      const result = await axios.post(`${marketReviewRoute}/findall`, {
+        market: id,
+      });
+      return result.data;
+    },
+    {},
   );
-  // console.log(reviewsData);
 
   return (
     <Wrap>
@@ -51,7 +47,7 @@ export default function ReviewList(props: IMarketReviewListProps) {
       {reviewsData &&
         reviewsData.map((el: IMarketReviewDetail) => (
           <Fragment key={uuid4()}>
-            <ReviewDetail reviewsData={el} />
+            <ReviewDetail reviewsData={el} refetch={refetch} />
           </Fragment>
         ))}
     </Wrap>

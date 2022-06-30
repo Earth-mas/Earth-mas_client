@@ -20,4 +20,13 @@ export default function DetailContent(props: IDetailContentProps) {
 
 const Wrap = styled.div`
   padding: 40px 80px;
+  .ql-align-right {
+    text-align: right;
+  }
+  .ql-align-center {
+    text-align: center;
+  }
+  .ql-align-left {
+    text-align: left;
+  }
 `;

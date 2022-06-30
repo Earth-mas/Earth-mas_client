@@ -28,3 +28,17 @@ export const getDate = (myDate: string | number | Date) => {
 
   return `${yyyy}. ${mm}. ${dd}`;
 };
+
+export const getTime = (myDate: string | number | Date) => {
+  let allDay = '';
+  const aaa = new Date(myDate);
+  const hh = aaa.getHours();
+  const mm = aaa.getMinutes();
+  // const dd = aaa.getDate();
+
+  if (hh === 0) allDay = `오전 ${hh + 12}시 ${mm}분`;
+  else if (hh < 13) allDay = `오전 ${hh}시 ${mm}분`;
+  else if (hh > 12) allDay = `오후 ${hh - 12}시 ${mm}분`;
+
+  return allDay;
+};
