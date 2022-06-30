@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from 'storejs';
 import { getMoney } from 'commons/utils/getAmount';
 import Line from 'components/commons/line';
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
@@ -29,9 +29,6 @@ export default function MarketPayment() {
     },
     {
       refetchOnWindowFocus: false,
-      onError: error => {
-        console.log(error);
-      },
     },
   );
 
@@ -41,7 +38,8 @@ export default function MarketPayment() {
         `${marketTransactionRoute}/create`,
         {
           impUid: rsp.imp_uid,
-          amount: payAmount + 3000,
+          // amount: payAmount + 3000,
+          amount: 100,
           marketnumber: 1,
           marketid: id,
         },
@@ -66,7 +64,8 @@ export default function MarketPayment() {
     },
   );
 
-  const onClickPayment = () => {
+  const onClickPayment = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const IMP: any = window.IMP;
     IMP.init('imp76469515');
 
@@ -76,7 +75,8 @@ export default function MarketPayment() {
         pg: 'html5_inicis',
         pay_method: 'card',
         name: '얼스마스',
-        amount: payAmount + 3000,
+        // amount: payAmount + 3000,
+        amount: 100,
         buyer_email: userInfo.email,
         buyer_name: userInfo.name,
         buyer_tel: userInfo.phone,
@@ -113,7 +113,6 @@ export default function MarketPayment() {
   }, []);
 
   useEffect(() => {
-    console.log(detailData);
     if (detailData) setPayAmount(detailData?.amount);
   }, [detailData]);
 
@@ -171,14 +170,6 @@ export default function MarketPayment() {
                       명확히 확인하였으며, <br />
                       구매 진행에 동의합니다. (전자상거래법 제8조 2항)
                     </label>
-                    {/* <label className="checkbox">
-                      <input type="checkbox" name="check" required />
-                      <span className="checkbox-icon" />
-                    </label> */}
-                    {/* <span className="checkbox-text">
-                      위 상품의 판매조건을 명확히 확인하였으며, 구매 진행에
-                      동의합니다. (전자상거래법 제8조 2항)
-                    </span> */}
                   </div>
                   <div className="rowGrid">
                     <p>총 결제 금액</p>

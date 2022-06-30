@@ -2,7 +2,7 @@ import axios from 'axios';
 import { MouseEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as S from './MarketDetail.styles';
-// import { IMarketDetail } from './MarketDetail.types';
+import { IMarketDetail } from './MarketDetail.types';
 import Title01 from 'components/commons/text/title/Title01';
 import DetailOverview from './overview/DetailOverview.container';
 import DetailContent from './content/DetailContent.container';
@@ -21,7 +21,7 @@ export default function MarketDetail() {
     setNowTab(target.id);
   };
 
-  const { data: detailData } = useQuery(
+  const { data: detailData } = useQuery<IMarketDetail>(
     ['getItem'],
     async () => {
       const result = await axios.get(`${marketRoute}/${id}`);
@@ -37,7 +37,6 @@ export default function MarketDetail() {
     { id: 'review', name: `리뷰 (${detailData?.reviewpeople})` },
     { id: 'delivery', name: '배송 및 교환' },
   ];
-
   return (
     <S.Wrap>
       <nav>
@@ -67,12 +66,7 @@ export default function MarketDetail() {
       {nowTab === 'content' && (
         <DetailContent description={detailData?.description} />
       )}
-      {nowTab === 'review' && (
-        <ReviewList
-          reviewscore={detailData?.reviewscore}
-          reviewpeople={detailData?.reviewpeople}
-        />
-      )}
+      {nowTab === 'review' && <ReviewList detailData={detailData} />}
       {nowTab === 'delivery' && <DetailDelivery />}
     </S.Wrap>
   );

@@ -34,7 +34,7 @@ export interface IMarket {
 export interface IMarketDetail {
   amount: number;
   createAt: string;
-  delete?: null;
+  delete: null;
   description: string;
   discount: number;
   id: string;
