@@ -3,7 +3,7 @@ import store from 'storejs';
 import { useForm } from 'react-hook-form';
 import { FormReviewValues, IReviewNewProps } from './ReviewNew.types';
 import ReviewNewUI from './ReviewNew.presenter';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { marketReviewRoute } from 'utils/APIRoutes';
 import { useNavigate } from 'react-router-dom';
@@ -26,20 +26,6 @@ export default function ReviewNew(props: IReviewNewProps) {
     async () => {
       const result = await axios.get(`${marketReviewRoute}/${props.reviewId}`);
       return result.data;
-    },
-    {
-      onSuccess: res => {
-        console.log(res);
-        // setMarketData({
-        //   id: res.market.id,
-        //   title: res.market.title,
-        //   minidescription: res.market.minidescription,
-        //   url: res.market.url,
-        // });
-      },
-      onError: error => {
-        console.log(error);
-      },
     },
     // {refetchOnWindowFocus: false,},
   );
@@ -66,9 +52,6 @@ export default function ReviewNew(props: IReviewNewProps) {
       onSuccess: res => {
         props.toggleEditModal();
         navigate(`/market/${res.data.market}`);
-      },
-      onError: error => {
-        console.log(error);
       },
     },
   );

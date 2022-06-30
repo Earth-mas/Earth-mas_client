@@ -52,6 +52,7 @@ export default function MarketNew(props: IMarketNewProps) {
       url: urlString,
       category: isSelected,
     };
+    console.log(variables);
     newItem(variables);
   };
 
@@ -67,9 +68,6 @@ export default function MarketNew(props: IMarketNewProps) {
     {
       onSuccess: res => {
         navigate(`/market/${res.id}`);
-      },
-      onError: error => {
-        console.log(error);
       },
     },
   );
@@ -87,7 +85,7 @@ export default function MarketNew(props: IMarketNewProps) {
       updateVariables.minidescription = data.minidescription;
     if (data.description) updateVariables.description = data.description;
     if (urlString) updateVariables.url = urlString;
-    // console.log(updateVariables);
+    console.log(updateVariables);
 
     updateItem(updateVariables);
   };
@@ -103,9 +101,6 @@ export default function MarketNew(props: IMarketNewProps) {
     {
       onSuccess: res => {
         navigate(`/market/${res.id}`);
-      },
-      onError: error => {
-        console.log(error);
       },
     },
   );

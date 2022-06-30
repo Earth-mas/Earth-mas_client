@@ -1,26 +1,16 @@
 import axios from 'axios';
 import MarketNew from 'components/units/market/new/MarketNew.container';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
+import { marketRoute } from 'utils/APIRoutes';
 
 export default function MarketEditPage() {
-  const [itemData, setItemData] = useState();
-  const params = useParams();
+  const { id } = useParams();
 
-  useEffect(() => {
-    const getItem = async () => {
-      await axios
-        .get(`https://earth-mas.shop/server/market/${params.id}`)
-        .then(res => {
-          //  console.log(res);
-          setItemData(res.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
-    getItem();
-  }, []);
+  const { data: itemData } = useQuery(['getItem'], async () => {
+    const result = await axios.get(`${marketRoute}/${id}`);
+    return result.data;
+  });
 
   return <MarketNew isEdit={true} itemData={itemData} />;
 }

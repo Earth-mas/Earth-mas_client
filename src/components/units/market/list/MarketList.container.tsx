@@ -6,21 +6,21 @@ import Category from 'components/commons/category/Category';
 import Input02 from 'components/commons/inputs/Input02';
 import { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { v4 as uuid4 } from 'uuid';
-import store from 'storejs';
 import { IMarketList } from './MarketList.types';
 import Title01 from 'components/commons/text/title/Title01';
 import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 import _ from 'lodash';
-import { marketReviewRoute, marketRoute } from 'utils/APIRoutes';
+import { marketRoute } from 'utils/APIRoutes';
 import { useQuery } from 'react-query';
+import Pagination from 'components/commons/pagination';
 
 export default function MarketList() {
   const [listData, setListData] = useState<IMarketList[]>();
-  // const [, setMyListData] = useState<IMarketList[]>();
-  const accessToken = store.get('accessToken');
+
   const [nowCategory, setNowCategory] = useState('전체');
   const [select, setSelect] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<string>();
+  const [clickPage, setClickPage] = useState<number>(1);
 
   const { data: ItemsSearch, refetch: getItemsSearch } = useQuery(
     ['getItemsSearch'],
@@ -32,9 +32,6 @@ export default function MarketList() {
     },
     {
       refetchOnWindowFocus: false,
-      onError: error => {
-        console.log(error);
-      },
     },
   );
 
@@ -47,23 +44,20 @@ export default function MarketList() {
   }, 1000);
 
   const { data: ItemsAll, refetch: getItemsAll } = useQuery(
-    ['getItemsAll'],
+    ['getItemsAll', clickPage],
     async () => {
       const result = await axios.post(
         `${marketRoute}/${select ? 'finddcs' : 'findlike'}`,
         {
           category: nowCategory,
-          page: 1,
+          page: clickPage,
         },
       );
-      // return result.data.arr;
-      return setListData(result.data.arr);
+      setListData(result.data.arr);
+      return result.data;
     },
     {
       refetchOnWindowFocus: false,
-      onError: error => {
-        console.log(error);
-      },
     },
   );
 
@@ -96,6 +90,13 @@ export default function MarketList() {
               </Fragment>
             ))}
         </CardWrap>
+        <Pagination
+          clickPage={clickPage}
+          listCount={ItemsAll?.length}
+          page="list"
+          refetch={getItemsAll}
+          setClickPage={setClickPage}
+        />
       </main>
     </Wrap>
   );

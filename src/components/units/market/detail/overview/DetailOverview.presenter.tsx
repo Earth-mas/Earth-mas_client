@@ -10,18 +10,18 @@ import { getMoney, getPercent } from 'commons/utils/getAmount';
 import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
 import Modal from 'components/commons/modal';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
-import InfoModal from 'components/commons/modal/infoModal/infoModal';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import { useParams } from 'react-router-dom';
 import { IDetailOverviewUIProps } from './DetailOverview.types';
+import { getUrl } from 'commons/utils/getUrl';
 
 export default function DetailOverviewUI(props: IDetailOverviewUIProps) {
   const navigate = useNavigate();
   const userInfo = useRecoilValue(userState);
-
   const { id } = useParams();
+
   return (
     <main>
       {props.isDeleteOpen && (
@@ -32,7 +32,7 @@ export default function DetailOverviewUI(props: IDetailOverviewUIProps) {
             okMessage="네, 삭제할게요"
             cancelMessage="아니오, 취소할게요"
             onClickCancel={props.toggleDeleteModal}
-            onClickOk={props.deleteMarketItem}
+            onClickOk={props.deleteItem}
           />
         </Modal>
       )}
@@ -129,7 +129,13 @@ export default function DetailOverviewUI(props: IDetailOverviewUIProps) {
                 )
               }
             />
-            <OutlinedButton01 color="main" content={<ShareIcon />} />
+            <OutlinedButton01
+              color="main"
+              content={<ShareIcon />}
+              onClick={() => {
+                getUrl(window.location.href);
+              }}
+            />
           </div>
         </div>
       </S.ItemInfo>
