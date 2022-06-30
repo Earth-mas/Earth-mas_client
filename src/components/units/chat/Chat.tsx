@@ -1,17 +1,14 @@
 import { ChatContainer } from './ChatContainer';
 import { ChatList } from './ChatList';
 import { LeftContainer, RightContainer, Wrapper } from './Chat.styles';
-import { SetStateAction, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
-// import Modal from 'components/commons/modal';
-// import ModalMenu from '../login/LoginContents';
-import { chat, host, userRoute } from 'utils/APIRoutes';
+import { chat } from 'utils/APIRoutes';
 import io from 'socket.io-client';
 import { BeforeChat } from './BeforeChat';
 import axios from 'axios';
-import { chatUserState } from 'recoil/chatUser';
 import { useMutation, useQueryClient } from 'react-query';
 import store from 'storejs';
 
@@ -20,62 +17,38 @@ export const Chat = () => {
   const userInfo = useRecoilValue(userState);
   const accessToken = store.get('accessToken');
 
-  // const { url, name } = userInfo;
-  const [contacts, setContacts] = useState([]);
-
   const [currentUser, setCurrentUser] = useState<any>(undefined);
-  const [currentChat, setCurrentChat] = useState(undefined);
-  const [userId, setUserId] = useState<any>();
+  const [currentChat, setCurrentChat] = useState<any>(undefined);
   const [roomid, setRoomid] = useState('');
 
-  // const chatUser = useRecoilValue(chatUserState);
   const queryClient = useQueryClient();
-
-  const socket = io(`${chat}`, {
-    transports: ['websocket'],
-    upgrade: false,
-  });
-
-  // const [isOpen, setIsOpen] = useState(true);
-
-  // const socketRef = useRef<any>();
-  // const io = require("socket.io-client");
-
-  // const handleClick = () => setIsOpen(prev => !prev);
+  const socketRef = useRef<any>();
 
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) {
       alert('로그인을 해주세요');
       navigate('/');
     } else {
-      const functionSetCurrentUser = () => {
-        setCurrentUser(userInfo);
-      };
-      functionSetCurrentUser();
-
-      /* socket.on('connect', () => {
-        console.log(socket.id);
-        // 사용자가 로그인 할 때마다 사용자의 ID를 전달함
-      }); */
+      setCurrentUser(userInfo);
     }
 
     mutate();
   }, []);
 
   useEffect(() => {
-    setContacts(
-      userInfo.id !== data?.data[Number(roomid)].user1?.id
-        ? data?.data[Number(roomid)].user1
-        : data?.data[Number(roomid)].user2,
-    );
+    if (currentUser) {
+      socketRef.current = io(`${chat}`, {
+        upgrade: false,
+      });
+      socketRef.current.emit('userconnection', {
+        roomid: currentChat?.id,
+        userid: userInfo.id,
+      });
+    }
   }, [currentUser]);
 
-  const handleChatChange = (chat: SetStateAction<undefined>) => {
-    setCurrentChat(chat); // 대화 내용이 currentChat에 담김
-    setUserId(chat);
-  };
-
-  const { data, mutate } = useMutation(
+  const { data: chatUserList, mutate } = useMutation(
+    'findmychat',
     () => {
       return axios.post(`${chat}/findmychat`, null, {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -83,7 +56,7 @@ export const Chat = () => {
     },
     {
       onSuccess: res => {
-        // console.log(res);
+        console.log(res);
         queryClient.invalidateQueries('finduser', { refetchInactive: true });
       },
       onError: err => {
@@ -93,22 +66,22 @@ export const Chat = () => {
   );
 
   const { data: clickUserId, mutate: createUserId } = useMutation(
-    ['userId', userId?.user2.id || userId?.user1.id],
+    'finduser',
     () => {
       return axios.post(
         `${chat}/finduser`,
         {
           user:
-            userId?.user1.id === userInfo.id
-              ? userId?.user2.id
-              : userId?.user1.id,
+            currentChat?.user1.id === userInfo.id
+              ? currentChat?.user2.id
+              : currentChat?.user1.id,
         },
         { headers: { Authorization: `Bearer ${accessToken}` } },
       );
     },
     {
       onSuccess: res => {
-        // console.log(res);
+        console.log(res);
         queryClient.invalidateQueries('findmychat', { refetchInactive: true });
       },
       onError: err => {
@@ -116,19 +89,6 @@ export const Chat = () => {
       },
     },
   );
-  // console.log('userInfo', userInfo.id);
-  // console.log(
-  //   userId?.user1.id === userInfo.id ? userId?.user2.id : userId?.user1.id,
-  // );
-  // console.log(clickUserId?.url);
-
-  /* console.log(
-    userInfo.id !== data?.data[Number(roomid.index)].user1?.id &&
-      data?.data[Number(roomid)].user1,
-  ); */
-
-  // console.log(userId?.id);
-  /* console.log(clickUserId?.data[0]?.url); */
 
   return (
     <>
@@ -147,15 +107,9 @@ export const Chat = () => {
           </div>
 
           <ChatList
-            socket={socket}
-            // setUserId={setUserId}
-            // contacts={contacts}
-            changeChat={handleChatChange}
-            // currentUser={currentUser}
-            data={data}
-            roomid={userId}
+            setCurrentChat={setCurrentChat}
+            chatUserList={chatUserList}
             setRoomid={setRoomid}
-            // roomUser={roomUser}
             createUserId={createUserId}
           />
         </LeftContainer>
@@ -168,7 +122,6 @@ export const Chat = () => {
               <div className="user">
                 <div className="userImg">
                   <img
-                    // src="/images/profileDefault.png"
                     src={clickUserId?.data[0]?.url}
                     onError={e => {
                       e.currentTarget.src = '/images/profileDefault.png';
@@ -180,12 +133,9 @@ export const Chat = () => {
 
               <ChatContainer
                 currentChat={currentChat}
-                currentUser={currentUser}
-                clickUserId={clickUserId}
-                userId={userId}
-                socket={socket}
-                data={data}
+                chatUserList={chatUserList}
                 roomid={roomid}
+                socketRef={socketRef}
               />
             </>
           )}

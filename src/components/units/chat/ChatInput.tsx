@@ -16,8 +16,8 @@ export const ChatInput = (props: any) => {
   // console.log(props.data?.data[0]?.user2?.name);
 
   const sendChat = (event: any) => {
-    if (event.key === 'Enter' && chatMsg.length > 0) {
-      event.preventDefault();
+    event.preventDefault();
+    if (chatMsg.length > 0) {
       // if (chatMsg.length > 0) {
       props.handleSendMsg(chatMsg); // container에서 socket에 발송
       // onSignup()
@@ -34,7 +34,13 @@ export const ChatInput = (props: any) => {
   }; */
 
   return (
-    <Wrapper onSubmit={e => sendChat(e)} onKeyDown={sendChat}>
+    <Wrapper
+      onKeyPress={e => {
+        if (e.key === 'Enter') {
+          sendChat(e);
+        }
+      }}
+    >
       <textarea
         name="chatInput"
         placeholder="메시지를 입력해주세요"
