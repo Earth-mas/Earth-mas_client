@@ -36,10 +36,6 @@ const LoginContents = ({ handleClose }: IProps) => {
       email,
       password,
     };
-    // axios
-    //   .post('https://earth-mas.shop/server/auth/login', data, {
-    //     withCredentials: true,
-    //   })
     axiosApiInstance
       .post('auth/login', data, {
         withCredentials: true,
