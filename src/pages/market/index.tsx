@@ -2,14 +2,18 @@ import styled from '@emotion/styled';
 import { NewButton } from 'components/commons/button/new/NewButton';
 import Slide from 'components/commons/slide';
 import MarketList from 'components/units/market/list/MarketList.container';
-import banner1 from '../../assets/images/market/banner/banner1.jpeg';
+import banner1 from '../../assets/images/market/banner/banner4.jpg';
 import banner2 from '../../assets/images/market/banner/banner2.jpeg';
 import banner3 from '../../assets/images/market/banner/banner3.jpeg';
 
 export default function MarketPage() {
   return (
     <Wrap>
-      <Slide slide="main" banner={[banner1, banner2, banner3]} />
+      <Slide
+        slide="main"
+        banner={[banner1, banner2, banner3]}
+        autoplay={true}
+      />
       <main className="main-contents">
         <NewButton />
         <MarketList />
@@ -23,6 +27,9 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  > div {
+    height: 400px;
+  }
   .main-contents {
     max-width: 1024px;
     width: 100%;

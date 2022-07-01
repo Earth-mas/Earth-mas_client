@@ -6,7 +6,6 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
-import { IMarketDetail } from '../detail/MarketDetail.types';
 import * as S from './MarketPayment.styles';
 import { IRsp } from './MarketPayment.types';
 import MarketComplete from './PaymentComplete';
@@ -38,8 +37,7 @@ export default function MarketPayment() {
         `${marketTransactionRoute}/create`,
         {
           impUid: rsp.imp_uid,
-          // amount: payAmount + 3000,
-          amount: 100,
+          amount: payAmount + 3000,
           marketnumber: 1,
           marketid: id,
         },
@@ -75,8 +73,7 @@ export default function MarketPayment() {
         pg: 'html5_inicis',
         pay_method: 'card',
         name: '얼스마스',
-        // amount: payAmount + 3000,
-        amount: 100,
+        amount: payAmount + 3000,
         buyer_email: userInfo.email,
         buyer_name: userInfo.name,
         buyer_tel: userInfo.phone,
