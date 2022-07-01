@@ -3,10 +3,8 @@ import { useSetRecoilState } from 'recoil';
 import { userState } from 'recoil/user';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export default function useSetUser() {
-  const navigate = useNavigate();
   const setUser = useSetRecoilState(userState);
   const accessToken = store.get('accessToken');
   useEffect(() => {
@@ -28,9 +26,6 @@ export default function useSetUser() {
             address2: res.data.address2,
             phone: res.data.phone,
           });
-          if (res.data.addressnumber.legnth === 0) {
-            navigate('/moreinfo');
-          }
         })
         .catch(error => {
           console.log(error.response.data.message);
