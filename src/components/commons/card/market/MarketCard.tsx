@@ -7,17 +7,13 @@ import {
 import * as S from './MarketCard.styles';
 import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
 import { Link } from 'react-router-dom';
-import { IMarketCard, IMarketCardProps } from './MarketCard.types';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { IMarketCardProps } from './MarketCard.types';
+import { SyntheticEvent, useState } from 'react';
 import axios from 'axios';
 import store from 'storejs';
 import { getAvg } from 'commons/utils/getStars';
 import { getMoney, getPercent } from 'commons/utils/getAmount';
 import { IMarketList } from 'components/units/market/list/MarketList.types';
-import Modal from 'components/commons/modal';
-import ContentModal from 'components/commons/modal/contentModal/contentModal';
-import ReviewNew from 'components/units/market/review/new/ReviewNew.container';
-import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
 import { useMutation, useQuery } from 'react-query';
 import { marketRoute } from 'utils/APIRoutes';
 
@@ -84,42 +80,8 @@ export default function MarketCard(props: IMarketCardProps) {
     },
   );
 
-  // const [isEditOpen, setIsEditOpen] = useState(false);
-
-  // const toggleEditModal = () => {
-  //   setIsEditOpen(prev => !prev);
-  // };
-
-  // const marketData = {
-  //   id: props.listData.id,
-  //   title: props.listData.title,
-  //   minidescription: props.listData.minidescription,
-  //   url: props.listData.url,
-  // };
-
   return (
     <S.Wrap>
-      {/* {isEditOpen && (
-        <Modal>
-          <ContentModal
-            onClickCancel={toggleEditModal}
-            children={
-              <ReviewNew
-                onClickCancel={toggleEditModal}
-                marketData={marketData}
-                reviewId={props.listData?.id}
-                toggleEditModal={toggleEditModal}
-              />
-            }
-          />
-        </Modal>
-      )}
-      <ContainedButton02
-        size="small"
-        color="main"
-        content=""
-        onClick={toggleEditModal}
-      /> */}
       <div className="image-box">
         <div className="like" onClick={onClickPostLike}>
           {likeActive && <HeartRedIcon />}

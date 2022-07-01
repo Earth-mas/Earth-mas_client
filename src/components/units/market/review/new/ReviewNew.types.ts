@@ -5,12 +5,12 @@ export interface IReviewNewProps {
   onClickCancel: () => void;
   reviewData?: IMarketReviewDetail;
   marketData: {
-    id: string;
-    title: string;
-    minidescription: string;
+    id?: string;
+    title?: string;
+    minidescription?: string;
     url?: string;
   };
-  reviewId?: string;
+  reviewId: string | null;
   toggleEditModal: () => void;
   refetch?: any;
 }
@@ -28,16 +28,14 @@ export interface IReviewNewUIProps {
   onClickPostReview: SubmitHandler<FormReviewValues>;
   onClickPutReview: SubmitHandler<FormReviewValues>;
   onClickCancel: () => void;
-  // urls: string[];
-  // setUrls: Dispatch<SetStateAction<string[]>>;
 
   urlString: string;
   setUrlString: Dispatch<React.SetStateAction<string>>;
 
-  marketData?: {
-    id: string;
-    title: string;
-    minidescription: string;
+  marketData: {
+    id?: string;
+    title?: string;
+    minidescription?: string;
     url?: string;
   };
 

@@ -7,7 +7,7 @@ interface IContainedButton02Props {
   color: 'main' | 'sub';
   onClick?: () => void;
   type?: 'submit' | 'button' | 'reset' | undefined;
-  size?: 'small';
+  size?: string;
 }
 
 export default function ContainedButton02(props: IContainedButton02Props) {

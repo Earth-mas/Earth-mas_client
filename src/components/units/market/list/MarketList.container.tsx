@@ -1,28 +1,24 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
-import MarketCard from 'components/commons/card/market/MarketCard';
-import { IMarketCard } from 'components/commons/card/market/MarketCard.types';
 import Category from 'components/commons/category/Category';
 import Input02 from 'components/commons/inputs/Input02';
-import { ChangeEvent, Fragment, useEffect, useState } from 'react';
-import { v4 as uuid4 } from 'uuid';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { IMarketList } from './MarketList.types';
-import Title01 from 'components/commons/text/title/Title01';
-import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 import _ from 'lodash';
 import { marketRoute } from 'utils/APIRoutes';
 import { useQuery } from 'react-query';
-import Pagination from 'components/commons/pagination';
+import CategoryList from './categoryList/CategoryList';
+import SearchList from './searchList/SearchList';
 
 export default function MarketList() {
   const [listData, setListData] = useState<IMarketList[]>();
-
   const [nowCategory, setNowCategory] = useState('전체');
   const [select, setSelect] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<string>();
   const [clickPage, setClickPage] = useState<number>(1);
+  const [searchList, setSearchList] = useState<boolean>(false);
 
-  const { data: ItemsSearch, refetch: getItemsSearch } = useQuery(
+  const { data: ItemsSearch, refetch: refetchItemsSearch } = useQuery(
     ['getItemsSearch'],
     async () => {
       const result = await axios.post(`${marketRoute}/search`, {
@@ -41,9 +37,10 @@ export default function MarketList() {
 
   const getDebounce = _.debounce(data => {
     setKeyword(data);
+    setSearchList(true);
   }, 1000);
 
-  const { data: ItemsAll, refetch: getItemsAll } = useQuery(
+  const { data: ItemsAll, refetch: refetchItemsAll } = useQuery(
     ['getItemsAll', clickPage],
     async () => {
       const result = await axios.post(
@@ -62,11 +59,13 @@ export default function MarketList() {
   );
 
   useEffect(() => {
-    getItemsAll();
+    setClickPage(1);
+    setSearchList(false);
+    refetchItemsAll();
   }, [nowCategory, select]);
 
   useEffect(() => {
-    getItemsSearch();
+    refetchItemsSearch();
   }, [keyword]);
 
   return (
@@ -78,25 +77,18 @@ export default function MarketList() {
         <Category page={0} setNowCategory={setNowCategory} />
       </nav>
       <main className="item-list">
-        <header>
-          <Title01 size="T" content={`${nowCategory} `} margin={35} />
-          <Dropdown02 page={0} setSelect={setSelect} />
-        </header>
-        <CardWrap>
-          {listData &&
-            listData.map((el: IMarketCard) => (
-              <Fragment key={uuid4()}>
-                <MarketCard listData={el} />
-              </Fragment>
-            ))}
-        </CardWrap>
-        <Pagination
-          clickPage={clickPage}
-          listCount={ItemsAll?.length}
-          page="list"
-          refetch={getItemsAll}
-          setClickPage={setClickPage}
-        />
+        {!searchList && (
+          <CategoryList
+            nowCategory={nowCategory}
+            setSelect={setSelect}
+            listData={listData}
+            clickPage={clickPage}
+            setClickPage={setClickPage}
+            ItemsAll={ItemsAll}
+            refetchItemsAll={refetchItemsAll}
+          />
+        )}
+        {searchList && <SearchList listData={listData} />}
       </main>
     </Wrap>
   );
@@ -111,10 +103,4 @@ const Wrap = styled.div`
     display: flex;
     justify-content: space-between;
   }
-`;
-
-const CardWrap = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 40px 30px;
 `;

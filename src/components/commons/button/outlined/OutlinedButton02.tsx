@@ -3,47 +3,52 @@ import { FontFamily, FontSize } from 'styles/FontStyles';
 import { Colors } from 'styles/Colors';
 
 interface IOutlinedButton02Props {
-  onClickEdit: () => void;
-  onClickDelete: () => void;
+  content?: string;
+  color: 'main' | 'sub';
+  onClick?: () => void | any;
+  type?: 'submit' | 'button' | 'reset';
+  size?: string;
 }
 
 export default function OutlinedButton02(props: IOutlinedButton02Props) {
   return (
-    <Wrap>
-      <ul>
-        <li onClick={props.onClickEdit}>수정</li>
-        <li onClick={props.onClickDelete}>삭제</li>
-      </ul>
-    </Wrap>
+    <Button
+      size={props.size}
+      color={props.color}
+      onClick={props.onClick}
+      type={props.type}
+    >
+      {props.content}
+    </Button>
   );
 }
 
-const Wrap = styled.div`
-  width: 100px;
-  height: 30px;
+const Button = styled.button`
+  width: ${(props: IOutlinedButton02Props) => {
+    if (props.size === 'small') return '100px';
+    return '100%';
+  }};
+  height: ${(props: IOutlinedButton02Props) => {
+    if (props.size === 'small') return '30px';
+    return '50px;';
+  }};
+  border-radius: ${(props: IOutlinedButton02Props) => {
+    if (props.size === 'small') return '20px';
+    return '40px;';
+  }};
   border: 1px solid ${Colors.MAIN};
-  border-radius: 20px;
+  cursor: pointer;
+  font-family: ${(props: IOutlinedButton02Props) => {
+    if (props.size === 'small') return `${FontFamily.SEMIBOLD}`;
+    return `${FontFamily.BOLD}`;
+  }};
 
-  font-family: ${FontFamily.SEMIBOLD};
-  font-size: ${FontSize.MEDIUM_T};
-  background-color: ${Colors.BW};
-
-  ul {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-
-    li {
-      line-height: 30px;
-      color: ${Colors.B60};
-      font-family: ${FontFamily.BOLD};
-      font-size: ${FontSize.SMALL};
-      :hover {
-        color: ${Colors.MAIN};
-        cursor: pointer;
-      }
-    }
+  font-size: ${(props: IOutlinedButton02Props) => {
+    if (props.size === 'small') return `${FontSize.SMALL}`;
+    return `${FontSize.MEDIUM_C};`;
+  }};
+  color: ${Colors.B60};
+  :hover {
+    color: ${Colors.MAIN};
   }
 `;
