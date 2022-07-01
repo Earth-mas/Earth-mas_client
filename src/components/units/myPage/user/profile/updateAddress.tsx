@@ -64,7 +64,6 @@ export default function UpdateAddress(props: IProps) {
 
   return (
     <section className="userAddress">
-      <h2>주소 변경하기</h2>
       <div className="row">
         <Input01
           type="text"
