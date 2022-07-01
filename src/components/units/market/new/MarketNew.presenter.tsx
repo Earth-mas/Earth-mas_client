@@ -4,9 +4,8 @@ import ContainedButton01 from 'components/commons/button/contained/ContainedButt
 import Dropdown01 from 'components/commons/dropdown/01/Dropdown01';
 import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
-import QuillEditorCopy from 'components/commons/text/reactQuill/ReactQuill.Copy';
 import Title01 from 'components/commons/text/title/Title01';
-import Upload01Copy from 'components/commons/upload/01/Upload01.copy';
+import Upload01 from 'components/commons/upload/01/Upload01';
 import { IMarketNewUIProps } from './MarketNew.types';
 
 export default function MarketNewUI(props: IMarketNewUIProps) {
@@ -87,20 +86,15 @@ export default function MarketNewUI(props: IMarketNewUIProps) {
               : ''
           }
         />
-        <Upload01Copy
+        <Upload01
           page="market"
           urlString={props.urlString}
           setUrlString={props.setUrlString}
-          fetchData={props.itemData?.url ? props.itemData?.url.split(',') : []}
+          fetchData={props.itemData?.url && props.itemData?.url}
         />
         <Blank height={25} />
-        {/* <QuillEditor
-          page={0}
-          onChange={props.onChangeQuill}
-          value={props.contents || props.itemData?.description || ''}
-        /> */}
-        <QuillEditorCopy
-          page={0}
+        <QuillEditor
+          page={0} // market 0, activity 1, support 2
           onChange={props.onChangeQuill}
           value={props.contents || props.itemData?.description || ''}
         />
