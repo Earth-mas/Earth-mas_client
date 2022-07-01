@@ -18,8 +18,10 @@ export default function Upload01(props: IUpload01Props) {
 
   const [urls, setUrls] = useState<string[] | []>([]);
   useEffect(() => {
+    // console.log('fetchData :', props.fetchData);
     if (!props.fetchData) return setUrls([]);
-    return setUrls(props.fetchData?.split(','));
+    props.setUrlString(props.fetchData);
+    setUrls(props.fetchData?.split(','));
   }, [props.fetchData]);
 
   const onChangeUrl = (url: string) => {

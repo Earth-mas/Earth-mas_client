@@ -42,6 +42,7 @@ export const Option = styled.div`
   border: 1px solid ${Colors.MAIN};
   border-radius: 20px;
   z-index: 2;
+  background-color: white;
 
   ul {
     width: 100%;
@@ -57,14 +58,6 @@ export const Option = styled.div`
 
       :hover {
         color: ${Colors.MAIN};
-        a {
-          color: inherit;
-        }
-      }
-      a {
-        display: block;
-        color: inherit;
-        font-family: inherit;
       }
     }
   }

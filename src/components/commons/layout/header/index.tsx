@@ -1,7 +1,7 @@
 import Login from 'components/units/login';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import { FontSize } from 'styles/FontStyles';
+import { FontFamily, FontSize } from 'styles/FontStyles';
 import { userState } from 'recoil/user';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import UserProfile from 'components/commons/profile/profile';
@@ -10,6 +10,8 @@ import { useState } from 'react';
 import Modal from 'components/commons/modal';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
 import axiosApiInstance from 'commons/utils/axiosInstance';
+import { Logo } from 'assets/svgs';
+import { Colors } from 'styles/Colors';
 
 const Header = () => {
   const userInfo = useRecoilValue(userState);
@@ -46,40 +48,27 @@ const Header = () => {
             />
           </Modal>
         )}
-        <h1>LOGO</h1>
-        <ul style={{ display: 'contents' }}>
-          <h3>
-            <Link to={'/'}>홈</Link>
-          </h3>
-          <h3>
-            <Link to="/activity">모임활동</Link>
-          </h3>
-          <h3>
-            <Link to="/support">후원</Link>
-          </h3>
-          <h3>
-            <Link to="/market">마켓</Link>
-          </h3>
-        </ul>
-        {id ? (
-          <span>
-            <Link to="/mypage">
-              <UserProfile size={30} avataUrl={url} name={name} />
-            </Link>
-            <button className="logoutBtn" onClick={onClickModal}>
-              로그아웃
-            </button>
-          </span>
-        ) : (
-          <ul>
-            <li>
-              <Login />
-            </li>
-            <li>
-              <Link to="/signup">회원가입</Link>
-            </li>
-          </ul>
-        )}
+        <nav>
+          <Logo className="logo" />
+          <Link to={'/'}>Home</Link>
+          <Link to="/activity">Activity</Link>
+          <Link to="/support">Support</Link>
+          <Link to="/market">Market</Link>
+        </nav>
+        <div className="sign">
+          {id ? (
+            <>
+              <Link to="/mypage">
+                <UserProfile size={30} avataUrl={url} name={name} />
+              </Link>
+              <button onClick={onClickModal}>로그아웃</button>
+            </>
+          ) : (
+            <>
+              <Login /> | <Link to="/signup">회원가입</Link>
+            </>
+          )}
+        </div>
       </ContentsWrapper>
     </HeaderWrapper>
   );
@@ -93,28 +82,47 @@ const HeaderWrapper = styled.header`
 
 const ContentsWrapper = styled.div`
   max-width: 1024px;
+  height: 80px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  span {
-    height: 40px;
-    line-height: 40px;
+  nav {
     display: flex;
-  }
-
-  ul {
+    grid-gap: 50px;
+    align-items: center;
     display: flex;
-    font-size: ${FontSize.SMALL};
-    line-height: 40px;
-
-    li {
-      margin-left: 5px;
+    .logo {
+      width: 200px;
+      height: 38px;
+    }
+    a {
+      font-size: ${FontSize.MEDIUM_T};
+      font-family: ${FontFamily.BOLD};
+      line-height: 40px;
+      color: ${Colors.B100};
     }
   }
-
-  .logoutBtn {
-    margin-left: 20px;
+  div.sign {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    span {
+      font-size: ${FontSize.SMALL};
+      font-family: ${FontFamily.SEMIBOLD};
+      line-height: 40px;
+      margin-right: 5px;
+    }
+    a {
+      font-size: ${FontSize.SMALL};
+      font-family: ${FontFamily.MEDIUM};
+      line-height: 40px;
+    }
+    button {
+      font-size: ${FontSize.SMALL};
+      font-family: ${FontFamily.MEDIUM};
+      line-height: 40px;
+    }
   }
 `;

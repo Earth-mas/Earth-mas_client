@@ -13,13 +13,13 @@ export default function Footer() {
           <LogoWhite className="logoImg" />
           <ul className="footerMenu">
             <li>
-              <Link to="/market">마켓</Link>
-            </li>
-            <li>
               <Link to="/activity">모임활동</Link>
             </li>
             <li>
               <Link to="/support">후원</Link>
+            </li>
+            <li>
+              <Link to="/market">마켓</Link>
             </li>
             <li>
               <Link to="/">자주 묻는 질문</Link>
