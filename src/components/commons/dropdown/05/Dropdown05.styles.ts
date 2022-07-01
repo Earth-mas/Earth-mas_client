@@ -4,13 +4,14 @@ import { FontFamily, FontSize } from 'styles/FontStyles';
 
 export const Dropdown = styled.div`
   width: 10px;
-  height: 21px;
+  height: 20px;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  margin-top: 6px;
 
   &.activated {
     span {

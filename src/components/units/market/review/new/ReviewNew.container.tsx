@@ -49,9 +49,11 @@ export default function ReviewNew(props: IReviewNewProps) {
       });
     },
     {
-      onSuccess: res => {
+      onSuccess: () => {
         props.toggleEditModal();
-        navigate(`/market/${res.data.market}`);
+        location.reload();
+        // props.refetch();
+        // navigate(`/market/${res.data.market}`);
       },
     },
   );

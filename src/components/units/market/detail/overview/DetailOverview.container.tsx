@@ -10,7 +10,7 @@ import { marketRoute } from 'utils/APIRoutes';
 import { useNavigate } from 'react-router-dom';
 
 interface IDetailOverviewProps {
-  detailData: IMarketDetail;
+  detailData?: IMarketDetail;
 }
 
 export default function DetailOverview(props: IDetailOverviewProps) {
@@ -71,7 +71,7 @@ export default function DetailOverview(props: IDetailOverviewProps) {
   );
 
   const onClickPostLike = () => {
-    postLike(props.detailData.id);
+    if (props.detailData) postLike(props.detailData.id);
   };
 
   const { mutate: postLike } = useMutation(
@@ -89,7 +89,6 @@ export default function DetailOverview(props: IDetailOverviewProps) {
     },
     {
       onSuccess: res => {
-        console.log(res);
         res.islike ? alert('찜') : alert('찜 취소');
         getItemsLike();
       },

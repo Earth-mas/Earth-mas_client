@@ -34,7 +34,7 @@ export const Chat = () => {
     {
       onSuccess: res => {
         // console.log(res);
-        queryClient.invalidateQueries('finduser', { refetchInactive: true });
+        // queryClient.invalidateQueries('finduser', { refetchInactive: true });
       },
       onError: err => {
         console.log(err);
@@ -67,9 +67,6 @@ export const Chat = () => {
     },
   );
 
-  /* console.log(userInfo.id);
-  console.log(userInfo); */
-
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) {
       alert('로그인을 해주세요');
@@ -86,14 +83,12 @@ export const Chat = () => {
       socketRef.current = io(`${chat}`, {
         upgrade: false,
       });
-      socketRef.current.emit('userconnection', {
+      socketRef.current.emit('user-enter', {
         roomid: currentChat?.id,
         userid: userInfo.id,
       });
     }
   }, [currentChat]);
-
-  // console.log(currentUser);
 
   return (
     <>
@@ -102,7 +97,7 @@ export const Chat = () => {
           <div className="user">
             <div className="userImg">
               <img
-                src={userInfo.url}
+                src={userInfo ? userInfo.url : ''}
                 onError={e => {
                   e.currentTarget.src = '/images/profileDefault.png';
                 }}
@@ -114,6 +109,7 @@ export const Chat = () => {
           <ChatList
             setCurrentChat={setCurrentChat}
             chatUserList={chatUserList}
+            roomid={roomid}
             setRoomid={setRoomid}
             createUserId={createUserId}
           />
@@ -127,7 +123,7 @@ export const Chat = () => {
               <div className="user">
                 <div className="userImg">
                   <img
-                    src={clickUserId?.data[0]?.url}
+                    src={clickUserId ? clickUserId?.data[0]?.url : ''}
                     onError={e => {
                       e.currentTarget.src = '/images/profileDefault.png';
                     }}
