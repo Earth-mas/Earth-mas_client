@@ -10,7 +10,6 @@ const axiosApiInstance = axios.create({
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const AxiosInterceptor = ({ children }: any) => {
-  console.log('interceptor');
   const [, setAccessTokenAtom] = useRecoilState(accessTokenState);
 
   useEffect(() => {

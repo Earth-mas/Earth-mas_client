@@ -19,6 +19,16 @@ export const UserWrapper = styled.div`
     }
   }
 
+  h2 {
+    font-size: ${FontSize.MEDIUM_T};
+    font-weight: 400;
+    color: ${Colors.MAIN};
+  }
+
+  .sectionTitle {
+    margin-left: 110px;
+  }
+
   .userInfo {
     display: flex;
     width: 500px;
@@ -118,12 +128,6 @@ export const UserWrapper = styled.div`
       &:hover {
         background-color: rgba(1, 92, 52, 0.05);
       }
-    }
-
-    h2 {
-      font-size: ${FontSize.MEDIUM_T};
-      font-weight: 400;
-      color: ${Colors.MAIN};
     }
 
     .row {

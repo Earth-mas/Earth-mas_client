@@ -33,6 +33,7 @@ import { AxiosInterceptor } from 'commons/utils/axiosInstance';
 import MarketPaymentPage from 'pages/market/[marketId]/payment';
 import PrivateRouteLayout from 'components/commons/privateRouter';
 import GroupChatPage from 'pages/chat/groupChat';
+import MoreInfo from 'components/units/login/moreInformation/moreInforamtion';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => {
                 <Route path="/support/:id" element={<SupportDetailPage />} />
 
                 <Route path="/signup" element={<SignUpPage />} />
+                <Route path="/moreinfo" element={<MoreInfo />} />
                 <Route path="*" element={<div>404</div>} />
               </Route>
 

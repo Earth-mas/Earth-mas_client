@@ -30,12 +30,15 @@ export default function UserInfo() {
       </section>
 
       {addressnumber !== '' && (
-        <UpdateAddress
-          addressnumber={addressnumber}
-          address1={address1}
-          address2={address2}
-          id={id}
-        />
+        <>
+          <h2 className="sectionTitle">주소 변경하기</h2>
+          <UpdateAddress
+            addressnumber={addressnumber}
+            address1={address1}
+            address2={address2}
+            id={id}
+          />
+        </>
       )}
       <UpdatePassword />
       <DeleteUser id={id} />
