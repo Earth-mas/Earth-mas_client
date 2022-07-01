@@ -15,7 +15,9 @@ import { marketRoute } from 'utils/APIRoutes';
 
 export default function MarketNew(props: IMarketNewProps) {
   const accessToken = store.get('accessToken');
+
   const [urlString, setUrlString] = useState('');
+
   const [isSelected, setIsSelected] = useState('');
   const [editItemData, setEditItemData] = useState<IUpdateVariables>();
   const { id } = useParams();
@@ -84,7 +86,7 @@ export default function MarketNew(props: IMarketNewProps) {
     if (data.minidescription)
       updateVariables.minidescription = data.minidescription;
     if (data.description) updateVariables.description = data.description;
-    if (urlString) updateVariables.url = urlString;
+    if (urlString !== editItemData?.url) updateVariables.url = urlString;
     console.log(updateVariables);
 
     updateItem(updateVariables);

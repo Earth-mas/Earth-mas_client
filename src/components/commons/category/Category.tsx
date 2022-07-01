@@ -2,11 +2,11 @@ import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 import Title01 from '../text/title/Title01';
-import category1 from '../../../assets/images/market/category/category1.jpeg';
-import category2 from '../../../assets/images/market/category/category2.jpeg';
-import category3 from '../../../assets/images/market/category/category3.jpeg';
-import category4 from '../../../assets/images/market/category/category4.jpeg';
-import category5 from '../../../assets/images/market/category/category5.jpeg';
+import category1 from '../../../assets/images/market/category/category_all.jpg';
+import category2 from '../../../assets/images/market/category/category_bath.jpg';
+import category3 from '../../../assets/images/market/category/category_kitchen.jpg';
+import category4 from '../../../assets/images/market/category/category_daily.jpg';
+import category5 from '../../../assets/images/market/category/category_kit.jpg';
 
 import Line from '../line';
 import { Dispatch } from 'react';
@@ -49,7 +49,9 @@ export default function Category(props: ICategoryProps) {
             }}
           >
             <span>#{el.category}</span>
-            <img src={el.image} />
+            <div>
+              <img src={el.image} />
+            </div>
           </li>
         ))}
       </ul>
@@ -75,6 +77,7 @@ const Wrap = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
     :hover {
       cursor: pointer;
     }
@@ -85,11 +88,26 @@ const Wrap = styled.div`
       font-size: ${FontSize.MEDIUM_T};
       color: ${Colors.BW};
     }
-    img {
-      z-index: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    > div {
+      z-index: 1;
+      position: relative;
+
+      ::before {
+        content: '';
+        position: absolute;
+        z-index: 2;
+        background-color: black;
+        opacity: 0.3;
+        top: 0px;
+        left: 0px;
+        right: 0;
+        bottom: 0;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
   }
 `;
