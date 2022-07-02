@@ -16,25 +16,19 @@ export default function GroupChatList(props: IChatListProps) {
   const userInfo = useRecoilValue(userState);
   // const [currentSelected, setCurrentSelected] = useState(undefined);
 
-  const changeCurrentChat = (index: any, contact: IGroupChat) => {
-    // setCurrentSelected(index);
-    props.setRoomid(index);
-    props.setCurrentChat(contact);
+  const changeCurrentChat = (el: IGroupChat) => () => {
+    props.setRoomid(el.id);
+    props.setCurrentChat(el);
   }; // 채팅을 클릭할 때마다 채팅 유저 리스트를 변경하여 현재 선택된 설정으로 되게
-
-  // useEffect(() => {
-  //   props.createUserId();
-  //   window.scrollTo(0, 0);
-  // }, [props.roomid]);
 
   return (
     <ListContainer>
-      {props.chatList?.map((el: IGroupChat, index: any) => (
+      {props.chatList?.map((el: IGroupChat) => (
         <Fragment key={el.id}>
           <List
-            className={`contact ${index === props.roomid ? 'selected' : ''}`}
-            onClick={() => changeCurrentChat(index, el)}
-            id={index}
+            // className={`contact ${index === props.roomid ? 'selected' : ''}`}
+            onClick={changeCurrentChat(el)}
+            // id={index}
           >
             <div className="activity">
               <div className="activityImg">

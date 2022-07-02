@@ -80,8 +80,7 @@ export const RightContainer = styled.section`
         object-fit: cover;
       }
     }
-
-    .userName {
+    .activityTitle {
       font-size: ${FontSize.SMALL};
       font-family: ${FontFamily.MEDIUM};
       color: ${Colors.B100};

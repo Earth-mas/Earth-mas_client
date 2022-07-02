@@ -29,7 +29,7 @@ export default function GroupChat() {
         },
       })
       .then(res => {
-        console.log('res:', res.data);
+        console.log('getChatList:', res.data);
         setChatList(res.data);
       })
       .catch(err => {
@@ -49,7 +49,7 @@ export default function GroupChat() {
         },
       )
       .then(res => {
-        console.log('chatUser:', res.data);
+        console.log('chatUsers:', res.data);
         setChatUsers(res.data);
       })
       .catch(err => {
@@ -58,9 +58,10 @@ export default function GroupChat() {
   };
   useEffect(() => {
     getChatUser();
-    socket.emit('room-enter', {
-      roomid: roomid,
-    });
+    console.log(roomid);
+    // socket.emit('room-enter', {
+    //   roomid: roomid,
+    // });
   }, [roomid]);
 
   useEffect(() => {
@@ -68,50 +69,51 @@ export default function GroupChat() {
   }, []);
 
   return (
-    <>
-      <S.ChatWrapper>
-        <S.LeftContainer>
-          <div className="user">
-            <div className="userImg">
-              <img
-                src={userInfo ? userInfo.url : ''}
-                onError={e => {
-                  e.currentTarget.src = '/images/profileDefault.png';
-                }}
-              />
-            </div>
-            <p className="userName">{userInfo.name}</p>
+    <S.ChatWrapper>
+      <S.LeftContainer>
+        <div className="user">
+          <div className="userImg">
+            <img
+              src={userInfo ? userInfo.url : ''}
+              onError={e => {
+                e.currentTarget.src = '/images/profileDefault.png';
+              }}
+            />
           </div>
-          <GroupChatList
-            roomid={roomid}
-            setRoomid={setRoomid}
-            setCurrentChat={setCurrentChat}
-            createUserId={''}
-            chatList={chatList}
-          />
-        </S.LeftContainer>
-        <S.RightContainer>
-          <div className="activity">
-            <div className="activityImg">
-              <img
-                src={currentChat ? currentChat.url.split(',')[0] : ''}
-                onError={e => {
-                  e.currentTarget.src = '/images/profileDefault.png';
-                }}
-              />
-            </div>
-            <p>{currentChat ? currentChat.title : '채팅을 선택해주세요'}</p>
-            <div>{chatUsers?.length}명</div>
+          <p className="userName">{userInfo.name}</p>
+        </div>
+        <GroupChatList
+          roomid={roomid}
+          setRoomid={setRoomid}
+          setCurrentChat={setCurrentChat}
+          createUserId={''}
+          chatList={chatList}
+        />
+      </S.LeftContainer>
+      <S.RightContainer>
+        <div className="activity">
+          <div className="activityImg">
+            <img
+              src={currentChat ? currentChat.url.split(',')[0] : ''}
+              onError={e => {
+                e.currentTarget.src = '/images/profileDefault.png';
+              }}
+            />
           </div>
-          <GroupChatContainer
-            currentChat={currentChat}
-            chatList={chatList}
-            roomid={roomid}
-            socket={socket}
-            //  socketRef={socketRef}
-          />
-        </S.RightContainer>
-      </S.ChatWrapper>
-    </>
+          <p className="activityTitle">
+            {currentChat
+              ? `${currentChat.title} ${chatUsers?.length}명`
+              : '채팅을 선택해주세요'}
+          </p>
+        </div>
+        <GroupChatContainer
+          currentChat={currentChat}
+          chatList={chatList}
+          roomid={roomid}
+          socket={socket}
+          //  socketRef={socketRef}
+        />
+      </S.RightContainer>
+    </S.ChatWrapper>
   );
 }
