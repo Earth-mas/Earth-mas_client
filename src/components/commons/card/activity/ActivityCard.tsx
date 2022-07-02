@@ -2,12 +2,12 @@ import styled from '@emotion/styled';
 import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import Line from 'components/commons/line';
-import Dompurify from 'dompurify';
 import { Link } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { IPropsActivityCardList } from './ActivityCard.types';
 
 export default function ActivityCard(props: IPropsActivityCardList) {
+  console.log(props.el);
   return (
     <Wrapper id={props.el.id}>
       <Link to={`/activity/${props.el.id}`}>
@@ -18,12 +18,6 @@ export default function ActivityCard(props: IPropsActivityCardList) {
 
         <Blank height={10} />
         <div className="infoBox">
-          {/* <div
-            className="contentsBox"
-            dangerouslySetInnerHTML={{
-              __html: Dompurify.sanitize(props.el?.description),
-            }}
-          /> */}
           <div className="title">{props.el?.title}</div>
           <Line />
           <UserInfoBox>
@@ -35,12 +29,8 @@ export default function ActivityCard(props: IPropsActivityCardList) {
                 }}
               />
             </div>
-            <span>
-              {props.el?.activityjoin[0].user?.name
-                ? props.el?.activityjoin[0].user?.name
-                : '에러지롱!'}
-            </span>
-            <text>{GetDate(props.el?.createAt)}</text>
+            <span>{props.el?.activityjoin[0].user?.name}</span>
+            <span>{GetDate(props.el?.createAt)}</span>
           </UserInfoBox>
         </div>
       </Link>

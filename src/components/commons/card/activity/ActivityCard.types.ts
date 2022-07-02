@@ -1,7 +1,7 @@
-import { IPropsActivityList } from 'components/units/activity/list/ActivityList.container';
+import { IActivityListProps } from 'components/units/activity/list/ActivityList.types';
 
 export interface IPropsActivityCardList {
-  el: IPropsActivityList;
+  el: IActivityListProps;
 }
 
 export interface User {
