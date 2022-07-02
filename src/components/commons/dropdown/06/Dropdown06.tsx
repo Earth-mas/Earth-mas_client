@@ -4,12 +4,12 @@ import { Link, useParams } from 'react-router-dom';
 
 // activity 전용 수정 / 삭제 컴포넌트
 
-interface IDropdown05Props {
+interface IDropdown06Props {
   page: string; // market | activity | support
   toggleDeleteModal?: () => void;
 }
 
-export default function Dropdown05(props: IDropdown05Props) {
+export default function Dropdown06(props: IDropdown06Props) {
   const { id } = useParams();
   const [isActive, setIsActive] = useState(false);
 

@@ -12,8 +12,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-import { activityRoute } from 'utils/APIRoutes';
+import { activityRoute, chat } from 'utils/APIRoutes';
 import Dropdown06 from 'components/commons/dropdown/06/Dropdown06';
+import { useMutation } from 'react-query';
+import store from 'storejs';
+import { useRecoilValue } from 'recoil';
+import { userState } from 'recoil/user';
 
 export interface ActivityDetail {
   activityjoin: Activityjoin[];
@@ -33,27 +37,27 @@ export interface ActivityDetail {
   user: User;
 }
 
-interface Activitycategory {
+export interface Activitycategory {
   category?: string;
   createAt?: string;
   deleteAt?: string;
   id: string;
 }
 
-interface Activityjoin {
+export interface Activityjoin {
   admin: string;
   id: string;
   user: User;
 }
 
-interface User {
+export interface User {
   address1: string;
   address2: string;
   addressnumber: string;
   createAt: string;
   delete?: string | null;
   email: string;
-  id: string;
+  id: string | undefined;
   name: string | undefined;
   password: string;
   phone: string;
@@ -71,8 +75,10 @@ export default function ActivityDetail() {
   const navigate = useNavigate();
   const params = useParams();
   const [activityData, setActivityData] = useState<ActivityDetail>();
-  const [isJoinModalOpen, setISJoinModalOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  // const accessToken = store.get(`accessToken`);
+  // const userInfo = useRecoilValue(userState);
 
   const getActivityData = async () => {
     await axios
@@ -103,16 +109,41 @@ export default function ActivityDetail() {
   }, []);
 
   const onClickJoinandCancel = () => {
-    setISJoinModalOpen(prev => !prev);
+    setIsJoinModalOpen(prev => !prev);
   };
 
   const onClickOpenDeleteModal = () => {
     setIsDeleteModal(prev => !prev);
   };
 
-  const onClickJoinChat = () => {
+  const joinChat = () => {
     navigate('/chat/groupChat');
   };
+
+  // const { mutate } = useMutation(
+  //   () => {
+  //     return axios.post(`${chat}/chatroomuser`, {
+  //       roomid: activityData?.id,
+  //     });
+  //   },
+  //   {
+  //     onSuccess: res => {
+  //       console.log(res);
+  //       navigate('/chat/groupChat');
+  //       console.log('룸아이디:', activityData?.id);
+  //     },
+  //     onError: err => {
+  //       console.log(err);
+  //     },
+  //   },
+  // );
+
+  // const onClickJoinChat = () => {
+  //   mutate();
+  // };
+
+  // 1. 해당 게시글을 본 유저의 채팅 참여 신청
+  // activity/join
 
   return (
     <>
@@ -135,7 +166,7 @@ export default function ActivityDetail() {
             contents="참여하시겠습니까?"
             okMessage="참여하기"
             cancelMessage="취소"
-            onClickOk={onClickJoinChat}
+            onClickOk={joinChat}
             onClickCancel={onClickJoinandCancel}
           />
         </Modal>

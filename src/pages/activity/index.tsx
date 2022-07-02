@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import Blank from 'components/commons/blank/Blank';
 import { NewButton } from 'components/commons/button/new/NewButton';
 import Category from 'components/commons/category/Category';
@@ -6,9 +7,18 @@ import Input02 from 'components/commons/inputs/Input02';
 import Slide from 'components/commons/slide';
 import ActivityList from 'components/units/activity/list/ActivityList.container';
 import { useState } from 'react';
+import { activityRoute } from 'utils/APIRoutes';
 
 export default function ActivityPage() {
   const [nowCategory, setNowCategory] = useState('전체');
+  // const [search, setSearch] = useState('')
+
+  // const onSearch = async () => {
+  //   await axios.post(`${activityRoute}/${search}`).then(res=>{
+
+  //   })
+  // }
+
   return (
     <>
       <Wrap>
@@ -36,7 +46,7 @@ export default function ActivityPage() {
 }
 
 const Wrap = styled.div`
-  height: 500px;
+  height: 400px;
 `;
 
 const CategoryWrap = styled.div`
