@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import MarketCard from 'components/commons/card/market/MarketCard';
 import { IMarketCard } from 'components/commons/card/market/MarketCard.types';
-import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
+import Dropdown02Copy from 'components/commons/dropdown/02/Dropdown02copy';
 import Pagination from 'components/commons/pagination';
 import Title01 from 'components/commons/text/title/Title01';
 import { Dispatch, Fragment } from 'react';
@@ -10,7 +10,7 @@ import { IMarketList } from '../MarketList.types';
 
 interface ICategoryListProps {
   nowCategory: string;
-  setSelect: Dispatch<React.SetStateAction<boolean>>;
+  setSelect: Dispatch<React.SetStateAction<string>>;
   listData?: IMarketList[];
   clickPage: number;
   setClickPage: Dispatch<React.SetStateAction<number>>;
@@ -23,7 +23,7 @@ export default function CategoryList(props: ICategoryListProps) {
     <>
       <header>
         <Title01 size="T" content={props.nowCategory} margin={35} />
-        <Dropdown02 page={0} setSelect={props.setSelect} />
+        <Dropdown02Copy page={0} setSelect={props.setSelect} />
       </header>
       <CardWrap>
         {props.listData &&

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { CalenderIcon } from 'assets/svgs';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
@@ -73,16 +73,18 @@ interface IpropsMainImg {
 
 export default function ActivityDetail() {
   const navigate = useNavigate();
-  const params = useParams();
+  const { id } = useParams();
   const [activityData, setActivityData] = useState<ActivityDetail>();
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const accessToken = store.get('accessToken');
+
   // const accessToken = store.get(`accessToken`);
   // const userInfo = useRecoilValue(userState);
 
   const getActivityData = async () => {
     await axios
-      .get(`https://earth-mas.shop/server/activity/${params.id}`)
+      .get(`https://earth-mas.shop/server/activity/${id}`)
       .then(res => {
         setActivityData(res.data);
       })
@@ -93,7 +95,7 @@ export default function ActivityDetail() {
 
   const deleteActivityData = async () => {
     await axios
-      .delete(`${activityRoute}/${params.id}`)
+      .delete(`${activityRoute}/${id}`)
       .then(res => {
         console.log(res.data);
         setIsDeleteModal(res.data);
@@ -108,32 +110,55 @@ export default function ActivityDetail() {
     getActivityData();
   }, []);
 
-  const onClickJoinandCancel = () => {
+  const toggleJoinModal = () => {
     setIsJoinModalOpen(prev => !prev);
   };
 
-  const onClickOpenDeleteModal = () => {
+  const toggleDeleteModal = () => {
     setIsDeleteModal(prev => !prev);
   };
 
-  const joinChat = () => {
-    navigate('/chat/groupChat');
+  const joinChat = async () => {
+    await axios
+      .post(
+        `${activityRoute}/join`,
+        { activity: id },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then(res => {
+        console.log(res);
+        navigate('/groupChat');
+      })
+      .catch(err => {
+        if (err.response.status === 409) toggleJoinModal();
+        return alert('이미 참여한 활동입니다!');
+      });
   };
 
-  // const { mutate } = useMutation(
-  //   () => {
-  //     return axios.post(`${chat}/chatroomuser`, {
-  //       roomid: activityData?.id,
-  //     });
+  // 리액트쿼리 버전
+  // const { mutate: joinChat } = useMutation(
+  //   async () => {
+  //     return await axios.post(
+  //       `${activityRoute}/join`,
+  //       { activity: id },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       },
+  //     );
   //   },
   //   {
   //     onSuccess: res => {
   //       console.log(res);
-  //       navigate('/chat/groupChat');
-  //       console.log('룸아이디:', activityData?.id);
   //     },
-  //     onError: err => {
-  //       console.log(err);
+  //     onError: (err: AxiosError) => {
+  //       if (err?.response?.status === 409) toggleJoinModal();
+  //       return alert('이미 참여한 활동입니다!');
   //     },
   //   },
   // );
@@ -155,7 +180,7 @@ export default function ActivityDetail() {
             okMessage="삭제하기"
             cancelMessage="취소"
             onClickOk={deleteActivityData}
-            onClickCancel={onClickOpenDeleteModal}
+            onClickCancel={toggleDeleteModal}
           />
         </Modal>
       )}
@@ -167,7 +192,7 @@ export default function ActivityDetail() {
             okMessage="참여하기"
             cancelMessage="취소"
             onClickOk={joinChat}
-            onClickCancel={onClickJoinandCancel}
+            onClickCancel={toggleJoinModal}
           />
         </Modal>
       )}
@@ -210,7 +235,7 @@ export default function ActivityDetail() {
             <section className="icon2">
               <Dropdown06
                 page={'activity'}
-                toggleDeleteModal={onClickOpenDeleteModal}
+                toggleDeleteModal={toggleDeleteModal}
               />
             </section>
           </div>
@@ -231,7 +256,7 @@ export default function ActivityDetail() {
             content={'참여하기'}
             color={'main'}
             type="submit"
-            onClick={onClickJoinandCancel}
+            onClick={toggleJoinModal}
           />
         </div>
         <Blank height={100} />

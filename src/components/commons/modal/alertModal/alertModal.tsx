@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
 import { ModalXbuttonIcon } from 'assets/svgs';
+import { AxiosResponse } from 'axios';
 import ContainedButton03 from 'components/commons/button/contained/ContainedButton03';
 import OutlinedButton03 from 'components/commons/button/outlined/OutlinedButton03';
+import { UseMutateFunction } from 'react-query';
 import { Colors } from 'styles/Colors';
 
 interface IProps {
-  onClickOk: () => void;
+  onClickOk: () => void | any;
   onClickCancel: () => void;
   title: string;
   contents: string;

@@ -29,11 +29,13 @@ import SupportPaymentPage from 'pages/support/[supportid]/payment';
 import useSetUser from 'hooks/useSetUser';
 import ScrollToTop from 'commons/utils/scrolltotop';
 import { ChatPage } from 'pages/chat';
+
 import { AxiosInterceptor } from 'commons/utils/axiosInstance';
 import MarketPaymentPage from 'pages/market/[marketId]/payment';
 import PrivateRouteLayout from 'components/commons/privateRouter';
-import GroupChatPage from 'pages/chat/groupChat';
+
 import MoreInfo from 'components/units/login/moreInformation/moreInforamtion';
+import GroupChatPage from 'pages/groupChat';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -88,7 +90,7 @@ const App = () => {
                 />
 
                 <Route path="/chat" element={<ChatPage />} />
-                <Route path="/chat/groupChat" element={<GroupChatPage />} />
+                <Route path="/groupChat" element={<GroupChatPage />} />
 
                 <Route path="/mypage" element={<MyPage />} />
               </Route>
