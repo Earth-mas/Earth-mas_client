@@ -122,10 +122,10 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
         />
 
         <Upload01Copy
-          page={'support'}
+          page={'activity'}
           urlString={props.urlString}
           setUrlString={props.setUrlString}
-          fetchData={props.editData?.url?.split(',')}
+          fetchData={props.editData?.url ? props.editData?.url?.split(',') : []}
         />
         <Blank height={25} />
         <QuillEditor

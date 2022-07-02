@@ -18,12 +18,13 @@ export default function ActivityCard(props: IPropsActivityCardList) {
 
         <Blank height={10} />
         <div className="infoBox">
-          <div
+          {/* <div
             className="contentsBox"
             dangerouslySetInnerHTML={{
               __html: Dompurify.sanitize(props.el?.description),
             }}
-          />
+          /> */}
+          <div className="title">{props.el?.title}</div>
           <Line />
           <UserInfoBox>
             <div className="userImg">
@@ -77,11 +78,18 @@ const Wrapper = styled.div`
     vertical-align: middle; */
     }
   }
+
   .infoBox {
     width: 235px;
     /* height: 85px; */
     border: 1px solid ${Colors.B20};
     border-radius: 10px;
+
+    .title {
+      height: 40px;
+      text-align: center;
+      padding: 10px;
+    }
   }
   .contentsBox {
     height: 47px;

@@ -5,7 +5,7 @@ import { activityRoute } from 'utils/APIRoutes';
 import ActivityNewUI from './ActivityNew.presenter';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityDetail } from '../detail/ActivityDetail.container';
 
 export interface FormValues {
@@ -56,12 +56,12 @@ export default function ActivityNew(props: IActivityNewProps) {
   const onClickSubmit = async (data: FormValues) => {
     console.log('form 데이터: ', data);
     if (
-      !data.title ||
-      !data.category ||
-      !data.dday ||
-      !data.location ||
-      !data.maxpeople ||
-      !data.subdescription ||
+      !data.title &&
+      !data.category &&
+      !data.dday &&
+      !data.location &&
+      !data.maxpeople &&
+      !data.subdescription &&
       !data.url
     ) {
       alert('내용을 입력해주세요');
@@ -92,6 +92,7 @@ export default function ActivityNew(props: IActivityNewProps) {
     console.log('수정할 데이터:', data);
     const updateVariables: IUpdateVariables = {
       ...props.editData,
+      url: urlString,
     };
 
     if (data.title) updateVariables.title = data.title;
@@ -115,7 +116,6 @@ export default function ActivityNew(props: IActivityNewProps) {
         },
       )
       .then(res => {
-        // console.log('res: ', res);
         navigate(`/activity/${res.data?.id}`);
       })
       .catch(error => {
@@ -123,6 +123,10 @@ export default function ActivityNew(props: IActivityNewProps) {
         alert('잘못된 주소입니다');
       });
   };
+
+  useEffect(() => {
+    setUrlString(String(props.editData?.url));
+  }, [props.editData]);
 
   return (
     <ActivityNewUI
