@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { InputWrapper } from './Chat.styles';
 import { ChatInputProps } from './Chat.types';
+import autosize from 'autosize';
 
 export const ChatInput = (props: ChatInputProps) => {
   const [chatMsg, setChatMsg] = useState('');
@@ -24,6 +25,13 @@ export const ChatInput = (props: ChatInputProps) => {
       // }
     }
   };
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (textareaRef.current) {
+      autosize(textareaRef.current);
+    }
+  }, []);
 
   return (
     <InputWrapper

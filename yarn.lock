@@ -1893,6 +1893,11 @@
   resolved "https://registry.npmjs.org/@types/aria-query/-/aria-query-4.2.2.tgz"
   integrity sha512-HnYpAE1Y6kRyKM/XkEuiRQhTHvkzMBurTHnpFLYLBGPIylZNPs9jJcuOOYWxPLJCSEtmZT0Y8rHDokKN7rRTig==
 
+"@types/autosize@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@types/autosize/-/autosize-4.0.1.tgz#999a7c305b96766248044ebaac1a0299961f3b61"
+  integrity sha512-iPJT/FCaSO79G6j+9n6gmFc5nhxZ1gDrA2UAvb5FslJ6FJQZnDfbBU0qp5vpp0Cbjj7+gOyjuWZ7RrXvRuETaA==
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.14":
   version "7.1.19"
   resolved "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.1.19.tgz"
@@ -8196,18 +8201,6 @@ react-hook-form@^7.32.1:
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.32.1.tgz#103de7b7ef3a7d295264433e4464bd17c8e4bdc9"
   integrity sha512-A0bsgZZUnGdG68sXLBNMN7zRYKbYc/ESjDkjrJZ8PZ8/96EQ0IwMfYY3wpopt+yn2+Mm3APEUkw+JdjYQSRVJA==
 
-react-infinite-scroll-component@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-infinite-scroll-component/-/react-infinite-scroll-component-6.1.0.tgz#7e511e7aa0f728ac3e51f64a38a6079ac522407f"
-  integrity sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==
-  dependencies:
-    throttle-debounce "^2.1.0"
-
-react-intersection-observer@^9.3.5:
-  version "9.3.5"
-  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-9.3.5.tgz#df97584c1ef1549a47d4af6380db2fb4b76d7bba"
-  integrity sha512-TiJXVUapzAaIrZCAMBLjyWvwGYNGm0Xpkcwm3NY23b9PsJEBavul0hRFmrwc/LOmBUA/8TlkjCj7lCvjM0q1Hg==
-
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
@@ -9414,11 +9407,6 @@ throat@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/throat/-/throat-6.0.1.tgz"
   integrity sha512-8hmiGIJMDlwjg7dlJ4yKGLK8EsYqKgPWbG3b4wjJddKNwc7N7Dpn08Df4szr/sZdMVeOstrdYSsqzX6BYbcB+w==
-
-throttle-debounce@^2.1.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-2.3.0.tgz#fd31865e66502071e411817e241465b3e9c372e2"
-  integrity sha512-H7oLPV0P7+jgvrk+6mwwwBDmxTaxnu9HMXmloNLXwnNO0ZxZ31Orah2n8lU1eMPvsaowP2CX+USCgyovXfdOFQ==
 
 thunky@^1.0.2:
   version "1.1.0"

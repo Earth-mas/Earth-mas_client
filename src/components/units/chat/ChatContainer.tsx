@@ -72,7 +72,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
     };
 
     // 스크롤바
-    const scrollbarRef = useRef<any>(null);
+    // const scrollbarRef = useRef<any>(null);
 
     useEffect(() => {
       props.socketRef?.current?.on('user-send-emit', (msg: any) => {
@@ -128,7 +128,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
                     {dataList[1]?.map((message: any) => (
                       <MessageList
                         key={uuidv4()}
-                        scrollbarRef={scrollbarRef}
+                        // scrollbarRef={scrollbarRef}
                         message={message}
                       />
                     ))}

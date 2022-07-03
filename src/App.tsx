@@ -35,7 +35,6 @@ import MarketPaymentPage from 'pages/market/[marketId]/payment';
 import PrivateRouteLayout from 'components/commons/privateRouter';
 
 import MoreInfo from 'components/units/login/moreInformation/moreInforamtion';
-import GroupChatPage from 'pages/groupChat';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -90,7 +89,6 @@ const App = () => {
                 />
 
                 <Route path="/chat" element={<ChatPage />} />
-                <Route path="/groupChat" element={<GroupChatPage />} />
 
                 <Route path="/mypage" element={<MyPage />} />
               </Route>

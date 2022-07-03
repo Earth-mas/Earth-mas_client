@@ -85,6 +85,10 @@ export const Chat = () => {
   }, [userInfo]);
 
   useEffect(() => {
+    mutate();
+  }, []);
+
+  useEffect(() => {
     if (currentUser) {
       socketRef.current = io(`${chat}`, {
         upgrade: false,
@@ -94,7 +98,7 @@ export const Chat = () => {
         userid: userInfo.id,
       });
     }
-    mutate();
+    createUserId();
   }, [currentChat]);
 
   const scrollbarRef = useRef<Scrollbars>(null);
@@ -116,12 +120,10 @@ export const Chat = () => {
           </div>
 
           <ChatList
-            currentChat={currentChat}
             setCurrentChat={setCurrentChat}
             chatUserList={chatUserList}
             roomid={roomid}
             setRoomid={setRoomid}
-            createUserId={createUserId}
           />
         </LeftContainer>
 

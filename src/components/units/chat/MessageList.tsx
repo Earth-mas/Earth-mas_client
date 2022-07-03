@@ -8,7 +8,7 @@ export const MessageList = (props: any) => {
 
   return (
     <Message
-      ref={props.scrollbarRef}
+      // ref={props.scrollbarRef}
       key={props.message.userid}
       className={`message ${
         props.message.userid === userInfo.id ? 'sended' : 'recieved'
