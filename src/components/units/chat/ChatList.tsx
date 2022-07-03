@@ -1,10 +1,10 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import { IChatListProps } from './Chat.types';
 import { ListContainer, List } from './Chat.styles';
 
-export const ChatList = (props: IChatListProps) => {
+export const ChatList = (props: any) => {
   const userInfo = useRecoilValue(userState);
   // const [currentSelected, setCurrentSelected] = useState(undefined);
 
@@ -16,8 +16,9 @@ export const ChatList = (props: IChatListProps) => {
 
   useEffect(() => {
     props.createUserId();
-    window.scrollTo(0, 0);
-  }, [props.roomid]);
+    // changeCurrentChat;
+    // window.scrollTo(0, 0);
+  }, [props.currentChat]);
 
   return (
     <ListContainer>

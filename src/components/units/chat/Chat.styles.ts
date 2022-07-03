@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
@@ -14,9 +15,11 @@ export const ChatWrapper = styled.div`
   margin: 50px 0;
 
   > section {
+    position: relative;
     width: 100%;
     height: 100%;
     > .user {
+      position: relative;
       height: 65px;
       min-height: 65px;
       :first-of-type {
@@ -62,7 +65,7 @@ export const LeftContainer = styled.section`
 `;
 export const RightContainer = styled.section`
   overflow: hidden;
-  > .user {
+  .user {
     display: flex;
     align-items: center;
     padding: 15px;
@@ -93,94 +96,91 @@ export const RightContainer = styled.section`
 export const ContainerWrapper = styled.div`
   max-width: 100%;
   width: 100%;
+  /* height: auto; */
+  height: calc(100% - 65px);
   padding: 0 15px 15px;
-  /* overflow: hidden; */
-
   > div {
-    height: 520px;
-    max-height: 520px;
-    overflow-y: auto;
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* justify-content: end; */
-    padding: 10px 5px 0;
-    margin-bottom: 10px;
+    position: static;
 
-    > .messageWrap {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      :last-of-type {
-        margin-bottom: 0;
-      }
-      &.sended {
-        justify-content: flex-end;
-        .message {
-          .content {
-            background-color: ${Colors.SUB1};
-            color: ${Colors.BW};
-          }
-        }
-        :first-of-type {
-          .message {
-            .content {
-              border-top-right-radius: 0;
-            }
-          }
-        }
-      }
-      &.recieved {
-        justify-content: flex-start;
-        .message {
-          > .time {
-            order: 1;
-            margin-left: 10px;
-            margin-right: 0;
-            text-align: left;
-          }
-          border-top-left-radius: 0;
-
-          .content {
-            background-color: ${Colors.B20};
-            color: ${Colors.B100};
-          }
-        }
-        &:first-of-type {
-          .message {
-            .content {
-              border-top-left-radius: 0;
-            }
-          }
-        }
-      }
+    > div {
+      position: static;
+      overflow: hidden !important;
+      overflow-y: auto !important;
     }
+  }
+`;
 
-    .message {
-      width: auto;
-      display: flex;
-      align-items: flex-end;
-      /* overflow: hidden; */
-      > .time {
-        min-width: 75px;
-        font-size: 0.75rem;
-        color: ${Colors.B80};
-        margin-bottom: 5px;
-        margin-right: 10px;
-        text-align: right;
-      }
+export const Scrollbar = styled(Scrollbars)`
+  height: 520px;
+  max-height: 520px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 10px 5px 0;
+  margin-bottom: 10px;
+`;
+
+export const Message = styled.div`
+  /* .message { */
+  width: auto;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+  :last-of-type {
+    margin-bottom: 0;
+  }
+  &.sended {
+    justify-content: flex-end;
+    .content {
+      background-color: ${Colors.SUB1};
+      color: ${Colors.BW};
+    }
+    :first-of-type {
       .content {
-        width: auto;
-        padding: 10px 12px;
-        font-size: ${FontSize.SMALL};
-        line-height: ${FontSize.MEDIUM_T};
-        border-radius: 17px;
-        color: #d1d1d1;
-        word-wrap: break-word;
-        white-space: pre-line;
-        /* overflow: hidden; */
+        border-top-right-radius: 0;
       }
     }
+  }
+  &.recieved {
+    justify-content: flex-start;
+    > .time {
+      order: 1;
+      margin-left: 10px;
+      margin-right: 0;
+      text-align: left;
+    }
+    border-top-left-radius: 0;
+
+    .content {
+      background-color: ${Colors.B20};
+      color: ${Colors.B100};
+    }
+    &:first-of-type {
+      .content {
+        border-top-left-radius: 0;
+      }
+    }
+  }
+  /* } */
+
+  .time {
+    min-width: 75px;
+    font-size: 0.75rem;
+    color: ${Colors.B80};
+    margin-bottom: 5px;
+    margin-right: 10px;
+    text-align: right;
+  }
+  .content {
+    width: auto;
+    padding: 10px 12px;
+    font-size: ${FontSize.SMALL};
+    line-height: ${FontSize.MEDIUM_T};
+    border-radius: 17px;
+    color: #d1d1d1;
+    word-wrap: break-word;
+    white-space: pre-line;
   }
 `;
 
@@ -311,5 +311,31 @@ export const List = styled.div`
       font-family: ${FontFamily.MEDIUM};
       color: ${Colors.B100};
     }
+  }
+`;
+
+export const StickyHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  position: sticky;
+  top: 14px;
+  > div {
+    font-weight: bold;
+    font-size: 13px;
+    height: 28px;
+    line-height: 27px;
+    padding: 0 16px;
+    z-index: 2;
+    --saf-0: rgba(var(--sk_foreground_low, 29, 28, 29), 0.13);
+    box-shadow: 0 0 0 1px var(--saf-0), 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+    border-radius: 24px;
+    position: relative;
+    top: -0px;
+    background: white;
+    border: none;
+    outline: none;
+    cursor: default;
   }
 `;

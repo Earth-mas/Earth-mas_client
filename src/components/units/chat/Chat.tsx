@@ -11,6 +11,7 @@ import { BeforeChat } from './BeforeChat';
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import store from 'storejs';
+import Scrollbars from 'react-custom-scrollbars';
 
 export const Chat = () => {
   const navigate = useNavigate();
@@ -34,7 +35,6 @@ export const Chat = () => {
     {
       onSuccess: res => {
         // console.log(res);
-        // queryClient.invalidateQueries('finduser', { refetchInactive: true });
       },
       onError: err => {
         console.log(err);
@@ -67,6 +67,12 @@ export const Chat = () => {
     },
   );
 
+  /* console.log(
+    currentChat?.user1.id === userInfo.id
+      ? currentChat?.user2.id
+      : currentChat?.user1.id,
+  ); */
+
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) {
       alert('로그인을 해주세요');
@@ -75,7 +81,7 @@ export const Chat = () => {
       if (userInfo.id.length > 0) return setCurrentUser(userInfo);
     }
 
-    mutate();
+    // mutate();
   }, [userInfo]);
 
   useEffect(() => {
@@ -88,7 +94,10 @@ export const Chat = () => {
         userid: userInfo.id,
       });
     }
+    mutate();
   }, [currentChat]);
+
+  const scrollbarRef = useRef<Scrollbars>(null);
 
   return (
     <>
@@ -107,6 +116,7 @@ export const Chat = () => {
           </div>
 
           <ChatList
+            currentChat={currentChat}
             setCurrentChat={setCurrentChat}
             chatUserList={chatUserList}
             roomid={roomid}
@@ -133,6 +143,7 @@ export const Chat = () => {
               </div>
 
               <ChatContainer
+                ref={scrollbarRef}
                 currentChat={currentChat}
                 chatUserList={chatUserList}
                 roomid={roomid}
