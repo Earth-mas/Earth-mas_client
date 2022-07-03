@@ -10,8 +10,6 @@ export const ChatButton = (props: { userInfo?: any }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  console.log(props.userInfo?.id);
-
   const { mutate } = useMutation(
     () => {
       return axios.post(
