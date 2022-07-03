@@ -13,7 +13,9 @@ import SearchList from './searchList/SearchList';
 export default function MarketList() {
   const [listData, setListData] = useState<IMarketList[]>();
   const [nowCategory, setNowCategory] = useState('전체');
-  const [select, setSelect] = useState<boolean>(false);
+
+  const [select, setSelect] = useState<string>('findlike');
+
   const [keyword, setKeyword] = useState<string>();
   const [clickPage, setClickPage] = useState<number>(1);
   const [searchList, setSearchList] = useState<boolean>(false);
@@ -43,13 +45,10 @@ export default function MarketList() {
   const { data: ItemsAll, refetch: refetchItemsAll } = useQuery(
     ['getItemsAll', clickPage],
     async () => {
-      const result = await axios.post(
-        `${marketRoute}/${select ? 'finddcs' : 'findlike'}`,
-        {
-          category: nowCategory,
-          page: clickPage,
-        },
-      );
+      const result = await axios.post(`${marketRoute}/${select}`, {
+        category: nowCategory,
+        page: clickPage,
+      });
       setListData(result.data.arr);
       return result.data;
     },

@@ -1,84 +1,119 @@
-import styled from '@emotion/styled';
 import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
-import { useMutation, useQueries, useQueryClient } from 'react-query';
-import { useNavigate, useParams } from 'react-router-dom';
+import * as S from './GroupChat.styles';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import { io } from 'socket.io-client';
-import { activityRoute, chat } from 'utils/APIRoutes';
-import { ActivityDetail } from '../activity/detail/ActivityDetail.container';
-import {
-  ChatWrapper,
-  LeftContainer,
-  RightContainer,
-} from '../groupChat/groupChat.styles';
-import GroupChatContainer from './container/groupChatContainer';
 import store from 'storejs';
+import { chat } from 'utils/APIRoutes';
 
-// interface IActivityGroupChatProps {
-//   detailChatData?: ActivityDetail;
-// }
-
-// const socket = io.connect('https://earth-mas.shop/server/chat');
+import GroupChatContainer from './container/GroupChatContainer';
+import { IChatUser, IGroupChat } from './GroupChat.types';
+import GroupChatList from './list/GroupChatList';
 
 export default function GroupChat() {
   const userInfo = useRecoilValue(userState);
   const accessToken = store.get('accessToken');
+  const [chatList, setChatList] = useState<IGroupChat[]>();
+  const [roomid, setRoomid] = useState<string>('');
+  const [currentChat, setCurrentChat] = useState<IGroupChat>();
+  const [chatUsers, setChatUsers] = useState<IChatUser[]>();
 
-  const getMyRoomChat = async () => {
-    const temp = {
-      param: null,
-    };
+  const socket = io(`${chat}`);
+
+  const getChatList = async () => {
     await axios
-      .post(`${chat}/getMyRoomChat`, temp, {
+      .post(`${chat}/get-my-roomchat`, null, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
       .then(res => {
-        console.log('res:', res);
+        console.log('getChatList:', res.data);
+        setChatList(res.data);
       })
       .catch(err => {
         console.log('err:', err);
       });
   };
 
+  const getChatUser = async () => {
+    await axios
+      .post(
+        `${chat}/chat-roomuser`,
+        { roomid },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      )
+      .then(res => {
+        console.log('chatUsers:', res.data);
+        setChatUsers(res.data);
+      })
+      .catch(err => {
+        console.log('err:', err);
+      });
+  };
   useEffect(() => {
-    getMyRoomChat();
+    getChatUser();
+    console.log(roomid);
+    // socket.emit('room-enter', {
+    //   roomid: roomid,
+    // });
+  }, [roomid]);
+
+  useEffect(() => {
+    getChatList();
   }, []);
 
   return (
-    <>
-      <ChatWrapper>
-        <LeftContainer>
-          <div className="user">
-            <div className="userImg">
-              <img
-                src={userInfo ? userInfo.url : ''}
-                onError={e => {
-                  e.currentTarget.src = '/images/profileDefault.png';
-                }}
-              />
-            </div>
-            <p className="userName">{userInfo.name}</p>
+    <S.ChatWrapper>
+      <S.LeftContainer>
+        <div className="user">
+          <div className="userImg">
+            <img
+              src={userInfo ? userInfo.url : ''}
+              onError={e => {
+                e.currentTarget.src = '/images/profileDefault.png';
+              }}
+            />
           </div>
-        </LeftContainer>
-        <RightContainer>
-          <div className="activity">
-            <div className="activityImg">
-              <img
-                // src={clickUserId ? clickUserId?.data[0]?.url : ''}
-                onError={e => {
-                  e.currentTarget.src = '/images/profileDefault.png';
-                }}
-              />
-            </div>
-            <p>게시글 아이디 받아오는거 포기</p>
+          <p className="userName">{userInfo.name}</p>
+        </div>
+        <GroupChatList
+          roomid={roomid}
+          setRoomid={setRoomid}
+          setCurrentChat={setCurrentChat}
+          createUserId={''}
+          chatList={chatList}
+        />
+      </S.LeftContainer>
+      <S.RightContainer>
+        <div className="activity">
+          <div className="activityImg">
+            <img
+              src={currentChat ? currentChat.url.split(',')[0] : ''}
+              onError={e => {
+                e.currentTarget.src = '/images/profileDefault.png';
+              }}
+            />
           </div>
-          <GroupChatContainer />
-        </RightContainer>
-      </ChatWrapper>
-    </>
+          <p className="activityTitle">
+            {currentChat
+              ? `${currentChat.title} ${chatUsers?.length}명`
+              : '채팅을 선택해주세요'}
+          </p>
+        </div>
+        <GroupChatContainer
+          currentChat={currentChat}
+          chatList={chatList}
+          roomid={roomid}
+          socket={socket}
+          //  socketRef={socketRef}
+        />
+      </S.RightContainer>
+    </S.ChatWrapper>
   );
 }
