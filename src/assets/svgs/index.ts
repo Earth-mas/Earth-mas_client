@@ -29,3 +29,4 @@ export { ReactComponent as MarketIcon } from './icons/market.svg';
 export { ReactComponent as SupportIcon } from './icons/support.svg';
 export { ReactComponent as ActivityIcon } from './icons/activity.svg';
 export { ReactComponent as DropdownIcon } from './icons/dropdown-icon.svg';
+export { ReactComponent as EmojiIcon } from './icons/emoji.svg';

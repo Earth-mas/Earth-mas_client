@@ -5,18 +5,14 @@ import { supportRoute } from 'utils/APIRoutes';
 import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { ParticipationList } from './ParticipationList';
-import { IpaymentListElement } from './ParticipationList.types';
+import { IItem, IpaymentListElement } from './ParticipationList.types';
 import { useState } from 'react';
 let index = 0;
+
 export const ParticipationListContainer = () => {
   const { id } = useParams();
-  const [list, setList] = useState<any>({
-    items: [],
-  });
 
-  /* const viewMore = () => {
-    addList();
-  }; */
+  const [list, setList] = useState<IItem[]>([]);
 
   const addList = () => {
     const items = [];
@@ -26,7 +22,7 @@ export const ParticipationListContainer = () => {
         name: `hello` + i,
       });
     }
-    setList({ items: [...list, ...items] });
+    setList([...list, ...items]);
     index++;
   };
 
