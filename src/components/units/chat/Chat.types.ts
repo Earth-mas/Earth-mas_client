@@ -1,3 +1,6 @@
+import { RefObject } from 'react';
+import Scrollbars from 'react-custom-scrollbars';
+
 export interface IChatListProps {
   roomid: any;
   setRoomid: (arg0: any) => void;
@@ -19,7 +22,8 @@ export interface IChatContainerProps {
     };
   };
   currentChat: any;
-  ref: any;
+  scrollRef: RefObject<Scrollbars>;
+  clickUserId: any;
 }
 
 export interface ChatInputProps {

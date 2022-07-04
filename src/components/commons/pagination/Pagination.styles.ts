@@ -18,7 +18,6 @@ export const Wrapper = styled.div`
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    /* cursor: pointer; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,7 +56,6 @@ export const PrevArrow = styled.div`
   margin-left: 3px;
 `;
 export const Next = styled.div`
-  /* background-color: ${Colors.B20}; */
   background-color: ${(props: IPaginationNextProps) =>
     props.startPage + 10 >= props.lastPage ? Colors.B20 : Colors.B40};
   cursor: ${(props: IPaginationNextProps) =>

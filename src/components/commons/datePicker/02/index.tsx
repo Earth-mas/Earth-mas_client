@@ -11,11 +11,7 @@ interface IDatePickerProps {
     date: Date | null,
     event: SyntheticEvent<any, Event> | undefined,
   ) => void;
-  value?: string | undefined;
   selected: Date | null | undefined;
-
-  name?: string;
-  register?: any;
 }
 
 export default function DatePicker02(props: IDatePickerProps) {
@@ -23,13 +19,9 @@ export default function DatePicker02(props: IDatePickerProps) {
     <Wrapper>
       <DatePicker
         locale={ko}
-        // {...props.register}
-        // value={props.value}
         minDate={new Date()}
         selected={props.selected}
-        // selected={props.date ? props.date : props.defaultValue}
         dateFormat="yyyy/MM/dd"
-        // startDate={props.selected}
         onChange={props.onChange}
         placeholderText="희망하는 목표 날짜를 선택해주세요"
         withPortal

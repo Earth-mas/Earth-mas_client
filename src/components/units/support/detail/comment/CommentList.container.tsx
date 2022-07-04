@@ -15,9 +15,6 @@ export default function CommentList() {
   const [clickPage, setClickPage] = useState(1);
 
   const inputRef = useRef<any>(null);
-  const onClearInput = () => {
-    inputRef.current.value = '';
-  };
 
   const {
     data,
@@ -44,7 +41,7 @@ export default function CommentList() {
     },
     {
       onSuccess: () => {
-        onClearInput();
+        inputRef.current.value = '';
         queryClient.invalidateQueries('allComment', { refetchInactive: true });
       },
       onError: err => {

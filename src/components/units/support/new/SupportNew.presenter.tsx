@@ -7,8 +7,7 @@ import Title01 from 'components/commons/text/title/Title01';
 import DatePicker02 from 'components/commons/datePicker/02';
 import { ISupportNewUIProps } from './SupportNew.types';
 import { Controller } from 'react-hook-form';
-import Upload01Copy from 'components/commons/upload/01/Upload01.copy';
-import QuillEditorCopy from 'components/commons/text/reactQuill/ReactQuill.Copy';
+import Upload01 from 'components/commons/upload/01/Upload01';
 
 export default function SupportNewUI(props: ISupportNewUIProps) {
   return (
@@ -63,22 +62,16 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
             />
           )}
         />
-        <Upload01Copy
+        <Upload01
           page={'support'}
           urlString={props.urls}
           setUrlString={props.setUrls}
-          fetchData={props.fetchData?.url.split(',')}
+          fetchData={props.fetchData?.url}
         />
         <Blank height={25} />
-        {/* <QuillEditor
+        <QuillEditor
           name="description"
-          page={0}
-          onChange={props.handleChangeQuill}
-          value={props.contents || props.fetchData?.description || ''}
-        /> */}
-        <QuillEditorCopy
-          name="description"
-          page={0}
+          page={2}
           onChange={props.handleChangeQuill}
           value={props.contents || props.fetchData?.description || ''}
         />
