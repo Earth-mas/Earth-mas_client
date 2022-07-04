@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import store from 'storejs';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import { useEffect, useState } from 'react';
 import SupportCard from 'components/commons/card/support/SupportCard';
@@ -7,14 +6,10 @@ import { ISupportListProps } from 'components/units/support/list/SupportList.typ
 
 export default function JoinedList() {
   const [listData, setListData] = useState<ISupportListProps[]>([]);
-  const accessToken = store.get('accessToken');
+
   useEffect(() => {
     axiosApiInstance
-      .post('/mypage/mysupporting', null, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      .post('/mypage/mysupporting', null)
       .then(res => setListData(res.data));
   }, []);
 

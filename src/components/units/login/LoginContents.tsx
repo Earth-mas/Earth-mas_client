@@ -15,7 +15,7 @@ interface IProps {
 const LoginContents = ({ handleClose }: IProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const location = useLocation();
+  const urlLocation = useLocation();
   const navigate = useNavigate();
   const setUser = useSetRecoilState(userState);
   const setAccessTokenState = useSetRecoilState(accessTokenState);
@@ -37,9 +37,7 @@ const LoginContents = ({ handleClose }: IProps) => {
       password,
     };
     axiosApiInstance
-      .post('auth/login', data, {
-        withCredentials: true,
-      })
+      .post('auth/login', data)
       .then(res => {
         const accessToken = res.data;
         store.set('accessToken', accessToken);
@@ -48,7 +46,7 @@ const LoginContents = ({ handleClose }: IProps) => {
         handleClose();
 
         // 현재페이지가 회원가입페이지인 경우 로그인 성공시 홈화면으로 redirect
-        if (location.pathname === '/signup') navigate('/');
+        if (urlLocation.pathname === '/signup') navigate('/');
         axios
           .get('https://earth-mas.shop/server/user/me', {
             headers: {
@@ -70,6 +68,7 @@ const LoginContents = ({ handleClose }: IProps) => {
           .catch(error => {
             alert(error.response.data.message);
           });
+        location.reload();
       })
       .catch(error => {
         // alert(error.response.data.message);

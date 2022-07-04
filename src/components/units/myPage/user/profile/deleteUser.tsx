@@ -15,16 +15,11 @@ export default function DeleteUser(props: { id: string }) {
   const onClickModal = () => setIsOpen(prev => !prev);
   const resetUser = useResetRecoilState(userState);
 
-  const accessToken = store.get('accessToken');
   const navigate = useNavigate();
 
   const onClickDelete = () => {
     axios
-      .delete(`https://earth-mas.shop/server/user/${props.id}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      .delete(`https://earth-mas.shop/server/user/${props.id}`)
       .then(() => {
         store.remove('accessToken');
         alert('탈퇴가 완료되었습니다.');

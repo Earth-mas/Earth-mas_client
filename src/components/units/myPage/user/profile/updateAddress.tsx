@@ -1,11 +1,10 @@
 import { ChangeEvent, useState } from 'react';
-import axios from 'axios';
-import store from 'storejs';
 
 import PostCode from 'components/commons/daumpostcode';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import Input01 from 'components/commons/inputs/Input01';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 interface IProps {
   addressnumber: string;
@@ -37,25 +36,13 @@ export default function UpdateAddress(props: IProps) {
     });
   };
 
-  const accessToken = store.get('accessToken');
-
   console.log(addressInput);
 
   const onClickSubmit = () => {
     if (!addressInput.address1 && !addressInput.address2)
       return alert('변경된 항목이 없습니다.');
-    axios
-      .put(
-        `https://earth-mas.shop/server/user`,
-        {
-          ...addressInput,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      )
+    axiosApiInstance
+      .put(`user`, { ...addressInput })
       .then(() => alert('주소가 변경되었습니다.'))
       .catch(error => {
         alert(error.response.data.message);

@@ -5,6 +5,7 @@ import store from 'storejs';
 import useInterval from 'hooks/useInterval';
 import { emailRegex, nameRegex, passwordRegex } from './regex';
 import SignUpUI from './SignUp.presenter';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export interface IPostCodeData {
   zonecode: string;
@@ -140,7 +141,7 @@ export default function SignUp() {
       alert('입력 정보를 다시 확인해주세요.');
       return;
     }
-    axios
+    axiosApiInstance
       .post('https://earth-mas.shop/server/user', inputs)
       .then(() => {
         alert('회원가입이 완료되었습니다.');
