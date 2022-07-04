@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-
+// 대소문자 변경
 export const ChatWrapper = styled.div`
   max-width: 1024px;
   width: 1024px;

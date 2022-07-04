@@ -10,7 +10,7 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { GroupChatInput } from '../input/GroupChatInput';
 import { Socket } from 'socket.io-client';
-
+//대소문자 변경
 interface IGroupChatContainerProps {
   currentChat?: IGroupChat;
   chatList?: IGroupChat[];
