@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import store from 'storejs';
 import ActivityCard from 'components/commons/card/activity/ActivityCard';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import { MyActivityWrapper } from './MyPageActivity.styles';
@@ -9,14 +8,10 @@ import { IActivityListProps } from 'components/units/activity/list/ActivityList.
 
 export default function MyPageActivity() {
   const [listData, setListData] = useState<IActivityListProps[]>([]);
-  const accessToken = store.get('accessToken');
+
   useEffect(() => {
     axiosApiInstance
-      .post('/mypage/myactivity', null, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      .post('/mypage/myactivity', null)
       .then(res => setListData(res.data));
   }, []);
 

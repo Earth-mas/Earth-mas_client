@@ -6,12 +6,16 @@ import store from 'storejs';
 
 const axiosApiInstance = axios.create({
   baseURL: 'https://earth-mas.shop/server/',
+  withCredentials: true,
+  headers: {
+    Authorization: `Bearer ${store.get('accessToken')}`,
+    // 나중에 accessTokenAtom으로 변경할 것
+  },
 });
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const AxiosInterceptor = ({ children }: any) => {
-  const [, setAccessTokenAtom] = useRecoilState(accessTokenState);
-
+  const [accessTokenAtom, setAccessTokenAtom] =
+    useRecoilState(accessTokenState);
   useEffect(() => {
     const resInterceptor = (response: any) => {
       return response;

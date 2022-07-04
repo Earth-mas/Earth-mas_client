@@ -19,14 +19,9 @@ const Header = () => {
   const resetUser = useResetRecoilState(userState);
   const [isOpen, setIsOpen] = useState(false);
   const onClickModal = () => setIsOpen(prev => !prev);
-  const accessToken = store.get('accessToken');
 
   const onClickLogout = () => {
-    axiosApiInstance.post('auth/logout', null, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    axiosApiInstance.post('auth/logout', null);
     store.remove('accessToken');
     setIsOpen(prev => !prev);
     resetUser();

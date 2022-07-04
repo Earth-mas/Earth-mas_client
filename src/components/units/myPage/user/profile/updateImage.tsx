@@ -1,9 +1,9 @@
 import { Avatar, CameraIcon } from 'assets/svgs';
-import axios from 'axios';
+
+import axiosApiInstance from 'commons/utils/axiosInstance';
 import Modal from 'components/commons/modal';
 import InfoModal from 'components/commons/modal/infoModal/infoModal';
 import { ChangeEvent, useRef, useState } from 'react';
-import store from 'storejs';
 
 interface IProps {
   url: string;
@@ -15,7 +15,7 @@ export default function UpdateImage(props: IProps) {
   const [isOpen, setIsOpen] = useState(false);
   const onClickModal = () => setIsOpen(prev => !prev);
   const formData = new FormData();
-  const accessToken = store.get('accessToken');
+
   const fileRef = useRef<HTMLInputElement>(null);
   const onClickButton = () => {
     if (fileRef.current != null) fileRef.current.click();
@@ -25,24 +25,12 @@ export default function UpdateImage(props: IProps) {
     const file = event.target.files?.[0];
     if (!file) return;
     formData.append('files', file);
-    axios
-      .post(`http://34.64.224.198:3000/server/user/upload`, formData)
+    axiosApiInstance
+      .post(`ser/upload`, formData)
       .then(res => {
         const url = `https://storage.googleapis.com/${res.data[0]}`;
         setNewUrl(url);
-        axios
-          .put(
-            `https://earth-mas.shop/server/user`,
-            {
-              url,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            },
-          )
-          .then(() => setIsOpen(true));
+        axiosApiInstance.put(`user`, { url }).then(() => setIsOpen(true));
       })
       .catch(error => {
         alert(error.response.data.message);
@@ -53,18 +41,8 @@ export default function UpdateImage(props: IProps) {
     if (!props.url && !newUrl) {
       return alert('등록된 이미지가 없습니다.');
     }
-    axios
-      .put(
-        `http://34.64.224.198:3000/server/user/`,
-        {
-          url: null,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      )
+    axiosApiInstance
+      .put('user', { url: null })
       .then(() => {
         setNewUrl('.');
         alert('프로필 사진이 삭제되었습니다.');

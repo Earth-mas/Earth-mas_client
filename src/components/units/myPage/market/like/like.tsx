@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import store from 'storejs';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import MarketCard from 'components/commons/card/market/MarketCard';
 import { IMarketList } from 'components/units/market/list/MarketList.types';
@@ -8,14 +7,10 @@ import { IMarketCard } from 'components/commons/card/market/MarketCard.types';
 
 export default function LikeList() {
   const [listData, setListData] = useState<IMarketList[]>([]);
-  const accessToken = store.get('accessToken');
+
   useEffect(() => {
     axiosApiInstance
-      .get('/market/findmylike', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      .get('/market/findmylike')
       .then(res => setListData(res.data));
   }, []);
 

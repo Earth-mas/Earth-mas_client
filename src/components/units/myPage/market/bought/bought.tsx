@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import store from 'storejs';
+
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import MarketCard from 'components/commons/card/market/MarketCard';
 import { useEffect, useState } from 'react';
@@ -8,14 +8,10 @@ import { IMarketList } from 'components/units/market/list/MarketList.types';
 
 export default function BoughtList() {
   const [listData, setListData] = useState<IMarketList[]>([]);
-  const accessToken = store.get('accessToken');
+
   useEffect(() => {
     axiosApiInstance
-      .post('/mypage/boughtmarket', null, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+      .post('/mypage/boughtmarket', null)
       .then(res => setListData(res.data));
   }, []);
 

@@ -1,12 +1,9 @@
-import axios from 'axios';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import Input01 from 'components/commons/inputs/Input01';
 import { ChangeEvent, useState } from 'react';
-import store from 'storejs';
 
 export default function UpdatePassword() {
-  const accessToken = store.get('accessToken');
-
   const [inputs, setInputs] = useState({
     currentpassword: '',
     updatepassword: '',
@@ -21,12 +18,8 @@ export default function UpdatePassword() {
   };
 
   const onClickUpdate = () => {
-    axios
-      .put('https://earth-mas.shop/server/mypage/updatepassword', inputs, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
+    axiosApiInstance
+      .put('mypage/updatepassword', inputs)
       .then(res => {
         console.log(res);
         alert('비밀번호 변경이 완료되었습니다.');
