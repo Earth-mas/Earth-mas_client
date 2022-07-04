@@ -16,8 +16,6 @@ export default function Slide(props: {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: props.autoplay,
-    // nextArrow: <NextArrow />,
-    // prevArrow: <PrevArrow />,
   };
 
   return (

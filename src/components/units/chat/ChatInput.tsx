@@ -2,17 +2,25 @@ import { useState, useRef, useEffect } from 'react';
 import { InputWrapper } from './Chat.styles';
 import { ChatInputProps } from './Chat.types';
 import autosize from 'autosize';
+import Picker from 'emoji-picker-react';
+import { EmojiIcon } from 'assets/svgs';
 
 export const ChatInput = (props: ChatInputProps) => {
   const [chatMsg, setChatMsg] = useState('');
 
   const inputRef = useRef<any>(null);
 
-  /* const handleEmojiClick = (event: any, emoji: { emoji: any }) => {
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const handleEmojiPickerhideShow = () => {
+    setShowEmojiPicker(prev => !prev);
+  };
+
+  const handleEmojiClick = (event: any, emoji: { emoji: any }) => {
     let message = chatMsg;
     message += emoji.emoji;
     setChatMsg(message);
-  }; */ // 이모지삽입
+    setShowEmojiPicker(prev => !prev);
+  }; // 이모지삽입
 
   const sendChat = (event: any) => {
     event.preventDefault();
@@ -26,18 +34,23 @@ export const ChatInput = (props: ChatInputProps) => {
     }
   };
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  console.log(chatMsg);
+
+  /* const textareaRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     if (textareaRef.current) {
       autosize(textareaRef.current);
     }
-  }, []);
+  }, []); */
 
   return (
     <InputWrapper
       onKeyPress={e => {
         if (e.key === 'Enter') {
-          sendChat(e);
+          if (!e.shiftKey) {
+            e.preventDefault();
+            sendChat(e);
+          }
         }
       }}
     >
@@ -48,11 +61,17 @@ export const ChatInput = (props: ChatInputProps) => {
         ref={inputRef}
         onChange={e => setChatMsg(e.target.value)}
       ></textarea>
-      <div>
-        <p>
-          <span>{chatMsg.length}</span>/500
-        </p>
-        <button type="submit">전송</button>
+      <div className="inputBottom">
+        <div className="emoji">
+          <EmojiIcon onClick={handleEmojiPickerhideShow} />
+          {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
+        </div>
+        <div>
+          <p>
+            <span>{chatMsg.length}</span>/500
+          </p>
+          <button type="submit">전송</button>
+        </div>
       </div>
     </InputWrapper>
   );

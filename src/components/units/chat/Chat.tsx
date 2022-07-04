@@ -2,7 +2,6 @@ import { ChatContainer } from './ChatContainer';
 import { ChatList } from './ChatList';
 import { ChatWrapper, LeftContainer, RightContainer } from './Chat.styles';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
 import { chat } from 'utils/APIRoutes';
@@ -14,7 +13,6 @@ import store from 'storejs';
 import Scrollbars from 'react-custom-scrollbars';
 
 export const Chat = () => {
-  const navigate = useNavigate();
   const userInfo = useRecoilValue(userState);
   const accessToken = store.get('accessToken');
 
@@ -25,10 +23,10 @@ export const Chat = () => {
   const queryClient = useQueryClient();
   const socketRef = useRef<any>(null);
 
-  const { data: chatUserList, mutate } = useMutation(
+  const { data: personalChatList, mutate } = useMutation(
     'findmychat',
     () => {
-      return axios.post(`${chat}/findmychat`, null, {
+      return axios.get(`${chat}/findmychat`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
     },
@@ -41,6 +39,8 @@ export const Chat = () => {
       },
     },
   );
+
+  console.log(personalChatList);
 
   const { data: clickUserId, mutate: createUserId } = useMutation(
     'finduser',
@@ -67,26 +67,12 @@ export const Chat = () => {
     },
   );
 
-  /* console.log(
-    currentChat?.user1.id === userInfo.id
-      ? currentChat?.user2.id
-      : currentChat?.user1.id,
-  ); */
-
-  useEffect(() => {
-    if (!localStorage.getItem('accessToken')) {
-      alert('로그인을 해주세요');
-      navigate('/');
-    } else {
-      if (userInfo.id.length > 0) return setCurrentUser(userInfo);
-    }
-
-    // mutate();
-  }, [userInfo]);
-
   useEffect(() => {
     mutate();
   }, []);
+  useEffect(() => {
+    if (userInfo.id.length > 0) return setCurrentUser(userInfo);
+  }, [userInfo]);
 
   useEffect(() => {
     if (currentUser) {
@@ -98,6 +84,7 @@ export const Chat = () => {
         userid: userInfo.id,
       });
     }
+
     createUserId();
   }, [currentChat]);
 
@@ -110,7 +97,7 @@ export const Chat = () => {
           <div className="user">
             <div className="userImg">
               <img
-                src={userInfo ? userInfo.url : ''}
+                src={userInfo.url ? userInfo.url : ''}
                 onError={e => {
                   e.currentTarget.src = '/images/profileDefault.png';
                 }}
@@ -121,7 +108,7 @@ export const Chat = () => {
 
           <ChatList
             setCurrentChat={setCurrentChat}
-            chatUserList={chatUserList}
+            chatUserList={personalChatList}
             roomid={roomid}
             setRoomid={setRoomid}
           />
@@ -145,11 +132,12 @@ export const Chat = () => {
               </div>
 
               <ChatContainer
-                ref={scrollbarRef}
+                scrollRef={scrollbarRef}
                 currentChat={currentChat}
-                chatUserList={chatUserList}
+                chatUserList={personalChatList}
                 roomid={roomid}
                 socketRef={socketRef}
+                clickUserId={clickUserId}
               />
             </>
           )}
