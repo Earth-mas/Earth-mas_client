@@ -20,7 +20,7 @@ export default function GroupChat() {
   const [chatUsers, setChatUsers] = useState<IChatUser[]>();
 
   const socket = io(`${chat}`);
-
+  // 대소문자 변경
   const getChatList = async () => {
     await axios
       .post(`${chat}/get-my-roomchat`, null, {
