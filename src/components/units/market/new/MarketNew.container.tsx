@@ -37,38 +37,27 @@ export default function MarketNew(props: IMarketNewProps) {
   };
 
   const onClickSubmit = async (data: FormValues) => {
-    // if (
-    //   !data.title ||
-    //   !data.stock ||
-    //   !data.amount ||
-    //   !data.minidescription ||
-    //   !isSelected
-    // ) {
-    //   setIsModalContent('필수 항목을 입력해주세요');
-    //   setIsModal(true);
-    //   return;
-    // }
-
-    // const variables = {
-    //   title: data.title,
-    //   minidescription: data.minidescription,
-    //   description: data.description,
-    //   amount: Number(data.amount),
-    //   discount: Number(data.discount),
-    //   stock: Number(data.stock),
-    //   url: urlString,
-    //   category: isSelected,
-    // };
+    if (
+      !data.title ||
+      !data.stock ||
+      !data.amount ||
+      !data.minidescription ||
+      !isSelected
+    ) {
+      setIsModalContent('필수 항목을 입력해주세요');
+      setIsModal(true);
+      return;
+    }
 
     const variables = {
-      title: '페이지네이션 테스트',
-      minidescription: '페이지네이션 테스트',
-      description: '페이지네이션 테스트',
-      amount: 2000,
-      discount: 2000,
-      stock: 200,
-      url: 'ㅁㅁㅁ',
-      category: '주방',
+      title: data.title,
+      minidescription: data.minidescription,
+      description: data.description,
+      amount: Number(data.amount),
+      discount: Number(data.discount),
+      stock: Number(data.stock),
+      url: urlString,
+      category: isSelected,
     };
     newItem(variables);
   };
