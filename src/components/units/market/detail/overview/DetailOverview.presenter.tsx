@@ -132,9 +132,7 @@ export default function DetailOverviewUI(props: IDetailOverviewUIProps) {
             <OutlinedButton01
               color="main"
               content={<ShareIcon />}
-              onClick={() => {
-                getUrl(window.location.href);
-              }}
+              onClick={props.onClickShare}
             />
           </div>
         </div>

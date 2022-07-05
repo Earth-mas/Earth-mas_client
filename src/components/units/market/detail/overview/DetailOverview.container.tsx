@@ -8,17 +8,22 @@ import DetailOverviewUI from './DetailOverview.presenter';
 import { useMutation, useQuery } from 'react-query';
 import { marketRoute } from 'utils/APIRoutes';
 import { useNavigate } from 'react-router-dom';
-
-interface IDetailOverviewProps {
-  detailData?: IMarketDetail;
-}
+import Modal from 'components/commons/modal';
+import InfoModal from 'components/commons/modal/infoModal/infoModal';
+import { getUrl } from 'commons/utils/getUrl';
+import { IDetailOverviewProps } from './DetailOverview.types';
 
 export default function DetailOverview(props: IDetailOverviewProps) {
   const accessToken = store.get('accessToken');
   const [image, setImage] = useState('');
   const [likeActive, setLikeActive] = useState<boolean>();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [infoModal, setInfoModal] = useState(false);
   const navigate = useNavigate();
+  const [infoModalContent, setInfoModalContent] = useState({
+    title: '',
+    content: '',
+  });
 
   const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = logo;
@@ -26,6 +31,15 @@ export default function DetailOverview(props: IDetailOverviewProps) {
 
   const toggleDeleteModal = () => {
     setIsDeleteOpen(prev => !prev);
+  };
+
+  const toggleInfoModal = () => {
+    setInfoModal(prev => !prev);
+  };
+
+  const onClickShare = () => {
+    setInfoModalContent(getUrl(window.location.href));
+    toggleInfoModal();
   };
 
   const { mutate: deleteItem } = useMutation(
@@ -45,9 +59,9 @@ export default function DetailOverview(props: IDetailOverviewProps) {
       for (let i = 0; i < myLike.length; i++) {
         if (props.detailData.id === myLike[i].id) {
           setLikeActive(true);
+
           break;
         }
-
         setLikeActive(false);
       }
     }
@@ -89,8 +103,19 @@ export default function DetailOverview(props: IDetailOverviewProps) {
     },
     {
       onSuccess: res => {
-        res.islike ? alert('찜') : alert('찜 취소');
+        setInfoModalContent({
+          title: '찜 ❤️',
+          content: '찜한 상품은 마이페이지에서 확인 가능합니다',
+        });
+        res.islike && toggleInfoModal();
         getItemsLike();
+      },
+      onError: () => {
+        setInfoModalContent({
+          title: '알림',
+          content: '로그인이 필요한 서비스입니다',
+        });
+        toggleInfoModal();
       },
     },
   );
@@ -99,16 +124,29 @@ export default function DetailOverview(props: IDetailOverviewProps) {
   }, [props.detailData]);
 
   return (
-    <DetailOverviewUI
-      image={image}
-      setImage={setImage}
-      onErrorImg={onErrorImg}
-      deleteItem={deleteItem}
-      onClickPostLike={onClickPostLike}
-      toggleDeleteModal={toggleDeleteModal}
-      isDeleteOpen={isDeleteOpen}
-      detailData={props.detailData}
-      likeActive={likeActive}
-    />
+    <>
+      {infoModal && (
+        <Modal>
+          <InfoModal
+            okMessage="확인"
+            onClickOk={toggleInfoModal}
+            title={infoModalContent.title}
+            contents={infoModalContent.content}
+          />
+        </Modal>
+      )}
+      <DetailOverviewUI
+        image={image}
+        setImage={setImage}
+        onErrorImg={onErrorImg}
+        deleteItem={deleteItem}
+        onClickPostLike={onClickPostLike}
+        toggleDeleteModal={toggleDeleteModal}
+        isDeleteOpen={isDeleteOpen}
+        detailData={props.detailData}
+        likeActive={likeActive}
+        onClickShare={onClickShare}
+      />
+    </>
   );
 }

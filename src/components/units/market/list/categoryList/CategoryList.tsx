@@ -35,10 +35,10 @@ export default function CategoryList(props: ICategoryListProps) {
       </CardWrap>
       <Pagination
         clickPage={props.clickPage}
+        setClickPage={props.setClickPage}
         listCount={props.ItemsAll?.length}
         page="list"
         refetch={props.refetchItemsAll}
-        setClickPage={props.setClickPage}
       />
     </>
   );

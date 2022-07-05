@@ -3,7 +3,7 @@ import { GetDate } from 'commons/utils/GetDate';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
 import * as S from './ReviewDetail.styles';
 import { v4 as uuid4 } from 'uuid';
-import { IMarketReviewDetail } from './ReviewDetail.types';
+import { IReviewDetailProps } from './ReviewDetail.types';
 import Dropdown05 from 'components/commons/dropdown/05/Dropdown05';
 import Modal from 'components/commons/modal';
 import { useState } from 'react';
@@ -14,18 +14,6 @@ import { userState } from 'recoil/user';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
 import { useMutation } from 'react-query';
 import { marketReviewRoute } from 'utils/APIRoutes';
-
-interface IReviewDetailProps {
-  reviewsData: IMarketReviewDetail;
-  refetch: any;
-}
-
-// interface IReviewMarketData {
-//   id: string;
-//   title: string;
-//   minidescription: string;
-//   url: string;
-// }
 
 export default function ReviewDetail(props: IReviewDetailProps) {
   const userInfo = useRecoilValue(userState);
@@ -49,10 +37,7 @@ export default function ReviewDetail(props: IReviewDetailProps) {
 
   const { mutate: deleteReview } = useMutation(
     async () => {
-      const result = await axios.delete(
-        `${marketReviewRoute}/${props.reviewsData.id}`,
-      );
-      return result.data;
+      return await axios.delete(`${marketReviewRoute}/${props.reviewsData.id}`);
     },
     {
       onSuccess: () => {
