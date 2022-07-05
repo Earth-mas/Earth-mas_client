@@ -12,10 +12,11 @@ import * as S from './Upload02.styles';
 import { ImageIcon, XbuttonIcon } from 'assets/svgs';
 import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
 import { v4 as uuid4 } from 'uuid';
+import { host } from 'utils/APIRoutes';
 
 interface IUpload02Props {
   page: 'marketreview';
-  fetchData?: string[];
+  fetchData?: string;
   urlString: string;
   setUrlString: Dispatch<React.SetStateAction<string>>;
 }
@@ -23,15 +24,14 @@ export default function Upload02(props: IUpload02Props) {
   const [urls, setUrls] = useState<string[]>([]);
 
   useEffect(() => {
-    if (props.fetchData && urls.length === 0) {
-      setUrls(props.fetchData);
-    }
+    // console.log('fetchData :', props.fetchData);
+    if (!props.fetchData) return setUrls([]);
+    props.setUrlString(props.fetchData);
+    setUrls(props.fetchData?.split(','));
   }, [props.fetchData]);
 
-  const formData = new FormData();
-
   const onChangeUrl = (url: string) => {
-    if (urls.length === 5) return;
+    if (urls.length === 4) return;
     const temp = [...urls];
     temp.push(url);
     setUrls(temp);
@@ -41,9 +41,10 @@ export default function Upload02(props: IUpload02Props) {
   const onChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+    const formData = new FormData();
     formData.append('files', file);
     await axios
-      .post(`http://34.64.224.198:3000/server/${props.page}/upload`, formData)
+      .post(`${host}/server/${props.page}/upload`, formData)
       .then(res => {
         const url = `https://storage.googleapis.com/${res.data[0]}`;
         onChangeUrl(url);
@@ -96,7 +97,7 @@ export default function Upload02(props: IUpload02Props) {
             <>
               <ul {...provided.droppableProps} ref={provided.innerRef}>
                 {urls.map((el, index) => (
-                  <Draggable draggableId={uuid4()} index={index} key={uuid4()}>
+                  <Draggable draggableId={el} index={index} key={uuid4()}>
                     {provided => (
                       <li>
                         <S.ImageWrap

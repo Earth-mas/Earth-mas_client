@@ -9,14 +9,14 @@ import Upload02 from 'components/commons/upload/02/Upload02';
 import { IMarketReviewDetail } from '../detail/ReviewDetail.types';
 
 export default function ReviewNewUI(props: IReviewNewUIProps) {
-  const [reviewData, setReviewData] = useState<IMarketReviewDetail>();
+  const [reviewData, setReviewData] = useState<IMarketReviewDetail | null>();
 
   const onErrorImg = (event: SyntheticEvent<HTMLImageElement, Event>) => {
     event.currentTarget.src = logo;
   };
 
   useEffect(() => {
-    setReviewData(props.reviewData);
+    if (props.reviewData) return setReviewData(props.reviewData);
   }, [props.reviewData]);
 
   return (
@@ -55,7 +55,7 @@ export default function ReviewNewUI(props: IReviewNewUIProps) {
             page="marketreview"
             urlString={props.urlString}
             setUrlString={props.setUrlString}
-            fetchData={reviewData?.url ? reviewData?.url.split(',') : []}
+            fetchData={reviewData?.url}
           />
         </div>
         <div className="input-wrap">

@@ -14,7 +14,6 @@ import { marketRoute } from 'utils/APIRoutes';
 export default function MarketDetail() {
   const { id } = useParams();
   const [nowTab, setNowTab] = useState('content');
-  // const [detailData, setDetailData] = useState<IMarketDetail>();
 
   const onClickTab = (event: MouseEvent<HTMLElement>) => {
     const target = event.target as HTMLElement;
@@ -47,7 +46,6 @@ export default function MarketDetail() {
         />
       </nav>
       <DetailOverview detailData={detailData} />
-
       <nav className="tab-nav">
         <ul>
           {tabMenu.map(el => (

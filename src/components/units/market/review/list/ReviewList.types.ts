@@ -1,3 +1,5 @@
+import { IMarketDetail } from '../../detail/MarketDetail.types';
+
 export interface IReview {
   contents: string;
   createAt: string;
@@ -41,4 +43,8 @@ export interface IMarket {
   title: string;
   updateAt: string;
   url: string;
+}
+
+export interface IMarketReviewListProps {
+  detailData?: IMarketDetail;
 }

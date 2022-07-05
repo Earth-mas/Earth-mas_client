@@ -6,29 +6,16 @@ import ReviewNewUI from './ReviewNew.presenter';
 import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { marketReviewRoute } from 'utils/APIRoutes';
-import { useNavigate } from 'react-router-dom';
 
-export interface IReviewMarketData {
-  id: string;
-  title: string;
-  minidescription: string;
-  url: string;
-}
 export default function ReviewNew(props: IReviewNewProps) {
   const accessToken = store.get('accessToken');
   const { register, handleSubmit } = useForm<FormReviewValues>();
   const [urlString, setUrlString] = useState('');
-  const navigate = useNavigate();
-  // const [marketData, setMarketData] = useState<IReviewMarketData>();
 
-  const { data: reviewData } = useQuery(
-    ['getReview'],
-    async () => {
-      const result = await axios.get(`${marketReviewRoute}/${props.reviewId}`);
-      return result.data;
-    },
-    // {refetchOnWindowFocus: false,},
-  );
+  const { data: reviewData } = useQuery(['getReview'], async () => {
+    const result = await axios.get(`${marketReviewRoute}/${props.reviewId}`);
+    return result.data;
+  });
 
   const onClickPostReview = async (data: FormReviewValues) => {
     const variables = {
@@ -51,9 +38,7 @@ export default function ReviewNew(props: IReviewNewProps) {
     {
       onSuccess: () => {
         props.toggleEditModal();
-        location.reload();
-        // props.refetch();
-        // navigate(`/market/${res.data.market}`);
+        props.refetch();
       },
     },
   );
@@ -68,7 +53,6 @@ export default function ReviewNew(props: IReviewNewProps) {
     if (data.contents) updateVariables.contents = data.contents;
     if (data.score) updateVariables.score = Number(data.score);
     if (urlString) updateVariables.url = urlString;
-    // console.log('리뷰 수정 :', updateVariables);
     updateReview(updateVariables);
   };
 

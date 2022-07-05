@@ -1,3 +1,8 @@
+export interface IReviewDetailProps {
+  reviewsData: IMarketReviewDetail;
+  refetch: any;
+}
+
 export interface IUser {
   address1: string;
   address2: string;

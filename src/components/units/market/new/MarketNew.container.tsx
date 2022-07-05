@@ -12,14 +12,16 @@ import {
 } from './MarketNew.types';
 import { useMutation } from 'react-query';
 import { marketRoute } from 'utils/APIRoutes';
+import Modal from 'components/commons/modal';
+import InfoModal from 'components/commons/modal/infoModal/infoModal';
 
 export default function MarketNew(props: IMarketNewProps) {
   const accessToken = store.get('accessToken');
-
   const [urlString, setUrlString] = useState('');
-
   const [isSelected, setIsSelected] = useState('');
   const [editItemData, setEditItemData] = useState<IUpdateVariables>();
+  const [isModal, setIsModal] = useState(false);
+  const [isModalContent, setIsModalContent] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -35,26 +37,39 @@ export default function MarketNew(props: IMarketNewProps) {
   };
 
   const onClickSubmit = async (data: FormValues) => {
-    if (
-      !data.title ||
-      !data.stock ||
-      !data.amount ||
-      !data.minidescription ||
-      !isSelected
-    )
-      return alert('필수 항목을 입력해주세요');
+    // if (
+    //   !data.title ||
+    //   !data.stock ||
+    //   !data.amount ||
+    //   !data.minidescription ||
+    //   !isSelected
+    // ) {
+    //   setIsModalContent('필수 항목을 입력해주세요');
+    //   setIsModal(true);
+    //   return;
+    // }
+
+    // const variables = {
+    //   title: data.title,
+    //   minidescription: data.minidescription,
+    //   description: data.description,
+    //   amount: Number(data.amount),
+    //   discount: Number(data.discount),
+    //   stock: Number(data.stock),
+    //   url: urlString,
+    //   category: isSelected,
+    // };
 
     const variables = {
-      title: data.title,
-      minidescription: data.minidescription,
-      description: data.description,
-      amount: Number(data.amount),
-      discount: Number(data.discount),
-      stock: Number(data.stock),
-      url: urlString,
-      category: isSelected,
+      title: '페이지네이션 테스트',
+      minidescription: '페이지네이션 테스트',
+      description: '페이지네이션 테스트',
+      amount: 2000,
+      discount: 2000,
+      stock: 200,
+      url: 'ㅁㅁㅁ',
+      category: '주방',
     };
-    console.log(variables);
     newItem(variables);
   };
 
@@ -69,6 +84,8 @@ export default function MarketNew(props: IMarketNewProps) {
     },
     {
       onSuccess: res => {
+        setIsModalContent('상품이 등록되었습니다');
+        setIsModal(true);
         navigate(`/market/${res.id}`);
       },
     },
@@ -87,7 +104,6 @@ export default function MarketNew(props: IMarketNewProps) {
       updateVariables.minidescription = data.minidescription;
     if (data.description) updateVariables.description = data.description;
     if (urlString !== editItemData?.url) updateVariables.url = urlString;
-    console.log(updateVariables);
 
     updateItem(updateVariables);
   };
@@ -102,6 +118,8 @@ export default function MarketNew(props: IMarketNewProps) {
     },
     {
       onSuccess: res => {
+        setIsModalContent('상품이 되었습니다');
+        setIsModal(true);
         navigate(`/market/${res.id}`);
       },
     },
@@ -119,19 +137,33 @@ export default function MarketNew(props: IMarketNewProps) {
     });
   }, [props.itemData]);
   return (
-    <MarketNewUI
-      urlString={urlString}
-      setUrlString={setUrlString}
-      isEdit={props.isEdit}
-      itemData={props.itemData}
-      register={register}
-      isSelected={isSelected}
-      setIsSelected={setIsSelected}
-      handleSubmit={handleSubmit}
-      onClickSubmit={onClickSubmit}
-      onClickUpdate={onClickUpdate}
-      onChangeQuill={onChangeQuill}
-      contents={getValues('description')}
-    />
+    <>
+      {isModal && (
+        <Modal>
+          <InfoModal
+            contents={isModalContent}
+            okMessage="확인"
+            onClickOk={() => {
+              setIsModal(false);
+            }}
+            title="알림"
+          />
+        </Modal>
+      )}
+      <MarketNewUI
+        urlString={urlString}
+        setUrlString={setUrlString}
+        isEdit={props.isEdit}
+        itemData={props.itemData}
+        register={register}
+        isSelected={isSelected}
+        setIsSelected={setIsSelected}
+        handleSubmit={handleSubmit}
+        onClickSubmit={onClickSubmit}
+        onClickUpdate={onClickUpdate}
+        onChangeQuill={onChangeQuill}
+        contents={getValues('description')}
+      />
+    </>
   );
 }

@@ -11,4 +11,9 @@ export interface IDetailOverviewUIProps {
   isDeleteOpen: boolean;
   detailData?: IMarketDetail;
   likeActive?: boolean;
+  onClickShare: () => void;
+}
+
+export interface IDetailOverviewProps {
+  detailData?: IMarketDetail;
 }

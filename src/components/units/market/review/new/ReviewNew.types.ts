@@ -1,6 +1,14 @@
 import { Dispatch } from 'react';
 import { SubmitHandler, UseFormHandleSubmit } from 'react-hook-form/dist/types';
 import { IMarketReviewDetail } from '../detail/ReviewDetail.types';
+
+export interface IReviewMarketData {
+  id: string;
+  title: string;
+  minidescription: string;
+  url: string;
+}
+
 export interface IReviewNewProps {
   onClickCancel: () => void;
   reviewData?: IMarketReviewDetail;
