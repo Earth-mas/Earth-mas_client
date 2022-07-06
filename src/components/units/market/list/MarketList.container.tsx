@@ -17,7 +17,7 @@ export default function MarketList() {
   const [select, setSelect] = useState<string>('findlike');
 
   const [keyword, setKeyword] = useState<string>();
-  const [clickPage, setClickPage] = useState<number>(1);
+  const [clickPage, setClickPage] = useState(1);
   const [searchList, setSearchList] = useState<boolean>(false);
 
   const { data: ItemsSearch, refetch: refetchItemsSearch } = useQuery(
