@@ -7,7 +7,6 @@ import category2 from '../../../assets/images/market/category/category_bath.jpg'
 import category3 from '../../../assets/images/market/category/category_kitchen.jpg';
 import category4 from '../../../assets/images/market/category/category_daily.jpg';
 import category5 from '../../../assets/images/market/category/category_kit.jpg';
-
 import Line from '../line';
 import { Dispatch } from 'react';
 

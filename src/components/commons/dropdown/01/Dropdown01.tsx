@@ -15,7 +15,6 @@ interface IDropdown01Props {
 
 export default function Dropdown01(props: IDropdown01Props) {
   const [isActive, setIsActive] = useState(false);
-  // const [isSelected, setIsSelected] = useState(''); // 상위 컴포넌트에 입력
 
   const onClickCategory = () => {
     setIsActive(prev => !prev);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as S from './Pagination.styles';
 import { IPaginationProps } from './Pagination.type';
 
@@ -33,6 +33,10 @@ export default function Pagination(props: IPaginationProps) {
     setClickPage(startPage + 10);
     props.refetch(startPage + 10);
   };
+
+  useEffect(() => {
+    if (clickPage === 1) setStartPage(1);
+  }, [clickPage]);
 
   return (
     <S.Wrapper>
