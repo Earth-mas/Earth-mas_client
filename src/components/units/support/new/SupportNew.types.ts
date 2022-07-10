@@ -5,7 +5,6 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from 'react-hook-form';
-import { FormValues } from './SupportNew.container';
 
 export interface ISupportNewProps {
   isEdit: boolean;
@@ -20,6 +19,15 @@ export interface ISupportNewProps {
     | null
     | undefined;
 }
+
+export interface FormValues {
+  title?: string | undefined;
+  wishamount?: number | undefined;
+  description?: string | undefined;
+  dday?: Date | null;
+  url?: string | undefined;
+}
+
 export interface ISupportNewUIProps {
   onClickEdit: (data: FormValues) => Promise<void>;
   onClickSubmit: (data: FormValues) => Promise<false | undefined>;

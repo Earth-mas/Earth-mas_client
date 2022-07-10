@@ -23,7 +23,7 @@ export const ChatButton = (props: { userInfo?: any }) => {
         console.log(res);
         navigate('/chat');
 
-        queryClient.invalidateQueries('findmychat', { refetchInactive: true });
+        // queryClient.invalidateQueries('findmychat', { refetchInactive: true });
       },
       onError: err => {
         console.log(err);

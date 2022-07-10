@@ -10,9 +10,8 @@ interface Props {
     content: string;
     name: string;
     id: string;
+    url: string;
   };
-  scrollbarRef: any;
-  clickUserId: any;
 }
 
 export const MessageList = (props: Props) => {
@@ -24,13 +23,7 @@ export const MessageList = (props: Props) => {
     >
       <div className="userImg">
         <img
-          src={
-            props.message?.userid === userInfo.id
-              ? userInfo.url
-              : props.message?.userid === props.clickUserId?.data[0]?.id
-              ? props.clickUserId?.data[0]?.url
-              : ''
-          }
+          src={props.message.url}
           onError={e => {
             e.currentTarget.src = '/images/profileDefault.png';
           }}

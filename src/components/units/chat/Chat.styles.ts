@@ -12,7 +12,6 @@ export const ChatWrapper = styled.div`
   border-radius: 10px;
   display: grid;
   grid-template-columns: 330px 1fr;
-  margin: 50px 0;
 
   > section {
     position: relative;
@@ -97,7 +96,6 @@ export const ContainerWrapper = styled.div`
   max-width: 100%;
   width: 100%;
   height: calc(100% - 65px);
-  padding: 0 15px 15px;
   > div {
     position: static;
 
@@ -113,11 +111,15 @@ export const Scrollbar = styled(Scrollbars)`
   height: 520px;
   max-height: 520px;
   overflow-y: auto;
+  padding: 10px 15px 0;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: end;
-  padding: 10px 5px 0;
-  margin-bottom: 10px;
+  > div:first-of-type {
+    height: 100%;
+    position: static !important;
+  }
 `;
 
 export const Message = styled.div`
@@ -130,39 +132,17 @@ export const Message = styled.div`
     margin-bottom: 0;
   }
 
-  &:nth-of-type(2) {
-    .userImg {
-      visibility: visible;
-    }
-  }
-
-  &.sended + &.recieved {
+  &.recieved:nth-of-type(2) {
     .userImg {
       visibility: visible;
     }
     .userName {
-      display: block;
-    }
-    .content {
-      border-top-left-radius: 0;
-    }
-  }
-  &.recieved + &.sended {
-    .content {
-      border-top-right-radius: 0;
+      display: block !important;
     }
   }
 
   &.sended {
     justify-content: flex-end;
-    &:nth-of-type(2) {
-      .content {
-        border-top-right-radius: 0;
-      }
-    }
-    .userName {
-      display: none;
-    }
 
     .userImg {
       order: 2;
@@ -172,6 +152,7 @@ export const Message = styled.div`
 
     .contentWrap {
       .userName {
+        display: none;
         text-align: right;
       }
       > div {
@@ -187,14 +168,6 @@ export const Message = styled.div`
   &.recieved {
     justify-content: flex-start;
 
-    &:nth-of-type(2) {
-      .content {
-        border-top-left-radius: 0;
-      }
-      .userName {
-        display: block !important;
-      }
-    }
     .userImg {
       order: 1;
       margin-right: 10px;
@@ -222,7 +195,6 @@ export const Message = styled.div`
     height: 35px;
     border-radius: 50%;
     overflow: hidden;
-    visibility: hidden;
 
     img {
       width: 100%;
@@ -235,7 +207,6 @@ export const Message = styled.div`
     .userName {
       margin-bottom: 5px;
       font-size: ${FontSize.SMALL};
-      display: none;
     }
     > div {
       display: flex;
@@ -263,12 +234,12 @@ export const Message = styled.div`
 `;
 
 export const InputWrapper = styled.form`
-  width: 100%;
+  width: calc(100% - 30px);
   height: 100px;
   border: 1.5px solid ${Colors.MAIN};
   border-radius: 10px;
   padding: 10px;
-
+  margin: 0 15px;
   textarea {
     width: 100%;
     height: calc(100% - 28px);
@@ -371,8 +342,8 @@ export const ListContainer = styled.div`
     }
   }
   .selected {
-    background-color: aliceblue;
-    /* background-color: rgba(0, 160, 91, 0.1); */
+    /* background-color: aliceblue; */
+    background-color: rgba(0, 160, 91, 0.1);
   }
 `;
 export const List = styled.div`
@@ -381,8 +352,8 @@ export const List = styled.div`
   display: flex;
   align-items: center;
   :hover {
-    background-color: aliceblue;
-    /* background-color: rgba(0, 160, 91, 0.1); */
+    /* background-color: aliceblue; */
+    background-color: rgba(0, 160, 91, 0.1);
   }
 
   .user {
@@ -404,12 +375,16 @@ export const List = styled.div`
   }
 
   .userInfo {
+    width: 100%;
     margin-left: 10px;
     overflow: hidden;
 
     .name-date {
+      width: 100%;
       display: flex;
+      justify-content: space-between;
       align-items: center;
+      margin-bottom: 5px;
       .userName {
         font-size: ${FontSize.SMALL};
         font-family: ${FontFamily.BOLD};
@@ -424,12 +399,14 @@ export const List = styled.div`
     }
 
     > p {
+      display: block;
       width: 100%;
+      font-family: ${FontFamily.MEDIUM};
+      font-size: 0.8rem;
+      height: 1rem;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      font-size: ${FontSize.MEDIUM_C};
-      font-family: ${FontFamily.MEDIUM};
       color: ${Colors.B100};
     }
   }
