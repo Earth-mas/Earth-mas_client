@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { InputWrapper } from './Chat.styles';
 import { ChatInputProps } from './Chat.types';
-import autosize from 'autosize';
 import Picker from 'emoji-picker-react';
 import { EmojiIcon } from 'assets/svgs';
 
@@ -25,23 +24,11 @@ export const ChatInput = (props: ChatInputProps) => {
   const sendChat = (event: any) => {
     event.preventDefault();
     if (chatMsg.length > 0) {
-      // if (chatMsg.length > 0) {
       props.handleSendMsg(chatMsg); // container에서 socket에 발송
-      // onSignup()
       inputRef.current.value = '';
       setChatMsg(''); // 문자 메세지를 발송하면 빈값으로 반환
-      // }
     }
   };
-
-  console.log(chatMsg);
-
-  /* const textareaRef = useRef<HTMLTextAreaElement>(null);
-  useEffect(() => {
-    if (textareaRef.current) {
-      autosize(textareaRef.current);
-    }
-  }, []); */
 
   return (
     <InputWrapper

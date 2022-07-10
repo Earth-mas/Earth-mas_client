@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { UseMutateFunction } from 'react-query';
 
 export interface ISupportPaymentUIProps {
-  completeData: any;
+  paymentData: any;
   isComplete: boolean;
   data: {
     title: string;
@@ -17,7 +17,6 @@ export interface ISupportPaymentUIProps {
   supportPayment: UseMutateFunction<
     AxiosResponse<any, any>,
     unknown,
-    { imp_uid: string },
-    unknown
+    { imp_uid: string }
   >;
 }

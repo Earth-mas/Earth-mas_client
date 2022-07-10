@@ -35,6 +35,7 @@ import MarketPaymentPage from 'pages/market/[marketId]/payment';
 import PrivateRouteLayout from 'components/commons/privateRouter';
 
 import MoreInfo from 'components/units/login/moreInformation/moreInforamtion';
+import PrivateRouteLayout02 from 'components/commons/privateRouter/index2';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -88,9 +89,11 @@ const App = () => {
                   element={<SupportPaymentPage />}
                 />
 
-                <Route path="/chat" element={<ChatPage />} />
-
                 <Route path="/mypage" element={<MyPage />} />
+              </Route>
+
+              <Route element={<PrivateRouteLayout02 />}>
+                <Route path="/chat" element={<ChatPage />} />
               </Route>
             </Routes>
           </BrowserRouter>

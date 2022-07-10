@@ -15,7 +15,7 @@ export const DateToString = (dateTime: string) => {
   if (diffMin < 60) dateString = `${diffMin}분 전`;
   else if (diffHour < 24) dateString = `${diffHour}시간 전`;
   else if (diffDay < 8) dateString = `${diffDay}일 전`;
-  else dateString = dateTime.split('T')[0];
+  // else dateString = dateTime.split('T')[0];
 
   return dateString;
 };

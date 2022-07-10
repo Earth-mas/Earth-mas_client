@@ -21,7 +21,6 @@ export default function SupportPayment() {
   const navigate = useNavigate();
 
   const [selectAmount, setSelectAmount] = useState('1000');
-  const [completeData, setCompleteData] = useState({});
   const [isComplete, setIsComplete] = useState(false);
 
   const { data } = useQuery('detailList', async () => {
@@ -29,20 +28,7 @@ export default function SupportPayment() {
     return data;
   });
 
-  /* useEffect(() => {
-    const jquery = document.createElement('script');
-    jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
-    const iamport = document.createElement('script');
-    iamport.src = 'https://cdn.iamport.kr/js/iamport.payment-1.2.0.js';
-    document.head.appendChild(jquery);
-    document.head.appendChild(iamport);
-    return () => {
-      document.head.removeChild(jquery);
-      document.head.removeChild(iamport);
-    };
-  }, []); */
-
-  const { mutate: supportPayment } = useMutation(
+  const { mutate: supportPayment, data: paymentData } = useMutation(
     (rsp: { imp_uid: string }) => {
       return axios.post(
         supporttrRoute,
@@ -54,7 +40,6 @@ export default function SupportPayment() {
       onSuccess: res => {
         console.log(res);
         setIsComplete(true);
-        setCompleteData(res);
       },
       onError: err => {
         console.log(err);
@@ -101,7 +86,7 @@ export default function SupportPayment() {
       onClickPayment={onClickPayment}
       supportPayment={supportPayment}
       isComplete={isComplete}
-      completeData={completeData}
+      paymentData={paymentData}
     />
   );
 }

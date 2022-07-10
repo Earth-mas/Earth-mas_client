@@ -5,16 +5,8 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { supportRoute } from 'utils/APIRoutes';
 import SupportNewUI from './SupportNew.presenter';
-import { ISupportNewProps } from './SupportNew.types';
+import { FormValues, ISupportNewProps } from './SupportNew.types';
 import store from 'storejs';
-
-export interface FormValues {
-  title?: string | undefined;
-  wishamount?: number | undefined;
-  description?: string | undefined;
-  dday?: Date | null;
-  url?: string | undefined;
-}
 
 export default function SupportNew(props: ISupportNewProps) {
   const accessToken = store.get('accessToken');
@@ -30,21 +22,21 @@ export default function SupportNew(props: ISupportNewProps) {
 
   const { mutate } = useMutation(
     ({ formData }: { formData: FormValues }) => {
-      return props.isEdit
-        ? axios.put(`${supportRoute}/${id}`, formData, {
+      return !props.isEdit
+        ? axios.post(supportRoute, formData, {
             headers: { Authorization: `Bearer ${accessToken}` },
           })
-        : axios.post(supportRoute, formData, {
+        : axios.put(`${supportRoute}/${id}`, formData, {
             headers: { Authorization: `Bearer ${accessToken}` },
           });
     },
     {
       onSuccess: res => {
-        console.log(res);
+        // console.log(res);
         navigate(`/support/${res.data.id}`);
       },
       onError: err => {
-        console.log(err);
+        // console.log(err);
         alert('필수 입력사항입니다');
       },
     },
@@ -65,8 +57,8 @@ export default function SupportNew(props: ISupportNewProps) {
       formData.title === '' &&
       formData.wishamount &&
       formData.dday === undefined &&
-      formData.url === '' &&
-      formData.description === ''
+      formData.description === '' &&
+      urls === ''
     ) {
       alert('필수 입력사항입니다');
       return false;
@@ -81,7 +73,7 @@ export default function SupportNew(props: ISupportNewProps) {
       data.description === props.fetchData?.description &&
       data.url === props.fetchData?.url
     )
-      return alert('수정없음');
+      return alert('수정사항이 없습니다');
 
     const formData: FormValues = {
       ...props.fetchData,

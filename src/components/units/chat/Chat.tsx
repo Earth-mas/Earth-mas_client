@@ -1,6 +1,11 @@
 import { ChatContainer } from './ChatContainer';
 import { ChatList } from './ChatList';
-import { ChatWrapper, LeftContainer, RightContainer } from './Chat.styles';
+import {
+  ChatWrapper,
+  ContainerWrapper,
+  LeftContainer,
+  RightContainer,
+} from './Chat.styles';
 import { useEffect, useRef, useState } from 'react';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
@@ -8,9 +13,11 @@ import { chat } from 'utils/APIRoutes';
 import { io } from 'socket.io-client';
 import { BeforeChat } from './BeforeChat';
 import axios from 'axios';
-import { useMutation, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import store from 'storejs';
 import Scrollbars from 'react-custom-scrollbars';
+import makeList from 'utils/makeList';
+import { ChatInput } from './ChatInput';
 
 export const Chat = () => {
   const userInfo = useRecoilValue(userState);
@@ -18,77 +25,110 @@ export const Chat = () => {
 
   const [currentUser, setCurrentUser] = useState<any>(undefined);
   const [currentChat, setCurrentChat] = useState<any>(undefined);
-  const [roomid, setRoomid] = useState('');
 
-  const queryClient = useQueryClient();
   const socketRef = useRef<any>(null);
+  const scrollbarRef = useRef<Scrollbars>(null);
 
-  const { data: personalChatList, mutate } = useMutation(
-    'findmychat',
-    () => {
-      return axios.get(`${chat}/findmychat`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-    },
-    {
-      onSuccess: res => {
-        // console.log(res);
-      },
-      onError: err => {
-        console.log(err);
-      },
-    },
-  );
+  const roomId = currentChat?.roomId;
 
-  console.log(personalChatList);
-
-  const { data: clickUserId, mutate: createUserId } = useMutation(
-    'finduser',
-    () => {
-      return axios.post(
-        `${chat}/finduser`,
-        {
-          user:
-            currentChat?.user1.id === userInfo.id
-              ? currentChat?.user2.id
-              : currentChat?.user1.id,
-        },
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      );
-    },
-    {
-      onSuccess: res => {
-        // console.log(res);
-        queryClient.invalidateQueries('findmychat', { refetchInactive: true });
-      },
-      onError: err => {
-        console.log(err);
-      },
-    },
-  );
-
-  useEffect(() => {
-    mutate();
-  }, []);
   useEffect(() => {
     if (userInfo.id.length > 0) return setCurrentUser(userInfo);
   }, [userInfo]);
 
   useEffect(() => {
-    if (currentUser) {
-      socketRef.current = io(`${chat}`, {
-        upgrade: false,
-      });
+    socketRef.current = io(`${chat}`, {
+      upgrade: false,
+    });
+    if (currentUser && currentChat?.chat === 0) {
       socketRef.current.emit('user-enter', {
-        roomid: currentChat?.id,
-        userid: userInfo.id,
+        roomid: currentChat?.roomId,
+      });
+    } else {
+      socketRef.current.emit('room-enter', {
+        roomid: currentChat?.roomId,
       });
     }
 
-    createUserId();
+    setTimeout(() => {
+      scrollbarRef.current?.scrollToBottom();
+    }, 100);
   }, [currentChat]);
 
-  const scrollbarRef = useRef<Scrollbars>(null);
+  const groupChat = async () => {
+    const res = await axios.post(`${chat}/get-my-roomchat`, null, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    return res.data?.map((el: any) => {
+      return {
+        chat: 1,
+        user: {
+          id: el?.[0]?.id,
+          url: el?.[0]?.url,
+          name: el?.[0]?.description.replace(/[<]+[a-zA-Z/]+[>]/gi, ''),
+        },
+        roomId: el?.[0]?.id,
+        content: el?.[1]?.content,
+        updatedAt: el?.[1]?.createdAt
+          ? el?.[1]?.createdAt
+          : el?.[0]?.activityjoin?.[0].createAt,
+      };
+    });
+  };
+  const { data: groupChatList } = useQuery('getmyroomchat', groupChat);
+
+  const personalChat = async () => {
+    const res = await axios.get(`${chat}/findmychat`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    return res.data?.map((el: any) => {
+      return {
+        chat: 0,
+        user:
+          el?.[0]?.user1?.id !== userInfo.id
+            ? {
+                id: el?.[0]?.user1?.id,
+                url: el?.[0]?.user1?.url,
+                name: el?.[0]?.user1?.name,
+              }
+            : {
+                id: el?.[0]?.user2?.id,
+                url: el?.[0]?.user2?.url,
+                name: el?.[0]?.user2?.name,
+              },
+        roomId: el?.[0]?.id,
+        content: el?.[1]?.content,
+        updatedAt: el?.[1]?.createdAt ? el?.[1]?.createdAt : el?.[0]?.createAt,
+      };
+    });
+  };
+  const { data: personalChatList } = useQuery('findmychat', personalChat);
+
+  // 보내는 메시지
+  const handleSendMsg = (msg: any) => {
+    currentChat.chat === 0
+      ? socketRef.current.emit('user-send', {
+          userid: userInfo.id,
+          name: userInfo.name,
+          content: msg,
+          roomid: roomId,
+        })
+      : socketRef.current.emit('room-send', {
+          userid: userInfo.id,
+          name: userInfo.name,
+          content: msg,
+          roomid: roomId,
+        });
+
+    if (scrollbarRef.current) {
+      setTimeout(() => {
+        scrollbarRef.current?.scrollToBottom();
+      }, 50);
+    }
+  };
+
+  const listData = makeList([groupChatList, personalChatList]);
 
   return (
     <>
@@ -106,12 +146,7 @@ export const Chat = () => {
             <p className="userName">{userInfo.name}</p>
           </div>
 
-          <ChatList
-            setCurrentChat={setCurrentChat}
-            chatUserList={personalChatList}
-            roomid={roomid}
-            setRoomid={setRoomid}
-          />
+          <ChatList setCurrentChat={setCurrentChat} chatUserList={listData} />
         </LeftContainer>
 
         <RightContainer>
@@ -122,23 +157,23 @@ export const Chat = () => {
               <div className="user">
                 <div className="userImg">
                   <img
-                    src={clickUserId ? clickUserId?.data[0]?.url : ''}
+                    src={currentChat?.user?.url}
                     onError={e => {
                       e.currentTarget.src = '/images/profileDefault.png';
                     }}
                   />
                 </div>
-                <p className="userName">{clickUserId?.data[0]?.name}</p>
+                <p className="userName">{currentChat?.user?.name}</p>
               </div>
 
               <ChatContainer
-                scrollRef={scrollbarRef}
+                roomId={roomId}
+                ref={scrollbarRef}
                 currentChat={currentChat}
-                chatUserList={personalChatList}
-                roomid={roomid}
                 socketRef={socketRef}
-                clickUserId={clickUserId}
               />
+
+              <ChatInput handleSendMsg={handleSendMsg} />
             </>
           )}
         </RightContainer>
