@@ -9,7 +9,7 @@ const CATEGORY = [
   ],
   [
     { title: '최신순', find: 'finddcs' },
-    { title: '종료마감순', find: 'findday' },
+    { title: '종료마감순', find: 'finddday' },
   ],
 ];
 

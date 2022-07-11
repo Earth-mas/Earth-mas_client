@@ -4,10 +4,10 @@ import ActivityCard from 'components/commons/card/activity/ActivityCard';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import { MyActivityWrapper } from './MyPageActivity.styles';
 import { ActivityIcon } from 'assets/svgs';
-import { IActivityListProps } from 'components/units/activity/list/ActivityList.types';
+import { IActivityList } from 'components/units/activity/list/ActivityList.types';
 
 export default function MyPageActivity() {
-  const [listData, setListData] = useState<IActivityListProps[]>([]);
+  const [listData, setListData] = useState<IActivityList[]>([]);
 
   useEffect(() => {
     axiosApiInstance
@@ -26,7 +26,7 @@ export default function MyPageActivity() {
           <div>등록한 액티비티가 없습니다.</div>
         ) : (
           <div className="list">
-            {listData?.map((el: IActivityListProps) => (
+            {listData?.map((el: IActivityList) => (
               <ActivityCard el={el} />
             ))}
           </div>

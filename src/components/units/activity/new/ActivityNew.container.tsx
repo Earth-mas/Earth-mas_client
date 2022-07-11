@@ -6,7 +6,7 @@ import ActivityNewUI from './ActivityNew.presenter';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { ActivityDetail } from '../detail/ActivityDetail.container';
+import { IActivityDetailProps } from '../detail/ActivityDetail.types';
 
 export interface FormValues {
   title?: string;
@@ -21,7 +21,7 @@ export interface FormValues {
 
 interface IActivityNewProps {
   isEdit?: boolean;
-  editData?: ActivityDetail;
+  editData?: IActivityDetailProps;
 }
 
 interface IUpdateVariables {

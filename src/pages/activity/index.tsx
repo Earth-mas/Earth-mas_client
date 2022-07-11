@@ -10,9 +10,9 @@ export default function ActivityPage() {
       <Wrap>
         <Slide
           banner={[
-            '/images/activity/banner/banner3.jpg',
-            '/images/activity/banner/banner1.jpg',
-            '/images/activity/banner/banner2.jpg',
+            '/images/activity/banner/banner3.svg',
+            '/images/activity/banner/banner1.svg',
+            '/images/activity/banner/banner2.svg',
           ]}
           slide={'main'}
         />

@@ -1,9 +1,6 @@
-import { User } from '../detail/ActivityDetail.container';
-
-export interface IActivityListProps {
+export interface IActivityList {
   activitycategory: Activitycategory;
   activityjoin: Activityjoin[];
-  map: any;
   createAt: string;
   dday: string;
   deleteAt?: string;
@@ -30,3 +27,28 @@ export interface Activityjoin {
   id: string;
   user: User;
 }
+
+export interface User {
+  address1: string;
+  address2: string;
+  addressnumber: string;
+  createAt: string;
+  delete?: string | null;
+  email: string;
+  id: string | undefined;
+  name: string | undefined;
+  password: string;
+  phone: string;
+  role: string;
+  updateAt: string;
+  url: string;
+}
+
+// export interface IActivityListUIProps {
+//   clickPage: number;
+//   setClickPage: Dispatch<SetStateAction<number>>;
+//   data: { listData: IActivityListProps[] } | any;
+//   // data: IActivityListProps[] | any;
+//   refetch: any;
+//   setSelect: Dispatch<SetStateAction<boolean>>;
+// }
