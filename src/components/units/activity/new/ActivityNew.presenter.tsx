@@ -6,7 +6,7 @@ import Dropdown01 from 'components/commons/dropdown/01/Dropdown01';
 import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
-import Upload01Copy from 'components/commons/upload/01/Upload01.copy';
+import Upload01 from 'components/commons/upload/01/Upload01';
 import { Dispatch } from 'react';
 import { Controller } from 'react-hook-form';
 import {
@@ -16,11 +16,11 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
 } from 'react-hook-form/dist/types';
-import { ActivityDetail } from '../detail/ActivityDetail.container';
+import { IActivityDetailProps } from '../detail/ActivityDetail.types';
 import { FormValues } from './ActivityNew.container';
 
 interface IActivityNewUIProps {
-  editData?: ActivityDetail | undefined;
+  editData?: IActivityDetailProps | undefined;
   isSelected: string;
   isEdit?: boolean;
   control: Control<FieldValues, unknown>;
@@ -88,7 +88,7 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
         <ColumnWrap>
           <Input01
             type="text"
-            placeholder="활동 위치를 입력해주세요 (ex. 서울시 중구)" // nightmare로 위치 gps 적용해보기
+            placeholder="활동 위치를 입력해주세요 (ex. 서울시 중구)"
             margin={25}
             name="location"
             register={props.register('location')}
@@ -106,8 +106,6 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
               props.editData?.maxpeople ? props.editData.maxpeople : ''
             }
           />
-
-          {/* nightmare로 + - 증감 인원 input창에 적용시켜보기 */}
         </ColumnWrap>
 
         <Input01
@@ -121,11 +119,11 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
           }
         />
 
-        <Upload01Copy
+        <Upload01
           page={'activity'}
           urlString={props.urlString}
           setUrlString={props.setUrlString}
-          fetchData={props.editData?.url ? props.editData?.url?.split(',') : []}
+          fetchData={props.editData?.url}
         />
         <Blank height={25} />
         <QuillEditor

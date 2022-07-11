@@ -4,7 +4,8 @@ export interface IPaginationProps {
   clickPage: number;
   setClickPage: Dispatch<SetStateAction<number>>;
   listCount: number;
-  refetch: (arg0: number) => void;
+  // refetch: (arg0: number) => void;
+  refetch: any;
   page: string;
 }
 export interface IPaginationStyleProps {

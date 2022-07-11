@@ -4,33 +4,36 @@ import Blank from 'components/commons/blank/Blank';
 import Line from 'components/commons/line';
 import { Link } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
-import { IPropsActivityCardList } from './ActivityCard.types';
+import { FontFamily, FontSize } from 'styles/FontStyles';
+import { IActivityList } from 'components/units/activity/list/ActivityList.types';
+import { IActivityCardProps } from './ActivityCard.types';
 
-export default function ActivityCard(props: IPropsActivityCardList) {
-  console.log(props.el);
+export default function ActivityCard(props: IActivityCardProps) {
   return (
     <Wrapper id={props.el.id}>
       <Link to={`/activity/${props.el.id}`}>
         <div className="imgContainer">
-          <img src={props.el?.url?.split(',')[0]} />
-          <div className="addressContainer">{props.el?.location}</div>
+          <img src={props.el.url?.split(',')[0]} />
+          <div className="addressContainer">{props.el.location}</div>
         </div>
 
         <Blank height={10} />
         <div className="infoBox">
-          <div className="title">{props.el?.title}</div>
+          <div className="title">
+            <h5>{props.el.title}</h5>
+          </div>
           <Line />
           <UserInfoBox>
             <div className="userImg">
               <img
-                src={props.el?.activityjoin[0].user?.url}
+                src={props.el.activityjoin[0].user?.url}
                 onError={e => {
                   e.currentTarget.src = '/images/avatar.svg';
                 }}
               />
             </div>
-            <span>{props.el?.activityjoin[0].user?.name}</span>
-            <span>{GetDate(props.el?.createAt)}</span>
+            <span>{props.el.activityjoin[0].user?.name}</span>
+            <span>{GetDate(props.el.createAt)}</span>
           </UserInfoBox>
         </div>
       </Link>
@@ -62,6 +65,7 @@ const Wrapper = styled.div`
       top: 15px;
       left: 145px;
       background-color: rgba(0, 171, 51, 0.5);
+      color: ${Colors.B20};
       text-align: center;
       line-height: 33px;
       /* display: table-cell;
@@ -79,6 +83,16 @@ const Wrapper = styled.div`
       height: 40px;
       text-align: center;
       padding: 10px;
+      font-family: ${FontFamily.MEDIUM};
+      font-size: ${FontSize.MEDIUM_C};
+      font-weight: 500;
+      color: ${Colors.B100};
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      word-wrap: break-word;
+      -webkit-line-clamp: 2;
     }
   }
   .contentsBox {

@@ -36,7 +36,7 @@ export default function Upload01Copy(props: IUpload01Props) {
     const formData = new FormData();
     formData.append('files', file);
     await axios
-      .post(`http://34.64.224.198:3000/server/${props.page}/upload`, formData)
+      .post(`https://earth-mas.shop/server/${props.page}/upload`, formData)
       .then(res => {
         const url = `https://storage.googleapis.com/${res.data[0]}`;
         onChangeUrl(url);
