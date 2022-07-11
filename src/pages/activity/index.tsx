@@ -11,10 +11,11 @@ export default function ActivityPage() {
         <Slide
           banner={[
             '/images/activity/banner/banner3.svg',
-            '/images/activity/banner/banner1.svg',
+            '/images/activity/banner/banner4.svg',
             '/images/activity/banner/banner2.svg',
           ]}
           slide={'main'}
+          autoplay={true}
         />
       </Wrap>
       <Blank height={50} />

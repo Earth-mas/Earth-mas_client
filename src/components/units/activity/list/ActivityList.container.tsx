@@ -12,6 +12,8 @@ import { IActivityList } from './ActivityList.types';
 import Dropdown02Copy from 'components/commons/dropdown/02/Dropdown02copy';
 import Pagination from 'components/commons/pagination';
 import { useQuery } from 'react-query';
+import SearchList from './searchList/searchList';
+import CategoryList from './categoryList/CategoryList';
 
 export default function ActivityList() {
   const [nowCategory, setNowCategory] = useState('전체');
@@ -21,6 +23,7 @@ export default function ActivityList() {
   const [keyword, setKeyword] = useState('');
 
   const [activityListData, setActivityListData] = useState<IActivityList[]>();
+  const [searchList, setSearchList] = useState<boolean>(false);
 
   // 액티비티 리스트
   // const getActivityListData = async () => {
@@ -41,6 +44,7 @@ export default function ActivityList() {
   // 검색 기능
   const getDebounce = _.debounce(data => {
     setKeyword(data);
+    setSearchList(true);
   }, 500);
 
   const onSearch = async () => {
@@ -81,10 +85,12 @@ export default function ActivityList() {
   useEffect(() => {
     refetch();
     setClickPage(1);
+    setSearchList(false);
     // getActivityListData();
   }, [nowCategory, select]);
 
   console.log('activityList: ', activityListData);
+  console.log('searchList:', searchList);
 
   return (
     <>
@@ -99,29 +105,33 @@ export default function ActivityList() {
           <Category page={1} setNowCategory={setNowCategory} />
         </section>
         <section>
-          <header>
-            <Title01 content={nowCategory} margin={35} size={'T'} />
-            <Dropdown02Copy page={1} setSelect={setSelect} />
-          </header>
-          <CardWrap>
-            {/* {activityListData &&
-              activityListData?.map((el: IActivityCardProps) => (
-                <ActivityCard key={uuidv4()} el={el} />
-              ))} */}
-            {activityListData &&
-              activityListData?.map((el: IActivityList) => (
-                <ActivityCard key={uuidv4()} el={el} />
-              ))}
-          </CardWrap>
+          {searchList && searchList ? (
+            <SearchList activityListData={activityListData} />
+          ) : (
+            <CategoryList
+              activityListData={activityListData}
+              nowCategory={nowCategory}
+              setSelect={setSelect}
+              clickPage={clickPage}
+              setClickPage={setClickPage}
+              listData={listData}
+              refetch={refetch}
+            />
+          )}
+          {/* {!searchList && (
+            <CategoryList
+              activityListData={activityListData}
+              nowCategory={nowCategory}
+              setSelect={setSelect}
+              clickPage={clickPage}
+              setClickPage={setClickPage}
+              listData={listData}
+              refetch={refetch}
+            />
+          )}
+          {searchList && <SearchList activityListData={activityListData} />} */}
         </section>
       </Wrap>
-      <Pagination
-        clickPage={clickPage}
-        setClickPage={setClickPage}
-        listCount={listData?.length}
-        refetch={refetch}
-        page="list"
-      />
     </>
   );
 }

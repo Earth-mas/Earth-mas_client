@@ -5,6 +5,7 @@ import { activityRoute } from 'utils/APIRoutes';
 import store from 'storejs';
 import { IActivityDetailProps } from './ActivityDetail.types';
 import ActivityDetailUI from './ActivityDetail.presenter';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function ActivityDetail() {
   const navigate = useNavigate();
@@ -18,8 +19,18 @@ export default function ActivityDetail() {
   // const userInfo = useRecoilValue(userState);
 
   const getActivityData = async () => {
-    await axios
-      .get(`https://earth-mas.shop/server/activity/${id}`)
+    // await axios
+    //   .get(`https://earth-mas.shop/server/activity/${id}`)
+    //   .then(res => {
+    //     setActivityData(res.data);
+    //     console.log('상세 데이터:', res);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+
+    await axiosApiInstance
+      .get(`${activityRoute}/${id}`)
       .then(res => {
         setActivityData(res.data);
       })
@@ -66,7 +77,7 @@ export default function ActivityDetail() {
       )
       .then(res => {
         console.log(res);
-        navigate('/groupChat');
+        navigate('/chat');
       })
       .catch(err => {
         if (err.response.status === 409) toggleJoinModal();

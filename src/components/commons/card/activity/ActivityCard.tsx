@@ -111,7 +111,7 @@ const UserInfoBox = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
+  line-height: 30px;
   .userImg {
     min-width: 30px;
     max-width: 30px;

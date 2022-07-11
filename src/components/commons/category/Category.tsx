@@ -22,7 +22,7 @@ const CATEGORY = [
     { category: '전체', image: '/images/activity/category/All.jpg' },
     {
       category: '제로웨이스트',
-      image: '/images/activity/category/zeroWaste.jpg',
+      image: '/images/activity/category/zeroWaste2.jpg',
     },
     { category: '플로깅', image: '/images/activity/category/flogging.png' },
     { category: '플로킹', image: '/images/activity/category/flogking.jpg' },
