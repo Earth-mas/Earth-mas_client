@@ -1,6 +1,4 @@
 import * as S from './ReviewList.styles';
-import axios from 'axios';
-import store from 'storejs';
 import { getAvg, getAvgStar } from 'commons/utils/getStars';
 import OutlinedButton02 from 'components/commons/button/outlined/OutlinedButton02';
 import Modal from 'components/commons/modal';
@@ -19,9 +17,9 @@ import { IMarketReviewListProps, IReview } from './ReviewList.types';
 import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import InfoModal from 'components/commons/modal/infoModal/infoModal';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function ReviewList(props: IMarketReviewListProps) {
-  const accessToken = store.get('accessToken');
   const [getBought, setGetBought] = useState(false);
   const [isNewOpen, setIsNewOpen] = useState(false);
   const [isModal, setIsModal] = useState(false);
@@ -40,9 +38,10 @@ export default function ReviewList(props: IMarketReviewListProps) {
   const { data: reviewsData, refetch } = useQuery(
     ['getReviews'],
     async () => {
-      const result = await axios.post(`${marketReviewRoute}/findall`, {
-        market: id,
-      });
+      const result = await axiosApiInstance.post(
+        `${marketReviewRoute}/findall`,
+        { market: id },
+      );
       return result.data;
     },
     {
@@ -83,15 +82,7 @@ export default function ReviewList(props: IMarketReviewListProps) {
   const { data: boughtData } = useQuery(
     ['getItemsBought'],
     async () => {
-      return await axios.post(
-        `https://earth-mas.shop/server/mypage/boughtmarket`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      return await axiosApiInstance.post(`/mypage/boughtmarket`, null);
     },
     {
       enabled: getBought,
@@ -169,12 +160,11 @@ export default function ReviewList(props: IMarketReviewListProps) {
             />
           </div>
         </S.Score>
-        {reviewsData &&
-          reviewsData.map((el: IMarketReviewDetail) => (
-            <Fragment key={uuid4()}>
-              <ReviewDetail reviewsData={el} refetch={refetch} />
-            </Fragment>
-          ))}
+        {reviewsData?.map((el: IMarketReviewDetail) => (
+          <Fragment key={uuid4()}>
+            <ReviewDetail reviewsData={el} refetch={refetch} />
+          </Fragment>
+        ))}
       </S.Wrap>
     </>
   );

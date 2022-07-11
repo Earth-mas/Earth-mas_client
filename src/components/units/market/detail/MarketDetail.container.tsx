@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { MouseEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as S from './MarketDetail.styles';
@@ -10,6 +9,7 @@ import DetailDelivery from './delivery/DetailDelivery.container';
 import ReviewList from '../review/list/ReviewList.container';
 import { useQuery } from 'react-query';
 import { marketRoute } from 'utils/APIRoutes';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function MarketDetail() {
   const { id } = useParams();
@@ -23,7 +23,7 @@ export default function MarketDetail() {
   const { data: detailData } = useQuery<IMarketDetail>(
     ['getItem'],
     async () => {
-      const result = await axios.get(`${marketRoute}/${id}`);
+      const result = await axiosApiInstance.get(`${marketRoute}/${id}`);
       return result.data;
     },
     {

@@ -15,7 +15,6 @@ import { useRecoilValue } from 'recoil';
 import { userState } from 'recoil/user';
 import { useParams } from 'react-router-dom';
 import { IDetailOverviewUIProps } from './DetailOverview.types';
-import { getUrl } from 'commons/utils/getUrl';
 
 export default function DetailOverviewUI(props: IDetailOverviewUIProps) {
   const navigate = useNavigate();

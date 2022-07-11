@@ -1,19 +1,19 @@
-import axios from 'axios';
-import store from 'storejs';
 import { useForm } from 'react-hook-form';
 import { FormReviewValues, IReviewNewProps } from './ReviewNew.types';
 import ReviewNewUI from './ReviewNew.presenter';
 import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { marketReviewRoute } from 'utils/APIRoutes';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function ReviewNew(props: IReviewNewProps) {
-  const accessToken = store.get('accessToken');
   const { register, handleSubmit } = useForm<FormReviewValues>();
   const [urlString, setUrlString] = useState('');
 
   const { data: reviewData } = useQuery(['getReview'], async () => {
-    const result = await axios.get(`${marketReviewRoute}/${props.reviewId}`);
+    const result = await axiosApiInstance.get(
+      `${marketReviewRoute}/${props.reviewId}`,
+    );
     return result.data;
   });
 
@@ -29,11 +29,7 @@ export default function ReviewNew(props: IReviewNewProps) {
 
   const { mutate: newReview } = useMutation(
     async (variables: FormReviewValues) => {
-      return await axios.post(`${marketReviewRoute}`, variables, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      return await axiosApiInstance.post(`${marketReviewRoute}`, variables);
     },
     {
       onSuccess: () => {
@@ -58,14 +54,9 @@ export default function ReviewNew(props: IReviewNewProps) {
 
   const { mutate: updateReview } = useMutation(
     async (variables: FormReviewValues) => {
-      return await axios.put(
+      return await axiosApiInstance.put(
         `${marketReviewRoute}/${reviewData.id} `,
         variables,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
       );
     },
     {

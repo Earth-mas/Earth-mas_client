@@ -1,10 +1,9 @@
-import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ChangeEvent, Dispatch, useEffect, useState } from 'react';
 import { Colors } from 'styles/Colors';
 import * as S from './Upload01.styles';
 import { ImageIcon, XbuttonIcon } from 'assets/svgs';
-import { host } from 'utils/APIRoutes';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 interface IUpload01Props {
   page: 'market' | 'activity' | 'support' | 'user';
   fetchData?: string;
@@ -12,13 +11,8 @@ interface IUpload01Props {
   setUrlString: Dispatch<React.SetStateAction<string>>;
 }
 export default function Upload01(props: IUpload01Props) {
-  // 상위 컴포넌트에 넣을 코드
-  // const [urlString, setUrlString] = useState('');
-  // fetchData에 기존 데이터 url 그대로 넣으시면 됩니다~
-
   const [urls, setUrls] = useState<string[] | []>([]);
   useEffect(() => {
-    // console.log('fetchData :', props.fetchData);
     if (!props.fetchData) return setUrls([]);
     props.setUrlString(props.fetchData);
     setUrls(props.fetchData?.split(','));
@@ -37,8 +31,8 @@ export default function Upload01(props: IUpload01Props) {
     if (!file) return;
     const formData = new FormData();
     formData.append('files', file);
-    await axios
-      .post(`${host}/server/${props.page}/upload`, formData)
+    await axiosApiInstance
+      .post(`${props.page}/upload`, formData)
       .then(res => {
         const url = `https://storage.googleapis.com/${res.data[0]}`;
         onChangeUrl(url);

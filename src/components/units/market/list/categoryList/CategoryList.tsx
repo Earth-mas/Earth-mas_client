@@ -26,12 +26,11 @@ export default function CategoryList(props: ICategoryListProps) {
         <Dropdown02Copy page={0} setSelect={props.setSelect} />
       </header>
       <CardWrap>
-        {props.listData &&
-          props.listData.map((el: IMarketCard) => (
-            <Fragment key={uuid4()}>
-              <MarketCard listData={el} />
-            </Fragment>
-          ))}
+        {props.listData?.map((el: IMarketCard) => (
+          <Fragment key={uuid4()}>
+            <MarketCard listData={el} />
+          </Fragment>
+        ))}
       </CardWrap>
       <Pagination
         clickPage={props.clickPage}

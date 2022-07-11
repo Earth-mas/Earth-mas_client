@@ -1,7 +1,7 @@
 export interface IMarketList {
   amount: number;
   createAt: string;
-  delete?: any;
+  delete?: null;
   description: string;
   discount: number;
   id: string;
@@ -19,7 +19,7 @@ export interface IMarketList {
 export interface IMarketListCategory {
   id: string;
   name: string;
-  delete?: any;
+  delete?: null;
   createAt: string;
   updateAt: string;
 }

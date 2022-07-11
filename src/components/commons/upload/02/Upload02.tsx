@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import {
   ChangeEvent,
@@ -12,7 +11,7 @@ import * as S from './Upload02.styles';
 import { ImageIcon, XbuttonIcon } from 'assets/svgs';
 import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
 import { v4 as uuid4 } from 'uuid';
-import { host } from 'utils/APIRoutes';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 interface IUpload02Props {
   page: 'marketreview';
@@ -24,7 +23,6 @@ export default function Upload02(props: IUpload02Props) {
   const [urls, setUrls] = useState<string[]>([]);
 
   useEffect(() => {
-    // console.log('fetchData :', props.fetchData);
     if (!props.fetchData) return setUrls([]);
     props.setUrlString(props.fetchData);
     setUrls(props.fetchData?.split(','));
@@ -43,8 +41,8 @@ export default function Upload02(props: IUpload02Props) {
     if (!file) return;
     const formData = new FormData();
     formData.append('files', file);
-    await axios
-      .post(`${host}/server/${props.page}/upload`, formData)
+    await axiosApiInstance
+      .post(`/server/${props.page}/upload`, formData)
       .then(res => {
         const url = `https://storage.googleapis.com/${res.data[0]}`;
         onChangeUrl(url);
@@ -56,7 +54,6 @@ export default function Upload02(props: IUpload02Props) {
 
   const onClickDelete = (index: number) => () => {
     const temp = [...urls];
-    console.log(temp);
     temp.splice(index, 1);
     setUrls(temp);
     props.setUrlString(temp.toString());
