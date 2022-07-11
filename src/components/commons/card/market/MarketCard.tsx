@@ -9,8 +9,6 @@ import logo from '../../../../assets/svgs/logo/logo-icon-w.svg';
 import { Link } from 'react-router-dom';
 import { IMarketCardProps } from './MarketCard.types';
 import { SyntheticEvent, useState } from 'react';
-import axios from 'axios';
-import store from 'storejs';
 import { getAvg } from 'commons/utils/getStars';
 import { getMoney, getPercent } from 'commons/utils/getAmount';
 import { IMarketList } from 'components/units/market/list/MarketList.types';
@@ -18,9 +16,9 @@ import { useMutation, useQuery } from 'react-query';
 import { marketRoute } from 'utils/APIRoutes';
 import Modal from 'components/commons/modal';
 import InfoModal from 'components/commons/modal/infoModal/infoModal';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function MarketCard(props: IMarketCardProps) {
-  const accessToken = store.get('accessToken');
   const [likeActive, setLikeActive] = useState<boolean>();
   const [likeModal, setLikeModal] = useState(false);
   const [likeModalContent, setLikeModalContent] = useState({
@@ -37,25 +35,19 @@ export default function MarketCard(props: IMarketCardProps) {
   };
 
   const findLike = (ItemsLike: IMarketList[]) => {
-    if (props.listData) {
-      if (ItemsLike.length === 0) return setLikeActive(false);
-      for (let i = 0; i < ItemsLike.length; i++) {
-        if (props.listData.id === ItemsLike[i].id) {
-          setLikeActive(true);
-          break;
-        }
-        setLikeActive(false);
+    if (ItemsLike.length === 0) return setLikeActive(false);
+    for (let i = 0; i < ItemsLike.length; i++) {
+      if (props.listData.id === ItemsLike[i].id) {
+        setLikeActive(true);
+        break;
       }
+      setLikeActive(false);
     }
   };
   const { data, refetch: getItemsLike } = useQuery(
     ['getItemsLike'],
     async () => {
-      const result = await axios.get(`${marketRoute}/findmylike`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const result = await axiosApiInstance.get(`${marketRoute}/findmylike`);
       return result.data;
     },
     {
@@ -68,15 +60,7 @@ export default function MarketCard(props: IMarketCardProps) {
 
   const { mutate: postLike } = useMutation(
     async (id: string) => {
-      const result = await axios.post(
-        `${marketRoute}/like`,
-        { id },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      const result = await axiosApiInstance.post(`${marketRoute}/like`, { id });
       return result.data;
     },
     {

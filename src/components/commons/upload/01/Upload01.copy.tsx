@@ -27,7 +27,6 @@ export default function Upload01Copy(props: IUpload01Props) {
     temp.push(url);
     setUrls(temp);
     props.setUrlString(temp.toString());
-    // console.log(temp.toString());
   };
 
   const onChangeFile = async (event: ChangeEvent<HTMLInputElement>) => {

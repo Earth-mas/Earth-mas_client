@@ -1,5 +1,3 @@
-import axios from 'axios';
-import store from 'storejs';
 import { getMoney } from 'commons/utils/getAmount';
 import Line from 'components/commons/line';
 import { FormEvent, useEffect, useState } from 'react';
@@ -11,9 +9,9 @@ import { IRsp } from './MarketPayment.types';
 import MarketComplete from './PaymentComplete';
 import { useMutation, useQuery } from 'react-query';
 import { marketRoute, marketTransactionRoute } from 'utils/APIRoutes';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function MarketPayment() {
-  const accessToken = store.get('accessToken');
   const userInfo = useRecoilValue(userState);
   const { id } = useParams();
   const [payAmount, setPayAmount] = useState(0);
@@ -23,7 +21,7 @@ export default function MarketPayment() {
   const { data: detailData } = useQuery(
     ['getItem'],
     async () => {
-      const result = await axios.get(`${marketRoute}/${id}`);
+      const result = await axiosApiInstance.get(`${marketRoute}/${id}`);
       return result.data;
     },
     {
@@ -33,7 +31,7 @@ export default function MarketPayment() {
 
   const { mutate: marketTransaction } = useMutation(
     async (rsp: IRsp) => {
-      const result = await axios.post(
+      const result = await axiosApiInstance.post(
         `${marketTransactionRoute}/create`,
         {
           impUid: rsp.imp_uid,
@@ -41,12 +39,8 @@ export default function MarketPayment() {
           marketnumber: 1,
           marketid: id,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
       );
+
       return result.data;
     },
     {

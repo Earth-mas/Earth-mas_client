@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import MarketNewUI from './MarketNew.presenter';
-import store from 'storejs';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   FormValues,
@@ -14,9 +12,9 @@ import { useMutation } from 'react-query';
 import { marketRoute } from 'utils/APIRoutes';
 import Modal from 'components/commons/modal';
 import InfoModal from 'components/commons/modal/infoModal/infoModal';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function MarketNew(props: IMarketNewProps) {
-  const accessToken = store.get('accessToken');
   const [urlString, setUrlString] = useState('');
   const [isSelected, setIsSelected] = useState('');
   const [editItemData, setEditItemData] = useState<IUpdateVariables>();
@@ -64,11 +62,7 @@ export default function MarketNew(props: IMarketNewProps) {
 
   const { mutate: newItem } = useMutation(
     async (variables: INewVariables) => {
-      const result = await axios.post(`${marketRoute}/ `, variables, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const result = await axiosApiInstance.post(`${marketRoute}`, variables);
       return result.data;
     },
     {
@@ -98,11 +92,10 @@ export default function MarketNew(props: IMarketNewProps) {
   };
   const { mutate: updateItem } = useMutation(
     async (variables: IUpdateVariables) => {
-      const result = await axios.put(`${marketRoute}/${id}`, variables, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const result = await axiosApiInstance.put(
+        `${marketRoute}/${id}`,
+        variables,
+      );
       return result.data;
     },
     {

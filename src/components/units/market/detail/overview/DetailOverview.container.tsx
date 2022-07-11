@@ -1,8 +1,5 @@
-import { IMarketDetail } from '../MarketDetail.types';
-import axios from 'axios';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import logo from '../../../../../assets/svgs/logo/logo-icon-w.svg';
-import store from 'storejs';
 import { IMarketList } from '../../list/MarketList.types';
 import DetailOverviewUI from './DetailOverview.presenter';
 import { useMutation, useQuery } from 'react-query';
@@ -12,9 +9,9 @@ import Modal from 'components/commons/modal';
 import InfoModal from 'components/commons/modal/infoModal/infoModal';
 import { getUrl } from 'commons/utils/getUrl';
 import { IDetailOverviewProps } from './DetailOverview.types';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function DetailOverview(props: IDetailOverviewProps) {
-  const accessToken = store.get('accessToken');
   const [image, setImage] = useState('');
   const [likeActive, setLikeActive] = useState<boolean>();
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -44,7 +41,9 @@ export default function DetailOverview(props: IDetailOverviewProps) {
 
   const { mutate: deleteItem } = useMutation(
     async () => {
-      return await axios.delete(`${marketRoute}/${props.detailData?.id}`);
+      return await axiosApiInstance.delete(
+        `${marketRoute}/${props.detailData?.id}`,
+      );
     },
     {
       onSuccess: () => {
@@ -70,11 +69,7 @@ export default function DetailOverview(props: IDetailOverviewProps) {
   const { data, refetch: getItemsLike } = useQuery(
     ['getItemsLike'],
     async () => {
-      return await axios.get(`${marketRoute}/findmylike`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      return await axiosApiInstance.get(`${marketRoute}/findmylike`);
     },
     {
       refetchOnWindowFocus: false,
@@ -90,15 +85,7 @@ export default function DetailOverview(props: IDetailOverviewProps) {
 
   const { mutate: postLike } = useMutation(
     async (id: string) => {
-      const result = await axios.post(
-        `${marketRoute}/like`,
-        { id },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      const result = await axiosApiInstance.post(`${marketRoute}/like`, { id });
       return result.data;
     },
     {

@@ -43,7 +43,6 @@ interface IInput03Props {
 }
 
 export default function Input03(props: IInput03Props) {
-  // console.log('props', props.register);
   return (
     <Input
       {...props.register}

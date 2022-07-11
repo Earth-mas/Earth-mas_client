@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import axios from 'axios';
 import Category from 'components/commons/category/Category';
 import Input02 from 'components/commons/inputs/Input02';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -9,13 +8,12 @@ import { marketRoute } from 'utils/APIRoutes';
 import { useQuery } from 'react-query';
 import CategoryList from './categoryList/CategoryList';
 import SearchList from './searchList/SearchList';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function MarketList() {
   const [listData, setListData] = useState<IMarketList[]>();
   const [nowCategory, setNowCategory] = useState('전체');
-
   const [select, setSelect] = useState<string>('findlike');
-
   const [keyword, setKeyword] = useState<string>();
   const [clickPage, setClickPage] = useState(1);
   const [searchList, setSearchList] = useState<boolean>(false);
@@ -23,7 +21,7 @@ export default function MarketList() {
   const { data: ItemsSearch, refetch: refetchItemsSearch } = useQuery(
     ['getItemsSearch'],
     async () => {
-      const result = await axios.post(`${marketRoute}/search`, {
+      const result = await axiosApiInstance.post(`${marketRoute}/search`, {
         search: keyword,
       });
       return setListData(result.data);
@@ -45,10 +43,11 @@ export default function MarketList() {
   const { data: ItemsAll, refetch: refetchItemsAll } = useQuery(
     ['getItemsAll', clickPage],
     async () => {
-      const result = await axios.post(`${marketRoute}/${select}`, {
+      const result = await axiosApiInstance.post(`${marketRoute}/${select}`, {
         category: nowCategory,
         page: clickPage,
       });
+
       setListData(result.data.arr);
       return result.data;
     },

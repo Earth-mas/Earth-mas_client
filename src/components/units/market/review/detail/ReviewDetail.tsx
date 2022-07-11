@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { GetDate } from 'commons/utils/GetDate';
 import ViewStars from 'components/commons/stars/viewStars/ViewStars';
 import * as S from './ReviewDetail.styles';
@@ -14,6 +13,7 @@ import { userState } from 'recoil/user';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
 import { useMutation } from 'react-query';
 import { marketReviewRoute } from 'utils/APIRoutes';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function ReviewDetail(props: IReviewDetailProps) {
   const userInfo = useRecoilValue(userState);
@@ -37,7 +37,9 @@ export default function ReviewDetail(props: IReviewDetailProps) {
 
   const { mutate: deleteReview } = useMutation(
     async () => {
-      return await axios.delete(`${marketReviewRoute}/${props.reviewsData.id}`);
+      return await axiosApiInstance.delete(
+        `${marketReviewRoute}/${props.reviewsData.id}`,
+      );
     },
     {
       onSuccess: () => {
