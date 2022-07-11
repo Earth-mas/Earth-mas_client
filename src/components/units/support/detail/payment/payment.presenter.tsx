@@ -77,7 +77,7 @@ export default function SupportPaymentUI(props: ISupportPaymentUIProps) {
           </Bottom>
         </Wrapper>
       ) : (
-        <SupportComplete completeData={props.completeData} />
+        <SupportComplete paymentData={props.paymentData} />
       )}
     </>
   );

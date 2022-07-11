@@ -18,14 +18,14 @@ export default function SupportComplete(props: ISupportCompleteProps) {
       <S.Bottom>
         <p>기부정보 확인</p>
         <div className="payment">
-          <span>{getPrice(props.completeData?.data?.amount)}</span>
+          <span>{getPrice(props.paymentData?.data?.amount)}</span>
           <span>원 기부되었습니다.</span>
         </div>
         <div className="grid">
           <p>모금함명</p>
-          <p>{props.completeData?.data?.donation?.title}</p>
+          <p>{props.paymentData?.data?.donation?.title}</p>
           <p>단체명</p>
-          <p>{props.completeData?.data?.donation?.user?.name}</p>
+          <p>{props.paymentData?.data?.donation?.user?.name}</p>
         </div>
         <Link to={'/support'} className="buttonWrap">
           <ContainedButton01 content="확인" color="main" />

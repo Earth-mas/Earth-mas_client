@@ -1,5 +1,5 @@
 export interface ISupportCompleteProps {
-  completeData: {
+  paymentData: {
     data: {
       amount: number;
       donation: {
