@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { IActivityDetailProps } from '../detail/ActivityDetail.types';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export interface FormValues {
   title?: string;
@@ -76,11 +77,7 @@ export default function ActivityNew(props: IActivityNewProps) {
 
     console.log('variables: ', variables);
     try {
-      const regisData = await axios.post(activityRoute, variables, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const regisData = await axiosApiInstance.post(activityRoute, variables);
       navigate(`/activity/${regisData.data?.id}`);
       console.log('등록된 데이터:', regisData);
     } catch (error) {

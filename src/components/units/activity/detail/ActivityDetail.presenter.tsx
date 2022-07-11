@@ -7,6 +7,8 @@ import Modal from 'components/commons/modal';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
 import Slide from 'components/commons/slide';
 import DOMPurify from 'dompurify';
+import { useRecoilValue } from 'recoil';
+import { userState } from 'recoil/user';
 import { MainImg, PostBox, Wrap } from './ActivityDetail.styles';
 import { IActivityDetailProps } from './ActivityDetail.types';
 
@@ -21,6 +23,7 @@ interface IActivityDetailUIProps {
 }
 
 export default function ActivityDetailUI(props: IActivityDetailUIProps) {
+  const userInfo = useRecoilValue(userState);
   return (
     <>
       {props.isDeleteModal && (
@@ -85,10 +88,13 @@ export default function ActivityDetailUI(props: IActivityDetailUIProps) {
               </ul>
             </section>
             <section className="icon2">
-              <Dropdown05
-                page={'activity'}
-                toggleDeleteModal={props.toggleDeleteModal}
-              />
+              {userInfo.id ===
+                props.activityData?.activityjoin[0]?.user?.id && (
+                <Dropdown05
+                  page={'activity'}
+                  toggleDeleteModal={props.toggleDeleteModal}
+                />
+              )}
             </section>
           </div>
           <Blank height={25} />
