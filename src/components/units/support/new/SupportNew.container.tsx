@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -6,10 +5,9 @@ import { useMutation } from 'react-query';
 import { supportRoute } from 'utils/APIRoutes';
 import SupportNewUI from './SupportNew.presenter';
 import { FormValues, ISupportNewProps } from './SupportNew.types';
-import store from 'storejs';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function SupportNew(props: ISupportNewProps) {
-  const accessToken = store.get('accessToken');
   const navigate = useNavigate();
   const { id } = useParams();
   const [urls, setUrls] = useState('');
@@ -23,16 +21,11 @@ export default function SupportNew(props: ISupportNewProps) {
   const { mutate } = useMutation(
     ({ formData }: { formData: FormValues }) => {
       return !props.isEdit
-        ? axios.post(supportRoute, formData, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          })
-        : axios.put(`${supportRoute}/${id}`, formData, {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          });
+        ? axiosApiInstance.post(supportRoute, formData)
+        : axiosApiInstance.put(`${supportRoute}/${id}`, formData);
     },
     {
       onSuccess: res => {
-        // console.log(res);
         navigate(`/support/${res.data.id}`);
       },
       onError: err => {

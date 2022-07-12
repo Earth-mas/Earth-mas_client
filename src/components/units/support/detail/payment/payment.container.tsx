@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { useState } from 'react';
-import store from 'storejs';
 import { useMutation, useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supportRoute, supporttrRoute } from 'utils/APIRoutes';
 import SupportPaymentUI from './payment.presenter';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 declare global {
   interface Window {
@@ -16,7 +16,6 @@ declare global {
 
 export default function SupportPayment() {
   const { id } = useParams();
-  const accessToken = store.get('accessToken');
   const userInfo = useRecoilValue(userState);
   const navigate = useNavigate();
 
@@ -30,11 +29,11 @@ export default function SupportPayment() {
 
   const { mutate: supportPayment, data: paymentData } = useMutation(
     (rsp: { imp_uid: string }) => {
-      return axios.post(
-        supporttrRoute,
-        { impUid: rsp.imp_uid, amount: Number(selectAmount), donation: id },
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      );
+      return axiosApiInstance.post(supporttrRoute, {
+        impUid: rsp.imp_uid,
+        amount: Number(selectAmount),
+        donation: id,
+      });
     },
     {
       onSuccess: res => {

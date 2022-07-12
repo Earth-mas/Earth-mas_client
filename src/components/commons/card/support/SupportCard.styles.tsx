@@ -24,11 +24,10 @@ export const Container = styled.div`
       props.leftDay > 1 ? 'block' : 'none'};
   }
   .imgContainer {
-    height: 231.5px;
+    height: ${(props: any) => (props.page === '/mypage' ? '188px' : '231.5px')};
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.2 linear;
     overflow: hidden;
 
     img {
@@ -42,7 +41,7 @@ export const Container = styled.div`
     .imgContainer {
       img {
         transition: all 0.2s linear;
-        transform: scale(1.2);
+        transform: scale(1.1);
       }
     }
   }

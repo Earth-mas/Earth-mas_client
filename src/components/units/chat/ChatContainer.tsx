@@ -74,7 +74,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
     );
 
     const chatSection = makeSection(
-      props.currentChat.chat === 0
+      props.currentChat?.chat === 0
         ? personalChat?.pages[0].posts !== 0
           ? personalChat
           : []
@@ -83,16 +83,18 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
         : [],
     );
 
-    const data = props.currentChat.chat === 0 ? personalChat : groupChat;
+    const data = props.currentChat?.chat === 0 ? personalChat : groupChat;
 
     useEffect(() => {
-      props.currentChat.chat === 0 ? personalChatRefetch() : groupChatRefetch();
+      props.currentChat?.chat === 0
+        ? personalChatRefetch()
+        : groupChatRefetch();
       setLastPage(Math.ceil(data?.pages[0].length / 15));
       setMessages(chatSection);
     }, [props.currentChat, data]);
 
     useEffect(() => {
-      props.currentChat.chat === 0
+      props.currentChat?.chat === 0
         ? props.socketRef?.current?.on('user-send-emit', (msg: any) => {
             setArrivalMessage(msg);
           })
@@ -106,7 +108,9 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
         arrivalMessage &&
         setMessages((prev: any) => [...prev, arrivalMessage]);
 
-      props.currentChat.chat === 0 ? personalChatRefetch() : groupChatRefetch();
+      props.currentChat?.chat === 0
+        ? personalChatRefetch()
+        : groupChatRefetch();
     }, [arrivalMessage]); // arrivalMessage와 이전 메시지를 배열에 담아줌
 
     const isEmpty = data?.pages[0]?.posts === 0;
@@ -120,7 +124,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
         if (values.scrollTop === 0 && !isReachingEnd) {
           console.log('가장 위');
 
-          props.currentChat.chat === 0
+          props.currentChat?.chat === 0
             ? personalChatNextPage().then(() => {
                 const current = (ref as MutableRefObject<Scrollbars>)?.current;
                 if (current) {

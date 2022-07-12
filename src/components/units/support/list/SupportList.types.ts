@@ -4,7 +4,7 @@ export interface ISupportListUIProps {
   setClickPage: Dispatch<SetStateAction<number>>;
   refetch: any;
   data: { data: ISupportListProps[] } | any;
-  setSelect: Dispatch<SetStateAction<boolean>>;
+  setSelect: Dispatch<SetStateAction<string>>;
   isPreviousData: boolean;
 }
 export interface ISupportListProps {

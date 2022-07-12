@@ -12,6 +12,7 @@ import AlertModal from 'components/commons/modal/alertModal/alertModal';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import { Logo } from 'assets/svgs';
 import { Colors } from 'styles/Colors';
+import { AiOutlineMessage } from 'react-icons/ai';
 
 const Header = () => {
   const userInfo = useRecoilValue(userState);
@@ -55,6 +56,9 @@ const Header = () => {
             <>
               <Link to="/mypage">
                 <UserProfile size={30} avataUrl={url} name={name} />
+              </Link>
+              <Link to="/chat" className="chatIcon">
+                <AiOutlineMessage />
               </Link>
               <button onClick={onClickModal}>로그아웃</button>
             </>
@@ -118,6 +122,15 @@ const ContentsWrapper = styled.div`
       font-size: ${FontSize.SMALL};
       font-family: ${FontFamily.MEDIUM};
       line-height: 40px;
+    }
+    .chatIcon {
+      line-height: 10px;
+      svg {
+        font-size: 30px;
+        :hover {
+          fill: ${Colors.SUB1};
+        }
+      }
     }
   }
 `;

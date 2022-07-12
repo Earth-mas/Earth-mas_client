@@ -11,18 +11,20 @@ export default function HomePage() {
       <Slide
         slide="main"
         banner={[
-          '/images/mainBanner/banner2.jpg',
-          '/images/mainBanner/banner3.jpg',
           '/images/mainBanner/banner1.jpg',
+          '/images/mainBanner/banner2.jpg',
         ]}
         autoplay={true}
       />
       <Wrapper>
         <Section>
           <div className="textBox">
-            <p className="title">titletitletitletitle</p>
+            <p className="title">ACTIVITY</p>
             <p className="sub">
-              texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttextexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+              세상을 바꾸기 위해 함께 실천해보세요.
+              <br />
+              지역사회를 기반으로 한<br />
+              환경보호 실천 모임을 응원합니다.
             </p>
             <div className="button">
               <Link to="/activity">
@@ -39,9 +41,13 @@ export default function HomePage() {
             <img src="images/mainImg/main2.jpg" />
           </div>
           <div className="textBox">
-            <p className="title">titletitletitletitle</p>
+            <p className="title">SUPPORT</p>
             <p className="sub">
-              texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+              세상을 위한 좋은 변화를 위하여
+              <br />
+              투명하게 다양한 사업을 지원합니다.
+              <br />
+              미래를 변화시키는 소중한 나눔의 시작입니다.
             </p>
             <div className="button">
               <Link to="/support">
@@ -52,10 +58,11 @@ export default function HomePage() {
         </Section>
         <Section>
           <div className="textBox">
-            <p className="title">titletitletitletitle</p>
+            <p className="title">MARKET</p>
             <p className="sub">
-              texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
-              texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext
+              우리가 일상에서 사용하는 제품에 더 나은 대안을 제시합니다.
+              <br />
+              건강한 자원의 순환과 지속 가능한 소비문화 회복을 지향합니다.
             </p>
             <div className="button">
               <Link to="/market">
@@ -94,13 +101,14 @@ const Section = styled.section`
       color: ${Colors.MAIN};
       font-family: ${FontFamily.BOLD};
       font-size: 2.25rem;
-      font-weight: 700;
+      font-weight: 900;
     }
     .sub {
       width: 100%;
       word-break: break-all;
-      margin: 15px 0 50px;
+      margin: 30px 0 50px;
       font-size: ${FontSize.MEDIUM_T};
+      line-height: 2rem;
     }
     .button {
       width: 180px;
@@ -117,11 +125,12 @@ const Section = styled.section`
   }
 
   &:nth-of-type(2) {
-    margin: 150px 0;
+    margin: 200px 0;
   }
   &:nth-of-type(3) {
     display: block;
     .textBox {
+      width: 100%;
       margin: 0 auto 80px;
       .title {
         font-size: 3rem;

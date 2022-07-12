@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import DatePicker02 from 'components/commons/datePicker/02';
+import DatePicker01 from 'components/commons/datePicker/01';
 import Dropdown01 from 'components/commons/dropdown/01/Dropdown01';
 import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
@@ -73,7 +73,7 @@ export default function ActivityNewUI(props: IActivityNewUIProps) {
             control={props.control}
             name="dday"
             render={({ field: { onChange, value } }) => (
-              <DatePicker02
+              <DatePicker01
                 selected={
                   props.editData?.dday
                     ? value || new Date(props.editData?.dday)

@@ -1,22 +1,20 @@
-import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { chat } from 'utils/APIRoutes';
-import store from 'storejs';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
-export const ChatButton = (props: { userInfo?: any }) => {
-  const accessToken = store.get('accessToken');
-
+export const ChatButton = (props: {
+  userInfo?: { id: string };
+  content: string;
+}) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(
     () => {
-      return axios.post(
-        `${chat}/findroom`,
-        { user: props.userInfo?.id },
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      );
+      return axiosApiInstance.post(`${chat}/findroom`, {
+        user: props.userInfo?.id,
+      });
     },
     {
       onSuccess: res => {
@@ -35,5 +33,5 @@ export const ChatButton = (props: { userInfo?: any }) => {
     mutate();
   };
 
-  return <button onClick={joinChatRoom}>채팅</button>;
+  return <button onClick={joinChatRoom}>{props.content}</button>;
 };

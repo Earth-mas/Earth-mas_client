@@ -3,7 +3,7 @@ import { IActivityList } from '../ActivityList.types';
 import { v4 as uuidv4 } from 'uuid';
 import styled from '@emotion/styled';
 import Title01 from 'components/commons/text/title/Title01';
-import Dropdown02Copy from 'components/commons/dropdown/02/Dropdown02copy';
+import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 import { Dispatch, SetStateAction } from 'react';
 import Pagination from 'components/commons/pagination';
 
@@ -22,7 +22,7 @@ export default function CategoryList(props: ICategoryListProps) {
     <>
       <header>
         <Title01 size={'T'} content={props.nowCategory} margin={35} />
-        <Dropdown02Copy page={1} setSelect={props.setSelect} />
+        <Dropdown02 page={1} setSelect={props.setSelect} />
       </header>
       <CardWrap>
         {props.activityListData &&

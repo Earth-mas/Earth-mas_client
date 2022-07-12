@@ -57,7 +57,9 @@ export const ChatInput = (props: ChatInputProps) => {
           <p>
             <span>{chatMsg.length}</span>/500
           </p>
-          <button type="submit">전송</button>
+          <button type="submit" onClick={e => sendChat(e)}>
+            전송
+          </button>
         </div>
       </div>
     </InputWrapper>

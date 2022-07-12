@@ -9,7 +9,7 @@ import Category from 'components/commons/category/Category';
 import { activityRoute } from 'utils/APIRoutes';
 import _ from 'lodash';
 import { IActivityList } from './ActivityList.types';
-import Dropdown02Copy from 'components/commons/dropdown/02/Dropdown02copy';
+import Dropdown02 from 'components/commons/dropdown/02/Dropdown02';
 import Pagination from 'components/commons/pagination';
 import { useQuery } from 'react-query';
 import SearchList from './searchList/searchList';

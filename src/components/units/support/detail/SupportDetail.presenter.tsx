@@ -18,7 +18,6 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
 
   return (
     <S.Wrapper>
-      <ChatButton userInfo={props.data?.user} />
       <S.FirstSection>
         <Slide slide="sub" banner={props.data?.url?.split(',')} />
         <S.MainContent percent={props.percent}>
@@ -47,16 +46,19 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
             <p>{getPrice(props.data?.currentamount)}원</p>
           </div>
 
-          <div className="user">
-            <div className="userImg">
-              <img
-                src={props.data?.user?.url}
-                onError={e => {
-                  e.currentTarget.src = '/images/profileDefault.png';
-                }}
-              />
+          <div className="user_button">
+            <div className="user">
+              <div className="userImg">
+                <img
+                  src={props.data?.user?.url}
+                  onError={e => {
+                    e.currentTarget.src = '/images/profileDefault.png';
+                  }}
+                />
+              </div>
+              <p className="userName">{props.data?.user?.name}</p>
             </div>
-            <p className="userName">{props.data?.user?.name}</p>
+            <ChatButton userInfo={props.data?.user} content="문의하기" />
           </div>
 
           <Line />

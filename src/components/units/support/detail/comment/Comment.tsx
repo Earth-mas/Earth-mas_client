@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { DateToString } from 'commons/utils/utils';
 import Input01 from 'components/commons/inputs/Input01';
 import { useState } from 'react';
@@ -8,8 +7,8 @@ import { userState } from 'recoil/user';
 import { supportCommentRoute } from 'utils/APIRoutes';
 import { CommentInputWrapper, Mine, Wrapper } from './Comment.styles';
 import { ICommentProps } from './Comment.types';
-import store from 'storejs';
 import { useParams } from 'react-router-dom';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 interface IAnswerInput {
   comments?: string;
 }
@@ -19,7 +18,6 @@ export default function Comment(props: ICommentProps) {
 
   const userInfo = useRecoilValue(userState);
   const queryClient = useQueryClient();
-  const accessToken = store.get('accessToken');
 
   const [isEdit, setIsEdit] = useState(false);
   const [comments, setComments] = useState('');
@@ -27,7 +25,9 @@ export default function Comment(props: ICommentProps) {
   const { mutate: deleteComment } = useMutation(
     'commentDelete',
     async () => {
-      return await axios.delete(`${supportCommentRoute}/${props.el.id}`);
+      return await axiosApiInstance.delete(
+        `${supportCommentRoute}/${props.el.id}`,
+      );
     },
     {
       onSuccess: res => {
@@ -47,11 +47,10 @@ export default function Comment(props: ICommentProps) {
 
   const { mutate } = useMutation(
     () => {
-      return axios.put(
-        `${supportCommentRoute}/${props.el?.id}`,
-        { comments, donation: id },
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      );
+      return axiosApiInstance.put(`${supportCommentRoute}/${props.el?.id}`, {
+        comments,
+        donation: id,
+      });
     },
     {
       onSuccess: () => {

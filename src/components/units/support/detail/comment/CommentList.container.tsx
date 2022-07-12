@@ -1,14 +1,12 @@
-import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { supportCommentRoute } from 'utils/APIRoutes';
-import store from 'storejs';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import CommentListUI from './CommentList.presenter';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function CommentList() {
   const { id } = useParams();
-  const accessToken = store.get('accessToken');
   const queryClient = useQueryClient();
 
   const [comments, setComments] = useState('');
@@ -23,7 +21,7 @@ export default function CommentList() {
   } = useQuery(
     ['allComment', clickPage],
     async () => {
-      return await axios.post(`${supportCommentRoute}/findall`, {
+      return await axiosApiInstance.post(`${supportCommentRoute}/findall`, {
         id: id,
         page: clickPage,
       });
@@ -33,11 +31,10 @@ export default function CommentList() {
 
   const { mutate } = useMutation(
     () => {
-      return axios.post(
-        supportCommentRoute,
-        { comments, donation: id },
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      );
+      return axiosApiInstance.post(supportCommentRoute, {
+        comments,
+        donation: id,
+      });
     },
     {
       onSuccess: () => {

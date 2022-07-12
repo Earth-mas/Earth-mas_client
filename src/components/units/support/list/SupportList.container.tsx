@@ -5,15 +5,13 @@ import { supportRoute } from 'utils/APIRoutes';
 import SupportListUI from './SupportList.presenter';
 
 export default function SupportList() {
-  const [select, setSelect] = useState<boolean>(false);
+  const [select, setSelect] = useState<string>('finddcs');
   const [clickPage, setClickPage] = useState(1);
 
   const { data, refetch, isPreviousData } = useQuery(
     ['supportList', clickPage],
     async () => {
-      return select
-        ? axios.post(`${supportRoute}/finddday`, { page: clickPage })
-        : axios.post(`${supportRoute}/finddcs`, { page: clickPage });
+      return axios.post(`${supportRoute}/${select}`, { page: clickPage });
     },
     { keepPreviousData: true },
   );
