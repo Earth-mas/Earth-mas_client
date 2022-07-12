@@ -14,7 +14,7 @@ interface IDatePickerProps {
   selected: Date | null | undefined;
 }
 
-export default function DatePicker02(props: IDatePickerProps) {
+export default function DatePicker01(props: IDatePickerProps) {
   return (
     <Wrapper>
       <DatePicker

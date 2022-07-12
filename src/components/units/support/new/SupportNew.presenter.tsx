@@ -4,7 +4,7 @@ import ContainedButton01 from 'components/commons/button/contained/ContainedButt
 import Input01 from 'components/commons/inputs/Input01';
 import QuillEditor from 'components/commons/text/reactQuill/ReactQuill';
 import Title01 from 'components/commons/text/title/Title01';
-import DatePicker02 from 'components/commons/datePicker/02';
+import DatePicker01 from 'components/commons/datePicker/01';
 import { ISupportNewUIProps } from './SupportNew.types';
 import { Controller } from 'react-hook-form';
 import Upload01 from 'components/commons/upload/01/Upload01';
@@ -52,7 +52,7 @@ export default function SupportNewUI(props: ISupportNewUIProps) {
           control={props.control}
           name="dday"
           render={({ field: { onChange, value } }) => (
-            <DatePicker02
+            <DatePicker01
               selected={
                 props.fetchData?.dday
                   ? value || new Date(props.fetchData?.dday)

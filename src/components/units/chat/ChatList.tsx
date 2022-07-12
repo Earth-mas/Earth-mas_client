@@ -1,20 +1,22 @@
 import { Fragment, useState } from 'react';
-import { IChatListProps } from './Chat.types';
+import { IChatListProps, ICurrentChat } from './Chat.types';
 import { ListContainer, List } from './Chat.styles';
 import { getTime } from 'commons/utils/utils';
 
 export const ChatList = (props: IChatListProps) => {
   const [roomId, setRoomId] = useState<number>();
 
-  const changeCurrentChat = (index: number, contact: string) => {
+  const changeCurrentChat = (index: number, contact: ICurrentChat) => {
     setRoomId(index);
     props.setCurrentChat(contact);
     console.log(contact, 'contact');
   }; // 채팅을 클릭할 때마다 채팅 유저 리스트를 변경하여 현재 선택된 설정으로 되게
 
+  console.log(props.chatUserList);
+
   return (
     <ListContainer>
-      {props.chatUserList?.map((el: any, index: any) => {
+      {props.chatUserList?.map((el: ICurrentChat, index: number) => {
         return (
           <Fragment key={index}>
             <List

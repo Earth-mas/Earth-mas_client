@@ -23,7 +23,7 @@ export const FirstSection = styled.section`
   height: 415px;
   margin-bottom: 50px;
 `;
-export const MainContent = styled.div<{ percent: number }>`
+export const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -65,7 +65,7 @@ export const MainContent = styled.div<{ percent: number }>`
     margin: 5px 0 12px;
     .participate {
       max-width: 100%;
-      width: ${props => `${props.percent}%`};
+      width: ${(props: { percent: number }) => `${props.percent}%`};
       height: 3px;
       background-color: ${Colors.SUB1};
     }
@@ -87,27 +87,32 @@ export const MainContent = styled.div<{ percent: number }>`
     }
   }
 
-  .user {
+  .user_button {
+    margin: 20px 0;
     display: flex;
     align-items: center;
-    margin: 20px 0;
-    .userImg {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      overflow: hidden;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    justify-content: space-between;
+    .user {
+      display: flex;
+      align-items: center;
+      .userImg {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
-    }
 
-    .userName {
-      font-size: ${FontSize.MEDIUM_T};
-      font-family: ${FontFamily.BOLD};
-      color: ${Colors.B100};
-      margin-left: 12px;
+      .userName {
+        font-size: ${FontSize.MEDIUM_T};
+        font-family: ${FontFamily.BOLD};
+        color: ${Colors.B100};
+        margin-left: 12px;
+      }
     }
   }
 

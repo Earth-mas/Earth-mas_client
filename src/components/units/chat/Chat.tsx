@@ -1,30 +1,24 @@
 import { ChatContainer } from './ChatContainer';
 import { ChatList } from './ChatList';
-import {
-  ChatWrapper,
-  ContainerWrapper,
-  LeftContainer,
-  RightContainer,
-} from './Chat.styles';
+import { ChatWrapper, LeftContainer, RightContainer } from './Chat.styles';
 import { useEffect, useRef, useState } from 'react';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
 import { chat } from 'utils/APIRoutes';
 import { io } from 'socket.io-client';
-import { BeforeChat } from './BeforeChat';
-import axios from 'axios';
 import { useQuery } from 'react-query';
-import store from 'storejs';
 import Scrollbars from 'react-custom-scrollbars';
 import makeList from 'utils/makeList';
 import { ChatInput } from './ChatInput';
+import axiosApiInstance from 'commons/utils/axiosInstance';
+import { BeforeChat } from './BeforeChat';
+import { ICurrentChat } from './Chat.types';
 
 export const Chat = () => {
   const userInfo = useRecoilValue(userState);
-  const accessToken = store.get('accessToken');
 
-  const [currentUser, setCurrentUser] = useState<any>(undefined);
-  const [currentChat, setCurrentChat] = useState<any>(undefined);
+  const [currentUser, setCurrentUser] = useState({});
+  const [currentChat, setCurrentChat] = useState<ICurrentChat>();
 
   const socketRef = useRef<any>(null);
   const scrollbarRef = useRef<Scrollbars>(null);
@@ -55,9 +49,7 @@ export const Chat = () => {
   }, [currentChat]);
 
   const groupChat = async () => {
-    const res = await axios.post(`${chat}/get-my-roomchat`, null, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    const res = await axiosApiInstance.post(`${chat}/get-my-roomchat`);
 
     return res.data?.map((el: any) => {
       return {
@@ -78,9 +70,7 @@ export const Chat = () => {
   const { data: groupChatList } = useQuery('getmyroomchat', groupChat);
 
   const personalChat = async () => {
-    const res = await axios.get(`${chat}/findmychat`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    const res = await axiosApiInstance.get(`${chat}/findmychat`);
 
     return res.data?.map((el: any) => {
       return {
@@ -106,8 +96,8 @@ export const Chat = () => {
   const { data: personalChatList } = useQuery('findmychat', personalChat);
 
   // 보내는 메시지
-  const handleSendMsg = (msg: any) => {
-    currentChat.chat === 0
+  const handleSendMsg = (msg: string) => {
+    currentChat?.chat === 0
       ? socketRef.current.emit('user-send', {
           userid: userInfo.id,
           name: userInfo.name,
