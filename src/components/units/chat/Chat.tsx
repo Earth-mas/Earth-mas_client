@@ -46,6 +46,8 @@ export const Chat = () => {
     setTimeout(() => {
       scrollbarRef.current?.scrollToBottom();
     }, 100);
+
+    // refetch();
   }, [currentChat]);
 
   const groupChat = async () => {
@@ -66,6 +68,7 @@ export const Chat = () => {
           : el?.[0]?.activityjoin?.[0].createAt,
       };
     });
+    return res.data;
   };
   const { data: groupChatList } = useQuery('getmyroomchat', groupChat);
 
@@ -75,23 +78,17 @@ export const Chat = () => {
     return res.data?.map((el: any) => {
       return {
         chat: 0,
-        user:
-          el?.[0]?.user1?.id !== userInfo.id
-            ? {
-                id: el?.[0]?.user1?.id,
-                url: el?.[0]?.user1?.url,
-                name: el?.[0]?.user1?.name,
-              }
-            : {
-                id: el?.[0]?.user2?.id,
-                url: el?.[0]?.user2?.url,
-                name: el?.[0]?.user2?.name,
-              },
-        roomId: el?.[0]?.id,
-        content: el?.[1]?.content,
-        updatedAt: el?.[1]?.createdAt ? el?.[1]?.createdAt : el?.[0]?.createAt,
+        user: {
+          id: el?.[1]?.id,
+          url: el?.[1]?.url,
+          name: el?.[1]?.name,
+        },
+        roomId: el?.[0],
+        content: el?.[2]?.content,
+        updatedAt: el?.[2]?.createdAt ? el?.[2]?.createdAt : '',
       };
     });
+    return res.data;
   };
   const { data: personalChatList } = useQuery('findmychat', personalChat);
 

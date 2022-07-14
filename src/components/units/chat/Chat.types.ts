@@ -34,3 +34,14 @@ export interface ICurrentChat {
   content: string;
   updatedAt: string;
 }
+
+export interface IMessage {
+  content: string;
+  createdAt: string;
+  name: string;
+  roomid: string;
+  url: string;
+  userid: string;
+  __v: number;
+  _id: string;
+}

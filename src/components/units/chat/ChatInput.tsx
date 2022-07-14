@@ -14,10 +14,12 @@ export const ChatInput = (props: ChatInputProps) => {
     setShowEmojiPicker(prev => !prev);
   };
 
-  const handleEmojiClick = (event: any, emoji: { emoji: any }) => {
+  const handleEmojiClick = (event: any, emoji: { emoji: string }) => {
     let message = chatMsg;
     message += emoji.emoji;
     setChatMsg(message);
+    console.log(typeof message);
+    
     setShowEmojiPicker(prev => !prev);
   }; // 이모지삽입
 
