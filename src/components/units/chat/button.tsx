@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { chat } from 'utils/APIRoutes';
 import axiosApiInstance from 'commons/utils/axiosInstance';
@@ -8,7 +8,6 @@ export const ChatButton = (props: {
   content: string;
 }) => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const { mutate } = useMutation(
     () => {
@@ -20,8 +19,6 @@ export const ChatButton = (props: {
       onSuccess: res => {
         console.log(res);
         navigate('/chat');
-
-        // queryClient.invalidateQueries('findmychat', { refetchInactive: true });
       },
       onError: err => {
         console.log(err);

@@ -9,10 +9,7 @@ export const ChatList = (props: IChatListProps) => {
   const changeCurrentChat = (index: number, contact: ICurrentChat) => {
     setRoomId(index);
     props.setCurrentChat(contact);
-    console.log(contact, 'contact');
   }; // 채팅을 클릭할 때마다 채팅 유저 리스트를 변경하여 현재 선택된 설정으로 되게
-
-  console.log(props.chatUserList);
 
   return (
     <ListContainer>

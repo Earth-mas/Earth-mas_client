@@ -58,7 +58,9 @@ export default function SupportDetailUI(props: ISupportDetailUIProps) {
               </div>
               <p className="userName">{props.data?.user?.name}</p>
             </div>
-            <ChatButton userInfo={props.data?.user} content="문의하기" />
+            {props.data?.user?.id !== userInfo.id && (
+              <ChatButton userInfo={props.data?.user} content="문의하기" />
+            )}
           </div>
 
           <Line />

@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { chat } from 'utils/APIRoutes';
-import { IChatContainerProps } from './Chat.types';
+import { IChatContainerProps, IMessage } from './Chat.types';
 import { Scrollbar, StickyHeader } from './Chat.styles';
 import { getDate } from 'commons/utils/utils';
 import makeSection from 'utils/makeSection';
@@ -95,10 +95,10 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
 
     useEffect(() => {
       props.currentChat?.chat === 0
-        ? props.socketRef?.current?.on('user-send-emit', (msg: any) => {
+        ? props.socketRef?.current?.on('user-send-emit', (msg: string) => {
             setArrivalMessage(msg);
           })
-        : props.socketRef?.current?.on('room-send-emit', (msg: any) => {
+        : props.socketRef?.current?.on('room-send-emit', (msg: string) => {
             setArrivalMessage(msg);
           }); // 작성한 메시지를 수신
     }, [messages]); // 메시지에 변경사항이 있을 때마다 실행
@@ -106,7 +106,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
     useEffect(() => {
       messages?.length > 1 &&
         arrivalMessage &&
-        setMessages((prev: any) => [...prev, arrivalMessage]);
+        setMessages((prev: [IMessage]) => [...prev, arrivalMessage]);
 
       props.currentChat?.chat === 0
         ? personalChatRefetch()
