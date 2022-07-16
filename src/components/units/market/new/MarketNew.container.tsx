@@ -63,6 +63,8 @@ export default function MarketNew(props: IMarketNewProps) {
   const { mutate: newItem } = useMutation(
     async (variables: INewVariables) => {
       const result = await axiosApiInstance.post(`${marketRoute}`, variables);
+      console.log('상품 데이터:', result.data);
+
       return result.data;
     },
     {

@@ -5,7 +5,6 @@ import Line from 'components/commons/line';
 import { Link } from 'react-router-dom';
 import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
-import { IActivityList } from 'components/units/activity/list/ActivityList.types';
 import { IActivityCardProps } from './ActivityCard.types';
 
 export default function ActivityCard(props: IActivityCardProps) {
@@ -13,7 +12,12 @@ export default function ActivityCard(props: IActivityCardProps) {
     <Wrapper id={props.el.id}>
       <Link to={`/activity/${props.el.id}`}>
         <div className="imgContainer">
-          <img src={props.el.url?.split(',')[0]} />
+          <img
+            src={props.el.url?.split(',')[0]}
+            onError={e => {
+              e.currentTarget.src = '/images/logo-icon.png';
+            }}
+          />
           <div className="addressContainer">{props.el.location}</div>
         </div>
 
