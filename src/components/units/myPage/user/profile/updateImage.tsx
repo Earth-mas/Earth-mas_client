@@ -1,11 +1,11 @@
 import { ChangeEvent, useRef, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { Avatar, CameraIcon } from 'assets/svgs';
 
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import Modal from 'components/commons/modal';
 import InfoModal from 'components/commons/modal/infoModal/infoModal';
-import { useMutation, useQueryClient } from 'react-query';
 
 interface IProps {
   url: string;
