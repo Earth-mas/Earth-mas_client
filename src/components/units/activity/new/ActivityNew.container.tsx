@@ -1,6 +1,4 @@
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from 'axios';
-import store from 'storejs';
 import { activityRoute } from 'utils/APIRoutes';
 import ActivityNewUI from './ActivityNew.presenter';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -38,7 +36,6 @@ interface IUpdateVariables {
 
 export default function ActivityNew(props: IActivityNewProps) {
   const navigate = useNavigate();
-  const accessToken = store.get('accessToken');
   const [urlString, setUrlString] = useState('');
   const [isSelected, setIsSelected] = useState('');
   const params = useParams();
@@ -55,7 +52,6 @@ export default function ActivityNew(props: IActivityNewProps) {
   };
 
   const onClickSubmit = async (data: FormValues) => {
-    console.log('form 데이터: ', data);
     if (
       !data.title &&
       !data.category &&
@@ -74,19 +70,15 @@ export default function ActivityNew(props: IActivityNewProps) {
       category: isSelected,
       url: urlString,
     };
-
-    console.log('variables: ', variables);
     try {
       const regisData = await axiosApiInstance.post(activityRoute, variables);
       navigate(`/activity/${regisData.data?.id}`);
-      console.log('등록된 데이터:', regisData);
     } catch (error) {
       console.log(error);
     }
   };
 
   const onClickUpdate = async (data: FormValues) => {
-    console.log('수정할 데이터:', data);
     const updateVariables: IUpdateVariables = {
       ...props.editData,
       url: urlString,
@@ -101,16 +93,10 @@ export default function ActivityNew(props: IActivityNewProps) {
     if (data.description) updateVariables.description = data.description;
     if (data.url) updateVariables.url = data.url;
 
-    console.log('updateV :', updateVariables);
-    await axios
+    await axiosApiInstance
       .put(
         `https://earth-mas.shop/server/activity/${params.id}`,
         updateVariables,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
       )
       .then(res => {
         navigate(`/activity/${res.data?.id}`);

@@ -10,7 +10,7 @@ import axiosApiInstance from 'commons/utils/axiosInstance';
 export default function SupportNew(props: ISupportNewProps) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [urls, setUrls] = useState('');
+  const [imageUrls, setImageUrls] = useState('');
 
   const { register, handleSubmit, setValue, trigger, control, getValues } =
     useForm({
@@ -19,18 +19,21 @@ export default function SupportNew(props: ISupportNewProps) {
     });
 
   const { mutate } = useMutation(
-    ({ formData }: { formData: FormValues }) => {
+    (variables: FormValues) => {
       return !props.isEdit
-        ? axiosApiInstance.post(supportRoute, formData)
-        : axiosApiInstance.put(`${supportRoute}/${id}`, formData);
+        ? axiosApiInstance.post(supportRoute, variables)
+        : axiosApiInstance.put(`${supportRoute}/${id}`, variables);
     },
     {
       onSuccess: res => {
+        props.isEdit
+          ? alert('수정이 완료되었습니다')
+          : alert('등록이 완료되었습니다');
         navigate(`/support/${res.data.id}`);
+        location.reload();
       },
       onError: err => {
-        // console.log(err);
-        alert('필수 입력사항입니다');
+        console.log(err);
       },
     },
   );
@@ -41,43 +44,52 @@ export default function SupportNew(props: ISupportNewProps) {
   };
 
   const onClickSubmit = async (data: FormValues) => {
-    const formData = {
+    const variables = {
       ...data,
-      url: urls,
+      url: imageUrls,
     };
 
     if (
-      formData.title === '' &&
-      formData.wishamount &&
-      formData.dday === undefined &&
-      formData.description === '' &&
-      urls === ''
+      variables.title === '' &&
+      variables.wishamount &&
+      variables.dday === undefined &&
+      variables.description === ''
     ) {
       alert('필수 입력사항입니다');
       return false;
     }
-
-    mutate({ formData });
+    if (!imageUrls) {
+      alert('이미지를 등록해주세요');
+      return false;
+    }
+    return mutate(variables);
   };
 
   const onClickEdit = async (data: FormValues) => {
     if (
-      !(data.title && data.wishamount && data.dday) &&
+      !data.title &&
+      !data.wishamount &&
+      !data.dday &&
       data.description === props.fetchData?.description &&
-      data.url === props.fetchData?.url
+      imageUrls === props.fetchData?.url
     )
       return alert('수정사항이 없습니다');
 
-    const formData: FormValues = {
-      ...props.fetchData,
+    const variables: FormValues = {
+      title: props.fetchData?.title,
+      wishamount: props.fetchData?.wishamount,
+      dday: props.fetchData?.dday,
+      description: props.fetchData?.description,
+      url: props.fetchData?.url,
     };
-    if (data.title) formData.title = data.title;
-    if (data.wishamount) formData.wishamount = Number(data.wishamount);
-    if (data.dday) formData.dday = data.dday;
-    if (data.description) formData.description = data.description;
-    if (data.url) formData.url = urls;
 
-    mutate({ formData });
+    if (data.title) variables.title = data.title;
+    if (data.wishamount) variables.wishamount = Number(data.wishamount);
+    if (data.dday) variables.dday = data.dday;
+    if (data.description) variables.description = data.description;
+    if (imageUrls !== props.fetchData?.url) variables.url = imageUrls;
+
+    mutate(variables);
   };
 
   return (
@@ -85,8 +97,8 @@ export default function SupportNew(props: ISupportNewProps) {
       isEdit={props.isEdit}
       fetchData={props.fetchData}
       control={control}
-      urls={urls}
-      setUrls={setUrls}
+      urls={imageUrls}
+      setUrls={setImageUrls}
       register={register}
       handleChangeQuill={handleChangeQuill}
       onClickEdit={onClickEdit}

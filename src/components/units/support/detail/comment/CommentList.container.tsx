@@ -38,6 +38,8 @@ export default function CommentList() {
     },
     {
       onSuccess: () => {
+        alert('댓글이 등록되었습니다');
+        setComments('');
         inputRef.current.value = '';
         queryClient.invalidateQueries('allComment', { refetchInactive: true });
       },
@@ -49,7 +51,7 @@ export default function CommentList() {
 
   const handleValidation = () => {
     if (comments === '') {
-      alert('내용없음');
+      alert('내용이 없습니다');
       return false;
     } else {
       mutate();

@@ -1,12 +1,15 @@
 import axios from 'axios';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { supportRoute } from 'utils/APIRoutes';
 import SupportDetailUI from './SupportDetail.presenter';
 
 export default function SupportDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [modal, setModal] = useState(false);
 
   const { data } = useQuery('detailList', async () => {
     const { data } = await axios.get(`${supportRoute}/${id}`);
@@ -20,6 +23,10 @@ export default function SupportDetail() {
     (today.getTime() - dDay.getTime()) / (1000 * 60 * 60 * 24) - 1,
   );
 
+  const openModal = () => {
+    setModal(prev => !prev);
+  };
+
   const { mutate: deleteContent } = useMutation(
     'detailDelete',
     async () => {
@@ -27,7 +34,13 @@ export default function SupportDetail() {
     },
     {
       onSuccess: () => {
+        setModal(prev => !prev);
         queryClient.invalidateQueries('supportList', { refetchInactive: true });
+        navigate('/support');
+        alert('삭제가 완료되었습니다');
+      },
+      onError: err => {
+        console.log(err);
       },
     },
   );
@@ -38,6 +51,8 @@ export default function SupportDetail() {
       leftDay={leftDay}
       data={data}
       deleteContent={deleteContent}
+      modal={modal}
+      openModal={openModal}
     />
   );
 }

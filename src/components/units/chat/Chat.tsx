@@ -1,29 +1,30 @@
+import { useEffect, useRef, useState } from 'react';
+import { io } from 'socket.io-client';
+import { userState } from 'recoil/user';
+import { useRecoilValue } from 'recoil';
 import { ChatContainer } from './ChatContainer';
 import { ChatList } from './ChatList';
 import { ChatWrapper, LeftContainer, RightContainer } from './Chat.styles';
-import { useEffect, useRef, useState } from 'react';
-import { userState } from 'recoil/user';
-import { useRecoilValue } from 'recoil';
 import { chat } from 'utils/APIRoutes';
-import { io } from 'socket.io-client';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import Scrollbars from 'react-custom-scrollbars';
 import makeList from 'utils/makeList';
 import { ChatInput } from './ChatInput';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import { BeforeChat } from './BeforeChat';
 import { ICurrentChat } from './Chat.types';
+import Modal from 'components/commons/modal';
+import AlertModal from 'components/commons/modal/alertModal/alertModal';
 
 export const Chat = () => {
   const userInfo = useRecoilValue(userState);
 
   const [currentUser, setCurrentUser] = useState({});
   const [currentChat, setCurrentChat] = useState<ICurrentChat>();
+  const [modal, setModal] = useState(false);
 
   const socketRef = useRef<any>(null);
   const scrollbarRef = useRef<Scrollbars>(null);
-
-  const roomId = currentChat?.roomId;
 
   useEffect(() => {
     if (userInfo.id.length > 0) return setCurrentUser(userInfo);
@@ -33,7 +34,7 @@ export const Chat = () => {
     socketRef.current = io(`${chat}`, {
       upgrade: false,
     });
-    if (currentUser && currentChat?.chat === 0) {
+    if (currentUser && currentChat?.chat === 'personalChat') {
       socketRef.current.emit('user-enter', {
         roomid: currentChat?.roomId,
       });
@@ -46,8 +47,6 @@ export const Chat = () => {
     setTimeout(() => {
       scrollbarRef.current?.scrollToBottom();
     }, 100);
-
-    // refetch();
   }, [currentChat]);
 
   const groupChat = async () => {
@@ -55,7 +54,7 @@ export const Chat = () => {
 
     return res.data?.map((el: any) => {
       return {
-        chat: 1,
+        chat: 'groupChat',
         user: {
           id: el?.[0]?.id,
           url: el?.[0]?.url,
@@ -66,9 +65,10 @@ export const Chat = () => {
         updatedAt: el?.[1]?.createdAt
           ? el?.[1]?.createdAt
           : el?.[0]?.activityjoin?.[0].createAt,
+        max: el?.[0]?.maxpeople,
+        join: el?.[0]?.people,
       };
     });
-    return res.data;
   };
   const { data: groupChatList } = useQuery('getmyroomchat', groupChat);
 
@@ -77,7 +77,7 @@ export const Chat = () => {
 
     return res.data?.map((el: any) => {
       return {
-        chat: 0,
+        chat: 'personalChat',
         user: {
           id: el?.[1]?.id,
           url: el?.[1]?.url,
@@ -88,24 +88,23 @@ export const Chat = () => {
         updatedAt: el?.[2]?.createdAt ? el?.[2]?.createdAt : '',
       };
     });
-    return res.data;
   };
   const { data: personalChatList } = useQuery('findmychat', personalChat);
 
   // 보내는 메시지
   const handleSendMsg = (msg: string) => {
-    currentChat?.chat === 0
+    currentChat?.chat === 'personalChat'
       ? socketRef.current.emit('user-send', {
           userid: userInfo.id,
           name: userInfo.name,
           content: msg,
-          roomid: roomId,
+          roomid: currentChat?.roomId,
         })
       : socketRef.current.emit('room-send', {
           userid: userInfo.id,
           name: userInfo.name,
           content: msg,
-          roomid: roomId,
+          roomid: currentChat?.roomId,
         });
 
     if (scrollbarRef.current) {
@@ -117,8 +116,43 @@ export const Chat = () => {
 
   const listData = makeList([groupChatList, personalChatList]);
 
+  const onClickOpenModal = () => {
+    setModal(prev => !prev);
+  };
+
+  const { mutate: leaveChat } = useMutation(
+    'chatDelete',
+    () => {
+      return currentChat?.chat === 'personalChat'
+        ? axiosApiInstance.delete(`${chat}/user-chat/${currentChat?.roomId}`)
+        : axiosApiInstance.delete(`${chat}/room-chat/${currentChat?.roomId}`);
+    },
+    {
+      onSuccess: () => {
+        setModal(prev => !prev);
+        alert('채팅방이 삭제되었습니다');
+        location.reload();
+      },
+      onError: err => {
+        console.log(err);
+      },
+    },
+  );
+
   return (
     <>
+      {modal && (
+        <Modal>
+          <AlertModal
+            title="💬 채팅방 나가기"
+            contents="채팅방에서 나가기를 하면 대화내용 및 채팅목록에서 삭제됩니다. 채팅방에서 나가시겠습니까?"
+            okMessage="네, 삭제할게요"
+            cancelMessage="아니오, 취소할게요"
+            onClickCancel={onClickOpenModal}
+            onClickOk={leaveChat}
+          />
+        </Modal>
+      )}
       <ChatWrapper>
         <LeftContainer>
           <div className="user">
@@ -141,26 +175,33 @@ export const Chat = () => {
             <BeforeChat />
           ) : (
             <>
-              <div className="user">
-                <div className="userImg">
-                  <img
-                    src={currentChat?.user?.url}
-                    onError={e => {
-                      e.currentTarget.src = '/images/profileDefault.png';
-                    }}
-                  />
+              <div className="rightTop">
+                <div className="user">
+                  <div className="userImg">
+                    <img
+                      src={currentChat?.user?.url}
+                      onError={e => {
+                        e.currentTarget.src = '/images/profileDefault.png';
+                      }}
+                    />
+                  </div>
+                  <p className="userName">{currentChat?.user?.name}</p>
                 </div>
-                <p className="userName">{currentChat?.user?.name}</p>
+                <button className="leaveRoom" onClick={onClickOpenModal}>
+                  나가기
+                </button>
               </div>
 
-              <ChatContainer
-                roomId={roomId}
-                ref={scrollbarRef}
-                currentChat={currentChat}
-                socketRef={socketRef}
-              />
+              <div className="containerWrap">
+                <ChatContainer
+                  roomId={currentChat?.roomId}
+                  ref={scrollbarRef}
+                  currentChat={currentChat}
+                  socketRef={socketRef}
+                />
 
-              <ChatInput handleSendMsg={handleSendMsg} />
+                <ChatInput handleSendMsg={handleSendMsg} />
+              </div>
             </>
           )}
         </RightContainer>

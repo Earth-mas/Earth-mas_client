@@ -30,3 +30,30 @@ export interface ICommentListUIProps {
   handleChange: (arg0: ChangeEvent<HTMLInputElement>) => void;
   data: AxiosResponse<any, any> | undefined;
 }
+
+export interface ICommentUIProps {
+  isEdit: boolean;
+  el: {
+    id: string;
+    user: {
+      url: string | undefined;
+      name: string;
+      id: string;
+    };
+    comments: string;
+    updatedAt: string;
+  };
+  modal: boolean;
+  onClickDelete: () => void;
+  handleChange: (e: {
+    target: {
+      name: string;
+      value: string;
+    };
+  }) => void;
+  onClickEditComment: (e: {
+    preventDefault: () => void;
+  }) => Promise<false | undefined>;
+  onClickEditInput: () => void;
+  onClickOpenModal: () => void;
+}

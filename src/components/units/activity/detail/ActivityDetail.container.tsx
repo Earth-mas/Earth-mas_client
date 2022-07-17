@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { activityRoute } from 'utils/APIRoutes';
-import store from 'storejs';
 import { IActivityDetailProps } from './ActivityDetail.types';
 import ActivityDetailUI from './ActivityDetail.presenter';
 import axiosApiInstance from 'commons/utils/axiosInstance';
@@ -13,22 +11,8 @@ export default function ActivityDetail() {
   const [activityData, setActivityData] = useState<IActivityDetailProps>();
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
-  const accessToken = store.get('accessToken');
-
-  // const accessToken = store.get(`accessToken`);
-  // const userInfo = useRecoilValue(userState);
 
   const getActivityData = async () => {
-    // await axios
-    //   .get(`https://earth-mas.shop/server/activity/${id}`)
-    //   .then(res => {
-    //     setActivityData(res.data);
-    //     console.log('상세 데이터:', res);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-
     await axiosApiInstance
       .get(`${activityRoute}/${id}`)
       .then(res => {
@@ -40,10 +24,9 @@ export default function ActivityDetail() {
   };
 
   const deleteActivityData = async () => {
-    await axios
+    await axiosApiInstance
       .delete(`${activityRoute}/${id}`)
       .then(res => {
-        console.log(res.data);
         setIsDeleteModal(res.data);
       })
       .catch(error => {
@@ -65,16 +48,8 @@ export default function ActivityDetail() {
   };
 
   const joinChat = async () => {
-    await axios
-      .post(
-        `${activityRoute}/join`,
-        { activity: id },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      )
+    await axiosApiInstance
+      .post(`${activityRoute}/join`, { activity: id })
       .then(res => {
         console.log(res);
         navigate('/chat');

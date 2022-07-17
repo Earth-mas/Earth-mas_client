@@ -36,18 +36,20 @@ export const ParticipationListContainer = () => {
 
   return (
     <S.ParticipationList>
-      <p className="title">참여내역</p>
+      <div className="sticky">
+        <p className="title">참여내역</p>
 
-      <p className="totalCount">
-        총 <S.Sub1>{paymentList?.length}</S.Sub1>건이 기부되었습니다.
-      </p>
-      {paymentList?.map((el: IpaymentListElement) => (
-        <ParticipationList key={uuidv4()} el={el} />
-      ))}
+        <p className="totalCount">
+          총 <S.Sub1>{paymentList?.length}</S.Sub1>건이 기부되었습니다.
+        </p>
+        {paymentList?.map((el: IpaymentListElement) => (
+          <ParticipationList key={uuidv4()} el={el} />
+        ))}
 
-      <p className="more" onClick={addList}>
-        더보기
-      </p>
+        <p className="more" onClick={addList}>
+          더보기
+        </p>
+      </div>
     </S.ParticipationList>
   );
 };

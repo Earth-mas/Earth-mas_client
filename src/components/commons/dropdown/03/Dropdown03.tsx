@@ -1,31 +1,18 @@
 import { useState } from 'react';
 import * as S from './Dropdown03.styles';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { AxiosResponse } from 'axios';
-import { UseMutateFunction } from 'react-query';
+import { Link, useParams } from 'react-router-dom';
 
 interface IDropdown03Props {
-  deleteContent: UseMutateFunction<
-    AxiosResponse<any, any>,
-    unknown,
-    void,
-    unknown
-  >;
+  openModal: () => void;
   page: string; // market | activity | support
 }
 
 export default function Dropdown03(props: IDropdown03Props) {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [isActive, setIsActive] = useState(false);
 
   const onClickCategory = () => {
     setIsActive(prev => !prev);
-  };
-
-  const onClickDelete = () => {
-    props.deleteContent();
-    navigate(`/${props.page}`);
   };
 
   return (
@@ -43,7 +30,7 @@ export default function Dropdown03(props: IDropdown03Props) {
             <li>
               <Link to={`/${props.page}/${id}/edit`}>수정</Link>
             </li>
-            <li onClick={onClickDelete}>삭제</li>
+            <li onClick={props.openModal}>삭제</li>
           </ul>
         </S.Option>
       )}
