@@ -63,7 +63,7 @@ export default function ActivityDetailUI(props: IActivityDetailUIProps) {
               <img
                 src={props.activityData?.activityjoin[0].user?.url}
                 onError={event =>
-                  (event.currentTarget.src = '/images/logo-icon.png')
+                  (event.currentTarget.src = '/images/avatar.svg')
                 }
               />
               <span>
