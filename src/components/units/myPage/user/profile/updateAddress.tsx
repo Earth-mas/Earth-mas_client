@@ -19,6 +19,7 @@ interface IPostCodeData {
 }
 export default function UpdateAddress(props: IProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [addressInput, setAddressInput] = useState({
     addressnumber: props.addressnumber,
     address1: props.address1,
