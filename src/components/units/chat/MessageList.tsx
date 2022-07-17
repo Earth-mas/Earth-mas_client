@@ -23,7 +23,7 @@ export const MessageList = (props: Props) => {
     >
       <div className="userImg">
         <img
-          src={props.message.url}
+          src={props.message.url ?? ''}
           onError={e => {
             e.currentTarget.src = '/images/profileDefault.png';
           }}

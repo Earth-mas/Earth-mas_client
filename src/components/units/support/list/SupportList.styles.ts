@@ -7,6 +7,7 @@ export const SlideWrapper = styled.div`
   height: 400px;
 `;
 export const Wrapper = styled.div`
+  position: relative;
   width: 1024px;
   padding: 50px 0 100px;
   .topWrapper {

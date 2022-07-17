@@ -48,7 +48,7 @@ export const MainContent = styled.div`
     font-size: ${FontSize.LARGE_T};
     font-family: ${FontFamily.BOLD};
     color: ${Colors.B100};
-    margin: 12px 0 2px;
+    margin: 12px 0 5px;
   }
 
   .percent {
@@ -129,9 +129,9 @@ export const SecondSection = styled.section`
   display: grid;
   grid-template-columns: 5fr 3fr;
   gap: 30px;
-  margin: 50px 0;
 `;
 export const Contents = styled.div`
+  padding: 50px 0;
   img {
     width: 100%;
     margin-bottom: 35px;
@@ -154,44 +154,53 @@ export const Contents = styled.div`
   }
 `;
 export const ParticipationList = styled.div`
-  .title {
-    color: ${Colors.B100};
-    font-size: ${FontSize.LARGE_C};
-    font-family: ${FontFamily.BOLD};
-  }
-  .totalCount {
-    font-size: ${FontSize.MEDIUM_C};
-    font-family: ${FontFamily.MEDIUM};
-    color: ${Colors.B100};
-    text-align: center;
-    height: 50px;
-    line-height: 50px;
-    border: 1px solid ${Colors.B20};
-    border-radius: 8px;
-    margin: 20px 0 10px;
-  }
+  position: relative;
+  padding: 30px 0;
+  > .sticky {
+    position: sticky;
+    top: 0;
+    left: 0;
+    padding: 20px 0;
 
-  .list {
-    padding: 12px 15px;
-    border-bottom: 1px solid ${Colors.B20};
-    :last-of-type {
-      border-bottom: 0;
+    .title {
+      color: ${Colors.B100};
+      font-size: ${FontSize.LARGE_C};
+      font-family: ${FontFamily.BOLD};
     }
-    .userName {
-      margin-right: 10px;
+    .totalCount {
+      font-size: ${FontSize.MEDIUM_C};
+      font-family: ${FontFamily.MEDIUM};
+      color: ${Colors.B100};
+      text-align: center;
+      height: 50px;
+      line-height: 50px;
+      border: 1px solid ${Colors.B20};
+      border-radius: 8px;
+      margin: 20px 0 10px;
     }
-  }
-  .more {
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    color: ${Colors.SUB1};
-    font-size: ${FontSize.MEDIUM_C};
-    border: 1px solid ${Colors.B20};
-    border-radius: 8px;
-    text-align: center;
-    margin-top: 10px;
-    cursor: pointer;
+
+    .list {
+      padding: 12px 15px;
+      border-bottom: 1px solid ${Colors.B20};
+      :last-of-type {
+        border-bottom: 0;
+      }
+      .userName {
+        margin-right: 10px;
+      }
+    }
+    .more {
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      color: ${Colors.SUB1};
+      font-size: ${FontSize.MEDIUM_C};
+      border: 1px solid ${Colors.B20};
+      border-radius: 8px;
+      text-align: center;
+      margin-top: 10px;
+      cursor: pointer;
+    }
   }
 `;
 
