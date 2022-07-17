@@ -7,10 +7,26 @@ import SupportPaymentUI from './payment.presenter';
 import { userState } from 'recoil/user';
 import { useRecoilValue } from 'recoil';
 import axiosApiInstance from 'commons/utils/axiosInstance';
+import { IPayment } from './payment.types';
 
 declare global {
   interface Window {
-    IMP: string;
+    IMP: {
+      init: (arg0: string) => void;
+      request_pay: (
+        arg0: {
+          pg: string;
+          pay_method: string;
+          name: string;
+          amount: string;
+          buyer_email: string;
+          buyer_name: string;
+          buyer_tel: string;
+          buyer_addr: string;
+        },
+        arg1: (rsp: IPayment) => void,
+      ) => void;
+    };
   }
 }
 
@@ -49,26 +65,24 @@ export default function SupportPayment() {
   const onClickPayment = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    const IMP: any = window.IMP;
+    const IMP = window.IMP;
 
     IMP.init('imp76469515');
-
     IMP.request_pay(
       {
-        // param
         pg: 'html5_inicis',
         pay_method: 'card',
         name: '얼스마스',
-        amount: Number(selectAmount),
+        amount: selectAmount,
         buyer_email: userInfo.email,
         buyer_name: userInfo.name,
         buyer_tel: userInfo.phone,
         buyer_addr: userInfo.address1,
       },
-      (rsp: any) => {
-        // callback
+      (rsp: IPayment) => {
         if (rsp.success) {
           supportPayment(rsp);
+          console.log(rsp);
         } else {
           alert(rsp.error_msg);
           navigate(`/support/${id}`);

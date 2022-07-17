@@ -26,7 +26,7 @@ export default function UpdateImage(props: IProps) {
     if (!file) return;
     formData.append('files', file);
     axiosApiInstance
-      .post(`ser/upload`, formData)
+      .post(`user/upload`, formData)
       .then(res => {
         const url = `https://storage.googleapis.com/${res.data[0]}`;
         setNewUrl(url);

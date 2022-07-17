@@ -4,9 +4,7 @@ import { Colors } from 'styles/Colors';
 import { FontFamily, FontSize } from 'styles/FontStyles';
 
 export const NewButton = () => {
-  return (
-    <>{localStorage.getItem('accessToken') && <LinkNew to="new">+</LinkNew>}</>
-  );
+  return <LinkNew to="new">+</LinkNew>;
 };
 
 const LinkNew = styled(Link)`

@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { chat } from 'utils/APIRoutes';
-import { IChatContainerProps, IMessage } from './Chat.types';
+import { IChatContainerProps, IDataList, IMessage } from './Chat.types';
 import { Scrollbar, StickyHeader } from './Chat.styles';
 import { getDate } from 'commons/utils/utils';
 import makeSection from 'utils/makeSection';
@@ -74,7 +74,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
     );
 
     const chatSection = makeSection(
-      props.currentChat?.chat === 0
+      props.currentChat?.chat === 'personalChat'
         ? personalChat?.pages[0].posts !== 0
           ? personalChat
           : []
@@ -83,10 +83,11 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
         : [],
     );
 
-    const data = props.currentChat?.chat === 0 ? personalChat : groupChat;
+    const data =
+      props.currentChat?.chat === 'personalChat' ? personalChat : groupChat;
 
     useEffect(() => {
-      props.currentChat?.chat === 0
+      props.currentChat?.chat === 'personalChat'
         ? personalChatRefetch()
         : groupChatRefetch();
       setLastPage(Math.ceil(data?.pages[0].length / 15));
@@ -94,7 +95,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
     }, [props.currentChat, data]);
 
     useEffect(() => {
-      props.currentChat?.chat === 0
+      props.currentChat?.chat === 'personalChat'
         ? props.socketRef?.current?.on('user-send-emit', (msg: string) => {
             setArrivalMessage(msg);
           })
@@ -108,7 +109,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
         arrivalMessage &&
         setMessages((prev: [IMessage]) => [...prev, arrivalMessage]);
 
-      props.currentChat?.chat === 0
+      props.currentChat?.chat === 'personalChat'
         ? personalChatRefetch()
         : groupChatRefetch();
     }, [arrivalMessage]); // arrivalMessage와 이전 메시지를 배열에 담아줌
@@ -120,11 +121,11 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
       false;
 
     const onScroll = useCallback(
-      (values: any) => {
+      (values: { scrollTop: number; clientHeight: number }) => {
         if (values.scrollTop === 0 && !isReachingEnd) {
           console.log('가장 위');
 
-          props.currentChat?.chat === 0
+          props.currentChat?.chat === 'personalChat'
             ? personalChatNextPage().then(() => {
                 const current = (ref as MutableRefObject<Scrollbars>)?.current;
                 if (current) {
@@ -155,7 +156,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
                     <div>{getDate(dataList[0])}</div>
                   </StickyHeader>
 
-                  {dataList[1]?.map((message: any) => (
+                  {dataList[1]?.map((message: IDataList) => (
                     <MessageList key={uuidv4()} message={message} />
                   ))}
                 </Fragment>

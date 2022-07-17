@@ -64,46 +64,47 @@ export const LeftContainer = styled.section`
 `;
 export const RightContainer = styled.section`
   overflow: hidden;
-  .user {
+  .rightTop {
+    height: 65px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 0 15px;
+    border-bottom: 1.5px solid ${Colors.MAIN};
 
-    .userImg {
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      overflow: hidden;
+    .user {
+      display: flex;
+      align-items: center;
 
-      img {
-        width: 100%;
-        height: 100%;
+      .userImg {
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
-        object-fit: cover;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      }
+
+      .userName {
+        font-size: ${FontSize.MEDIUM_C};
+        font-family: ${FontFamily.BOLD};
+        color: ${Colors.B100};
+        margin-left: 12px;
       }
     }
-
-    .userName {
+    .leaveRoom {
       font-size: ${FontSize.SMALL};
-      font-family: ${FontFamily.MEDIUM};
-      color: ${Colors.B100};
-      margin-left: 12px;
     }
   }
-`;
 
-export const ContainerWrapper = styled.div`
-  max-width: 100%;
-  width: 100%;
-  height: calc(100% - 65px);
-  > div {
-    position: static;
-
-    > div {
-      position: static;
-      overflow: hidden !important;
-      overflow-y: auto !important;
-    }
+  .containerWrap {
+    height: 647px;
+    padding: 0 15px 15px;
   }
 `;
 
@@ -234,15 +235,18 @@ export const Message = styled.div`
 `;
 
 export const InputWrapper = styled.form`
-  width: calc(100% - 30px);
-  height: 100px;
+  width: 100%;
+  min-height: 100px;
   border: 1.5px solid ${Colors.MAIN};
   border-radius: 10px;
   padding: 10px;
-  margin: 0 15px;
-  textarea {
+  background-color: ${Colors.BW};
+
+  > textarea {
     width: 100%;
-    height: calc(100% - 28px);
+    min-height: 50px;
+    max-height: 150px;
+    height: 50px !important;
     border: 0;
     ::placeholder {
       color: ${Colors.B60};
@@ -342,7 +346,6 @@ export const ListContainer = styled.div`
     }
   }
   .selected {
-    /* background-color: aliceblue; */
     background-color: rgba(0, 160, 91, 0.1);
   }
 `;
@@ -352,7 +355,6 @@ export const List = styled.div`
   display: flex;
   align-items: center;
   :hover {
-    /* background-color: aliceblue; */
     background-color: rgba(0, 160, 91, 0.1);
   }
 
@@ -379,16 +381,23 @@ export const List = styled.div`
     margin-left: 10px;
     overflow: hidden;
 
-    .name-date {
+    .nameWrap {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 5px;
-      .userName {
+      > div:first-of-type {
         font-size: ${FontSize.SMALL};
         font-family: ${FontFamily.BOLD};
         color: ${Colors.B100};
+        display: flex;
+        .userName {
+          margin-right: 5px;
+        }
+        .joinPeople {
+          color: ${Colors.B60};
+        }
       }
       .date {
         margin-left: 8px;

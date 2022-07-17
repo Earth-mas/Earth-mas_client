@@ -17,11 +17,10 @@ export default function SupportCard(props: ISupportCardProps) {
   const leftDay = Math.ceil(
     (today.getTime() - dDay.getTime()) / (1000 * 60 * 60 * 24),
   );
-  const page = location.pathname;
 
   return (
     // @ts-ignore
-    <Container id={props.el.id} leftDay={leftDay} page={page}>
+    <Container id={props.el.id} leftDay={leftDay} page={location.pathname}>
       <p className="leftDay">마감</p>
       <Link to={`/support/${props.el.id}`}>
         <div className="imgContainer">

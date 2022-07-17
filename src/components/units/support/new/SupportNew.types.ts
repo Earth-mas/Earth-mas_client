@@ -21,19 +21,19 @@ export interface ISupportNewProps {
 }
 
 export interface FormValues {
-  title?: string | undefined;
-  wishamount?: number | undefined;
-  description?: string | undefined;
+  title?: string;
+  wishamount?: number;
+  description?: string;
   dday?: Date | null;
-  url?: string | undefined;
+  url?: string;
 }
 
 export interface ISupportNewUIProps {
   onClickEdit: (data: FormValues) => Promise<void>;
-  onClickSubmit: (data: FormValues) => Promise<false | undefined>;
+  onClickSubmit: (data: FormValues) => Promise<false | void>;
   control: Control<FieldValues, any>;
   handleChangeQuill: (value: string) => void;
-  contents: any;
+  contents: string;
   handleSubmit: UseFormHandleSubmit<FieldValues>;
   register: UseFormRegister<FieldValues>;
   isEdit: boolean;

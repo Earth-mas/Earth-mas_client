@@ -32,8 +32,15 @@ export const ChatList = (props: IChatListProps) => {
               </div>
 
               <div className="userInfo">
-                <div className="name-date">
-                  <p className="userName">{el?.user?.name}</p>
+                <div className="nameWrap">
+                  <div>
+                    <p className="userName">{el?.user?.name}</p>
+                    {el?.chat === 'groupChat' && (
+                      <p className="joinPeople">
+                        {el?.join}/{el?.max}
+                      </p>
+                    )}
+                  </div>
                   <p className="date">{getTime(el?.updatedAt)}</p>
                 </div>
                 <p>{el?.content}</p>

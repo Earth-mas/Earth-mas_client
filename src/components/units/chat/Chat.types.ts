@@ -24,7 +24,7 @@ export interface ChatInputProps {
 }
 
 export interface ICurrentChat {
-  chat: number;
+  chat: string;
   user: {
     id: string;
     url: string;
@@ -33,6 +33,8 @@ export interface ICurrentChat {
   roomId: string;
   content: string;
   updatedAt: string;
+  max: number;
+  join: number;
 }
 
 export interface IMessage {
@@ -44,4 +46,13 @@ export interface IMessage {
   userid: string;
   __v: number;
   _id: string;
+}
+
+export interface IDataList {
+  userid: string;
+  createdAt: string;
+  content: string;
+  name: string;
+  id: string;
+  url: string;
 }

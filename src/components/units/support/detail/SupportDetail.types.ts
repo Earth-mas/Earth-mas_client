@@ -12,14 +12,11 @@ export interface ISupportDetailUIProps {
       url: string;
       id: string;
     };
-    description: string | Node;
+    description: string;
   };
   percent: number;
   leftDay: number;
-  deleteContent: UseMutateFunction<
-    AxiosResponse<any, any>,
-    unknown,
-    void,
-    unknown
-  >;
+  deleteContent: UseMutateFunction<AxiosResponse<any, any>, unknown, void>;
+  modal: boolean;
+  openModal: () => void;
 }

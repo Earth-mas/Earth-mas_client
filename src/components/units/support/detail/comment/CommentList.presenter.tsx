@@ -1,5 +1,5 @@
 import { CommentWrapper } from './Comment.styles';
-import Comment from './Comment';
+import Comment from './Comment.container';
 import { ICommentListUIProps } from './Comment.types';
 import { BubbleIcon } from 'assets/svgs';
 import { Sub1 } from '../SupportDetail.styles';
