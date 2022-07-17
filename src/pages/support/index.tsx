@@ -1,3 +1,5 @@
-export default function SupportPage() {
-  return <div>Support</div>
+import SupportList from 'components/units/support/list/SupportList.container';
+
+export default function SupportListPage() {
+  return <SupportList />;
 }

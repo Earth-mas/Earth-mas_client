@@ -1,0 +1,20 @@
+{
+  "activitycategory": {
+    "category": "여행",
+    "createAt": "2022-06-15T08:55:17.317Z",
+    "deleteAt": null,
+    "id": "85116dac-98b4-4031-9de5-5ca4da6f14a3"
+  },
+  "createAt": "2022-06-15T17:09:02.021Z",
+  "dday": "2022-06-25T10:54:36.000Z",
+  "deleteAt": null,
+  "description": "바다가실분 구함",
+  "id": "5b7de222-f4df-413b-b189-b90c7ac393d6",
+  "location": "부산",
+  "maxpeople": 10,
+  "people": 1,
+  "subdescription": "선글라스,고기",
+  "title": "여행가실분",
+  "updateAt": "2022-06-15T17:09:02.021Z,",
+  "url": "http"
+}
