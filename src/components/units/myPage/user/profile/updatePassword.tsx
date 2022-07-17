@@ -1,7 +1,9 @@
+import { ChangeEvent, useState } from 'react';
+import { useMutation } from 'react-query';
+
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import Input01 from 'components/commons/inputs/Input01';
-import { ChangeEvent, useState } from 'react';
 
 export default function UpdatePassword() {
   const [inputs, setInputs] = useState({
@@ -17,16 +19,24 @@ export default function UpdatePassword() {
     });
   };
 
-  const onClickUpdate = () => {
-    axiosApiInstance
-      .put('mypage/updatepassword', inputs)
-      .then(res => {
-        console.log(res);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const { mutate: updatePassword } = useMutation(
+    'updatePassword',
+    async () => {
+      return await axiosApiInstance.put('mypage/updatepassword', inputs);
+    },
+    {
+      onSuccess: () => {
         alert('비밀번호 변경이 완료되었습니다.');
-      })
-      .catch(error => {
+      },
+      onError: (error: any) => {
         alert(error.response.data.message);
-      });
+      },
+    },
+  );
+
+  const onClickUpdate = () => {
+    updatePassword();
   };
 
   return (

@@ -5,6 +5,7 @@ import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import Input01 from 'components/commons/inputs/Input01';
 import axiosApiInstance from 'commons/utils/axiosInstance';
+import { useMutation } from 'react-query';
 
 interface IProps {
   addressnumber: string;
@@ -35,18 +36,26 @@ export default function UpdateAddress(props: IProps) {
       address1: data.address,
     });
   };
-
-  console.log(addressInput);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const { mutate: updateUser } = useMutation(
+    'updateUser',
+    async () => {
+      return await axiosApiInstance.put(`user`, { ...addressInput });
+    },
+    {
+      onSuccess: () => {
+        alert('주소가 변경되었습니다.');
+      },
+      onError: (error: any) => {
+        alert(error.response.data.message);
+      },
+    },
+  );
 
   const onClickSubmit = () => {
     if (!addressInput.address1 && !addressInput.address2)
       return alert('변경된 항목이 없습니다.');
-    axiosApiInstance
-      .put(`user`, { ...addressInput })
-      .then(() => alert('주소가 변경되었습니다.'))
-      .catch(error => {
-        alert(error.response.data.message);
-      });
+    updateUser();
   };
 
   return (
