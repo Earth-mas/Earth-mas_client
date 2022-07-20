@@ -16,6 +16,7 @@ export interface IProps {
   passwordErrMsg2: string | null;
   nameErrMsg: string | null;
   isTokenSend: boolean;
+  isTokenValid: boolean;
   min: number;
   sec: number;
   inputs: {

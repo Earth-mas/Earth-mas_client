@@ -1,12 +1,12 @@
-import axios from 'axios';
 import store from 'storejs';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
+
+import axiosApiInstance from 'commons/utils/axiosInstance';
+
 import { LoginWrapper, ModalBackGround } from './LoginContents.styles';
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { accessTokenState, userState } from 'recoil/user';
-import axiosApiInstance from 'commons/utils/axiosInstance';
 
 interface IProps {
   handleClose: () => void;
@@ -15,10 +15,11 @@ interface IProps {
 const LoginContents = ({ handleClose }: IProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const queryClient = useQueryClient();
   const urlLocation = useLocation();
+
   const navigate = useNavigate();
-  const setUser = useSetRecoilState(userState);
-  const setAccessTokenState = useSetRecoilState(accessTokenState);
 
   const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -28,52 +29,36 @@ const LoginContents = ({ handleClose }: IProps) => {
     setPassword(e.target.value);
   };
 
-  const onClickLogin = (
-    e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
-  ) => {
-    e.preventDefault();
+  const logIn = async () => {
     const data = {
       email,
       password,
     };
-    axiosApiInstance
-      .post('auth/login', data)
-      .then(res => {
-        const accessToken = res.data;
-        store.set('accessToken', accessToken);
-        setAccessTokenState(accessToken);
-        alert('로그인에 성공하였습니다.');
-        handleClose();
+    return await axiosApiInstance.post('auth/login', data);
+  };
 
-        // 현재페이지가 회원가입페이지인 경우 로그인 성공시 홈화면으로 redirect
-        if (urlLocation.pathname === '/signup') navigate('/');
-        axios
-          .get('https://earth-mas.shop/server/user/me', {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          })
-          .then(res => {
-            setUser({
-              id: res.data.id,
-              name: res.data.name,
-              email: res.data.email,
-              url: res.data.url,
-              addressnumber: res.data.addressnumber,
-              address1: res.data.address1,
-              address2: res.data.address2,
-              phone: res.data.phone,
-            });
-          })
-          .catch(error => {
-            alert(error.response.data.message);
-          });
-        location.reload();
-      })
-      .catch(error => {
-        // alert(error.response.data.message);
-        console.log(error);
-      });
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const { mutate: logInUser } = useMutation('logInUser', logIn, {
+    onSuccess: res => {
+      const accessToken = res.data;
+      store.set('accessToken', accessToken);
+      alert('로그인에 성공하였습니다.');
+      handleClose();
+      queryClient.invalidateQueries('getUser', { refetchInactive: true });
+
+      // 현재페이지가 회원가입페이지인 경우 로그인 성공시 홈화면으로 redirect
+      if (urlLocation.pathname === '/signup') navigate('/');
+    },
+    onError: (error: any) => {
+      alert(error.response.data.message);
+    },
+  });
+
+  const onClickLogin = (
+    e: MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>,
+  ) => {
+    e.preventDefault();
+    logInUser();
   };
 
   return (

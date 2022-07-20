@@ -1,35 +1,38 @@
-import store from 'storejs';
+// import store from 'storejs';
 import { useSetRecoilState } from 'recoil';
 import { userState } from 'recoil/user';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import { useEffect } from 'react';
+import { useQuery } from 'react-query';
 
 export default function useSetUser() {
   const setUser = useSetRecoilState(userState);
-  const accessToken = store.get('accessToken');
+  // const accessToken = store.get('accessToken');
+
+  const getUser = async () => {
+    const result = await axiosApiInstance.get('user/me');
+    return result.data;
+  };
+
+  const { refetch } = useQuery('getUser', getUser, {
+    enabled: false,
+    onSuccess: data => {
+      setUser({
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        url: data.url,
+        addressnumber: data.addressnumber,
+        address1: data.address1,
+        address2: data.address2,
+        phone: data.phone,
+      });
+    },
+  });
+
   useEffect(() => {
-    if (accessToken) {
-      axiosApiInstance
-        .get('user/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then(res => {
-          setUser({
-            id: res.data.id,
-            name: res.data.name,
-            email: res.data.email,
-            url: res.data.url,
-            addressnumber: res.data.addressnumber,
-            address1: res.data.address1,
-            address2: res.data.address2,
-            phone: res.data.phone,
-          });
-        })
-        .catch(error => {
-          console.log(error.response.data.message);
-        });
-    }
+    // if (accessToken) {
+    refetch();
+    // }
   }, []);
 }

@@ -1,7 +1,6 @@
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import store from 'storejs';
 import useInterval from 'hooks/useInterval';
 import { emailRegex, nameRegex, passwordRegex } from './regex';
 import SignUpUI from './SignUp.presenter';
@@ -37,17 +36,6 @@ export default function SignUp() {
   const sec = time - min * 60;
 
   const navigate = useNavigate();
-
-  // 로그인한 유저가 회원가입페이지 접근시에 홈화면으로 redirect
-  const accessToken = store.get('accessToken');
-
-  if (accessToken) {
-    useEffect(() => {
-      navigate('/');
-    }, []);
-    alert('이미 가입된 회원입니다.');
-    return <></>;
-  }
 
   const handleComplete = (data: IPostCodeData) => {
     setInputs({
@@ -142,7 +130,7 @@ export default function SignUp() {
       return;
     }
     axiosApiInstance
-      .post('https://earth-mas.shop/server/user', inputs)
+      .post('user', inputs)
       .then(() => {
         alert('회원가입이 완료되었습니다.');
         navigate('/');
@@ -166,6 +154,7 @@ export default function SignUp() {
       passwordErrMsg2={passwordErrMsg2}
       nameErrMsg={nameErrMsg}
       isTokenSend={isTokenSend}
+      isTokenValid={isTokenValid}
       min={min}
       sec={sec}
       inputs={inputs}
