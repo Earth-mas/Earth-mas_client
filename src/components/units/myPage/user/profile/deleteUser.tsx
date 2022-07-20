@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useResetRecoilState } from 'recoil';
-import axios from 'axios';
+import { useMutation } from 'react-query';
 import store from 'storejs';
 import styled from '@emotion/styled';
 
@@ -9,6 +9,7 @@ import Modal from 'components/commons/modal';
 import AlertModal from '../../../../commons/modal/alertModal/alertModal';
 
 import { userState } from 'recoil/user';
+import axiosApiInstance from 'commons/utils/axiosInstance';
 
 export default function DeleteUser(props: { id: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,17 +18,26 @@ export default function DeleteUser(props: { id: string }) {
 
   const navigate = useNavigate();
 
-  const onClickDelete = () => {
-    axios
-      .delete(`https://earth-mas.shop/server/user/${props.id}`)
-      .then(() => {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const { mutate: deleteUser } = useMutation(
+    'deleteUser',
+    async () => {
+      return await axiosApiInstance.delete(`user/${props.id}`);
+    },
+    {
+      onSuccess: () => {
         store.remove('accessToken');
         alert('탈퇴가 완료되었습니다.');
         resetUser();
-      })
-      .catch(error => {
+      },
+      onError: (error: any) => {
         alert(error.response.data.message);
-      });
+      },
+    },
+  );
+
+  const onClickDelete = () => {
+    deleteUser();
     navigate('/');
   };
 

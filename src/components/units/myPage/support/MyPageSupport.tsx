@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MySupportWrapper } from './MyPageSupport.styles';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 import CreateList from './created/created';
-import JoinedList from './joined/created';
+import JoinedList from './joined/joined';
 import { SupportIcon } from 'assets/svgs';
 
 export default function MyPageSupport() {

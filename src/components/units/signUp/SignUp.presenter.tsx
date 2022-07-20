@@ -1,12 +1,15 @@
 import { GoogleIcon, KaKaoIcon } from 'assets/svgs';
 import Blank from 'components/commons/blank/Blank';
-import ContainedButton01 from 'components/commons/button/contained/ContainedButton03';
+import ContainedButton02 from 'components/commons/button/contained/ContainedButton02';
 import PostCode from 'components/commons/daumpostcode';
 import Input01 from 'components/commons/inputs/Input01';
 import { ErrorMsg, InputWrapper, Label, SignUpWrapper } from './SignUp.styles';
 import { IProps } from './SignUp.types';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default function SignUpUI(props: IProps) {
+  const tokenButtonName =
+    props.isTokenSend && props.isTokenValid ? '인증완료' : '인증번호 발송하기';
+
   return (
     <SignUpWrapper>
       <h1>회원가입</h1>
@@ -68,6 +71,7 @@ export default function SignUpUI(props: IProps) {
           <button
             type="button"
             className="defaultButton"
+            disabled={props.isTokenValid}
             style={{ width: 250, marginLeft: 10 }}
             onClick={
               props.isTokenSend
@@ -75,13 +79,13 @@ export default function SignUpUI(props: IProps) {
                 : props.onClickPhoneNumber
             }
           >
-            {props.isTokenSend ? (
+            {props.isTokenSend && !props.isTokenValid ? (
               <>
                 <p>인증번호 확인</p>
                 {props.min}:{props.sec}
               </>
             ) : (
-              '인증번호 발송'
+              tokenButtonName
             )}
           </button>
         </InputWrapper>
@@ -90,6 +94,7 @@ export default function SignUpUI(props: IProps) {
             type="text"
             placeholder="인증번호를 입력 후 인증번호 확인 버튼을 눌러주세요."
             onChange={props.onChangeToken}
+            disabled={props.isTokenValid}
           />
         )}
         <Label>주소</Label>
@@ -134,7 +139,7 @@ export default function SignUpUI(props: IProps) {
           동의합니다.
         </label>
         <Blank height={20} />
-        <ContainedButton01 type="submit" color="main" content="회원가입하기" />
+        <ContainedButton02 type="submit" color="main" content="회원가입하기" />
       </form>
     </SignUpWrapper>
   );
