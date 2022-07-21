@@ -12,7 +12,7 @@ import makeList from 'utils/makeList';
 import { ChatInput } from './ChatInput';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import { BeforeChat } from './BeforeChat';
-import { ICurrentChat } from './Chat.types';
+import { ICurrentChat, IGroupChat, IPersonalChat } from './Chat.types';
 import Modal from 'components/commons/modal';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
 
@@ -52,7 +52,7 @@ export const Chat = () => {
   const groupChat = async () => {
     const res = await axiosApiInstance.post(`${chat}/get-my-roomchat`);
 
-    return res.data?.map((el: any) => {
+    return res.data?.map((el: IGroupChat) => {
       return {
         chat: 'groupChat',
         user: {
@@ -62,9 +62,7 @@ export const Chat = () => {
         },
         roomId: el?.[0]?.id,
         content: el?.[1]?.content,
-        updatedAt: el?.[1]?.createdAt
-          ? el?.[1]?.createdAt
-          : el?.[0]?.activityjoin?.[0].createAt,
+        updatedAt: el?.[1]?.createdAt ? el?.[1]?.createdAt : '',
         max: el?.[0]?.maxpeople,
         join: el?.[0]?.people,
       };
@@ -75,7 +73,7 @@ export const Chat = () => {
   const personalChat = async () => {
     const res = await axiosApiInstance.get(`${chat}/findmychat`);
 
-    return res.data?.map((el: any) => {
+    return res.data?.map((el: IPersonalChat) => {
       return {
         chat: 'personalChat',
         user: {
