@@ -1,4 +1,4 @@
-// import store from 'storejs';
+import store from 'storejs';
 import { useSetRecoilState } from 'recoil';
 import { userState } from 'recoil/user';
 import axiosApiInstance from 'commons/utils/axiosInstance';
@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 
 export default function useSetUser() {
   const setUser = useSetRecoilState(userState);
-  // const accessToken = store.get('accessToken');
+  const accessToken = store.get('accessToken');
 
   const getUser = async () => {
     const result = await axiosApiInstance.get('user/me');
@@ -31,8 +31,8 @@ export default function useSetUser() {
   });
 
   useEffect(() => {
-    // if (accessToken) {
+    if (accessToken) {
     refetch();
-    // }
+    }
   }, []);
 }
