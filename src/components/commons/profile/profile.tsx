@@ -31,6 +31,7 @@ const AvatarWrapper = styled.div<{ size: number }>`
     height: ${props => `${props.size}px`};
     border-radius: 70%;
     margin-right: 5px;
+    object-fit: cover;
   }
 
   span {
