@@ -38,7 +38,7 @@ interface IInput01Props {
   oninput?: string;
   pattern?: string;
   register?: any;
-  defaultValue?: string | number | readonly string[] | undefined;
+  defaultValue?: string | number | readonly string[] | undefined | boolean;
   maxLength?: number;
   min?: number;
 }

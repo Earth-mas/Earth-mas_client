@@ -5,7 +5,7 @@ import Blank from 'components/commons/blank/Blank';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
 import Input01 from 'components/commons/inputs/Input01';
 import axiosApiInstance from 'commons/utils/axiosInstance';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 interface IProps {
   addressnumber: string;
@@ -21,10 +21,12 @@ export default function UpdateAddress(props: IProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [addressInput, setAddressInput] = useState({
-    addressnumber: props.addressnumber,
-    address1: props.address1,
-    address2: props.address2,
+    addressnumber: '',
+    address1: '',
+    address2: '',
   });
+
+  const queryClient = useQueryClient();
 
   const onChangeAddress2 = (e: ChangeEvent<HTMLInputElement>) => {
     setAddressInput({ ...addressInput, address2: e.target.value });
@@ -46,6 +48,7 @@ export default function UpdateAddress(props: IProps) {
     {
       onSuccess: () => {
         alert('주소가 변경되었습니다.');
+        queryClient.invalidateQueries('getUser', { refetchInactive: true });
       },
       onError: (error: any) => {
         alert(error.response.data.message);
@@ -65,7 +68,7 @@ export default function UpdateAddress(props: IProps) {
         <Input01
           type="text"
           id="addressnumber"
-          placeholder="우편번호 검색"
+          placeholder={props.addressnumber}
           disabled
           defaultValue={addressInput.addressnumber}
           margin={10}
@@ -87,7 +90,7 @@ export default function UpdateAddress(props: IProps) {
       <Input01
         type="text"
         id="address1"
-        placeholder="우편번호를 검색해주세요."
+        placeholder={props.address1}
         defaultValue={addressInput.address1}
         disabled
         margin={10}
@@ -96,7 +99,7 @@ export default function UpdateAddress(props: IProps) {
         type="text"
         id="address2"
         placeholder="상세주소를 입력해주세요."
-        defaultValue={addressInput.address2}
+        defaultValue={addressInput.address2.length>0?addressInput.address2:props.address2}
         onChange={onChangeAddress2}
       />
       <Blank height={10} />
