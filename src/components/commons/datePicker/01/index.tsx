@@ -59,6 +59,12 @@ const Wrapper = styled.div`
         }
       }
     }
+    &__close-icon {
+      padding-right: 12px;
+      &::after {
+        background-color: ${Colors.B100};
+      }
+    }
   }
   .react-datepicker-popper {
     padding-top: 0px;

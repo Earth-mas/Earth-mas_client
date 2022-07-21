@@ -69,6 +69,7 @@ export const Bottom = styled.div`
 
   .bottomLeft {
     width: 100%;
+    margin-right: 40px;
     > p {
       &:nth-of-type(1) {
         font-size: ${FontSize.LARGE_T};

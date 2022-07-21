@@ -16,8 +16,7 @@ export const ChatButton = (props: {
       });
     },
     {
-      onSuccess: res => {
-        console.log(res);
+      onSuccess: () => {
         navigate('/chat');
       },
       onError: err => {
