@@ -41,8 +41,6 @@ export const ParticipationListContainer = () => {
     );
   }, [paymentList]);
 
-  console.log(list);
-
   return (
     <S.ParticipationList>
       <div className="sticky">
