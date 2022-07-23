@@ -46,7 +46,7 @@ export const Chat = () => {
 
     setTimeout(() => {
       scrollbarRef.current?.scrollToBottom();
-    }, 100);
+    }, 50);
   }, [currentChat]);
 
   const groupChat = async () => {

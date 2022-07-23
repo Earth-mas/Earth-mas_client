@@ -123,8 +123,6 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
     const onScroll = useCallback(
       (values: { scrollTop: number; clientHeight: number }) => {
         if (values.scrollTop === 0 && !isReachingEnd) {
-          console.log('가장 위');
-
           props.currentChat?.chat === 'personalChat'
             ? personalChatNextPage().then(() => {
                 const current = (ref as MutableRefObject<Scrollbars>)?.current;
