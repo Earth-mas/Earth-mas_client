@@ -42,7 +42,7 @@ export default function Upload02(props: IUpload02Props) {
     const formData = new FormData();
     formData.append('files', file);
     await axiosApiInstance
-      .post(`/server/${props.page}/upload`, formData)
+      .post(`/${props.page}/upload`, formData)
       .then(res => {
         const url = `https://storage.googleapis.com/${res.data[0]}`;
         onChangeUrl(url);
