@@ -28,7 +28,7 @@ export default function SellList() {
   return (
     <ListWrapper>
       {isLoading && <div>로딩 중...</div>}
-      {listData?.length === 0 && <div>판매한 상품이 없습니다.</div>}
+      {!isLoading && listData.length === 0 && '판매한 상품이 없습니다.'}
       {listData?.map((el: IMarketCard) => (
         <MarketCard key={el.id} listData={el} />
       ))}
