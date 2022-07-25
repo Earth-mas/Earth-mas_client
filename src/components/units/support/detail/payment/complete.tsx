@@ -1,10 +1,11 @@
 import * as S from './complete.styles';
 import { getPrice } from 'commons/utils/utils';
 import ContainedButton01 from 'components/commons/button/contained/ContainedButton01';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ISupportCompleteProps } from './complete.types';
 
 export default function SupportComplete(props: ISupportCompleteProps) {
+  const { id } = useParams();
   return (
     <S.Wrapper>
       <S.Top>
@@ -27,7 +28,7 @@ export default function SupportComplete(props: ISupportCompleteProps) {
           <p>단체명</p>
           <p>{props.paymentData?.data?.donation?.user?.name}</p>
         </div>
-        <Link to={'/support'} className="buttonWrap">
+        <Link to={`/support/${id}`} className="buttonWrap">
           <ContainedButton01 content="확인" color="main" />
         </Link>
       </S.Bottom>

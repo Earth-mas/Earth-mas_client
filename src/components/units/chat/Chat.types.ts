@@ -48,6 +48,21 @@ export interface IMessage {
   _id: string;
 }
 
+export interface IUser {
+  address1: string;
+  address2: string;
+  addressnumber: string;
+  createAt: string;
+  delete: string | null;
+  email: string;
+  id: string;
+  name: string;
+  password: string;
+  phone: string;
+  role: string;
+  updateAt: string;
+  url: string;
+}
 export interface IDataList {
   userid: string;
   createdAt: string;
@@ -55,4 +70,40 @@ export interface IDataList {
   name: string;
   id: string;
   url: string;
+}
+
+export interface IGroupChat {
+  0: {
+    activityjoin: [
+      {
+        0: {
+          admin: string;
+          createAt: string;
+          deletdAt: string | null;
+          id: string;
+          updatedAt: string;
+          user: IUser;
+        };
+      },
+    ];
+    createAt: string;
+    dday: string;
+    deleteAt: string | null;
+    description: string;
+    id: string;
+    location: string;
+    maxpeople: number;
+    people: number;
+    subdescription: string;
+    title: string;
+    updateAt: string;
+    url: string;
+  };
+  1: IMessage;
+}
+
+export interface IPersonalChat {
+  0: string;
+  1: IUser;
+  2: IMessage;
 }

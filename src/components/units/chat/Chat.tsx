@@ -12,7 +12,7 @@ import makeList from 'utils/makeList';
 import { ChatInput } from './ChatInput';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import { BeforeChat } from './BeforeChat';
-import { ICurrentChat } from './Chat.types';
+import { ICurrentChat, IGroupChat, IPersonalChat } from './Chat.types';
 import Modal from 'components/commons/modal';
 import AlertModal from 'components/commons/modal/alertModal/alertModal';
 
@@ -46,36 +46,36 @@ export const Chat = () => {
 
     setTimeout(() => {
       scrollbarRef.current?.scrollToBottom();
-    }, 100);
+    }, 50);
   }, [currentChat]);
 
   const groupChat = async () => {
     const res = await axiosApiInstance.post(`${chat}/get-my-roomchat`);
 
-    return res.data?.map((el: any) => {
+    return res.data?.map((el: IGroupChat) => {
       return {
         chat: 'groupChat',
         user: {
           id: el?.[0]?.id,
           url: el?.[0]?.url,
-          name: el?.[0]?.description.replace(/[<]+[a-zA-Z/]+[>]/gi, ''),
+          name: el?.[0]?.title,
         },
         roomId: el?.[0]?.id,
         content: el?.[1]?.content,
-        updatedAt: el?.[1]?.createdAt
-          ? el?.[1]?.createdAt
-          : el?.[0]?.activityjoin?.[0].createAt,
+        updatedAt: el?.[1]?.createdAt ? el?.[1]?.createdAt : '',
         max: el?.[0]?.maxpeople,
         join: el?.[0]?.people,
       };
     });
+    // return res.data;
   };
   const { data: groupChatList } = useQuery('getmyroomchat', groupChat);
+  console.log(groupChatList);
 
   const personalChat = async () => {
     const res = await axiosApiInstance.get(`${chat}/findmychat`);
 
-    return res.data?.map((el: any) => {
+    return res.data?.map((el: IPersonalChat) => {
       return {
         chat: 'personalChat',
         user: {

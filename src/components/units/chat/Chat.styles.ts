@@ -112,7 +112,7 @@ export const Scrollbar = styled(Scrollbars)`
   height: 520px;
   max-height: 520px;
   overflow-y: auto;
-  padding: 10px 15px 0;
+  padding-top: 10px;
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
@@ -393,6 +393,10 @@ export const List = styled.div`
         color: ${Colors.B100};
         display: flex;
         .userName {
+          max-width: 147px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           margin-right: 5px;
         }
         .joinPeople {

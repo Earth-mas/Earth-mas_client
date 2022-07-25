@@ -32,7 +32,7 @@ export default function useSetUser() {
 
   useEffect(() => {
     if (accessToken) {
-    refetch();
+      refetch();
     }
   }, []);
 }

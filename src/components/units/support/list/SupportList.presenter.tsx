@@ -14,7 +14,7 @@ export default function SupportListUI(props: ISupportListUIProps) {
         <Slide
           slide="main"
           banner={['/images/supportBanner/supportBanner1.jpg']}
-          autoplay={true}
+          autoplay={false}
         />
       </S.SlideWrapper>
       <S.Wrapper>

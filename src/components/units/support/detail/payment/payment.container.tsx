@@ -52,8 +52,7 @@ export default function SupportPayment() {
       });
     },
     {
-      onSuccess: res => {
-        console.log(res);
+      onSuccess: () => {
         setIsComplete(true);
       },
       onError: err => {
@@ -82,7 +81,6 @@ export default function SupportPayment() {
       (rsp: IPayment) => {
         if (rsp.success) {
           supportPayment(rsp);
-          console.log(rsp);
         } else {
           alert(rsp.error_msg);
           navigate(`/support/${id}`);
