@@ -120,7 +120,7 @@ export const MainContent = styled.div`
     font-family: ${FontFamily.BOLD};
     font-size: ${FontSize.MEDIUM_C};
     color: ${Colors.B80};
-    margin: 31px 0;
+    margin: auto 0;
     text-align: center;
   }
 `;
