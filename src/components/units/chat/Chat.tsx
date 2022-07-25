@@ -58,7 +58,7 @@ export const Chat = () => {
         user: {
           id: el?.[0]?.id,
           url: el?.[0]?.url,
-          name: el?.[0]?.description.replace(/[<]+[a-zA-Z/]+[>]/gi, ''),
+          name: el?.[0]?.title,
         },
         roomId: el?.[0]?.id,
         content: el?.[1]?.content,
@@ -67,8 +67,10 @@ export const Chat = () => {
         join: el?.[0]?.people,
       };
     });
+    // return res.data;
   };
   const { data: groupChatList } = useQuery('getmyroomchat', groupChat);
+  console.log(groupChatList);
 
   const personalChat = async () => {
     const res = await axiosApiInstance.get(`${chat}/findmychat`);

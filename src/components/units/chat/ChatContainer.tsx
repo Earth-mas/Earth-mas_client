@@ -140,7 +140,7 @@ export const ChatContainer = forwardRef<Scrollbars, IChatContainerProps>(
               });
         }
       },
-      [isReachingEnd, ref, lastPage, personalChatNextPage, groupChatRefetch],
+      [isReachingEnd, ref, lastPage, personalChatNextPage, groupChatNextPage],
     );
 
     return (
