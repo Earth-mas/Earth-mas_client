@@ -33,12 +33,12 @@ export default function HomePage() {
             </div>
           </div>
           <div className="imgBox">
-            <img src="images/mainImg/main1.jpg" />
+            <img src="images/mainImg/main-activity.jpeg" />
           </div>
         </Section>
         <Section>
           <div className="imgBox">
-            <img src="images/mainImg/main2.jpg" />
+            <img src="images/mainImg/main-support.jpg" />
           </div>
           <div className="textBox">
             <p className="title">SUPPORT</p>
@@ -71,7 +71,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="imgBox">
-            <img src="images/mainImg/main3.jpg" />
+            <img src="images/mainImg/main-market.jpg" />
           </div>
         </Section>
       </Wrapper>
@@ -121,6 +121,8 @@ const Section = styled.section`
     height: 500px;
     img {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
