@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 import LikeList from './like/like';

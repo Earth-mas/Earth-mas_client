@@ -28,7 +28,10 @@ const AxiosInterceptor = ({ children }: any) => {
     };
 
     const errInterceptor = async (error: any) => {
-      if (error.response.status === 401) {
+      if (
+        error.response.status === 401 &&
+        error.response.data.message !== '이미 로그아웃이 된 상태입니다.'
+      ) {
         // 기존의 originalRequest를 auth/restore 으로 전달해 토큰을 재발급
         try {
           const originalRequest = error.config;
@@ -43,7 +46,7 @@ const AxiosInterceptor = ({ children }: any) => {
             return await axiosApiInstance.request(originalRequest);
           }
         } catch (error) {
-          alert(error);
+          // alert(error);
         }
       }
       return Promise.reject(error);

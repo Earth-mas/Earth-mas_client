@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
 import axiosApiInstance from 'commons/utils/axiosInstance';
 import MarketCard from 'components/commons/card/market/MarketCard';
@@ -14,19 +14,14 @@ export default function LikeList() {
     return result.data;
   };
 
-  const { refetch, isRefetching } = useQuery('getMyLike', getMyLike, {
-    enabled: false,
+  const { isFetching } = useQuery('getMyLike', getMyLike, {
     onSuccess: data => setListData(data),
   });
 
-  useEffect(() => {
-    refetch();
-  }, []);
-
   return (
     <ListWrapper>
-      {isRefetching && <div>로딩 중...</div>}
-      {listData?.length === 0 && <div>찜한 상품이 없습니다.</div>}
+      {isFetching && <div>로딩 중...</div>}
+      {!isFetching && listData.length === 0 && '찜한 상품이 없습니다.'}
       {listData?.map((el: IMarketCard) => (
         <MarketCard key={el.id} listData={el} />
       ))}

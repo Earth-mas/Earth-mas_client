@@ -18,7 +18,7 @@ export default function UpdatePassword() {
       [e.target.id]: e.target.value, //대괄호 안에 있는걸로 객체 key를 만듦
     });
   };
-
+  //
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const { mutate: updatePassword } = useMutation(
     'updatePassword',
