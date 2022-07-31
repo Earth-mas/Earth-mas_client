@@ -6,12 +6,13 @@ import { FontFamily, FontSize } from 'styles/FontStyles';
 export const ChatWrapper = styled.div`
   max-width: 1024px;
   width: 1024px;
-  height: 715px;
+  min-height: 715px;
   border: 1.5px solid ${Colors.MAIN};
   border-spacing: 1px;
   border-radius: 10px;
   display: grid;
   grid-template-columns: 330px 1fr;
+  margin: 0 auto 50px;
 
   > section {
     position: relative;
@@ -103,7 +104,7 @@ export const RightContainer = styled.section`
   }
 
   .containerWrap {
-    height: 647px;
+    min-height: 647px;
     padding: 0 15px 15px;
   }
 `;
@@ -111,7 +112,7 @@ export const RightContainer = styled.section`
 export const Scrollbar = styled(Scrollbars)`
   height: 520px;
   max-height: 520px;
-  overflow-y: auto;
+  overflow: hidden;
   padding-top: 10px;
   margin-bottom: 10px;
   display: flex;
@@ -245,8 +246,6 @@ export const InputWrapper = styled.form`
   > textarea {
     width: 100%;
     min-height: 50px;
-    max-height: 150px;
-    height: 50px !important;
     border: 0;
     ::placeholder {
       color: ${Colors.B60};
@@ -393,7 +392,7 @@ export const List = styled.div`
         color: ${Colors.B100};
         display: flex;
         .userName {
-          max-width: 147px;
+          max-width: 145px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
