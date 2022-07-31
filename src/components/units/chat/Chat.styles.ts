@@ -110,6 +110,7 @@ export const RightContainer = styled.section`
 `;
 
 export const Scrollbar = styled(Scrollbars)`
+  height: 520px !important;
   max-height: 520px;
   padding-top: 10px;
   margin-bottom: 10px;
