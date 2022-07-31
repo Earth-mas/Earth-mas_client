@@ -11,7 +11,7 @@ export default function SupportList() {
   const { data, refetch, isPreviousData } = useQuery(
     ['supportList', clickPage],
     async () => {
-      return axios.post(`${supportRoute}/${select}`, { page: clickPage });
+      return await axios.post(`${supportRoute}/${select}`, { page: clickPage });
     },
     { keepPreviousData: true },
   );

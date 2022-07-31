@@ -41,11 +41,14 @@ export default function Comment(props: ICommentProps) {
   };
 
   const { mutate } = useMutation(
-    () => {
-      return axiosApiInstance.put(`${supportCommentRoute}/${props.el?.id}`, {
-        comments,
-        donation: id,
-      });
+    async () => {
+      return await axiosApiInstance.put(
+        `${supportCommentRoute}/${props.el?.id}`,
+        {
+          comments,
+          donation: id,
+        },
+      );
     },
     {
       onSuccess: () => {

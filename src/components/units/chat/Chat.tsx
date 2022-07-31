@@ -27,10 +27,6 @@ export const Chat = () => {
   const scrollbarRef = useRef<Scrollbars>(null);
 
   useEffect(() => {
-    if (userInfo.id.length > 0) return setCurrentUser(userInfo);
-  }, [userInfo]);
-
-  useEffect(() => {
     socketRef.current = io(`${chat}`, {
       upgrade: false,
     });
@@ -43,10 +39,10 @@ export const Chat = () => {
         roomid: currentChat?.roomId,
       });
     }
-
+    setCurrentUser(userInfo);
     setTimeout(() => {
       scrollbarRef.current?.scrollToBottom();
-    }, 50);
+    }, 150);
   }, [currentChat]);
 
   const groupChat = async () => {
@@ -70,7 +66,6 @@ export const Chat = () => {
     // return res.data;
   };
   const { data: groupChatList } = useQuery('getmyroomchat', groupChat);
-  console.log(groupChatList);
 
   const personalChat = async () => {
     const res = await axiosApiInstance.get(`${chat}/findmychat`);
@@ -110,7 +105,7 @@ export const Chat = () => {
     if (scrollbarRef.current) {
       setTimeout(() => {
         scrollbarRef.current?.scrollToBottom();
-      }, 50);
+      }, 300);
     }
   };
 
@@ -122,10 +117,14 @@ export const Chat = () => {
 
   const { mutate: leaveChat } = useMutation(
     'chatDelete',
-    () => {
+    async () => {
       return currentChat?.chat === 'personalChat'
-        ? axiosApiInstance.delete(`${chat}/user-chat/${currentChat?.roomId}`)
-        : axiosApiInstance.delete(`${chat}/room-chat/${currentChat?.roomId}`);
+        ? await axiosApiInstance.delete(
+            `${chat}/user-chat/${currentChat?.roomId}`,
+          )
+        : await axiosApiInstance.delete(
+            `${chat}/room-chat/${currentChat?.roomId}`,
+          );
     },
     {
       onSuccess: () => {

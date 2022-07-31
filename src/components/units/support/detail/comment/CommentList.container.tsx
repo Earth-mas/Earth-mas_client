@@ -30,8 +30,8 @@ export default function CommentList() {
   );
 
   const { mutate } = useMutation(
-    () => {
-      return axiosApiInstance.post(supportCommentRoute, {
+    async () => {
+      return await axiosApiInstance.post(supportCommentRoute, {
         comments,
         donation: id,
       });

@@ -4,7 +4,7 @@ import { ListContainer, List } from './Chat.styles';
 import { getTime } from 'commons/utils/utils';
 
 export const ChatList = (props: IChatListProps) => {
-  const [roomId, setRoomId] = useState<number>();
+  const [roomId, setRoomId] = useState<number>(0);
 
   const changeCurrentChat = (index: number, contact: ICurrentChat) => {
     setRoomId(index);

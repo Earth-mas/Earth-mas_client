@@ -44,8 +44,8 @@ export default function SupportPayment() {
   });
 
   const { mutate: supportPayment, data: paymentData } = useMutation(
-    (rsp: { imp_uid: string }) => {
-      return axiosApiInstance.post(supporttrRoute, {
+    async (rsp: { imp_uid: string }) => {
+      return await axiosApiInstance.post(supporttrRoute, {
         impUid: rsp.imp_uid,
         amount: Number(selectAmount),
         donation: id,
