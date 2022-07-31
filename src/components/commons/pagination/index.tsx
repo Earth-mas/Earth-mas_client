@@ -14,9 +14,8 @@ export default function Pagination(props: IPaginationProps) {
     else if (props.page === 'comment') return Math.ceil(props.listCount / 10);
   };
 
-  const onClickPage = (event: { target: any; currentTarget: { id: any } }) => {
-    if (event.target instanceof Element)
-      props.refetch(Number(event.currentTarget.id));
+  const onClickPage = (event: { currentTarget: { id: string } }) => {
+    props.refetch(Number(event.currentTarget.id));
     setClickPage(Number(event.currentTarget.id));
   };
 

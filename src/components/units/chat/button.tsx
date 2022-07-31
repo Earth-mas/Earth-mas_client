@@ -10,8 +10,8 @@ export const ChatButton = (props: {
   const navigate = useNavigate();
 
   const { mutate } = useMutation(
-    () => {
-      return axiosApiInstance.post(`${chat}/findroom`, {
+    async () => {
+      return await axiosApiInstance.post(`${chat}/findroom`, {
         user: props.userInfo?.id,
       });
     },

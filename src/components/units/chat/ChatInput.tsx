@@ -25,6 +25,7 @@ export const ChatInput = (props: ChatInputProps) => {
 
   const sendChat = (event: any) => {
     event.preventDefault();
+
     if (chatMsg.length > 0) {
       props.handleSendMsg(chatMsg); // container에서 socket에 발송
       textareaRef.current.value = '';

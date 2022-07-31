@@ -24,7 +24,7 @@ export const Container = styled.div`
       props.leftDay > 1 ? 'block' : 'none'};
   }
   .imgContainer {
-    height: ${(props: any) => (props.page === '/mypage' ? '188px' : '231.5px')};
+    aspect-ratio: 1/1;
     display: flex;
     justify-content: center;
     align-items: center;

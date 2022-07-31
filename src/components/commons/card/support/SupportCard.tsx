@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { getPrice } from 'commons/utils/utils';
 import { ISupportListProps } from 'components/units/support/list/SupportList.types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Container } from './SupportCard.styles';
 interface ISupportCardProps {
   el: ISupportListProps;
 }
 
 export default function SupportCard(props: ISupportCardProps) {
-  const location = useLocation();
   const goal = Number(props.el.wishamount);
   const price = Number(props.el.currentamount);
   const percent = Math.floor((price / goal) * 100);
@@ -19,8 +18,7 @@ export default function SupportCard(props: ISupportCardProps) {
   );
 
   return (
-    // @ts-ignore
-    <Container id={props.el.id} leftDay={leftDay} page={location.pathname}>
+    <Container id={props.el.id} leftDay={leftDay}>
       <p className="leftDay">마감</p>
       <Link to={`/support/${props.el.id}`}>
         <div className="imgContainer">

@@ -19,10 +19,10 @@ export default function SupportNew(props: ISupportNewProps) {
     });
 
   const { mutate } = useMutation(
-    (variables: FormValues) => {
+    async (variables: FormValues) => {
       return !props.isEdit
-        ? axiosApiInstance.post(supportRoute, variables)
-        : axiosApiInstance.put(`${supportRoute}/${id}`, variables);
+        ? await axiosApiInstance.post(supportRoute, variables)
+        : await axiosApiInstance.put(`${supportRoute}/${id}`, variables);
     },
     {
       onSuccess: res => {
